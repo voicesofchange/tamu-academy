@@ -4,6 +4,31 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes tamuBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.tamu-nav-link {
+  transition: color 0.25s ease;
+}
+.tamu-nav-link:hover {
+  color: #D4A12A !important;
+}
+
+.tamu-card {
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+.tamu-card:hover {
+  border-color: rgba(212,161,42,0.4) !important;
+  background-color: rgba(245,239,224,0.04) !important;
+  transform: translateY(-3px);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
