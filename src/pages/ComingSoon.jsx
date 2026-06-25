@@ -191,44 +191,6 @@ export default function ComingSoon() {
           padding: '0 2rem',
         }}
       >
-        {/* Social links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <a
-            href={SOCIAL_LINKS.youtube}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tamu-social-link"
-            aria-label="Tamu Academy on YouTube"
-          >
-            <YouTubeIcon />
-          </a>
-
-          {/* Vertical gold rule separator */}
-          <div aria-hidden="true" style={{ width: '1px', height: '18px', background: '#D4A12A', opacity: 0.3, margin: '0 0.25rem' }} />
-
-          <a
-            href={SOCIAL_LINKS.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tamu-social-link"
-            aria-label="Tamu Academy on Instagram"
-          >
-            <InstagramIcon />
-          </a>
-
-          <div aria-hidden="true" style={{ width: '1px', height: '18px', background: '#D4A12A', opacity: 0.3, margin: '0 0.25rem' }} />
-
-          <a
-            href={SOCIAL_LINKS.substack}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tamu-social-link"
-            aria-label="Tamu Academy on Substack"
-          >
-            <SubstackIcon />
-          </a>
-        </div>
-
         {/* Brand seal */}
         <span
           style={{
