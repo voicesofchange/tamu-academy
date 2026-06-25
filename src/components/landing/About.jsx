@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 
-const FACTS = ['Founded 2025', 'Sacramento, CA', 'Youth ages 16–30', 'A Waiyaki House LLC brand'];
+const FACTS = ['A Waiyaki House LLC brand'];
 
 export default function About() {
   return (
