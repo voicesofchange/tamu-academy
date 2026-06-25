@@ -103,6 +103,26 @@ export default function Hero() {
           <span style={{ color: '#E2B652' }}>global civic leaders</span>.
         </motion.p>
 
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: 'easeOut', delay: 1.25 }}
+          className="font-body"
+          style={{
+            color: 'rgba(245,239,224,0.62)',
+            fontSize: 'clamp(0.82rem, 1.1vw, 0.95rem)',
+            lineHeight: 1.9,
+            fontWeight: 300,
+            maxWidth: '480px',
+            margin: '1.5rem auto 0',
+            letterSpacing: '0.01em',
+          }}
+        >
+          We break down constitutions, budgets, and international agreements into lessons young people
+          can actually use — building the civic confidence to understand, question, and change
+          the systems that shape their world.
+        </motion.p>
+
         <motion.a
           href="#about"
           initial={{ opacity: 0 }}
