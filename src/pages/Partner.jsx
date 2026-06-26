@@ -1,27 +1,100 @@
 import React from 'react';
-import TopNav from '@/components/landing/TopNav';
-import SiteFooter from '@/components/landing/SiteFooter';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageLayout from '@/components/page/PageLayout';
+import PageHero from '@/components/page/PageHero';
+import PageSection from '@/components/page/PageSection';
+
+const PARTNERSHIP_AREAS = [
+  {
+    title: 'Programme Collaboration',
+    desc: 'For schools, universities, nonprofits, and youth organisations interested in hosting or co-developing learning activities with Tamu Academy. This may include shared facilitation, curriculum development, participant recruitment, or co-hosting dialogue events.',
+  },
+  {
+    title: 'Facilitators and Subject Matter Experts',
+    desc: 'For educators, researchers, practitioners, writers, and community leaders interested in contributing knowledge, facilitating sessions, or supporting the development of learning materials in any of Tamu Academy\'s six learning areas.',
+  },
+  {
+    title: 'Community Access',
+    desc: 'For organisations that can help reach young people who may not otherwise have access to interdisciplinary learning opportunities — including community centres, youth groups, religious organisations, libraries, and local networks.',
+  },
+  {
+    title: 'Research and Learning Resources',
+    desc: 'For partners who may contribute case studies, educational materials, speakers, discussion frameworks, or learning tools that can enrich Tamu Academy\'s programme content and participant experience.',
+  },
+  {
+    title: 'Programme Support',
+    desc: 'For institutions or individuals interested in supporting participant access, learning materials, transportation, connectivity, or programme delivery. Tamu Academy is committed to keeping its programmes as accessible as possible.',
+  },
+  {
+    title: 'Media and Storytelling',
+    desc: 'For collaborators interested in interviews, educational video, youth storytelling, podcasting, documentation, or public communication that amplifies the voices and experiences of Tamu Academy learners.',
+  },
+];
+
+const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Partner() {
   return (
-    <div style={{ backgroundColor: '#1A130E', minHeight: '100vh', width: '100%', overflowX: 'hidden', fontFamily: "'DM Sans', sans-serif" }}>
-      <TopNav />
-      <main style={{ maxWidth: '860px', margin: '0 auto', padding: '8rem clamp(1.5rem, 6vw, 4rem) 6rem' }}>
-        <span style={{ color: '#D4A12A', fontSize: '0.7rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1.25rem' }}>
-          Partnerships
+    <PageLayout>
+      <PageHero
+        eyebrow="Partnerships"
+        heading="Partner With Tamu Academy"
+        subheading="Tamu Academy is developing relationships with educators, youth organizations, community groups, researchers, institutions, and supporters who share a commitment to accessible learning and responsible leadership."
+      />
+
+      <PageSection>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
+          We believe that the kind of learning Tamu Academy aspires to create cannot be built by a single organisation working alone. It requires educators who want to share what they know, communities that want to open their doors, and institutions that are willing to support learning for its own sake.
+        </p>
+        <p className="font-body" style={bodyText}>
+          We are at an early stage. We are being honest about that. We are not looking for partners who need us to already be large or established. We are looking for partners who share a commitment to what we are trying to build — and who want to help shape it from the beginning.
+        </p>
+      </PageSection>
+
+      <PageSection heading="Areas of Partnership">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.1rem' }}>
+          {PARTNERSHIP_AREAS.map((area, i) => (
+            <motion.div
+              key={area.title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.06 }}
+              style={{ padding: '1.6rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+            >
+              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.7rem', lineHeight: 1.3 }}>{area.title}</h3>
+              <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{area.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </PageSection>
+
+      {/* Partnership note */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(212,161,42,0.35)', backgroundColor: 'rgba(212,161,42,0.025)', marginBottom: '3rem' }}
+      >
+        <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
+          "Partnerships will be considered based on alignment with Tamu Academy's mission, learner needs, ethical standards, and current capacity."
+        </p>
+      </motion.div>
+
+      {/* CTA */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+        <Link
+          to="/contact"
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+        >
+          Get in Touch →
+        </Link>
+        <span className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.8rem', fontWeight: 300 }}>
+          No partnership form yet — please reach out directly
         </span>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 400, lineHeight: 1.2, marginBottom: '1.5rem' }}>
-          Partner With Tamu Academy
-        </h1>
-        <div style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)', marginBottom: '2.5rem' }} aria-hidden="true" />
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.75)', fontSize: '1rem', lineHeight: 1.8, fontWeight: 300 }}>
-          Tamu Academy welcomes partnerships with schools, universities, youth organisations, community groups, foundations, and educators who share a commitment to intercultural learning and meaningful youth development.
-        </p>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '3rem', fontWeight: 500 }}>
-          Partnership details in development
-        </p>
-      </main>
-      <SiteFooter />
-    </div>
+      </div>
+    </PageLayout>
   );
 }
