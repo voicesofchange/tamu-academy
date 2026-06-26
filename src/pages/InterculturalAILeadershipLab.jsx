@@ -65,19 +65,19 @@ const INTEREST_PATHS = [
     role: 'Prospective Participant',
     desc: 'For young people interested in receiving updates if the proposed pilot is confirmed.',
     cta: 'Register Your Interest',
-    to: '/contact',
+    to: '/contact?type=lab-interest&programme=intercultural-ai-leadership-lab',
   },
   {
     role: 'Educator or Facilitator',
     desc: 'For educators, researchers, practitioners, cultural leaders, and dialogue facilitators interested in contributing knowledge or facilitation.',
     cta: 'Connect as a Facilitator',
-    to: '/contact',
+    to: '/contact?type=facilitator&programme=intercultural-ai-leadership-lab',
   },
   {
     role: 'Community or Institutional Partner',
     desc: 'For schools, universities, youth organisations, nonprofits, community groups, and supporters interested in programme collaboration or access.',
     cta: 'Discuss a Partnership',
-    to: '/partner',
+    to: '/contact?type=partnership',
   },
 ];
 
@@ -140,7 +140,7 @@ export default function InterculturalAILeadershipLab() {
           transition={{ duration: 0.7, delay: 0.55 }}
           style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}
         >
-          <CTAButton to="/contact" primary>Express Interest</CTAButton>
+          <CTAButton to="/contact?type=lab-interest&programme=intercultural-ai-leadership-lab" primary>Express Interest</CTAButton>
           <a
             href="#programme-model"
             className="font-body"
@@ -393,8 +393,8 @@ export default function InterculturalAILeadershipLab() {
           The future of artificial intelligence should not be determined only by engineers, companies, or institutions. Young people and communities should also have opportunities to examine how technology affects their identities, relationships, languages, and futures.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <CTAButton to="/contact" primary>Express Interest</CTAButton>
-          <CTAButton to="/partner">Partner With Tamu Academy</CTAButton>
+          <CTAButton to="/contact?type=lab-interest&programme=intercultural-ai-leadership-lab" primary>Express Interest</CTAButton>
+          <CTAButton to="/contact?type=partnership">Partner With Tamu Academy</CTAButton>
         </div>
       </motion.div>
 

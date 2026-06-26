@@ -9,26 +9,38 @@ const PARTNERSHIP_AREAS = [
   {
     title: 'Programme Collaboration',
     desc: 'For schools, universities, nonprofits, and youth organisations interested in hosting or co-developing learning activities with Tamu Academy. This may include shared facilitation, curriculum development, participant recruitment, or co-hosting dialogue events.',
+    ctaLabel: 'Discuss Programme Collaboration',
+    ctaTo: '/contact?type=institutional-partnership',
   },
   {
     title: 'Facilitators and Subject Matter Experts',
-    desc: 'For educators, researchers, practitioners, writers, and community leaders interested in contributing knowledge, facilitating sessions, or supporting the development of learning materials in any of Tamu Academy\'s six learning areas.',
+    desc: "For educators, researchers, practitioners, writers, and community leaders interested in contributing knowledge, facilitating sessions, or supporting the development of learning materials in any of Tamu Academy's six learning areas.",
+    ctaLabel: 'Express Facilitator Interest',
+    ctaTo: '/contact?type=facilitator',
   },
   {
     title: 'Community Access',
     desc: 'For organisations that can help reach young people who may not otherwise have access to interdisciplinary learning opportunities — including community centres, youth groups, religious organisations, libraries, and local networks.',
+    ctaLabel: 'Connect as a Community Partner',
+    ctaTo: '/contact?type=community-organization',
   },
   {
     title: 'Research and Learning Resources',
-    desc: 'For partners who may contribute case studies, educational materials, speakers, discussion frameworks, or learning tools that can enrich Tamu Academy\'s programme content and participant experience.',
+    desc: "For partners who may contribute case studies, educational materials, speakers, discussion frameworks, or learning tools that can enrich Tamu Academy's programme content and participant experience.",
+    ctaLabel: 'Discuss Research Partnership',
+    ctaTo: '/contact?type=institutional-partnership',
   },
   {
     title: 'Programme Support',
-    desc: 'For institutions or individuals interested in supporting participant access, learning materials, transportation, connectivity, or programme delivery. Tamu Academy is committed to keeping its programmes as accessible as possible.',
+    desc: "For institutions or individuals interested in supporting participant access, learning materials, transportation, connectivity, or programme delivery. Tamu Academy is committed to keeping its programmes as accessible as possible.",
+    ctaLabel: 'Express Support Interest',
+    ctaTo: '/contact?type=partnership',
   },
   {
     title: 'Media and Storytelling',
-    desc: 'For collaborators interested in interviews, educational video, youth storytelling, podcasting, documentation, or public communication that amplifies the voices and experiences of Tamu Academy learners.',
+    desc: "For collaborators interested in interviews, educational video, youth storytelling, podcasting, documentation, or public communication that amplifies the voices and experiences of Tamu Academy learners.",
+    ctaLabel: 'Get in Touch',
+    ctaTo: '/contact?type=partnership',
   },
 ];
 
@@ -61,16 +73,25 @@ export default function Partner() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.06 }}
-              style={{ padding: '1.6rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+              style={{ padding: '1.6rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', display: 'flex', flexDirection: 'column', gap: '1rem' }}
             >
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.7rem', lineHeight: 1.3 }}>{area.title}</h3>
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{area.desc}</p>
+              <div>
+                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.7rem', lineHeight: 1.3 }}>{area.title}</h3>
+                <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{area.desc}</p>
+              </div>
+              <Link
+                to={area.ctaTo}
+                className="font-body"
+                style={{ color: '#D4A12A', fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, marginTop: 'auto' }}
+              >
+                {area.ctaLabel} →
+              </Link>
             </motion.div>
           ))}
         </div>
       </PageSection>
 
-      {/* Partnership note */}
+      {/* Partnership note — preserved */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -83,17 +104,14 @@ export default function Partner() {
         </p>
       </motion.div>
 
-      {/* CTA */}
+      {/* Primary CTA */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
         <Link
-          to="/contact"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          to="/contact?type=partnership"
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
-          Get in Touch →
+          Discuss a Partnership →
         </Link>
-        <span className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.8rem', fontWeight: 300 }}>
-          No partnership form yet — please reach out directly
-        </span>
       </div>
     </PageLayout>
   );

@@ -1,23 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
-
-const INQUIRY_TYPES = [
-  'Prospective learner',
-  'Parent or community member',
-  'Educator or facilitator',
-  'School or university',
-  'Youth or community organisation',
-  'Institutional partner',
-  'Funder or supporter',
-  'Media or interview inquiry',
-  'General inquiry',
-];
+import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const mutedText = { color: 'rgba(245,239,224,0.52)', fontSize: '0.85rem', lineHeight: 1.75, fontWeight: 300 };
 
 export default function Contact() {
   return (
@@ -34,44 +23,39 @@ export default function Contact() {
         </p>
       </PageSection>
 
-      {/* Inquiry types */}
+      {/* Who we hear from */}
       <PageSection heading="Who We Hear From">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          We welcome inquiries from:
+          We welcome inquiries from prospective learners, educators and facilitators, schools and universities, youth and community organisations, institutional partners, funders and supporters, and anyone curious about Tamu Academy's work.
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2rem' }}>
-          {INQUIRY_TYPES.map((type) => (
-            <span key={type} className="font-body" style={{ color: 'rgba(245,239,224,0.75)', fontSize: '0.83rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>
-              {type}
-            </span>
-          ))}
-        </div>
+        <p className="font-body" style={mutedText}>
+          For institutional partnership inquiries, you may also visit the{' '}
+          <Link to="/partner" style={{ color: '#D4A12A', textDecoration: 'none' }}>Partnership page</Link>.
+        </p>
       </PageSection>
 
-      {/* Contact method */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)', marginBottom: '3rem' }}
-      >
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, margin: '0 0 1rem' }}>How to Reach Us</h2>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
-          A formal contact form is in development. In the meantime, contact details and digital channels will be published here as they are confirmed and ready for public use.
-        </p>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.8rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
-          Contact details will be published here as they are confirmed. We do not publish contact information we are not authorised to share publicly.
-        </p>
-      </motion.div>
+      {/* Form section */}
+      <PageSection heading="Send an Inquiry">
+        {/* Pre-form notice */}
+        <div style={{ marginBottom: '1.75rem', padding: '1rem 1.4rem', border: '1px solid rgba(212,161,42,0.16)', borderRadius: '3px', backgroundColor: 'rgba(212,161,42,0.025)' }}>
+          <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 0.5rem' }}>
+            This form is for general inquiries and expressions of interest. It is not a formal programme application.
+          </p>
+          <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.82rem', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
+            Tamu Academy will review inquiries as capacity allows. Submission does not guarantee programme admission, partnership, funding, or participation.
+          </p>
+        </div>
 
-      {/* Community note */}
+        <ContactInquiryForm />
+      </PageSection>
+
+      {/* Community note — preserved */}
       <PageSection heading="Join the Community">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
           Tamu Academy's learning community is forming. We are bringing together young people, educators, facilitators, and supporters who are serious about learning, dialogue, and leadership across cultures.
         </p>
         <p className="font-body" style={bodyText}>
-          If you want to be among the first to hear about upcoming programmes, pilot opportunities, and learning resources — please get in touch and let us know your interest.
+          If you want to be among the first to hear about upcoming programmes, pilot opportunities, and learning resources — please use the form above to let us know your interest.
         </p>
       </PageSection>
 

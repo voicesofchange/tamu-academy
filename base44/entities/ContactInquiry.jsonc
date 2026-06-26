@@ -1,0 +1,112 @@
+{
+  "name": "ContactInquiry",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "title": "Full Name"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email Address",
+      "format": "email"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country"
+    },
+    "city_or_community": {
+      "type": "string",
+      "title": "City or Community"
+    },
+    "organization": {
+      "type": "string",
+      "title": "Organization or Institution"
+    },
+    "role": {
+      "type": "string",
+      "title": "Role or Connection"
+    },
+    "inquiry_type": {
+      "type": "string",
+      "title": "Inquiry Type",
+      "enum": [
+        "Prospective Learner",
+        "AI Leadership Lab Interest",
+        "Educator or Facilitator",
+        "School or University",
+        "Youth or Community Organization",
+        "Institutional Partnership",
+        "Funder or Supporter",
+        "Media or Interview Inquiry",
+        "General Inquiry"
+      ]
+    },
+    "programme_interest": {
+      "type": "string",
+      "title": "Programme of Interest",
+      "enum": [
+        "Tamu Intercultural AI Leadership Lab",
+        "Future Tamu Academy Programmes",
+        "Learning Resources",
+        "Partnership Opportunities",
+        "Not Sure Yet"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "title": "Message",
+      "format": "textarea"
+    },
+    "referral_source": {
+      "type": "string",
+      "title": "How Did You Hear About Tamu Academy?",
+      "enum": [
+        "Search engine",
+        "Social media",
+        "Friend or colleague",
+        "School or university",
+        "Youth or community organization",
+        "Event or programme",
+        "Other"
+      ]
+    },
+    "updates_consent": {
+      "type": "boolean",
+      "title": "Updates Consent",
+      "default": false
+    },
+    "privacy_acknowledgment": {
+      "type": "boolean",
+      "title": "Privacy Acknowledgment",
+      "default": false
+    },
+    "source_page": {
+      "type": "string",
+      "title": "Source Page"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "new",
+        "reviewed",
+        "responded",
+        "closed"
+      ],
+      "default": "new"
+    },
+    "internal_notes": {
+      "type": "string",
+      "title": "Internal Notes"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "country",
+    "inquiry_type",
+    "message",
+    "privacy_acknowledgment"
+  ]
+}
