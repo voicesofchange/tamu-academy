@@ -8,6 +8,13 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 // Add page imports here
 import Landing from './pages/Landing';
+import About from './pages/About';
+import LearningAreas from './pages/LearningAreas';
+import Programmes from './pages/Programmes';
+import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
+import Insights from './pages/Insights';
+import Partner from './pages/Partner';
+import Contact from './pages/Contact';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -36,6 +43,13 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/learning-areas" element={<LearningAreas />} />
+      <Route path="/programmes" element={<Programmes />} />
+      <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
+      <Route path="/insights" element={<Insights />} />
+      <Route path="/partner" element={<Partner />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
