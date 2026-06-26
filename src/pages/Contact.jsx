@@ -58,7 +58,7 @@ export default function Contact() {
       >
         <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, margin: '0 0 1rem' }}>How to Reach Us</h2>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
-          A formal contact form is in development. In the meantime, please reach out through Tamu Academy's available social channels or through the Waiyaki House LLC contact information below.
+          A formal contact form is in development. In the meantime, contact details and digital channels will be published here as they are confirmed and ready for public use.
         </p>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.8rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
           Contact details will be published here as they are confirmed. We do not publish contact information we are not authorised to share publicly.
