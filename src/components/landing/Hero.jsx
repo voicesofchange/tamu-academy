@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_68796cfeca8e624b09c5f04b/8de477990_TamuAcademyFinalLogo.png";
@@ -19,7 +20,7 @@ export default function Hero() {
         overflow: 'hidden',
       }}
     >
-      {/* Radial depth glow */}
+      {/* Radial depth glow — preserved */}
       <div
         aria-hidden="true"
         style={{
@@ -30,7 +31,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Faint globe motif */}
+      {/* Faint globe motif — preserved */}
       <svg
         aria-hidden="true"
         viewBox="0 0 800 400"
@@ -54,23 +55,26 @@ export default function Hero() {
       </svg>
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '860px' }}>
+
+        {/* Logo — preserved */}
         <motion.img
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
           src={LOGO_URL}
-          alt="Tamu Academy — Sweet Learning for a Better World"
+          alt="Tamu Academy"
           style={{
             display: 'block',
             width: 'auto',
-            height: 'clamp(150px, 26vh, 240px)',
-            maxWidth: '85vw',
+            height: 'clamp(130px, 22vh, 200px)',
+            maxWidth: '75vw',
             objectFit: 'contain',
             mixBlendMode: 'screen',
-            marginBottom: '-2vh',
+            marginBottom: '-1vh',
           }}
         />
 
+        {/* Gold divider — preserved */}
         <motion.div
           initial={{ opacity: 0, scaleX: 0.4 }}
           animate={{ opacity: 1, scaleX: 1 }}
@@ -80,69 +84,117 @@ export default function Hero() {
             width: '90px',
             height: '1px',
             background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)',
-            margin: '0 auto 2rem',
+            margin: '0 auto 1.75rem',
           }}
         />
 
+        {/* Brand phrase — "Sweet Learning…" preserved as eyebrow */}
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut', delay: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.9 }}
           className="font-body"
           style={{
-            color: '#F5EFE0',
-            fontSize: 'clamp(1rem, 1.6vw, 1.25rem)',
-            lineHeight: 1.7,
-            fontWeight: 300,
-            maxWidth: '560px',
-            margin: '0 auto',
-            opacity: 0.88,
-          }}
-        >
-          An AfroCentric public policy education platform for the next generation of{' '}
-          <span style={{ color: '#E2B652' }}>global civic leaders</span>.
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut', delay: 1.25 }}
-          className="font-body"
-          style={{
-            color: 'rgba(245,239,224,0.62)',
-            fontSize: 'clamp(0.82rem, 1.1vw, 0.95rem)',
-            lineHeight: 1.9,
-            fontWeight: 300,
-            maxWidth: '480px',
-            margin: '1.5rem auto 0',
-            letterSpacing: '0.01em',
-          }}
-        >
-          We break down constitutions, budgets, and international agreements into lessons young people
-          can actually use — building the civic confidence to understand, question, and change
-          the systems that shape their world.
-        </motion.p>
-
-        <motion.a
-          href="#about"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.4 }}
-          style={{
-            marginTop: '2.75rem',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            color: '#D4A12A',
-            fontSize: '0.72rem',
+            color: 'rgba(212,161,42,0.75)',
+            fontSize: '0.68rem',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            textDecoration: 'none',
             fontWeight: 500,
+            margin: '0 0 1.25rem',
           }}
         >
+          Sweet Learning for a Better World
+        </motion.p>
+
+        {/* H1 — new primary headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: 'easeOut', delay: 1.0 }}
+          className="font-heading"
+          style={{
+            color: '#F5EFE0',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            lineHeight: 1.12,
+            fontWeight: 400,
+            margin: '0 0 1.5rem',
+            maxWidth: '720px',
+          }}
+        >
+          Learning Across Cultures.<br />Leading Through Change.
+        </motion.h1>
+
+        {/* Supporting copy */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: 'easeOut', delay: 1.2 }}
+          className="font-body"
+          style={{
+            color: 'rgba(245,239,224,0.78)',
+            fontSize: 'clamp(0.95rem, 1.5vw, 1.12rem)',
+            lineHeight: 1.85,
+            fontWeight: 300,
+            maxWidth: '580px',
+            margin: '0 auto 2.5rem',
+          }}
+        >
+          Tamu Academy is an emerging interdisciplinary learning platform that equips young people and emerging leaders with the knowledge, dialogue skills, and practical tools to understand complex issues, communicate across differences, and lead responsibly in a changing world.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '2.75rem' }}
+        >
+          <Link
+            to="/programmes"
+            style={{
+              display: 'inline-flex', alignItems: 'center',
+              color: '#1A130E',
+              backgroundColor: '#D4A12A',
+              fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+              textDecoration: 'none', fontWeight: 500,
+              border: '1px solid #D4A12A',
+              borderRadius: '2px', padding: '0.7rem 1.5rem',
+            }}
+          >
+            Explore Our Programmes
+          </Link>
+          <Link
+            to="/about"
+            style={{
+              display: 'inline-flex', alignItems: 'center',
+              color: '#D4A12A',
+              backgroundColor: 'transparent',
+              fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+              textDecoration: 'none', fontWeight: 500,
+              border: '1px solid rgba(212,161,42,0.45)',
+              borderRadius: '2px', padding: '0.7rem 1.5rem',
+            }}
+          >
+            Discover Tamu Academy
+          </Link>
+        </motion.div>
+
+        {/* Scroll nudge */}
+        <motion.a
+          href="#purpose"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.6 }}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+            color: 'rgba(212,161,42,0.6)',
+            fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase',
+            textDecoration: 'none', fontWeight: 500,
+          }}
+          aria-label="Scroll down to explore"
+        >
           Explore
-          <span style={{ display: 'inline-block', animation: 'tamuBob 2s ease-in-out infinite' }}>↓</span>
+          <span aria-hidden="true" style={{ display: 'inline-block', animation: 'tamuBob 2s ease-in-out infinite' }}>↓</span>
         </motion.a>
       </div>
     </section>

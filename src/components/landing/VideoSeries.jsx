@@ -1,15 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function VideoSeries() {
   return (
     <section
-      id="video"
+      id="insights"
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 11vw, 9rem) clamp(1.5rem, 6vw, 6rem)',
         textAlign: 'center',
-        scrollMarginTop: '80px',
+        scrollMarginTop: '90px',
         overflow: 'hidden',
       }}
     >
@@ -58,23 +59,36 @@ export default function VideoSeries() {
             margin: '0 0 1.5rem',
           }}
         >
-          The video series
+          Ideas Worth Exploring
         </h2>
 
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.82)',
-            fontSize: 'clamp(1.05rem, 1.5vw, 1.25rem)',
-            lineHeight: 1.8,
+            color: 'rgba(245,239,224,0.78)',
+            fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
+            lineHeight: 1.85,
             fontWeight: 300,
-            margin: 0,
+            margin: '0 0 2rem',
           }}
         >
-          Short video lessons on the mind, policy, the world, and the planet — launching soon.
-          AfroCentric, accessible, and made for a new generation of{' '}
-          <span style={{ color: '#E2B652' }}>changemakers</span>.
+          Tamu Academy is developing short educational videos, conversations, articles, policy explainers, discussion guides, and recommended readings — accessible learning materials that make serious ideas available to more people.
         </p>
+
+        <Link
+          to="/insights"
+          className="font-body"
+          style={{
+            display: 'inline-flex', alignItems: 'center',
+            color: '#D4A12A',
+            fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+            textDecoration: 'none', fontWeight: 500,
+            border: '1px solid rgba(212,161,42,0.35)',
+            borderRadius: '2px', padding: '0.65rem 1.3rem',
+          }}
+        >
+          Explore Insights and Resources →
+        </Link>
       </motion.div>
     </section>
   );

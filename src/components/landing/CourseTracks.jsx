@@ -1,62 +1,74 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SectionHeading from './SectionHeading';
 
-const TRACKS = [
+const AREAS = [
   {
     n: '01',
-    title: 'Public Policy Foundations',
-    desc: "What policy is, how it's made, and how it shapes daily life — taught through side-by-side cases from local government to the African Union.",
+    title: 'Artificial Intelligence and Digital Citizenship',
+    desc: 'How technology reshapes culture, communication, and opportunity — and how young people can engage with it critically and responsibly.',
   },
   {
     n: '02',
-    title: 'Economics and Public Policy',
-    desc: 'The numbers behind the decisions: budgets, trade-offs, and development economics, made plain for people who want to understand why governments choose what they choose.',
+    title: 'Intercultural Leadership and Peacebuilding',
+    desc: 'Building trust and understanding across cultural, linguistic, and geographic differences — in communities, institutions, and international settings.',
   },
   {
     n: '03',
-    title: 'Theory vs. Practice',
-    desc: 'Why good policies fail. How power, politics, and broken institutions turn intent into outcome — and how to tell the difference.',
+    title: 'Public Policy and Governance',
+    desc: 'How decisions are made, who makes them, and how policy shapes the conditions of daily life from city hall to international agreements.',
   },
   {
     n: '04',
-    title: 'Policy Writing and Communication',
-    desc: "The genres decision-makers actually use: the memo, the brief, the op-ed. Knowing the answer isn't enough; you have to move people to act.",
+    title: 'Economics and Opportunity',
+    desc: 'The forces behind inequality, development, and access — examined through local, regional, and global lenses.',
+  },
+  {
+    n: '05',
+    title: 'Climate and Sustainability',
+    desc: 'Climate change as a policy, justice, and governance challenge — and how communities are responding to environmental transformation.',
+  },
+  {
+    n: '06',
+    title: 'Writing, Storytelling, and Communication',
+    desc: 'Communicating clearly across contexts — from policy writing and advocacy to storytelling and cross-cultural dialogue.',
   },
 ];
 
 export default function CourseTracks() {
   return (
     <section
-      id="courses"
+      id="learning-areas"
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
         maxWidth: '1100px',
         margin: '0 auto',
-        scrollMarginTop: '80px',
+        scrollMarginTop: '90px',
       }}
     >
-      <SectionHeading eyebrow="The Curriculum" title="Four course tracks" />
+      <SectionHeading eyebrow="Learning Areas" title="Explore Our Learning Areas" />
 
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1.25rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+          gap: '1.1rem',
+          marginBottom: '2.5rem',
         }}
       >
-        {TRACKS.map((track, i) => (
+        {AREAS.map((area, i) => (
           <motion.article
-            key={track.n}
-            initial={{ opacity: 0, y: 24 }}
+            key={area.n}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.08 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.07 }}
             className="tamu-card"
             style={{
               position: 'relative',
-              padding: '2.25rem 2rem',
+              padding: '1.75rem 1.75rem',
               borderRadius: '4px',
               border: '1px solid rgba(212,161,42,0.16)',
               backgroundColor: 'rgba(245,239,224,0.02)',
@@ -65,45 +77,47 @@ export default function CourseTracks() {
           >
             <span
               className="font-heading"
-              style={{
-                display: 'block',
-                color: '#D4A12A',
-                fontSize: '2rem',
-                fontWeight: 400,
-                opacity: 0.55,
-                marginBottom: '1rem',
-                lineHeight: 1,
-              }}
+              style={{ display: 'block', color: '#D4A12A', fontSize: '1.6rem', fontWeight: 400, opacity: 0.45, marginBottom: '0.85rem', lineHeight: 1 }}
             >
-              {track.n}
+              {area.n}
             </span>
             <h3
               className="font-heading"
-              style={{
-                color: '#F5EFE0',
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                margin: '0 0 0.9rem',
-                lineHeight: 1.2,
-              }}
+              style={{ color: '#F5EFE0', fontSize: '1.2rem', fontWeight: 500, margin: '0 0 0.75rem', lineHeight: 1.25 }}
             >
-              {track.title}
+              {area.title}
             </h3>
             <p
               className="font-body"
-              style={{
-                color: 'rgba(245,239,224,0.72)',
-                fontSize: '0.95rem',
-                lineHeight: 1.75,
-                fontWeight: 300,
-                margin: 0,
-              }}
+              style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}
             >
-              {track.desc}
+              {area.desc}
             </p>
           </motion.article>
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.5 }}
+      >
+        <Link
+          to="/learning-areas"
+          style={{
+            display: 'inline-flex', alignItems: 'center',
+            color: '#D4A12A',
+            backgroundColor: 'transparent',
+            fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+            textDecoration: 'none', fontWeight: 500,
+            border: '1px solid rgba(212,161,42,0.4)',
+            borderRadius: '2px', padding: '0.65rem 1.3rem',
+          }}
+        >
+          View All Learning Areas →
+        </Link>
+      </motion.div>
     </section>
   );
 }
