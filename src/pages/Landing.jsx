@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import TopNav from '@/components/landing/TopNav';
 import Hero from '@/components/landing/Hero';
 import HomePurpose from '@/components/landing/HomePurpose';
@@ -22,8 +23,13 @@ export default function Landing() {
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
+      <PageMeta
+        title="Tamu Academy | Intercultural Learning and Youth Leadership"
+        description="Tamu Academy equips young people and emerging leaders with interdisciplinary knowledge in intercultural leadership, artificial intelligence, public policy, economics, sustainability, and communication."
+        path="/"
+      />
       <TopNav />
-      <main>
+      <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
         {/* 1. Hero */}
         <Hero />
         {/* 2. Purpose + Why Interdisciplinary */}

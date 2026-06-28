@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { Link } from 'react-router-dom';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
@@ -11,6 +12,11 @@ const mutedText = { color: 'rgba(245,239,224,0.52)', fontSize: '0.85rem', lineHe
 export default function Contact() {
   return (
     <PageLayout>
+      <PageMeta
+        title="Contact Tamu Academy"
+        description="Contact Tamu Academy, express interest in proposed programmes, contribute as a facilitator, or discuss a community or institutional partnership."
+        path="/contact"
+      />
       <PageHero
         eyebrow="Contact and Community"
         heading="Connect With Tamu Academy"

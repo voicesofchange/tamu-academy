@@ -67,6 +67,7 @@ export default function LabCurriculum() {
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
+              aria-controls={`curriculum-panel-${i}`}
               style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', textAlign: 'left' }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
@@ -78,6 +79,7 @@ export default function LabCurriculum() {
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
+                  id={`curriculum-panel-${i}`}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}

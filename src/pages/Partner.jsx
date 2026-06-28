@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
@@ -49,6 +50,11 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
 export default function Partner() {
   return (
     <PageLayout>
+      <PageMeta
+        title="Partner With Tamu Academy"
+        description="Learn how educators, schools, youth organizations, researchers, community groups, and institutions may collaborate with the developing work of Tamu Academy."
+        path="/partner"
+      />
       <PageHero
         eyebrow="Partnerships"
         heading="Partner With Tamu Academy"

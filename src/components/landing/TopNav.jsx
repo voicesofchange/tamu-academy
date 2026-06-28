@@ -96,6 +96,7 @@ export default function TopNav() {
                 key={label}
                 to={to}
                 className="tamu-nav-link"
+                aria-current={active ? 'page' : undefined}
                 style={{
                   color: active ? '#D4A12A' : 'rgba(245,239,224,0.78)',
                   fontSize: '0.68rem',
@@ -174,6 +175,7 @@ export default function TopNav() {
               key={label}
               to={to}
               className="tamu-nav-link"
+              aria-current={active ? 'page' : undefined}
               style={{
                 color: active ? '#D4A12A' : 'rgba(245,239,224,0.82)',
                 fontSize: '0.8rem',

@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
@@ -28,6 +29,11 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
 export default function Programmes() {
   return (
     <PageLayout>
+      <PageMeta
+        title="Programmes | Tamu Academy"
+        description="Explore proposed and developing Tamu Academy programmes designed to connect interdisciplinary learning, dialogue, leadership, and community action."
+        path="/programmes"
+      />
       <PageHero
         eyebrow="Programmes"
         heading="Our Programmes"

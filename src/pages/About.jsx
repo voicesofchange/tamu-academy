@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
@@ -27,6 +28,11 @@ const bodyTextClass = 'font-body';
 export default function About() {
   return (
     <PageLayout>
+      <PageMeta
+        title="About Tamu Academy | Learning Across Cultures"
+        description="Learn why Tamu Academy is developing accessible, interdisciplinary education that helps young people think critically, communicate across differences, and lead responsibly."
+        path="/about"
+      />
       <PageHero
         eyebrow="About Tamu Academy"
         heading="Learning Should Help Us Understand the World and One Another."

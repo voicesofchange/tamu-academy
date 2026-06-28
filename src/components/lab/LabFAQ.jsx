@@ -48,6 +48,7 @@ export default function LabFAQ() {
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
+              aria-controls={`faq-panel-${i}`}
               style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', textAlign: 'left' }}
             >
               <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1rem', fontWeight: 400, margin: 0, lineHeight: 1.4 }}>{faq.q}</h3>
@@ -56,6 +57,7 @@ export default function LabFAQ() {
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
+                  id={`faq-panel-${i}`}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}

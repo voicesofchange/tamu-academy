@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
@@ -84,6 +85,11 @@ const INTEREST_PATHS = [
 export default function InterculturalAILeadershipLab() {
   return (
     <PageLayout>
+      <PageMeta
+        title="Tamu Intercultural AI Leadership Lab | Tamu Academy"
+        description="Explore a proposed youth learning and dialogue programme focused on human connection, cultural representation, digital trust, and responsible leadership in the age of artificial intelligence."
+        path="/programmes/intercultural-ai-leadership-lab"
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <div style={{ marginBottom: '4.5rem' }}>

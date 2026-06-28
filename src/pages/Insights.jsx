@@ -1,4 +1,5 @@
 import React from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
@@ -20,6 +21,11 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHei
 export default function Insights() {
   return (
     <PageLayout>
+      <PageMeta
+        title="Insights and Resources | Tamu Academy"
+        description="Explore developing articles, videos, conversations, policy explainers, discussion guides, youth perspectives, and recommended readings from Tamu Academy."
+        path="/insights"
+      />
       <PageHero
         eyebrow="Insights and Resources"
         heading="Ideas, Articles, and Learning Resources"

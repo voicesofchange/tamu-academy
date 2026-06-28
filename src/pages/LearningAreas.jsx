@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageMeta from '@/components/seo/PageMeta';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
@@ -93,6 +94,11 @@ export default function LearningAreas() {
 
   return (
     <PageLayout>
+      <PageMeta
+        title="Learning Areas | Tamu Academy"
+        description="Explore Tamu Academy learning areas in artificial intelligence, intercultural leadership, public policy, economics, climate, sustainability, writing, and communication."
+        path="/learning-areas"
+      />
       <PageHero
         eyebrow="Learning Areas"
         heading="What We Explore"
@@ -114,6 +120,7 @@ export default function LearningAreas() {
               <button
                 onClick={() => setExpanded(open ? null : i)}
                 aria-expanded={open}
+                aria-controls={`area-panel-${i}`}
                 style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.75rem 2rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', textAlign: 'left' }}
               >
                 <div>
@@ -126,11 +133,12 @@ export default function LearningAreas() {
               <AnimatePresence initial={false}>
                 {open && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: 'easeInOut' }}
-                    style={{ overflow: 'hidden' }}
+                  id={`area-panel-${i}`}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  style={{ overflow: 'hidden' }}
                   >
                     <div style={{ padding: '0 2rem 2rem', borderTop: '1px solid rgba(212,161,42,0.1)' }}>
                       <p className="font-body" style={{ ...bodyText, margin: '1.5rem 0 1.5rem' }}>{area.summary}</p>
