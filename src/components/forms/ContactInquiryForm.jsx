@@ -179,7 +179,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
     lastSubmitTime.current = now;
 
     try {
-      await base44.entities.ContactInquiry.create({
+      const res = await base44.functions.invoke('submitContactInquiry', {
         full_name: form.full_name.trim().slice(0, 120),
         email: form.email.trim().toLowerCase().slice(0, 200),
         country: form.country.trim().slice(0, 80),
@@ -193,9 +193,12 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         updates_consent: form.updates_consent,
         privacy_acknowledgment: form.privacy_acknowledgment,
         source_page: resolvedSource,
-        status: 'new',
       });
-      setStatus('success');
+      if (res.data?.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
     } catch {
       setStatus('error');
     }
