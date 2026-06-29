@@ -8,9 +8,8 @@ const BASE_URL = 'https://tamuacademy.org';
  * external dependency needed since React does not server-render this app
  * and all pages are client-side only — react-helmet-async is unnecessary).
  *
- * og:image and twitter:image are intentionally omitted until a dedicated
- * social sharing image is approved. Using a placeholder or invented URL
- * would produce a broken preview on all social platforms.
+ * og:image and twitter:image are set globally in index.html (the approved
+ * Tamu Academy logo) and shared across all routes, so they are not managed here.
  */
 export default function PageMeta({
   title,

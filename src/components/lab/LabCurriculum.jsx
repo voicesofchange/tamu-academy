@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 const MODULES = [
   {
@@ -57,6 +57,7 @@ const MODULES = [
 
 export default function LabCurriculum() {
   const [open, setOpen] = useState(null);
+  const reduceMotion = useReducedMotion();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -83,7 +84,7 @@ export default function LabCurriculum() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  transition={{ duration: reduceMotion ? 0 : 0.3, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                 >
                   <div style={{ padding: '0 1.5rem 1.5rem', borderTop: '1px solid rgba(212,161,42,0.08)' }}>

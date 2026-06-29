@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
@@ -91,6 +91,7 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHei
 
 export default function LearningAreas() {
   const [expanded, setExpanded] = useState(null);
+  const reduceMotion = useReducedMotion();
 
   return (
     <PageLayout>
@@ -137,7 +138,7 @@ export default function LearningAreas() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  transition={{ duration: reduceMotion ? 0 : 0.35, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                   >
                     <div style={{ padding: '0 2rem 2rem', borderTop: '1px solid rgba(212,161,42,0.1)' }}>
@@ -160,7 +161,7 @@ export default function LearningAreas() {
                       <h3 className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>Related Programmes</h3>
                       <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>{area.related}</p>
 
-                      <p className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, marginTop: '1.25rem' }}>In Development</p>
+                      <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, marginTop: '1.25rem' }}>In Development</p>
                     </div>
                   </motion.div>
                 )}

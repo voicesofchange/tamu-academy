@@ -327,7 +327,7 @@ export default function InterculturalAILeadershipLab() {
       <PageSection eyebrow="Programme Identity" heading="What Makes the Lab Different">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }} className="lab-compare-grid">
           <div style={{ padding: '1.5rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
-            <h3 className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>The Lab is not</h3>
+            <h3 className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>The Lab is not</h3>
             {['A coding boot camp', 'A conventional lecture course', 'A technology promotion campaign', 'A debate in which one side must win', 'A programme that treats cultures as fixed or uniform'].map((s) => (
               <p key={s} className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300, margin: '0 0 0.5rem' }}>— {s}</p>
             ))}

@@ -310,7 +310,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-country" message={errors.country} />
         </div>
         <div style={fieldWrap}>
-          <label htmlFor="field-city" style={labelStyle}>City or Community <span style={{ color: 'rgba(245,239,224,0.4)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-city" style={labelStyle}>City or Community <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
           <input
             id="field-city"
             type="text"
@@ -325,11 +325,11 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Two-column: org + role */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-org" style={labelStyle}>Organization or Institution <span style={{ color: 'rgba(245,239,224,0.4)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-org" style={labelStyle}>Organization or Institution <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
           <input id="field-org" type="text" maxLength={200} value={form.organization} onChange={set('organization')} style={inputStyle} />
         </div>
         <div>
-          <label htmlFor="field-role" style={labelStyle}>Role or Connection <span style={{ color: 'rgba(245,239,224,0.4)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-role" style={labelStyle}>Role or Connection <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
           <input id="field-role" type="text" maxLength={120} value={form.role} onChange={set('role')} style={inputStyle} />
         </div>
       </div>
@@ -354,7 +354,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Programme of interest */}
       <div style={fieldWrap}>
-        <label htmlFor="field-programme" style={labelStyle}>Programme of Interest <span style={{ color: 'rgba(245,239,224,0.4)', fontWeight: 300 }}>(optional)</span></label>
+        <label htmlFor="field-programme" style={labelStyle}>Programme of Interest <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
         <select
           id="field-programme"
           value={form.programme_interest}
@@ -370,7 +370,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       <div style={fieldWrap}>
         <label htmlFor="field-message" style={labelStyle}>
           Message <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
-          <span style={{ color: 'rgba(245,239,224,0.38)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>50–2,000 characters</span>
+          <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>50–2,000 characters</span>
         </label>
         <textarea
           id="field-message"
@@ -385,7 +385,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <FieldError id="err-message" message={errors.message} />
-          <span id="msg-count" aria-live="polite" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.72rem', marginTop: '0.35rem', marginLeft: 'auto', flexShrink: 0 }}>
+          <span id="msg-count" aria-live="polite" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', marginTop: '0.35rem', marginLeft: 'auto', flexShrink: 0 }}>
             {form.message.length}/2000
           </span>
         </div>
@@ -393,7 +393,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Referral source */}
       <div style={fieldWrap}>
-        <label htmlFor="field-referral" style={labelStyle}>How Did You Hear About Tamu Academy? <span style={{ color: 'rgba(245,239,224,0.4)', fontWeight: 300 }}>(optional)</span></label>
+        <label htmlFor="field-referral" style={labelStyle}>How Did You Hear About Tamu Academy? <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
         <select
           id="field-referral"
           value={form.referral_source}
@@ -440,7 +440,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       </div>
 
       {/* Privacy notice */}
-      <p className="font-body" style={{ color: 'rgba(245,239,224,0.42)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
+      <p className="font-body" style={{ color: 'rgba(245,239,224,0.58)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
         Tamu Academy will use the information submitted through this form to understand and respond to your inquiry. Please do not include sensitive personal, financial, medical, immigration, or identification information.
       </p>
 

@@ -31,7 +31,7 @@ export default function SiteFooter() {
             to={to}
             className="font-body tamu-nav-link"
             style={{
-              color: 'rgba(245,239,224,0.45)',
+              color: 'rgba(245,239,224,0.6)',
               fontSize: '0.62rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -52,7 +52,7 @@ export default function SiteFooter() {
           fontSize: '0.62rem',
           letterSpacing: '0.3em',
           textTransform: 'uppercase',
-          opacity: 0.35,
+          opacity: 0.55,
           fontWeight: 500,
         }}
       >

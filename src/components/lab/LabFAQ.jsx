@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const FAQS = [
   {
@@ -38,6 +38,7 @@ const FAQS = [
 
 export default function LabFAQ() {
   const [open, setOpen] = useState(null);
+  const reduceMotion = useReducedMotion();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
@@ -61,7 +62,7 @@ export default function LabFAQ() {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.28, ease: 'easeInOut' }}
+                  transition={{ duration: reduceMotion ? 0 : 0.28, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                 >
                   <div style={{ padding: '0 1.5rem 1.25rem', borderTop: '1px solid rgba(212,161,42,0.08)' }}>
