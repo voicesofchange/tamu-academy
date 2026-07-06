@@ -35,11 +35,13 @@ const REFERRAL_OPTIONS = [
 // Map URL param values to display inquiry types
 const TYPE_PARAM_MAP = {
   'lab-interest': 'AI Leadership Lab Interest',
+  'programme-interest': 'AI Leadership Lab Interest',
   'facilitator': 'Educator or Facilitator',
   'partnership': 'Institutional Partnership',
   'community-organization': 'Youth or Community Organization',
   'school-university': 'School or University',
   'institutional-partnership': 'Institutional Partnership',
+  'media': 'Media or Interview Inquiry',
 };
 
 const PROGRAMME_PARAM_MAP = {

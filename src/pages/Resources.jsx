@@ -78,7 +78,7 @@ export default function Resources() {
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.3rem', fontWeight: 400, opacity: 0.5, display: 'block', lineHeight: 1, marginBottom: '0.4rem' }}>{cat.number}</span>
-                  <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.75rem' }}>{cat.title}</h2>
+                  <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.75rem' }}>{cat.title}</h3>
                   <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{cat.desc}</p>
                 </div>
                 <span className="font-body" style={{ color: 'rgba(245,239,224,0.3)', fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, flexShrink: 0, paddingTop: '0.25rem' }}>

@@ -35,8 +35,7 @@ export default function Contact() {
           We welcome inquiries from prospective learners, educators and facilitators, schools and universities, youth and community organisations, institutional partners, funders and supporters, and anyone curious about Tamu Academy's work.
         </p>
         <p className="font-body" style={mutedText}>
-          For institutional partnership inquiries, you may also visit the{' '}
-          <Link to="/partner" style={{ color: '#D4A12A', textDecoration: 'none' }}>Partnership page</Link>.
+          For institutional partnership inquiries, please use the inquiry form below and select <em>Institutional Partnership</em> as your inquiry type.
         </p>
       </PageSection>
 
@@ -70,11 +69,11 @@ export default function Contact() {
         <Link to="/programmes" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           Explore Programmes →
         </Link>
-        <Link to="/partner" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
-          Partner With Us →
-        </Link>
-        <Link to="/learning-areas" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+        <Link to="/programmes#learning-areas" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           Learning Areas →
+        </Link>
+        <Link to="/resources" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+          Resources →
         </Link>
       </div>
     </PageLayout>
