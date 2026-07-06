@@ -3,6 +3,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import TopNav from '@/components/landing/TopNav';
 import Hero from '@/components/landing/Hero';
 import HomePurpose from '@/components/landing/HomePurpose';
+import LivingKnowledgeMap from '@/components/landing/LivingKnowledgeMap';
 import CourseTracks from '@/components/landing/CourseTracks';
 import FeaturedProgramme from '@/components/landing/FeaturedProgramme';
 import Approach from '@/components/landing/Approach';
@@ -33,7 +34,9 @@ export default function Landing() {
         <Hero />
         {/* 2. Purpose + Why Interdisciplinary */}
         <HomePurpose />
-        {/* 3. Learning Areas preview */}
+        {/* 3. Living Knowledge Map */}
+        <LivingKnowledgeMap />
+        {/* 4. Learning Areas preview */}
         <CourseTracks />
         {/* 4. Featured Programme */}
         <FeaturedProgramme />
