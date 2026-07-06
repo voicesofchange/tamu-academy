@@ -4,10 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
-  { label: 'Learning Areas', to: '/learning-areas' },
   { label: 'Programmes', to: '/programmes' },
-  { label: 'Insights', to: '/insights' },
-  { label: 'Partner With Us', to: '/partner' },
+  { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
 ];
 

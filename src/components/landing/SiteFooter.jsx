@@ -2,11 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const LINKS = [
+  { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
-  { label: 'Learning Areas', to: '/learning-areas' },
   { label: 'Programmes', to: '/programmes' },
-  { label: 'Insights', to: '/insights' },
-  { label: 'Partner', to: '/partner' },
+  { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
 ];
 

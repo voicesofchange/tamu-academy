@@ -135,13 +135,6 @@ export default function About() {
         </p>
       </PageSection>
 
-      {/* Founder */}
-      <PageSection heading="Founded by Tex Wambui">
-        <p className={bodyTextClass} style={bodyText}>
-          Tex Wambui is a public policy professional, writer, youth mentor, nonprofit leader, and educator whose work connects public policy, youth development, environmental action, storytelling, and international learning. His experiences across Kenya and the United States informed the creation of Tamu Academy as a space where young people can engage seriously with the issues shaping their communities and the wider world.
-        </p>
-      </PageSection>
-
       {/* Current Stage */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -156,7 +149,7 @@ export default function About() {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link to="/programmes" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Explore Programmes →</Link>
-          <Link to="/partner" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Partner With Us →</Link>
+          <Link to="/contact?type=partnership" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Partner With Us →</Link>
           <Link to="/contact" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Get in Touch →</Link>
         </div>
       </motion.div>

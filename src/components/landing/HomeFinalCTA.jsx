@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 
 const PATHS = [
   { label: 'Explore Programmes', to: '/programmes', primary: true },
-  { label: 'Partner With Tamu Academy', to: '/partner', primary: false },
-  { label: 'Connect With Tamu Academy', to: '/contact', primary: false },
+  { label: 'Explore Resources', to: '/resources', primary: false },
+  { label: 'Get in Touch', to: '/contact', primary: false },
 ];
 
 export default function HomeFinalCTA() {

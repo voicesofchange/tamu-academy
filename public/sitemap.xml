@@ -11,14 +11,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tamuacademy.org/learning-areas</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://tamuacademy.org/programmes</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tamuacademy.org/programmes/intercultural-ai-leadership-lab</loc>
@@ -26,12 +21,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tamuacademy.org/insights</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tamuacademy.org/partner</loc>
+    <loc>https://tamuacademy.org/resources</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

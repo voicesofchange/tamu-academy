@@ -76,7 +76,7 @@ export default function VideoSeries() {
         </p>
 
         <Link
-          to="/insights"
+          to="/resources"
           className="font-body"
           style={{
             display: 'inline-flex', alignItems: 'center',
@@ -87,7 +87,7 @@ export default function VideoSeries() {
             borderRadius: '2px', padding: '0.65rem 1.3rem',
           }}
         >
-          Explore Insights and Resources →
+          Explore Resources →
         </Link>
       </motion.div>
     </section>

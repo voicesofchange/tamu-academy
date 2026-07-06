@@ -8,13 +8,12 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 // Add page imports here
+import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import About from './pages/About';
-import LearningAreas from './pages/LearningAreas';
 import Programmes from './pages/Programmes';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
-import Insights from './pages/Insights';
-import Partner from './pages/Partner';
+import Resources from './pages/Resources';
 import Contact from './pages/Contact';
 
 const AuthenticatedApp = () => {
@@ -45,12 +44,14 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
-      <Route path="/learning-areas" element={<LearningAreas />} />
       <Route path="/programmes" element={<Programmes />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
-      <Route path="/insights" element={<Insights />} />
-      <Route path="/partner" element={<Partner />} />
+      <Route path="/resources" element={<Resources />} />
       <Route path="/contact" element={<Contact />} />
+      {/* Retired routes — redirects */}
+      <Route path="/learning-areas" element={<Navigate to="/programmes#learning-areas" replace />} />
+      <Route path="/partner" element={<Navigate to="/contact?type=partnership" replace />} />
+      <Route path="/insights" element={<Navigate to="/resources" replace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
