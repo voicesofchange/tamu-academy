@@ -29,6 +29,10 @@ html {
   transform: translateY(-3px);
 }
 
+.tamu-card:hover .video-card-play-overlay {
+  opacity: 1 !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
