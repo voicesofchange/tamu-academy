@@ -13,7 +13,7 @@ export default function Contact() {
   return (
     <PageLayout>
       <PageMeta
-        title="Contact Tamu Academy"
+        title="Contact Tamu Academy | Tamu Academy"
         description="Contact Tamu Academy, express interest in proposed programmes, contribute as a facilitator, or discuss a community or institutional partnership."
         path="/contact"
       />

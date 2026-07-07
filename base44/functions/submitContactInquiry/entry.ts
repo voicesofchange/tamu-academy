@@ -4,7 +4,7 @@ const INQUIRY_TYPES = [
   'Prospective Learner',
   'AI Leadership Lab Interest',
   'Educator or Facilitator',
-  'School or University',
+  'University or Institutional Partnership',
   'Youth or Community Organization',
   'Institutional Partnership',
   'Funder or Supporter',
@@ -13,10 +13,12 @@ const INQUIRY_TYPES = [
 ];
 
 const PROGRAMME_OPTIONS = [
-  'Tamu Intercultural AI Leadership Lab',
-  'Future Tamu Academy Programmes',
-  'Learning Resources',
+  'Tamu Academy First Lessons',
+  'Power, Policy and the Public Good (Pathway Under Development)',
+  'Ubuntu and the Public Good (Proposed Pilot)',
+  'Tamu Intercultural AI Leadership Lab (Proposed Initiative)',
   'Partnership Opportunities',
+  'Learning Resources',
   'Not Sure Yet',
 ];
 

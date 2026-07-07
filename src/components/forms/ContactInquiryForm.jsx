@@ -47,7 +47,7 @@ const TYPE_PARAM_MAP = {
 };
 
 const PROGRAMME_PARAM_MAP = {
-  'intercultural-ai-leadership-lab': 'Tamu Intercultural AI Leadership Lab',
+  'intercultural-ai-leadership-lab': 'Tamu Intercultural AI Leadership Lab (Proposed Initiative)',
 };
 
 const inputStyle = {

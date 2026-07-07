@@ -220,7 +220,7 @@ export default function Videos() {
   return (
     <PageLayout>
       <PageMeta
-        title="First Lessons — Tamu Academy"
+        title="First Lessons | Tamu Academy"
         description="Watch Tamu Academy's first publicly available learning collection — free introductory videos exploring wellbeing, institutions, public policy, economics, culture, and global systems."
         path="/videos"
       />
