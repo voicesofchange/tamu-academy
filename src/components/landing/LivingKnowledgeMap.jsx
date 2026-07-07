@@ -5,9 +5,9 @@ import { useReducedMotion, motion } from 'framer-motion';
 const NODES = [
   {
     id: 'ai',
-    label: 'AI and Digital\nCitizenship',
-    shortLabel: 'AI & Digital Citizenship',
-    desc: 'How artificial intelligence shapes daily life, identity, and human relationships — and what it means to navigate digital spaces responsibly.',
+    label: 'Technology &\nDigital Citizenship',
+    shortLabel: 'Technology & Digital Citizenship',
+    desc: 'How technology — from digital platforms to emerging tools — shapes information, identity, and community life, and what responsible, informed participation in digital spaces requires.',
     angle: 270, // top
   },
   {

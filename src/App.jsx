@@ -14,6 +14,7 @@ import About from './pages/About';
 import Programmes from './pages/Programmes';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
+import Videos from './pages/Videos';
 import Contact from './pages/Contact';
 
 const AuthenticatedApp = () => {
@@ -47,6 +48,7 @@ const AuthenticatedApp = () => {
       <Route path="/programmes" element={<Programmes />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
+      <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
       {/* Retired routes — redirects */}
       <Route path="/learning-areas" element={<Navigate to="/programmes#learning-areas" replace />} />

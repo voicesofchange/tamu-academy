@@ -91,6 +91,18 @@ export default function InterculturalAILeadershipLab() {
         path="/programmes/intercultural-ai-leadership-lab"
       />
 
+      {/* ── DISCLOSURE ───────────────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ padding: '1rem 1.4rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', marginBottom: '2.5rem' }}
+      >
+        <p className="font-body" style={{ color: 'rgba(245,239,224,0.62)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+          The Tamu Intercultural AI Leadership Lab is a proposed programme concept currently under development. It is not yet an active Tamu Academy programme.
+        </p>
+      </motion.div>
+
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <div style={{ marginBottom: '4.5rem' }}>
         <motion.div
@@ -99,7 +111,7 @@ export default function InterculturalAILeadershipLab() {
           transition={{ duration: 0.6 }}
           style={{ marginBottom: '1.25rem' }}
         >
-          <StatusBadge label="Proposed Pilot Programme" />
+          <StatusBadge label="Proposed Initiative" />
         </motion.div>
 
         <motion.h1

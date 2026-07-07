@@ -5,9 +5,8 @@ import Hero from '@/components/landing/Hero';
 import HomePurpose from '@/components/landing/HomePurpose';
 import LivingKnowledgeMap from '@/components/landing/LivingKnowledgeMap';
 import CourseTracks from '@/components/landing/CourseTracks';
-import FeaturedProgramme from '@/components/landing/FeaturedProgramme';
 import Approach from '@/components/landing/Approach';
-import VideoSeries from '@/components/landing/VideoSeries';
+import HomeVideoPreview from '@/components/landing/HomeVideoPreview';
 import HomeCurrentStage from '@/components/landing/HomeCurrentStage';
 import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
 import SiteFooter from '@/components/landing/SiteFooter';
@@ -38,12 +37,10 @@ export default function Landing() {
         <LivingKnowledgeMap />
         {/* 4. Learning Areas preview */}
         <CourseTracks />
-        {/* 4. Featured Programme */}
-        <FeaturedProgramme />
         {/* 5. Learning Model */}
         <Approach />
-        {/* 6. Insights / Video series */}
-        <VideoSeries />
+        {/* 6. Video Series preview */}
+        <HomeVideoPreview />
         {/* 7. Current Stage */}
         <HomeCurrentStage />
         {/* 9. Final CTA */}

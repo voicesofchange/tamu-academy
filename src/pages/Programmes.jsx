@@ -27,8 +27,8 @@ const MODEL_STEPS = [
 const LEARNING_AREAS = [
   {
     number: '01',
-    title: 'AI and Digital Citizenship',
-    summary: 'Examining how artificial intelligence shapes daily life, public discourse, identity, and human relationships — and developing the critical thinking needed to navigate digital spaces responsibly.',
+    title: 'Technology and Digital Citizenship',
+    summary: 'Examining how technology — from digital platforms to emerging tools — shapes daily life, public discourse, identity, and community participation, and developing the critical thinking needed to navigate digital spaces responsibly.',
     questions: [
       'Who benefits from AI systems, and who is harmed by them?',
       'How does algorithmic bias reproduce or amplify existing inequalities?',
@@ -209,47 +209,38 @@ export default function Programmes() {
         </div>
       </PageSection>
 
-      {/* Featured Programme */}
-      <PageSection heading="Current Featured Programme">
+      {/* Proposed Initiatives */}
+      <PageSection heading="Proposed Initiatives">
+        <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
+          The following represent programme concepts currently under development. None are active programmes. They are presented transparently as part of Tamu Academy's developing vision.
+        </p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '1rem' }}
         >
           <div style={{ marginBottom: '1rem' }}>
-            <StatusBadge label="Proposed Pilot Programme" />
+            <StatusBadge label="Proposed Initiative" />
           </div>
-          <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
+          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.75rem' }}>
             Tamu Intercultural AI Leadership Lab
-          </h2>
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            A proposed six-month learning and dialogue programme that will bring together culturally, linguistically, geographically, and socially diverse young people to examine how artificial intelligence affects identity, trust, language, misinformation, culture, and human relationships.
+          </h3>
+          <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.25rem' }}>
+            A proposed six-month learning and dialogue programme that would bring together culturally, linguistically, geographically, and socially diverse young people to examine how artificial intelligence affects identity, trust, language, misinformation, culture, and human relationships. This is a programme concept, not a currently active programme.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
-            {[
-              { label: 'Target Audience', value: 'Young people and emerging leaders' },
-              { label: 'Format', value: 'Facilitated dialogue, workshops, cross-cultural exchange, collaborative research, and community projects' },
-              { label: 'Core Themes', value: 'Human connection, cultural representation, responsible AI, digital trust, and intercultural leadership' },
-            ].map(({ label, value }) => (
-              <div key={label}>
-                <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{label}</span>
-                <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.87rem', lineHeight: 1.65, fontWeight: 300, margin: 0 }}>{value}</p>
-              </div>
-            ))}
-          </div>
           <Link
             to="/programmes/intercultural-ai-leadership-lab"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.6rem 1.2rem', transition: 'border-color 0.25s ease' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.3)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
           >
-            Explore the Proposed Programme →
+            Read the Full Concept →
           </Link>
         </motion.div>
       </PageSection>
 
       {/* Future Labs */}
-      <PageSection heading="Future Learning Labs">
+      <PageSection heading="Future Programme Concepts">
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
           The following represent possible future directions for Tamu Academy's programme work. None of these are currently operational. They are presented as part of a developing vision.
         </p>

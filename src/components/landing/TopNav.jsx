@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Programmes', to: '/programmes' },
+  { label: 'Videos', to: '/videos' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
 ];
