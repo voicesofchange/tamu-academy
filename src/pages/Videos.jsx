@@ -12,111 +12,79 @@ import FeaturedLesson from '@/components/videos/FeaturedLesson';
 // ── Lesson Library ────────────────────────────────────────────────────────────
 // To add a real video, set comingSoon: false and provide a videoUrl
 // (YouTube privacy-enhanced: https://www.youtube-nocookie.com/embed/VIDEO_ID)
-// and optionally a thumbnail URL.
 
 const LESSONS = [
   {
-    id: 'what-is-public-policy',
-    title: 'What is Public Policy — and Why Does It Affect You?',
-    description: 'An introduction to how governments, institutions, and communities make decisions that shape daily life — from school meals to climate agreements.',
-    category: 'Public Policy and Governance',
-    duration: '14 min',
+    id: 'real-cost-of-always-achieving',
+    title: 'The Real Cost of Always Achieving',
+    description: 'Achievement culture tells us to keep pushing — but at what price? This lesson examines the mental health toll of relentless performance expectations and what rest, boundaries, and wellbeing really look like.',
+    category: 'Mental Health',
+    episode: 1,
     featured: true,
     comingSoon: true,
     videoUrl: null,
-    thumbnail: null,
+    thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/32b0fb286_Lesson1Thumbnail.png',
     discussionQuestions: [
-      'What is one policy that has directly affected your community? How was it made?',
-      'Who should have a voice in public policy decisions, and why does representation matter?',
-      'Can you think of a situation where a policy intended to help actually caused harm?',
+      'When does ambition become harmful? Where is the line between drive and burnout?',
+      'Who benefits from a culture that prizes constant achievement — and who pays the cost?',
+      'What would it look like to measure success differently in your community or school?',
     ],
   },
   {
-    id: 'language-and-power',
-    title: 'Language, Power, and Who Gets to Be Heard',
-    description: 'Why does language shape power? This lesson explores how dominant languages, translation, and communication norms include or exclude people from civic life.',
-    category: 'Writing, Storytelling, and Communication',
-    duration: '11 min',
+    id: 'why-therapy-isnt-enough',
+    title: "Why Therapy Isn't Enough",
+    description: 'Therapy is valuable — but it cannot fix structural problems alone. This lesson explores the limits of individual mental health solutions and the systemic changes needed to support wellbeing at a community level.',
+    category: 'Mental Health',
+    episode: 2,
     featured: false,
     comingSoon: true,
     videoUrl: null,
-    thumbnail: null,
+    thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/646dd6535_Lesson2Thumbnail.png',
     discussionQuestions: [
-      'How does the language a meeting is held in affect who participates?',
-      'Think of a time you felt unheard. Was language part of that experience?',
-      'What would more inclusive communication look like in your school or community?',
+      'What barriers prevent people in your community from accessing mental health support?',
+      'What would a community-level approach to mental health look like?',
+      'How do race, class, and culture shape who benefits from existing mental health systems?',
     ],
   },
   {
-    id: 'climate-justice',
-    title: 'Climate Change and Climate Justice: What Is the Difference?',
-    description: 'Climate change affects everyone, but not equally. This lesson examines why frontline communities bear disproportionate burdens — and what just solutions might look like.',
-    category: 'Climate and Sustainability',
-    duration: '16 min',
+    id: 'can-policy-make-us-happier',
+    title: 'Can Policy Make Us Happier?',
+    description: 'Some governments now measure national wellbeing alongside GDP. This lesson asks whether policy can be designed to improve quality of life — and what trade-offs that involves.',
+    category: 'Policy',
+    episode: 3,
     featured: false,
     comingSoon: true,
     videoUrl: null,
-    thumbnail: null,
+    thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/946264a83_Lesson3Thumbnail.png',
     discussionQuestions: [
-      'Which communities in your region are most exposed to climate impacts? What resources do they have?',
-      'What does it mean for a climate solution to be "just"?',
+      'Should governments be responsible for citizens\' happiness? Why or why not?',
+      'What policies in your country seem designed around wellbeing — and do they work?',
+      'Can happiness be measured? What gets left out when governments try?',
     ],
   },
   {
-    id: 'digital-identity',
-    title: 'Who Are You Online? Identity, Data, and Digital Citizenship',
-    description: 'From social media profiles to surveillance systems, this lesson unpacks how digital identity is constructed, collected, and used — and what agency you have over yours.',
-    category: 'Technology and Digital Citizenship',
-    duration: '13 min',
+    id: 'who-controls-the-global-economy',
+    title: 'Who Controls the Global Economy?',
+    description: 'From the IMF to multinational corporations, power over the global economy is concentrated in ways most people never see. This lesson maps who makes the rules — and who those rules serve.',
+    category: 'Global Affairs',
+    episode: 4,
     featured: false,
     comingSoon: true,
     videoUrl: null,
-    thumbnail: null,
+    thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/44354d01f_Lesson4Thumbnailpng.png',
     discussionQuestions: [
-      'What does your digital footprint reveal about you that you may not have intended to share?',
-      'Who benefits most from the personal data people generate online?',
-    ],
-  },
-  {
-    id: 'economics-of-inequality',
-    title: 'Why Is Inequality Growing — and What Can Be Done?',
-    description: 'A clear-eyed introduction to economic inequality: what drives it, how it is measured, and the range of policy responses communities and governments can consider.',
-    category: 'Economics and Opportunity',
-    duration: '15 min',
-    featured: false,
-    comingSoon: true,
-    videoUrl: null,
-    thumbnail: null,
-    discussionQuestions: [
-      'What is the difference between wealth inequality and income inequality?',
-      'Does economic inequality affect your ability to participate in civic life? How?',
-    ],
-  },
-  {
-    id: 'intercultural-dialogue',
-    title: 'The Art of Intercultural Dialogue',
-    description: 'What makes genuine dialogue across cultural differences possible — and what gets in the way? This lesson explores listening, assumption, and the conditions for understanding.',
-    category: 'Intercultural Leadership and Peacebuilding',
-    duration: '12 min',
-    featured: false,
-    comingSoon: true,
-    videoUrl: null,
-    thumbnail: null,
-    discussionQuestions: [
-      'Recall a conversation across cultural or experiential difference. What made it go well or poorly?',
-      'What assumptions do we carry into conversations without realising it?',
+      'Who were the key decision-makers in the global economy before you were born — and are they still?',
+      'How does economic power affect political power between nations?',
+      'What would a more equitable global economic system look like, and who would need to give something up?',
     ],
   },
 ];
 
 const CATEGORIES = [
   'All',
-  'Technology and Digital Citizenship',
-  'Intercultural Leadership and Peacebuilding',
-  'Public Policy and Governance',
-  'Economics and Opportunity',
-  'Climate and Sustainability',
-  'Writing, Storytelling, and Communication',
+  'Mental Health',
+  'Policy',
+  'Global Affairs',
 ];
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -141,9 +109,9 @@ export default function Videos() {
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <PageHero
-        eyebrow="Video Series"
-        heading="Ideas worth understanding. Conversations worth continuing."
-        subheading="Accessible lessons exploring public policy, culture, leadership, sustainability, technology, and the forces shaping communities around the world."
+        eyebrow="Video Series · Season One"
+        heading="Welcome to Tamu Academy: Learning Across Cultures"
+        subheading="AfroCentric lessons on the mind, power, and the world — sweet learning for a better world."
       />
 
       {/* Hero CTAs */}
@@ -195,7 +163,7 @@ export default function Videos() {
         }}
       >
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
-          The Tamu Academy Video Series is currently in development. The lessons below preview topics that will be covered. Videos will be added as they are produced.
+          These are the first lessons from Tamu Academy — exploring mental health, policy, and global affairs through an AfroCentric lens. Videos will be added as they are released.
         </p>
       </motion.div>
 
@@ -207,7 +175,7 @@ export default function Videos() {
       )}
 
       {/* ── Lesson Library ────────────────────────────────────────────────── */}
-      <PageSection id="lessons" eyebrow="All Lessons" heading="Browse the series">
+      <PageSection id="lessons" eyebrow="Season One" heading="All Episodes">
 
         {/* Category filter */}
         <div

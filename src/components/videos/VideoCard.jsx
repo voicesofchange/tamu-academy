@@ -127,9 +127,16 @@ export default function VideoCard({ lesson, index, onSelect }) {
       </div>
 
       <div style={{ padding: '1.1rem 1.3rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1 }}>
-        <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
-          {lesson.category}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          {lesson.episode && (
+            <span className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 400 }}>
+              Ep {lesson.episode}
+            </span>
+          )}
+          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
+            {lesson.category}
+          </span>
+        </div>
         <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
           {lesson.title}
         </h3>
