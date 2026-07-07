@@ -1,12 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
 const INQUIRY_TYPES = [
-  'Prospective Learner',
-  'AI Leadership Lab Interest',
+  'Prospective Learner or Programme Interest',
   'Educator or Facilitator',
   'University or Institutional Partnership',
   'Youth or Community Organization',
-  'Institutional Partnership',
   'Funder or Supporter',
   'Media or Interview Inquiry',
   'General Inquiry',

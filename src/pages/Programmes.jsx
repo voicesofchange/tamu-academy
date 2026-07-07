@@ -202,7 +202,7 @@ export default function Programmes() {
             ))}
           </div>
           <Link
-            to="/contact?type=partnership"
+            to="/contact?type=partnership&programme=ubuntu-and-the-public-good"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
           >
             Discuss a Pilot Partnership →
@@ -333,7 +333,7 @@ export default function Programmes() {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link
-            to="/contact?type=partnership"
+            to="/contact?type=partnership&programme=ubuntu-and-the-public-good"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             Discuss a Pilot Partnership →

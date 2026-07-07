@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 
 const INQUIRY_TYPES = [
-  'Prospective Learner',
-  'AI Leadership Lab Interest',
+  'Prospective Learner or Programme Interest',
   'Educator or Facilitator',
   'University or Institutional Partnership',
   'Youth or Community Organization',
-  'Institutional Partnership',
   'Funder or Supporter',
   'Media or Interview Inquiry',
   'General Inquiry',
@@ -36,18 +34,17 @@ const REFERRAL_OPTIONS = [
 
 // Map URL param values to display inquiry types
 const TYPE_PARAM_MAP = {
-  'lab-interest': 'AI Leadership Lab Interest',
-  'programme-interest': 'AI Leadership Lab Interest',
+  'programme-interest': 'Prospective Learner or Programme Interest',
   'facilitator': 'Educator or Facilitator',
-  'partnership': 'Institutional Partnership',
+  'partnership': 'University or Institutional Partnership',
   'community-organization': 'Youth or Community Organization',
-  'school-university': 'University or Institutional Partnership',
-  'institutional-partnership': 'Institutional Partnership',
   'media': 'Media or Interview Inquiry',
 };
 
 const PROGRAMME_PARAM_MAP = {
   'intercultural-ai-leadership-lab': 'Tamu Intercultural AI Leadership Lab (Proposed Initiative)',
+  'ubuntu-and-the-public-good': 'Ubuntu and the Public Good (Proposed Pilot)',
+  'power-policy-public-good': 'Power, Policy and the Public Good (Pathway Under Development)',
 };
 
 const inputStyle = {

@@ -13,7 +13,7 @@ export default function Contact() {
   return (
     <PageLayout>
       <PageMeta
-        title="Contact Tamu Academy | Tamu Academy"
+        title="Contact | Tamu Academy"
         description="Contact Tamu Academy, express interest in proposed programmes, contribute as a facilitator, or discuss a community or institutional partnership."
         path="/contact"
       />
@@ -35,7 +35,7 @@ export default function Contact() {
           We welcome inquiries from prospective learners, educators and facilitators, schools and universities, youth and community organisations, institutional partners, funders and supporters, and anyone curious about Tamu Academy's work.
         </p>
         <p className="font-body" style={mutedText}>
-          For institutional partnership inquiries, please use the inquiry form below and select <em>Institutional Partnership</em> as your inquiry type.
+          For institutional partnership inquiries, please use the inquiry form below and select <em>University or Institutional Partnership</em> as your inquiry type.
         </p>
       </PageSection>
 

@@ -31,12 +31,10 @@
       "type": "string",
       "title": "Inquiry Type",
       "enum": [
-        "Prospective Learner",
-        "AI Leadership Lab Interest",
+        "Prospective Learner or Programme Interest",
         "Educator or Facilitator",
         "University or Institutional Partnership",
         "Youth or Community Organization",
-        "Institutional Partnership",
         "Funder or Supporter",
         "Media or Interview Inquiry",
         "General Inquiry"
