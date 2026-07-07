@@ -15,14 +15,26 @@ import FeaturedLesson from '@/components/videos/FeaturedLesson';
 
 const LESSONS = [
   {
+    id: 'welcome-to-tamu-academy',
+    title: 'Welcome to Tamu Academy',
+    description: 'An introduction to Tamu Academy — what we are, why we exist, and what sweet learning for a better world means in practice.',
+    category: 'Welcome',
+    episode: null,
+    featured: true,
+    comingSoon: false,
+    videoUrl: 'https://www.youtube-nocookie.com/embed/qqIDNwa-h0s',
+    thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/84f592a69_Lesson5Thumbnail.png',
+    discussionQuestions: [],
+  },
+  {
     id: 'real-cost-of-always-achieving',
     title: 'The Real Cost of Always Achieving',
     description: 'Achievement culture tells us to keep pushing — but at what price? This lesson examines the mental health toll of relentless performance expectations and what rest, boundaries, and wellbeing really look like.',
     category: 'Mental Health',
     episode: 1,
-    featured: true,
-    comingSoon: true,
-    videoUrl: null,
+    featured: false,
+    comingSoon: false,
+    videoUrl: 'https://www.youtube-nocookie.com/embed/DM8-hCO78Os',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/32b0fb286_Lesson1Thumbnail.png',
     discussionQuestions: [
       'When does ambition become harmful? Where is the line between drive and burnout?',
@@ -37,8 +49,8 @@ const LESSONS = [
     category: 'Mental Health',
     episode: 2,
     featured: false,
-    comingSoon: true,
-    videoUrl: null,
+    comingSoon: false,
+    videoUrl: 'https://www.youtube-nocookie.com/embed/xLKNmgeX7m0',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/646dd6535_Lesson2Thumbnail.png',
     discussionQuestions: [
       'What barriers prevent people in your community from accessing mental health support?',
@@ -53,8 +65,8 @@ const LESSONS = [
     category: 'Policy',
     episode: 3,
     featured: false,
-    comingSoon: true,
-    videoUrl: null,
+    comingSoon: false,
+    videoUrl: 'https://www.youtube-nocookie.com/embed/P9dXMOA9rO8',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/946264a83_Lesson3Thumbnail.png',
     discussionQuestions: [
       'Should governments be responsible for citizens\' happiness? Why or why not?',
@@ -69,8 +81,8 @@ const LESSONS = [
     category: 'Global Affairs',
     episode: 4,
     featured: false,
-    comingSoon: true,
-    videoUrl: null,
+    comingSoon: false,
+    videoUrl: 'https://www.youtube-nocookie.com/embed/Io9mZLfZ6yw',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/44354d01f_Lesson4Thumbnailpng.png',
     discussionQuestions: [
       'Who were the key decision-makers in the global economy before you were born — and are they still?',
@@ -82,6 +94,7 @@ const LESSONS = [
 
 const CATEGORIES = [
   'All',
+  'Welcome',
   'Mental Health',
   'Policy',
   'Global Affairs',
@@ -149,23 +162,7 @@ export default function Videos() {
         </Link>
       </motion.div>
 
-      {/* ── Development Notice ────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          padding: '1rem 1.4rem',
-          border: '1px solid rgba(212,161,42,0.15)',
-          borderRadius: '4px',
-          backgroundColor: 'rgba(245,239,224,0.015)',
-          marginBottom: '3.5rem',
-        }}
-      >
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
-          These are the first lessons from Tamu Academy — exploring mental health, policy, and global affairs through an AfroCentric lens. Videos will be added as they are released.
-        </p>
-      </motion.div>
+
 
       {/* ── Featured Lesson ───────────────────────────────────────────────── */}
       {featured && (
