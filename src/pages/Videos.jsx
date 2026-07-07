@@ -95,9 +95,8 @@ function VideoPlayer({ lesson }) {
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
         <iframe
           key={lesson.videoId}
-          src={`https://www.youtube.com/embed/${lesson.videoId}?rel=0&playsinline=1&origin=https%3A%2F%2Ftamuacademy.org`}
+          src={`https://www.youtube.com/embed/${lesson.videoId}`}
           title={`Tamu Academy — ${lesson.title}`}
-          loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
