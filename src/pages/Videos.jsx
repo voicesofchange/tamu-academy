@@ -18,7 +18,7 @@ const LESSONS = [
     category: 'Welcome',
     label: 'Welcome',
     videoId: 'qqIDNwa-h0s',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/qqIDNwa-h0s?rel=0&modestbranding=1',
+    videoUrl: 'https://www.youtube.com/embed/qqIDNwa-h0s',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/84f592a69_Lesson5Thumbnail.png',
     discussionQuestions: [],
   },
@@ -29,7 +29,7 @@ const LESSONS = [
     category: 'Mental Health',
     label: 'Lesson 1',
     videoId: 'DM8-hCO78Os',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/DM8-hCO78Os?rel=0&modestbranding=1',
+    videoUrl: 'https://www.youtube.com/embed/DM8-hCO78Os',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/32b0fb286_Lesson1Thumbnail.png',
     discussionQuestions: [
       'When does ambition become harmful? Where is the line between drive and burnout?',
@@ -44,7 +44,7 @@ const LESSONS = [
     category: 'Mental Health',
     label: 'Lesson 2',
     videoId: 'xLKNmgeX7m0',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/xLKNmgeX7m0?rel=0&modestbranding=1',
+    videoUrl: 'https://www.youtube.com/embed/xLKNmgeX7m0',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/646dd6535_Lesson2Thumbnail.png',
     discussionQuestions: [
       'What barriers prevent people in your community from accessing mental health support?',
@@ -59,7 +59,7 @@ const LESSONS = [
     category: 'Policy',
     label: 'Lesson 3',
     videoId: 'P9dXMOA9rO8',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/P9dXMOA9rO8?rel=0&modestbranding=1',
+    videoUrl: 'https://www.youtube.com/embed/P9dXMOA9rO8',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/946264a83_Lesson3Thumbnail.png',
     discussionQuestions: [
       "Should governments be responsible for citizens' happiness? Why or why not?",
@@ -74,7 +74,7 @@ const LESSONS = [
     category: 'Global Affairs',
     label: 'Lesson 4',
     videoId: 'Io9mZLfZ6yw',
-    videoUrl: 'https://www.youtube-nocookie.com/embed/Io9mZLfZ6yw?rel=0&modestbranding=1',
+    videoUrl: 'https://www.youtube.com/embed/Io9mZLfZ6yw',
     thumbnail: 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/44354d01f_Lesson4Thumbnailpng.png',
     discussionQuestions: [
       'Who were the key decision-makers in the global economy before you were born — and are they still?',
@@ -95,11 +95,12 @@ function VideoPlayer({ lesson }) {
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
         <iframe
           key={lesson.videoId}
-          src={lesson.videoUrl}
+          src={`https://www.youtube.com/embed/${lesson.videoId}?rel=0&playsinline=1&origin=https%3A%2F%2Ftamuacademy.org`}
           title={`Tamu Academy — ${lesson.title}`}
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-          allowFullScreen
           loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
         />
       </div>
