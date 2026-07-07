@@ -98,6 +98,14 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.entities.ContactInquiry.create(record);
 
+    // Send notification email
+    const emailBody = `New contact inquiry received on Tamu Academy.\n\nName: ${full_name}\nEmail: ${email}\nCountry: ${country}${record.city_or_community ? '\nCity/Community: ' + record.city_or_community : ''}${record.organization ? '\nOrganization: ' + record.organization : ''}${record.role ? '\nRole: ' + record.role : ''}\nInquiry Type: ${inquiry_type}${programme_interest ? '\nProgramme Interest: ' + programme_interest : ''}\n\nMessage:\n${record.message}${referral_source ? '\n\nReferral Source: ' + referral_source : ''}\nUpdates Consent: ${record.updates_consent ? 'Yes' : 'No'}`;
+    await base44.asServiceRole.integrations.Core.SendEmail({
+      to: 'info@sustainthevoices.org',
+      subject: `New Inquiry: ${inquiry_type} — ${full_name}`,
+      body: emailBody,
+    }).catch((err) => console.warn('[submitContactInquiry] Email notification failed:', err.message));
+
     // Return only success — never the stored record or internal fields
     return Response.json({ success: true });
 
