@@ -126,10 +126,12 @@ export default function LivingKnowledgeMap() {
     <section
       aria-labelledby="lkm-heading"
       style={{
+        position: 'relative',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
         maxWidth: '1100px',
         margin: '0 auto',
         scrollMarginTop: '90px',
+        overflow: 'hidden',
       }}
     >
       {/* CSS for animations */}
@@ -143,11 +145,10 @@ export default function LivingKnowledgeMap() {
         @keyframes lkmPulse { 0%,100%{stroke-opacity:0.18} 50%{stroke-opacity:0.42} }
         @keyframes lkmPulseActive { 0%,100%{stroke-opacity:0.6} 50%{stroke-opacity:0.95} }
         @keyframes lkmCenterBreathe { 0%,100%{opacity:0.85} 50%{opacity:1} }
-        .lkm-node-btn { background:none; border:none; padding:0; cursor:pointer; }
+        .lkm-node-btn { background:none; border:none; padding:0; cursor:pointer; outline:none; }
         .lkm-node-btn:focus-visible .lkm-node-ring {
-          outline: 2px solid #D4A12A;
-          outline-offset: 4px;
-          border-radius: 50%;
+          box-shadow: 0 0 0 3px rgba(212,161,42,0.85);
+          border-color: rgba(212,161,42,0.9) !important;
         }
       `}</style>
 
@@ -340,9 +341,8 @@ export default function LivingKnowledgeMap() {
           {/* Description panel */}
           <div
             ref={descRef}
-            role="region"
             aria-live="polite"
-            aria-label="Selected learning area description"
+            aria-atomic="true"
             style={{
               minHeight: '80px',
               maxWidth: '520px',
@@ -441,43 +441,46 @@ export default function LivingKnowledgeMap() {
               );
             })}
 
-            {/* Expanded description below active card */}
-            {activeNode && (
-              <div
-                id={`lkm-mobile-desc-${activeNode.id}`}
-                role="region"
-                aria-live="polite"
-                style={{
-                  padding: '1.25rem 1.4rem',
-                  border: '1px solid rgba(212,161,42,0.2)',
-                  borderRadius: '4px',
-                  backgroundColor: 'rgba(212,161,42,0.03)',
-                  marginTop: '0.25rem',
-                }}
-              >
-                <p className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1rem' }}>
-                  {activeNode.desc}
-                </p>
-                <button
-                  onClick={() => navigate('/programmes#learning-areas')}
-                  className="font-body"
+            {/* Description panels: all rendered, only active is visible — keeps aria-controls valid */}
+            {NODES.map((node) => {
+              const isActive = active === node.id;
+              return (
+                <div
+                  key={node.id}
+                  id={`lkm-mobile-desc-${node.id}`}
+                  hidden={!isActive}
                   style={{
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    color: '#D4A12A', fontSize: '0.7rem', letterSpacing: '0.18em',
-                    textTransform: 'uppercase', fontWeight: 500, padding: 0,
+                    padding: '1.25rem 1.4rem',
+                    border: '1px solid rgba(212,161,42,0.2)',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(212,161,42,0.03)',
+                    marginTop: '0.25rem',
                   }}
                 >
-                  Explore all Learning Areas →
-                </button>
-              </div>
-            )}
+                  <p className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1rem' }}>
+                    {node.desc}
+                  </p>
+                  <button
+                    onClick={() => navigate('/programmes#learning-areas')}
+                    className="font-body"
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      color: '#D4A12A', fontSize: '0.7rem', letterSpacing: '0.18em',
+                      textTransform: 'uppercase', fontWeight: 500, padding: 0,
+                    }}
+                  >
+                    Explore all Learning Areas →
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       )}
 
-      {/* Visually hidden text list: accessible fallback */}
+      {/* Visually hidden text list: structural fallback — aria-hidden prevents duplicate announcements from the live region */}
       <ul
-        aria-label="Tamu Academy learning areas"
+        aria-hidden="true"
         style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}
       >
         {NODES.map((n) => (
