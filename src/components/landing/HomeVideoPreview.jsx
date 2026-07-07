@@ -23,10 +23,10 @@ export default function HomeVideoPreview() {
               Watch and Learn
             </p>
             <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
-              The Tamu Academy Video Series
+              Begin with Tamu Academy's First Lessons
             </h2>
             <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
-              Accessible videos exploring ideas, communities, and the issues shaping our shared future.
+              Start with our welcome video and introductory lessons designed to make important ideas accessible, thoughtful, and connected to the world around us.
             </p>
           </div>
 
@@ -42,7 +42,7 @@ export default function HomeVideoPreview() {
               flexShrink: 0,
             }}
           >
-            Explore Videos →
+            Watch the First Lessons →
           </Link>
         </motion.div>
       </div>
