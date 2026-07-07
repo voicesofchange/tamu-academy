@@ -23,8 +23,8 @@ export default function Landing() {
       }}
     >
       <PageMeta
-        title="Tamu Academy | Intercultural Learning and Youth Leadership"
-        description="Tamu Academy equips young people and emerging leaders with interdisciplinary knowledge in intercultural leadership, artificial intelligence, public policy, economics, sustainability, and communication."
+        title="Tamu Academy | Learning Across Cultures. Leading Through Change."
+        description="Tamu Academy is an African-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes."
         path="/"
       />
       <TopNav />

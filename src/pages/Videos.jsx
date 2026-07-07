@@ -221,7 +221,7 @@ export default function Videos() {
     <PageLayout>
       <PageMeta
         title="First Lessons — Tamu Academy"
-        description="Watch the first available Tamu Academy lessons: introductory videos on the mind, policy, and global affairs designed to make important ideas accessible and connected to the world around us."
+        description="Watch Tamu Academy's first publicly available learning collection — free introductory videos exploring wellbeing, institutions, public policy, economics, culture, and global systems."
         path="/videos"
       />
 
@@ -238,9 +238,19 @@ export default function Videos() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.45 }}
         className="font-body"
-        style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem' }}
+        style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '1.25rem' }}
       >
         This introductory collection welcomes learners to Tamu Academy and presents the first lessons currently available through the platform. These videos introduce the ideas, questions, and perspectives that will shape future Tamu Academy learning.
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: 'easeOut', delay: 0.55 }}
+        className="font-body"
+        style={{ color: 'rgba(245,239,224,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem', fontStyle: 'italic' }}
+      >
+        Tamu Academy's First Lessons introduce questions about wellbeing, institutions, policy, economics, and global systems. Future learning pathways will connect these videos with guided discussions, practical activities, and community-centered projects.
       </motion.p>
 
       {/* ── Primary Player + Lesson Selector ──────────────────────────────── */}

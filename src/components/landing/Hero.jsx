@@ -139,7 +139,7 @@ export default function Hero() {
             margin: '0 auto 2.5rem',
           }}
         >
-          Tamu Academy is an emerging interdisciplinary learning platform that equips young people and emerging leaders with the knowledge, dialogue skills, and practical tools to understand complex issues, communicate across differences, and lead responsibly in a changing world.
+          African-rooted learning for young people exploring the mind, power, and the world.
         </motion.p>
 
         {/* CTAs */}

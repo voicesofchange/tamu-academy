@@ -7,14 +7,6 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 
-const FUTURE_LABS = [
-  { title: 'Tamu Global Policy Lab', desc: 'A proposed interdisciplinary learning experience examining how international policy decisions are made and how young people can engage with global governance.' },
-  { title: 'Tamu Climate Leadership Lab', desc: 'A proposed programme connecting climate literacy, environmental justice, and community-led action for young people on the frontlines of climate change.' },
-  { title: 'Tamu Youth Writing Studio', desc: 'A proposed workshop series focused on helping young writers develop their voices for public communication, storytelling, and advocacy.' },
-  { title: 'Tamu Economics and Opportunity Lab', desc: 'A proposed learning experience exploring economic systems, inequality, financial literacy, and pathways to opportunity for young people from diverse backgrounds.' },
-  { title: 'Tamu Civic Leadership Fellowship', desc: 'A proposed programme for young people interested in civic engagement, public service, community advocacy, and democratic participation.' },
-];
-
 const MODEL_STEPS = [
   { label: 'Learn', desc: 'Engage with ideas, context, and evidence from multiple disciplines and perspectives.' },
   { label: 'Discuss', desc: 'Examine those ideas in dialogue with others whose backgrounds and views may differ.' },
@@ -36,7 +28,7 @@ const LEARNING_AREAS = [
       'How do we protect privacy, dignity, and truth in online spaces?',
     ],
     skills: ['AI literacy', 'Digital ethics', 'Misinformation analysis', 'Algorithmic awareness', 'Responsible technology use'],
-    related: 'Tamu Intercultural AI Leadership Lab (Proposed Pilot)',
+    related: 'Tamu Intercultural AI Leadership Lab (Proposed Initiative)',
   },
   {
     number: '02',
@@ -62,7 +54,7 @@ const LEARNING_AREAS = [
       'What makes institutions accountable, and what allows them to become corrupt?',
     ],
     skills: ['Policy analysis', 'Civic participation', 'Institutional understanding', 'Community advocacy', 'Research and writing'],
-    related: 'Tamu Civic Leadership Fellowship (Future Concept)',
+    related: 'Power, Policy and the Public Good (Pathway Under Development)',
   },
   {
     number: '04',
@@ -75,7 +67,7 @@ const LEARNING_AREAS = [
       'What does entrepreneurship mean in different cultural and economic contexts?',
     ],
     skills: ['Economic reasoning', 'Financial literacy', 'Inequality analysis', 'Understanding trade', 'Entrepreneurship thinking'],
-    related: 'Tamu Economics and Opportunity Lab (Future Concept)',
+    related: 'Power, Policy and the Public Good (Pathway Under Development)',
   },
   {
     number: '05',
@@ -105,25 +97,120 @@ const LEARNING_AREAS = [
   },
 ];
 
+const PATHWAY_COMPONENTS = [
+  'Public Policy Foundations',
+  'Economics and Public Decisions',
+  'Institutions, Power and Implementation',
+  'Policy Writing and Communication',
+  'Ubuntu and the Public Good',
+];
+
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Programmes() {
   const [expanded, setExpanded] = useState(null);
   const reduceMotion = useReducedMotion();
+
   return (
     <PageLayout>
       <PageMeta
         title="Programmes | Tamu Academy"
-        description="Explore proposed and developing Tamu Academy programmes designed to connect interdisciplinary learning, dialogue, leadership, and community action."
+        description="Explore Tamu Academy's current learning collection, developing learning pathways, and proposed pilot programmes designed to help young people understand power, policy, and the world."
         path="/programmes"
       />
       <PageHero
         eyebrow="Programmes"
         heading="Our Programmes"
-        subheading="Tamu Academy develops learning programmes that combine intercultural dialogue, practical knowledge, and community action."
+        subheading="Tamu Academy develops learning programmes that combine accessible video content, community dialogue, practical knowledge, and real-world application."
       />
 
-      {/* Programme Model */}
+      {/* ── 1. Current Learning ─────────────────────────────────────────────── */}
+      <PageSection eyebrow="Current Learning" heading="Tamu Academy First Lessons">
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
+          Free introductory videos exploring wellbeing, institutions, public policy, economics, culture, and global systems.
+        </p>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
+          This is Tamu Academy's first publicly available learning collection. The videos introduce the ideas, questions, and perspectives that will shape future Tamu Academy learning pathways.
+        </p>
+        <Link
+          to="/videos"
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+        >
+          Watch the First Lessons →
+        </Link>
+      </PageSection>
+
+      {/* ── 2. Flagship Learning Pathway ────────────────────────────────────── */}
+      <PageSection eyebrow="Flagship Learning Pathway Under Development">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+        >
+          <div style={{ marginBottom: '1rem' }}>
+            <StatusBadge label="Under Development" />
+          </div>
+          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
+            Power, Policy and the Public Good
+          </h3>
+          <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
+            A practical learning pathway helping young people understand how public decisions are made, whose interests they serve, why policies succeed or fail, and how communities can influence change.
+          </p>
+          <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
+            Proposed Components
+          </p>
+          <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            {PATHWAY_COMPONENTS.map((c) => (
+              <li key={c} className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>{c}</li>
+            ))}
+          </ul>
+        </motion.div>
+      </PageSection>
+
+      {/* ── 3. Proposed First Pilot ─────────────────────────────────────────── */}
+      <PageSection eyebrow="Proposed First Pilot">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+        >
+          <div style={{ marginBottom: '1rem' }}>
+            <StatusBadge label="Proposed Pilot Programme" />
+          </div>
+          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
+            Ubuntu and the Public Good
+          </h3>
+          <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
+            A four-week applied learning experience examining how values, institutions, economics, and community knowledge shape public decisions. Participants develop a one-page community-centered policy memo as their final project.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            {[
+              ['Intended audience', 'Young adults ages 18–30'],
+              ['Proposed format', 'Four weekly facilitated sessions'],
+              ['Proposed delivery', 'Online or partner-hosted'],
+              ['Final learner product', 'One-page policy memo'],
+              ['Current status', 'Under development — available for partnership discussion'],
+            ].map(([label, value]) => (
+              <div key={label} style={{ padding: '1rem 1.25rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
+                <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
+                <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>{value}</span>
+              </div>
+            ))}
+          </div>
+          <Link
+            to="/contact?type=partnership"
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
+          >
+            Discuss a Pilot Partnership →
+          </Link>
+        </motion.div>
+      </PageSection>
+
+      {/* ── Programme Model ─────────────────────────────────────────────────── */}
       <PageSection heading="The Tamu Academy Learning Model">
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
           Every Tamu Academy programme is designed around a core sequence that moves learners from engagement with ideas toward real-world application and reflection.
@@ -145,7 +232,7 @@ export default function Programmes() {
         </div>
       </PageSection>
 
-      {/* Learning Areas */}
+      {/* ── Learning Areas ──────────────────────────────────────────────────── */}
       <PageSection id="learning-areas" heading="Learning Areas">
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
           Tamu Academy organises learning across six interconnected disciplines — bringing together the knowledge, conversations, and skills young people need to understand and shape a complex world.
@@ -209,10 +296,10 @@ export default function Programmes() {
         </div>
       </PageSection>
 
-      {/* Proposed Initiatives */}
-      <PageSection heading="Proposed Initiatives">
+      {/* ── Other Proposed Initiatives ──────────────────────────────────────── */}
+      <PageSection heading="Other Proposed Initiatives">
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
-          The following represent programme concepts currently under development. None are active programmes. They are presented transparently as part of Tamu Academy's developing vision.
+          The following represents a programme concept currently under development. It is presented transparently as part of Tamu Academy's developing vision.
         </p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -239,57 +326,26 @@ export default function Programmes() {
         </motion.div>
       </PageSection>
 
-      {/* Future Labs */}
-      <PageSection heading="Future Programme Concepts">
-        <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
-          The following represent possible future directions for Tamu Academy's programme work. None of these are currently operational. They are presented as part of a developing vision.
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {FUTURE_LABS.map((lab, i) => (
-            <motion.div
-              key={lab.title}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.06 }}
-              style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, margin: 0 }}>{lab.title}</h3>
-                <StatusBadge label="Future Programme Concept" />
-              </div>
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>{lab.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </PageSection>
-      {/* Programme Interest CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)', marginBottom: '2rem' }}
-      >
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, margin: '0 0 0.75rem' }}>Interested in a Programme?</h2>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-          Tamu Academy is developing its programmes thoughtfully and transparently. If you are a prospective learner, educator, community organisation, or institution interested in participating or collaborating, we welcome you to get in touch.
+      {/* ── Partner with Tamu Academy ───────────────────────────────────────── */}
+      <PageSection heading="Partner with Tamu Academy">
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
+          Tamu Academy is exploring pilot collaborations with universities, colleges, youth-serving organizations, and community institutions. Potential collaboration areas include hosting a pilot cohort, learner recruitment, faculty participation, programme evaluation, curriculum review, and community engagement.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link
-            to="/contact?type=lab-interest"
+            to="/contact?type=partnership"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Express Programme Interest →
+            Discuss a Pilot Partnership →
           </Link>
           <Link
-            to="/contact?type=facilitator"
+            to="/contact"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Facilitator Enquiry →
+            Contact Tamu Academy →
           </Link>
         </div>
-      </motion.div>
+      </PageSection>
     </PageLayout>
   );
 }

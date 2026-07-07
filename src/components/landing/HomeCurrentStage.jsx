@@ -24,11 +24,11 @@ export default function HomeCurrentStage() {
           </p>
 
           <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1.25rem' }}>
-            Building Tamu Academy Thoughtfully
+            Where Tamu Academy Is Now
           </h2>
 
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, margin: 0 }}>
-            Tamu Academy is currently developing its learning model, educational resources, partnerships, and pilot programmes. The platform is growing carefully, with an emphasis on credible content, accessible learning, and programmes that respond to real community needs.
+            Tamu Academy is currently developing its first structured learning pathway while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.
           </p>
         </motion.div>
       </div>

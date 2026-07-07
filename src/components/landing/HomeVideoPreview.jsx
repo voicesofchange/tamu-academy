@@ -20,13 +20,13 @@ export default function HomeVideoPreview() {
         >
           <div style={{ maxWidth: '560px' }}>
             <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
-              Watch and Learn
+              Now Available
             </p>
             <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
-              Begin with Tamu Academy's First Lessons
+              Tamu Academy's First Lessons
             </h2>
             <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
-              Start with our welcome video and introductory lessons designed to make important ideas accessible, thoughtful, and connected to the world around us.
+              The first publicly available Tamu Academy learning collection — free introductory videos exploring wellbeing, institutions, policy, economics, and global systems.
             </p>
           </div>
 

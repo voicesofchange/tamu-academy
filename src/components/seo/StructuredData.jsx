@@ -6,7 +6,7 @@ const ORGANIZATION_LD = {
   name: 'Tamu Academy',
   url: 'https://tamuacademy.org/',
   description:
-    'Tamu Academy is an emerging interdisciplinary learning platform that equips young people and emerging leaders with knowledge, dialogue skills, and practical tools for responsible leadership.',
+    'Tamu Academy is an African-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes.',
   founder: {
     '@type': 'Person',
     name: 'Tex Wambui',

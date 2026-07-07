@@ -104,18 +104,18 @@ export default function CourseTracks() {
         transition={{ duration: 0.5 }}
       >
         <Link
-          to="/learning-areas"
-          style={{
-            display: 'inline-flex', alignItems: 'center',
-            color: '#D4A12A',
-            backgroundColor: 'transparent',
-            fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
-            textDecoration: 'none', fontWeight: 500,
-            border: '1px solid rgba(212,161,42,0.4)',
-            borderRadius: '2px', padding: '0.65rem 1.3rem',
-          }}
+        to="/programmes#learning-areas"
+        style={{
+          display: 'inline-flex', alignItems: 'center',
+          color: '#D4A12A',
+          backgroundColor: 'transparent',
+          fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+          textDecoration: 'none', fontWeight: 500,
+          border: '1px solid rgba(212,161,42,0.4)',
+          borderRadius: '2px', padding: '0.65rem 1.3rem',
+        }}
         >
-          View All Learning Areas →
+        View All Learning Areas →
         </Link>
       </motion.div>
     </section>
