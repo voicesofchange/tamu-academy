@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: 'About', to: '/about' },
   { label: 'Programmes', to: '/programmes' },
   { label: 'Videos', to: '/videos' },
+  { label: 'Articles', to: '/articles' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
 ];
@@ -87,7 +88,7 @@ export default function TopNav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.9rem, 2.5vw, 2rem)' }} className="tamu-desktop-nav">
+        <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.65rem, 1.8vw, 1.5rem)' }} className="tamu-desktop-nav">
           {NAV_LINKS.map(({ label, to }) => {
             const active = location.pathname === to;
             return (
@@ -195,11 +196,11 @@ export default function TopNav() {
 
       {/* Responsive style injection */}
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 860px) {
           .tamu-desktop-nav { display: none !important; }
           .tamu-mobile-menu-btn { display: flex !important; }
         }
-        @media (min-width: 769px) {
+        @media (min-width: 861px) {
           #tamu-mobile-menu { display: none !important; }
         }
         .tamu-mobile-menu-btn:focus-visible {

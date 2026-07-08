@@ -1,0 +1,108 @@
+/**
+ * Tamu Academy — Article Data
+ *
+ * Static data structure for all articles. Each article maps to a published episode.
+ * Status values: 'published' | 'in-development'
+ *
+ * No article text, statistics, dates, or sources have been invented.
+ * Content fields are left null/empty pending editorial approval.
+ */
+
+export const ARTICLES = [
+  {
+    slug: 'the-real-cost-of-always-achieving',
+    title: 'The Real Cost of Always Achieving',
+    subtitle: null,
+    category: 'Mind and Wellbeing',
+    status: 'in-development',
+    summary: 'A written companion to the episode exploring what relentless achievement culture costs us — and what rest, boundaries, and wellbeing actually look like.',
+    author: 'Tamu Academy',
+    publicationDate: null,
+    updatedDate: null,
+    readingTime: null,
+    videoId: 'DM8-hCO78Os',
+    videoTitle: 'The Real Cost of Always Achieving',
+    sections: [],
+    keyTakeaways: [],
+    reflectionQuestions: [],
+    relatedResources: [],
+    sources: [],
+    previousArticle: null,
+    nextArticle: 'why-therapy-isnt-enough',
+    seoTitle: 'The Real Cost of Always Achieving | Tamu Academy',
+    seoDescription: 'A written companion to the Tamu Academy episode exploring achievement culture, mental health, and what wellbeing really means.',
+  },
+  {
+    slug: 'why-therapy-isnt-enough',
+    title: "Why Therapy Isn't Enough",
+    subtitle: null,
+    category: 'Mind, Systems and Wellbeing',
+    status: 'in-development',
+    summary: 'A written companion to the episode examining the limits of individual mental health solutions and why systemic change is also necessary for community wellbeing.',
+    author: 'Tamu Academy',
+    publicationDate: null,
+    updatedDate: null,
+    readingTime: null,
+    videoId: 'xLKNmgeX7m0',
+    videoTitle: "Why Therapy Isn't Enough",
+    sections: [],
+    keyTakeaways: [],
+    reflectionQuestions: [],
+    relatedResources: [],
+    sources: [],
+    previousArticle: 'the-real-cost-of-always-achieving',
+    nextArticle: 'can-policy-make-us-happier',
+    seoTitle: "Why Therapy Isn't Enough | Tamu Academy",
+    seoDescription: "A written companion to the Tamu Academy episode on the limits of therapy and the systemic roots of mental health challenges.",
+  },
+  {
+    slug: 'can-policy-make-us-happier',
+    title: 'Can Policy Make Us Happier?',
+    subtitle: null,
+    category: 'Power and Policy',
+    status: 'in-development',
+    summary: 'A written companion to the episode asking whether governments can design policy around wellbeing — and what trade-offs that involves.',
+    author: 'Tamu Academy',
+    publicationDate: null,
+    updatedDate: null,
+    readingTime: null,
+    videoId: 'P9dXMOA9rO8',
+    videoTitle: 'Can Policy Make Us Happier?',
+    sections: [],
+    keyTakeaways: [],
+    reflectionQuestions: [],
+    relatedResources: [],
+    sources: [],
+    previousArticle: 'why-therapy-isnt-enough',
+    nextArticle: 'who-controls-the-global-economy',
+    seoTitle: 'Can Policy Make Us Happier? | Tamu Academy',
+    seoDescription: 'A written companion to the Tamu Academy episode on wellbeing policy, national happiness measures, and what gets left out.',
+  },
+  {
+    slug: 'who-controls-the-global-economy',
+    title: 'Who Controls the Global Economy?',
+    subtitle: null,
+    category: 'Economics and Global Systems',
+    status: 'in-development',
+    summary: 'A written companion to the episode mapping the institutions and actors who shape the global economy — and who those rules ultimately serve.',
+    author: 'Tamu Academy',
+    publicationDate: null,
+    updatedDate: null,
+    readingTime: null,
+    videoId: 'Io9mZLfZ6yw',
+    videoTitle: 'Who Controls the Global Economy?',
+    sections: [],
+    keyTakeaways: [],
+    reflectionQuestions: [],
+    relatedResources: [],
+    sources: [],
+    previousArticle: 'can-policy-make-us-happier',
+    nextArticle: null,
+    seoTitle: 'Who Controls the Global Economy? | Tamu Academy',
+    seoDescription: 'A written companion to the Tamu Academy episode on global economic power, international institutions, and who makes the rules.',
+  },
+];
+
+export function getArticleBySlug(slug) {
+  return ARTICLES.find((a) => a.slug === slug) ?? null;
+}

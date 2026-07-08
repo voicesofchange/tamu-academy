@@ -16,6 +16,11 @@ import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
+import Articles from './pages/Articles';
+import TheRealCostOfAlwaysAchieving from './pages/articles/TheRealCostOfAlwaysAchieving';
+import WhyTherapyIsntEnough from './pages/articles/WhyTherapyIsntEnough';
+import CanPolicyMakeUsHappier from './pages/articles/CanPolicyMakeUsHappier';
+import WhoControlsTheGlobalEconomy from './pages/articles/WhoControlsTheGlobalEconomy';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -50,6 +55,11 @@ const AuthenticatedApp = () => {
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/articles" element={<Articles />} />
+      <Route path="/articles/the-real-cost-of-always-achieving" element={<TheRealCostOfAlwaysAchieving />} />
+      <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
+      <Route path="/articles/can-policy-make-us-happier" element={<CanPolicyMakeUsHappier />} />
+      <Route path="/articles/who-controls-the-global-economy" element={<WhoControlsTheGlobalEconomy />} />
       {/* Retired routes — redirects */}
       <Route path="/learning-areas" element={<Navigate to="/programmes#learning-areas" replace />} />
       <Route path="/partner" element={<Navigate to="/contact?type=partnership" replace />} />
