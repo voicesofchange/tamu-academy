@@ -20,6 +20,7 @@ export const ARTICLES = [
     author: 'Tex Wambui',
     publisher: 'Tamu Academy',
     publicationDate: 'July 12, 2026',
+    publicationDateISO: '2026-07-12',
     updatedDate: null,
     readingTime: 9,
     videoId: 'DM8-hCO78Os',

@@ -4,8 +4,7 @@ import { getArticleBySlug } from '@/lib/articles-data';
 
 /**
  * Article page: The Real Cost of Always Achieving
- * Status: in-development — no article body content is displayed until
- * substantive editorial copy is supplied and approved.
+ * Status: published — July 12, 2026
  */
 export default function TheRealCostOfAlwaysAchieving() {
   const article = getArticleBySlug('the-real-cost-of-always-achieving');

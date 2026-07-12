@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
+
+const BASE_URL = 'https://tamuacademy.org';
+
+function ArticleStructuredData({ article }) {
+  useEffect(() => {
+    if (article.status !== 'published' || !article.publicationDateISO) return;
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title,
+      description: article.seoDescription,
+      author: { '@type': 'Person', name: article.author },
+      publisher: { '@type': 'Organization', name: article.publisher },
+      datePublished: article.publicationDateISO,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/articles/${article.slug}` },
+      articleSection: article.category,
+    };
+    const scriptId = `article-ld-${article.slug}`;
+    if (!document.getElementById(scriptId)) {
+      const el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.id = scriptId;
+      el.textContent = JSON.stringify(ld);
+      document.head.appendChild(el);
+    }
+    return () => {
+      const el = document.getElementById(scriptId);
+      if (el) el.remove();
+    };
+  }, [article]);
+  return null;
+}
 
 const bodyStyle = { color: 'rgba(245,239,224,0.72)', fontSize: '0.97rem', lineHeight: 1.9, fontWeight: 300, margin: '0 0 1.1rem' };
 const dimStyle  = { color: 'rgba(245,239,224,0.4)', fontSize: '0.82rem', lineHeight: 1.75, fontWeight: 300 };
@@ -43,8 +75,10 @@ export default function ArticlePageTemplate({ article }) {
         title={article.seoTitle}
         description={article.seoDescription}
         path={`/articles/${article.slug}`}
+        type={article.status === 'published' ? 'article' : 'website'}
         noindex={article.status !== 'published'}
       />
+      <ArticleStructuredData article={article} />
 
       {/* ── Article header ──────────────────────────────────────────────── */}
       <header style={{ marginBottom: '3rem' }}>
