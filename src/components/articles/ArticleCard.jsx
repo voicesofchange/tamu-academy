@@ -41,13 +41,13 @@ export default function ArticleCard({ article }) {
 
       {/* Summary */}
       <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
-        {article.summary}
+        {article.cardSummary || article.summary}
       </p>
 
       {/* Actions */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.85rem', marginTop: '0.25rem' }}>
-        {/* Article link — disabled when in development */}
-        {isDev ? (
+        {/* Article link */}
+        {isDev && article.sections?.length === 0 ? (
           <span
             className="font-body"
             aria-disabled="true"
@@ -55,6 +55,14 @@ export default function ArticleCard({ article }) {
           >
             Coming Soon
           </span>
+        ) : isDev ? (
+          <Link
+            to={`/articles/${article.slug}`}
+            className="font-body"
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(245,239,224,0.22)', borderRadius: '2px', padding: '0.5rem 1rem' }}
+          >
+            Preview Article →
+          </Link>
         ) : (
           <Link
             to={`/articles/${article.slug}`}

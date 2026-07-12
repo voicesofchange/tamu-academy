@@ -5,17 +5,38 @@ import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
 
-/**
- * ArticlePageTemplate — reusable layout for a full published article.
- * Accepts a single `article` prop from articles-data.js.
- *
- * Supports:
- *   title, subtitle, category, author, publicationDate, updatedDate,
- *   readingTime, summary, videoId, videoTitle, sections, keyTakeaways,
- *   reflectionQuestions, relatedResources, sources,
- *   previousArticle, nextArticle, seoTitle, seoDescription
- */
+const bodyStyle = { color: 'rgba(245,239,224,0.72)', fontSize: '0.97rem', lineHeight: 1.9, fontWeight: 300, margin: '0 0 1.1rem' };
+const dimStyle  = { color: 'rgba(245,239,224,0.4)', fontSize: '0.82rem', lineHeight: 1.75, fontWeight: 300 };
+
+/** Render a closing note that may contain a [text](/path) link */
+function ClosingNote({ text }) {
+  const parts = text.split(/(\[.*?\]\(.*?\))/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/\[(.*?)\]\((.*?)\)/);
+        if (match) {
+          const [, label, href] = match;
+          const isInternal = href.startsWith('/');
+          return isInternal
+            ? <Link key={i} to={href} style={{ color: 'rgba(212,161,42,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</Link>
+            : <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</a>;
+        }
+        // Split on \n\n for paragraph breaks within the closing note
+        return part.split('\n\n').map((chunk, j) => (
+          <React.Fragment key={`${i}-${j}`}>
+            {j > 0 && <br />}
+            {chunk}
+          </React.Fragment>
+        ));
+      })}
+    </>
+  );
+}
+
 export default function ArticlePageTemplate({ article }) {
+  const lastSection = article.sections?.[article.sections.length - 1];
+
   return (
     <PageLayout>
       <PageMeta
@@ -77,9 +98,15 @@ export default function ArticlePageTemplate({ article }) {
           style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1.25rem', color: 'rgba(245,239,224,0.45)', fontSize: '0.75rem', letterSpacing: '0.06em' }}
         >
           {article.author && <span>{article.author}</span>}
+          {article.publisher && article.publisher !== article.author && <span>{article.publisher}</span>}
           {article.publicationDate && <span>Published {article.publicationDate}</span>}
           {article.updatedDate && <span>Updated {article.updatedDate}</span>}
           {article.readingTime && <span>{article.readingTime} min read</span>}
+          {article.status === 'in-development' && (
+            <span style={{ color: 'rgba(212,161,42,0.5)', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
+              In Development
+            </span>
+          )}
         </motion.div>
       </header>
 
@@ -104,13 +131,12 @@ export default function ArticlePageTemplate({ article }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          aria-label="Related episode"
-          style={{ marginBottom: '3rem' }}
+          aria-label="Watch the related episode"
+          style={{ marginBottom: '3.5rem' }}
         >
           <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-            Related Episode
+            Watch the Related Episode
           </p>
-          {/* 16:9 responsive embed */}
           <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
             <iframe
               src={`https://www.youtube.com/embed/${article.videoId}`}
@@ -138,36 +164,53 @@ export default function ArticlePageTemplate({ article }) {
 
       {/* ── Article body sections ────────────────────────────────────────── */}
       {article.sections?.length > 0 && (
-        <div style={{ marginBottom: '3rem' }}>
-          {article.sections.map((section, i) => (
-            <motion.section
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              style={{ marginBottom: '2.5rem' }}
-            >
-              {section.heading && (
-                <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' }}>
-                  {section.heading}
-                </h2>
-              )}
-              {section.body && (
-                <p className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.97rem', lineHeight: 1.9, fontWeight: 300, margin: 0 }}>
-                  {section.body}
-                </p>
-              )}
-              {section.pullQuote && (
-                <blockquote style={{ margin: '1.5rem 0', borderLeft: '3px solid #D4A12A', paddingLeft: '1.25rem' }}>
-                  <p className="font-heading" style={{ color: 'rgba(212,161,42,0.9)', fontSize: 'clamp(1rem, 2vw, 1.25rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
-                    "{section.pullQuote}"
+        <article style={{ marginBottom: '3rem' }}>
+          {article.sections.map((section, i) => {
+            const isLast = i === article.sections.length - 1;
+            return (
+              <motion.section
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.55, ease: 'easeOut' }}
+                style={{ marginBottom: isLast ? '1.5rem' : '3rem' }}
+              >
+                {section.heading && (
+                  <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.55rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1.25rem' }}>
+                    {section.heading}
+                  </h2>
+                )}
+
+                {/* Multi-paragraph body */}
+                {Array.isArray(section.paragraphs)
+                  ? section.paragraphs.map((para, j) => (
+                    <p key={j} className="font-body" style={bodyStyle}>{para}</p>
+                  ))
+                  : section.body && (
+                    <p className="font-body" style={bodyStyle}>{section.body}</p>
+                  )
+                }
+
+                {/* Pull quote — after body paragraphs */}
+                {section.pullQuote && (
+                  <blockquote style={{ margin: '1.75rem 0 0', borderLeft: '3px solid #D4A12A', paddingLeft: '1.25rem' }}>
+                    <p className="font-heading" style={{ color: 'rgba(212,161,42,0.9)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
+                      "{section.pullQuote}"
+                    </p>
+                  </blockquote>
+                )}
+
+                {/* Closing note on last section */}
+                {isLast && section.closingNote && (
+                  <p className="font-body" style={{ ...dimStyle, marginTop: '2rem', fontStyle: 'italic', borderTop: '1px solid rgba(245,239,224,0.08)', paddingTop: '1.5rem' }}>
+                    <ClosingNote text={section.closingNote} />
                   </p>
-                </blockquote>
-              )}
-            </motion.section>
-          ))}
-        </div>
+                )}
+              </motion.section>
+            );
+          })}
+        </article>
       )}
 
       {/* ── Key takeaways ────────────────────────────────────────────────── */}
@@ -200,19 +243,19 @@ export default function ArticlePageTemplate({ article }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-30px' }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
-          aria-label="Reflection questions"
+          aria-label="Reflect and apply"
           style={{ marginBottom: '3rem' }}
         >
           <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
-            Reflection Questions
+            Reflect and Apply
           </h2>
-          <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {article.reflectionQuestions.map((q, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300 }}>
                 {q}
               </li>
             ))}
-          </ul>
+          </ol>
         </motion.section>
       )}
 
@@ -270,6 +313,30 @@ export default function ArticlePageTemplate({ article }) {
         </motion.section>
       )}
 
+      {/* ── Editorial + educational notes ────────────────────────────────── */}
+      {(article.editorialNote || article.educationalNote) && (
+        <motion.aside
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-20px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          aria-label="Editorial and educational notes"
+          style={{ marginBottom: '3rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(245,239,224,0.08)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+        >
+          {article.editorialNote && (
+            <p className="font-body" style={dimStyle}>
+              <strong style={{ fontWeight: 500, color: 'rgba(245,239,224,0.5)' }}>Editorial note: </strong>
+              {article.editorialNote}
+            </p>
+          )}
+          {article.educationalNote && (
+            <p className="font-body" style={dimStyle}>
+              {article.educationalNote}
+            </p>
+          )}
+        </motion.aside>
+      )}
+
       {/* ── Prev / Next navigation ───────────────────────────────────────── */}
       <nav aria-label="Article navigation" style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(212,161,42,0.12)', flexWrap: 'wrap' }}>
         {article.previousArticle ? (
@@ -296,7 +363,7 @@ export default function ArticlePageTemplate({ article }) {
         ) : <span />}
       </nav>
 
-      {/* ── Back to articles + Videos ─────────────────────────────────────── */}
+      {/* ── Back links ───────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
         <Link to="/articles" className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
