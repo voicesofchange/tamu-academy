@@ -22,6 +22,7 @@ export default function ArticlePageTemplate({ article }) {
         title={article.seoTitle}
         description={article.seoDescription}
         path={`/articles/${article.slug}`}
+        noindex={article.status !== 'published'}
       />
 
       {/* ── Article header ──────────────────────────────────────────────── */}
