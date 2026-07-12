@@ -8,6 +8,7 @@ import CourseTracks from '@/components/landing/CourseTracks';
 import Approach from '@/components/landing/Approach';
 import HomeVideoPreview from '@/components/landing/HomeVideoPreview';
 import HomeCurrentStage from '@/components/landing/HomeCurrentStage';
+import HomeArticlesPreview from '@/components/landing/HomeArticlesPreview';
 import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
 import SiteFooter from '@/components/landing/SiteFooter';
 
@@ -41,7 +42,9 @@ export default function Landing() {
         <Approach />
         {/* 6. Video Series preview */}
         <HomeVideoPreview />
-        {/* 7. Current Stage */}
+        {/* 7. Articles Preview */}
+        <HomeArticlesPreview />
+        {/* 8. Current Stage */}
         <HomeCurrentStage />
         {/* 9. Final CTA */}
         <HomeFinalCTA />
