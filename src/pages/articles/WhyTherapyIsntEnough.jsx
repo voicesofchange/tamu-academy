@@ -4,8 +4,7 @@ import { getArticleBySlug } from '@/lib/articles-data';
 
 /**
  * Article page: Why Therapy Isn't Enough
- * Status: in-development — no article body content is displayed until
- * substantive editorial copy is supplied and approved.
+ * Status: published — July 12, 2026
  */
 export default function WhyTherapyIsntEnough() {
   const article = getArticleBySlug('why-therapy-isnt-enough');
