@@ -110,6 +110,21 @@ export default function ArticlePageTemplate({ article }) {
         </motion.div>
       </header>
 
+      {/* ── Safety / introductory note ──────────────────────────────────── */}
+      {article.safetyNote && (
+        <motion.aside
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.35 }}
+          aria-label="Introductory note"
+          className="font-body"
+          style={{ marginBottom: '2.5rem', padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.25)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', color: 'rgba(245,239,224,0.75)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300 }}
+        >
+          <strong style={{ fontWeight: 500, color: '#F5EFE0' }}>A note before we begin: </strong>
+          {article.safetyNote}
+        </motion.aside>
+      )}
+
       {/* ── Introductory summary ────────────────────────────────────────── */}
       {article.summary && (
         <motion.p
@@ -310,6 +325,48 @@ export default function ArticlePageTemplate({ article }) {
               </li>
             ))}
           </ol>
+        </motion.section>
+      )}
+
+      {/* ── Support resources ────────────────────────────────────────────── */}
+      {article.supportResources && (
+        <motion.section
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-20px' }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
+          aria-label="If you are struggling"
+          style={{ marginBottom: '3rem', padding: '1.75rem 2rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+        >
+          <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.85rem' }}>
+            If You Are Struggling
+          </h2>
+          <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
+            {article.supportResources.intro}
+          </p>
+          <ul style={{ margin: '0 0 1.25rem', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {article.supportResources.resources.map((r, i) => (
+              <li key={i} className="font-body" style={{ borderLeft: '2px solid rgba(212,161,42,0.25)', paddingLeft: '1rem' }}>
+                <span style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>{r.region}</span>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'rgba(212,161,42,0.85)', fontSize: '0.93rem', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                >
+                  {r.label}
+                  <ExternalLink size={11} aria-hidden="true" />
+                </a>
+                <p style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: '0.2rem 0 0' }}>
+                  {r.description}
+                  {r.phone && <> · <span style={{ color: 'rgba(212,161,42,0.7)' }}>{r.phone}</span></>}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
+            {article.supportResources.emergencyNote}
+          </p>
         </motion.section>
       )}
 
