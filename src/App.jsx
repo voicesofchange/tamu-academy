@@ -11,7 +11,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import About from './pages/About';
-import Programmes from './pages/Programmes';
+import Courses from './pages/Courses';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import Videos from './pages/Videos';
@@ -50,7 +50,7 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
-      <Route path="/programmes" element={<Programmes />} />
+      <Route path="/courses" element={<Courses />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />
@@ -61,7 +61,8 @@ const AuthenticatedApp = () => {
       <Route path="/articles/can-policy-make-us-happier" element={<CanPolicyMakeUsHappier />} />
       <Route path="/articles/who-controls-the-global-economy" element={<WhoControlsTheGlobalEconomy />} />
       {/* Retired routes — redirects */}
-      <Route path="/learning-areas" element={<Navigate to="/programmes#learning-areas" replace />} />
+      <Route path="/programmes" element={<Navigate to="/courses" replace />} />
+      <Route path="/learning-areas" element={<Navigate to="/courses#learning-areas" replace />} />
       <Route path="/partner" element={<Navigate to="/contact?type=partnership" replace />} />
       <Route path="/insights" element={<Navigate to="/resources" replace />} />
       <Route path="*" element={<PageNotFound />} />

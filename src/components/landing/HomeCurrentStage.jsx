@@ -28,7 +28,7 @@ export default function HomeCurrentStage() {
           </h2>
 
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, margin: 0 }}>
-            Tamu Academy is currently developing its first structured learning pathway while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.
+            Tamu Academy is developing expert-led courses across five areas: mind and wellbeing, economics and development, AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection. Free videos and articles are available now as an open-learning entry point.
           </p>
         </motion.div>
       </div>

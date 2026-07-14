@@ -106,7 +106,7 @@ export default function Hero() {
           Sweet Learning for a Better World
         </motion.p>
 
-        {/* H1 — new primary headline */}
+        {/* H1 */}
         <motion.h1
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -121,7 +121,7 @@ export default function Hero() {
             maxWidth: '720px',
           }}
         >
-          Learning Across Cultures.<br />Leading Through Change.
+          African-rooted learning led by knowledge, experience, and community
         </motion.h1>
 
         {/* Supporting copy */}
@@ -139,7 +139,7 @@ export default function Hero() {
             margin: '0 auto 2.5rem',
           }}
         >
-          African-rooted learning for young people exploring the mind, power, and the world.
+          Tamu Academy develops expert-led online courses exploring mental health, economics, artificial intelligence, public policy, culture, history, and the wider world.
         </motion.p>
 
         {/* CTAs */}
@@ -150,7 +150,7 @@ export default function Hero() {
           style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '2.75rem' }}
         >
           <Link
-            to="/programmes"
+            to="/courses"
             style={{
               display: 'inline-flex', alignItems: 'center',
               color: '#1A130E',
@@ -161,10 +161,10 @@ export default function Hero() {
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
-            Explore Our Programmes
+            Explore Courses
           </Link>
           <Link
-            to="/about"
+            to="/videos"
             style={{
               display: 'inline-flex', alignItems: 'center',
               color: '#D4A12A',
@@ -175,7 +175,7 @@ export default function Hero() {
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
-            Discover Tamu Academy
+            Start with Open Learning
           </Link>
         </motion.div>
 

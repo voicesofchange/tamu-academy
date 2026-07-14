@@ -2,37 +2,38 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SectionHeading from './SectionHeading';
+import { ArrowRight } from 'lucide-react';
 
 const AREAS = [
   {
     n: '01',
-    title: 'Artificial Intelligence and Digital Citizenship',
-    desc: 'How technology reshapes culture, communication, and opportunity — and how young people can engage with it critically and responsibly.',
+    title: 'Mind and Wellbeing',
+    desc: 'Explore mental health, identity, community, culture, and the social conditions that shape wellbeing.',
+    anchor: 'mind-and-wellbeing',
   },
   {
     n: '02',
-    title: 'Intercultural Leadership and Peacebuilding',
-    desc: 'Building trust and understanding across cultural, linguistic, and geographic differences — in communities, institutions, and international settings.',
+    title: 'Economics and Development',
+    desc: 'Understand economic systems, development, inequality, trade, debt, institutions, and Africa\'s place in the global economy.',
+    anchor: 'economics-and-development',
   },
   {
     n: '03',
-    title: 'Public Policy and Governance',
-    desc: 'How decisions are made, who makes them, and how policy shapes the conditions of daily life from city hall to international agreements.',
+    title: 'AI, Technology and Digital Futures',
+    desc: 'Build practical AI literacy while examining ethics, digital citizenship, governance, work, bias, and technological change.',
+    anchor: 'ai-technology-and-digital-futures',
   },
   {
     n: '04',
-    title: 'Economics and Opportunity',
-    desc: 'The forces behind inequality, development, and access — examined through local, regional, and global lenses.',
+    title: 'Public Policy and Governance',
+    desc: 'Learn how policies are developed, implemented, evaluated, and used to address public problems.',
+    anchor: 'public-policy-and-governance',
   },
   {
     n: '05',
-    title: 'Climate and Sustainability',
-    desc: 'Climate change as a policy, justice, and governance challenge — and how communities are responding to environmental transformation.',
-  },
-  {
-    n: '06',
-    title: 'Writing, Storytelling, and Communication',
-    desc: 'Communicating clearly across contexts — from policy writing and advocacy to storytelling and cross-cultural dialogue.',
+    title: 'Waiyaki wa Hinga Heritage and Leadership Collection',
+    desc: 'Explore the history, leadership, resistance, memory, and continuing significance of Waiyaki wa Hinga through research, oral history, and African-centered interpretation.',
+    anchor: 'waiyaki-wa-hinga',
   },
 ];
 
@@ -73,6 +74,8 @@ export default function CourseTracks() {
               border: '1px solid rgba(212,161,42,0.16)',
               backgroundColor: 'rgba(245,239,224,0.02)',
               overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <span
@@ -89,10 +92,17 @@ export default function CourseTracks() {
             </h3>
             <p
               className="font-body"
-              style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}
+              style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1.25rem', flexGrow: 1 }}
             >
               {area.desc}
             </p>
+            <Link
+              to={`/courses#${area.anchor}`}
+              className="font-body"
+              style={{ color: 'rgba(212,161,42,0.7)', fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            >
+              View Courses <ArrowRight size={12} />
+            </Link>
           </motion.article>
         ))}
       </div>
@@ -104,18 +114,18 @@ export default function CourseTracks() {
         transition={{ duration: 0.5 }}
       >
         <Link
-        to="/programmes#learning-areas"
-        style={{
-          display: 'inline-flex', alignItems: 'center',
-          color: '#D4A12A',
-          backgroundColor: 'transparent',
-          fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
-          textDecoration: 'none', fontWeight: 500,
-          border: '1px solid rgba(212,161,42,0.4)',
-          borderRadius: '2px', padding: '0.65rem 1.3rem',
-        }}
+          to="/courses"
+          style={{
+            display: 'inline-flex', alignItems: 'center',
+            color: '#D4A12A',
+            backgroundColor: 'transparent',
+            fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
+            textDecoration: 'none', fontWeight: 500,
+            border: '1px solid rgba(212,161,42,0.4)',
+            borderRadius: '2px', padding: '0.65rem 1.3rem',
+          }}
         >
-        View All Learning Areas →
+          View All Courses →
         </Link>
       </motion.div>
     </section>

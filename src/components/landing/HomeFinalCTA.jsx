@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const PATHS = [
-  { label: 'Explore Programmes', to: '/programmes', primary: true },
+  { label: 'Explore Courses', to: '/courses', primary: true },
   { label: 'Explore Resources', to: '/resources', primary: false },
   { label: 'Get in Touch', to: '/contact', primary: false },
 ];

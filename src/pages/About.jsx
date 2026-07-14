@@ -29,23 +29,26 @@ export default function About() {
   return (
     <PageLayout>
       <PageMeta
-        title="About Tamu Academy | Learning Across Cultures"
-        description="Learn why Tamu Academy is developing accessible, interdisciplinary education that helps young people think critically, communicate across differences, and lead responsibly."
+        title="About Tamu Academy | African-Rooted Online Learning Platform"
+        description="Tamu Academy is an African-rooted online learning platform that develops expert-led courses with subject-matter experts and knowledge holders across mental health, economics, AI, and public policy."
         path="/about"
       />
       <PageHero
         eyebrow="About Tamu Academy"
         heading="Learning Should Help Us Understand the World and One Another."
-        subheading="Tamu Academy is an African-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes."
+        subheading="Tamu Academy is an African-rooted online learning platform that develops expert-led courses with subject-matter experts, educators, researchers, and knowledge holders."
       />
 
       {/* Why Tamu Exists */}
       <PageSection heading="Why Tamu Academy Exists">
         <p className={bodyTextClass} style={bodyText}>
-          Serious conversations about public policy, economics, governance, culture, wellbeing, and global affairs are often concentrated in universities, professional institutions, and exclusive networks. Access to these conversations — and the knowledge and confidence they build — is unequally distributed.
+          Tamu Academy is an African-rooted online learning platform. It develops courses with subject-matter experts and knowledge holders, providing instructional design, editorial review, production, accessibility, publishing, and distribution so that expert knowledge reaches learners wherever they are.
         </p>
         <p className={bodyTextClass} style={bodyText}>
-          Tamu Academy seeks to make these conversations more accessible to young people from different educational, cultural, and socioeconomic backgrounds. We believe that the ideas shaping our world should not belong only to those who can already access elite learning spaces.
+          Serious conversations about public policy, economics, governance, culture, wellbeing, and global affairs are often concentrated in universities, professional institutions, and exclusive networks. Tamu Academy works to change that — making these conversations more accessible to learners from different educational, cultural, and socioeconomic backgrounds.
+        </p>
+        <p className={bodyTextClass} style={bodyText}>
+          Courses may serve individuals, facilitated cohorts, universities, institutions, and community organizations. Free videos and articles provide an open-learning entry point for anyone ready to begin.
         </p>
       </PageSection>
 
@@ -67,7 +70,7 @@ export default function About() {
           ))}
         </div>
         <p className={bodyTextClass} style={bodyText}>
-          These pillars are reflected in Tamu Academy's current video collection, its developing learning pathways, and its proposed pilot programmes.
+          These pillars are reflected in Tamu Academy's current video collection, developing courses, and the expert-led learning experiences under preparation.
         </p>
       </PageSection>
 
@@ -136,16 +139,13 @@ export default function About() {
       {/* Current Learning */}
       <PageSection heading="What Is Currently Available">
         <p className={bodyTextClass} style={bodyText}>
-          Tamu Academy's first publicly available learning is a collection of free introductory videos — the Tamu Academy First Lessons — exploring wellbeing, institutions, public policy, economics, culture, and global systems.
-        </p>
-        <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem' }}>
-          Tamu Academy is also developing its first structured learning pathway, <em style={{ color: '#E2B652' }}>Power, Policy and the Public Good</em>, a practical series helping young people understand how public decisions are made and how communities can influence change.
+          Tamu Academy's first publicly available learning is a collection of free introductory videos — the Tamu Academy First Lessons — exploring wellbeing, institutions, public policy, economics, culture, and global systems. These are accompanied by a growing collection of written articles designed for reflection and further study.
         </p>
         <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem', marginBottom: '1.25rem' }}>
-          Its first proposed pilot, <em style={{ color: '#E2B652' }}>Ubuntu and the Public Good</em>, is a four-week applied learning experience being prepared for potential collaboration with educational and community institutions.
+          Expert-led courses are currently in development across five areas: mind and wellbeing, economics and development, AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection.
         </p>
         <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>Watch the First Lessons →</Link>
-        <Link to="/programmes" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Explore Programmes →</Link>
+        <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Explore Courses →</Link>
       </PageSection>
 
       {/* Current Stage */}
@@ -161,7 +161,7 @@ export default function About() {
           Tamu Academy is currently developing its first structured learning pathway while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-          <Link to="/contact?type=partnership" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Partner With Us →</Link>
+          <Link to="/contact?inquiry=university-or-institutional-partnership" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Discuss a Partnership →</Link>
           <Link to="/contact" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Get in Touch →</Link>
         </div>
       </motion.div>

@@ -10,6 +10,8 @@ import HomeVideoPreview from '@/components/landing/HomeVideoPreview';
 import HomeCurrentStage from '@/components/landing/HomeCurrentStage';
 import HomeArticlesPreview from '@/components/landing/HomeArticlesPreview';
 import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
+import HowTamuWorks from '@/components/landing/HowTamuWorks';
+import HomeInstitutionalLearning from '@/components/landing/HomeInstitutionalLearning';
 import SiteFooter from '@/components/landing/SiteFooter';
 
 export default function Landing() {
@@ -24,8 +26,8 @@ export default function Landing() {
       }}
     >
       <PageMeta
-        title="Tamu Academy | Learning Across Cultures. Leading Through Change."
-        description="Tamu Academy is an African-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes."
+        title="Tamu Academy | African-Rooted Expert-Led Online Courses"
+        description="Tamu Academy is an African-rooted online learning platform that develops expert-led courses in mental health, economics, AI, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
         path="/"
       />
       <TopNav />
@@ -38,15 +40,19 @@ export default function Landing() {
         <LivingKnowledgeMap />
         {/* 4. Learning Areas preview */}
         <CourseTracks />
-        {/* 5. Learning Model */}
+        {/* 5. How Tamu Academy Works */}
+        <HowTamuWorks />
+        {/* 6. Learning Model */}
         <Approach />
-        {/* 6. Video Series preview */}
+        {/* 7. Video Series preview */}
         <HomeVideoPreview />
-        {/* 7. Articles Preview */}
+        {/* 8. Articles Preview */}
         <HomeArticlesPreview />
-        {/* 8. Current Stage */}
+        {/* 9. Institutional Learning */}
+        <HomeInstitutionalLearning />
+        {/* 10. Current Stage */}
         <HomeCurrentStage />
-        {/* 9. Final CTA */}
+        {/* 11. Final CTA */}
         <HomeFinalCTA />
       </main>
       <SiteFooter />
