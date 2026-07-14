@@ -158,7 +158,7 @@ export default function About() {
       >
         <span className={bodyTextClass} style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>Current Stage</span>
         <p className={bodyTextClass} style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
-          Tamu Academy is currently developing its first structured learning pathway while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.
+          Tamu Academy is currently developing expert-led courses across five learning areas while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link to="/contact?inquiry=university-or-institutional-partnership" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Discuss a Partnership →</Link>

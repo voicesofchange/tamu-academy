@@ -59,7 +59,7 @@ const COURSE_AREAS = [
     courses: [
       {
         title: 'Power, Policy and the Public Good',
-        status: 'Course Under Development',
+        status: 'In Development',
         description:
           'A course exploring public policy, institutions, implementation, accountability, community participation, policy analysis, and writing for public decision-making.',
       },
@@ -118,10 +118,11 @@ export default function Courses() {
         description="Explore Tamu Academy's developing courses in mental health, economics, artificial intelligence, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
         path="/courses"
       />
+      <div id="learning-areas" style={{ scrollMarginTop: '90px' }} aria-hidden="true" />
       <PageHero
         eyebrow="Courses"
         heading="Courses Designed for Learning, Reflection and Application"
-        subheading="Tamu Academy develops African-rooted courses with subject-matter experts and knowledge holders. Each course is designed to combine recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning."
+        subheading="Tamu Academy is developing expert-led online courses with subject-matter experts, educators, researchers, and knowledge holders. Each course is designed to combine recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning."
       />
 
       {/* Course Areas */}

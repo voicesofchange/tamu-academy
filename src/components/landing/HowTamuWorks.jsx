@@ -5,15 +5,15 @@ import SectionHeading from './SectionHeading';
 const PILLARS = [
   {
     label: 'Expert Knowledge',
-    desc: 'Courses are developed with subject-matter experts, educators, researchers, and knowledge holders.',
+    desc: 'Courses are designed to be developed with subject-matter experts, educators, researchers, and knowledge holders.',
   },
   {
     label: 'Tamu Academy Design',
-    desc: 'We transform expert knowledge into clear video lessons, written companions, activities, and learning resources.',
+    desc: 'Tamu Academy provides instructional design, editorial review, production, and accessibility so that expert knowledge reaches learners wherever they are.',
   },
   {
     label: 'Flexible Delivery',
-    desc: 'Courses are designed for individual learners, facilitated cohorts, universities, organizations, and institutions.',
+    desc: 'Courses are designed to serve individual learners, facilitated cohorts, universities, organizations, and institutions.',
   },
 ];
 
