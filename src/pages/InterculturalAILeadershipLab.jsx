@@ -89,6 +89,7 @@ export default function InterculturalAILeadershipLab() {
         title="Tamu Intercultural AI Leadership Lab | Tamu Academy"
         description="Explore a proposed youth learning and dialogue programme focused on human connection, cultural representation, digital trust, and responsible leadership in the age of artificial intelligence."
         path="/programmes/intercultural-ai-leadership-lab"
+        noindex={true}
       />
 
       {/* ── DISCLOSURE ───────────────────────────────────────────── */}
