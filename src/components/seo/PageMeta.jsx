@@ -17,6 +17,7 @@ export default function PageMeta({
   path,               // e.g. '/about'  — used for canonical + og:url
   type = 'website',
   noindex = false,
+  nofollow = false,   // defaults false — set true only for intentionally isolated pages
 }) {
   const canonical = `${BASE_URL}${path ?? '/'}`;
 
@@ -47,12 +48,9 @@ export default function PageMeta({
 
     // Standard meta
     setMeta('meta[name="description"]', 'content', description);
-    if (noindex) {
-      setMeta('meta[name="robots"]', 'content', 'noindex, nofollow');
-    } else {
-      const robots = document.querySelector('meta[name="robots"]');
-      if (robots) robots.setAttribute('content', 'index, follow');
-    }
+    const indexDirective = noindex ? 'noindex' : 'index';
+    const followDirective = nofollow ? 'nofollow' : 'follow';
+    setMeta('meta[name="robots"]', 'content', `${indexDirective}, ${followDirective}`);
 
     // Canonical
     setLink('canonical', canonical);
@@ -73,7 +71,7 @@ export default function PageMeta({
     return () => {
       document.title = 'Tamu Academy';
     };
-  }, [title, description, canonical, type, noindex]);
+  }, [title, description, canonical, type, noindex, nofollow]);
 
   return null;
 }
