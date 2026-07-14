@@ -21,6 +21,12 @@ import TheRealCostOfAlwaysAchieving from './pages/articles/TheRealCostOfAlwaysAc
 import WhyTherapyIsntEnough from './pages/articles/WhyTherapyIsntEnough';
 import CanPolicyMakeUsHappier from './pages/articles/CanPolicyMakeUsHappier';
 import WhoControlsTheGlobalEconomy from './pages/articles/WhoControlsTheGlobalEconomy';
+import IsTheICCBiasedAgainstAfricaArticle from './pages/articles/IsTheICCBiasedAgainstAfrica';
+import AfterTheGunsGoSilentArticle from './pages/articles/AfterTheGunsGoSilent';
+import ClimateIsAMentalHealthCrisisArticle from './pages/articles/ClimateIsAMentalHealthCrisis';
+import IsTheICCBiasedAgainstAfricaVideo from './pages/videos/IsTheICCBiasedAgainstAfrica';
+import AfterTheGunsGoSilentVideo from './pages/videos/AfterTheGunsGoSilent';
+import ClimateIsAMentalHealthCrisisVideo from './pages/videos/ClimateIsAMentalHealthCrisis';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +66,12 @@ const AuthenticatedApp = () => {
       <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
       <Route path="/articles/can-policy-make-us-happier" element={<CanPolicyMakeUsHappier />} />
       <Route path="/articles/who-controls-the-global-economy" element={<WhoControlsTheGlobalEconomy />} />
+      <Route path="/articles/is-the-icc-biased-against-africa" element={<IsTheICCBiasedAgainstAfricaArticle />} />
+      <Route path="/articles/after-the-guns-go-silent" element={<AfterTheGunsGoSilentArticle />} />
+      <Route path="/articles/climate-is-a-mental-health-crisis" element={<ClimateIsAMentalHealthCrisisArticle />} />
+      <Route path="/videos/is-the-icc-biased-against-africa" element={<IsTheICCBiasedAgainstAfricaVideo />} />
+      <Route path="/videos/after-the-guns-go-silent" element={<AfterTheGunsGoSilentVideo />} />
+      <Route path="/videos/climate-is-a-mental-health-crisis" element={<ClimateIsAMentalHealthCrisisVideo />} />
       {/* Retired routes — redirects */}
       <Route path="/programmes" element={<Navigate to="/courses" replace />} />
       <Route path="/learning-areas" element={<Navigate to="/courses#learning-areas" replace />} />

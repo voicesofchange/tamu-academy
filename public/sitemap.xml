@@ -41,4 +41,40 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://tamuacademy.org/articles/is-the-icc-biased-against-africa</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/articles/after-the-guns-go-silent</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/articles/climate-is-a-mental-health-crisis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/videos/is-the-icc-biased-against-africa</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/videos/after-the-guns-go-silent</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/videos/climate-is-a-mental-health-crisis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-07-14</lastmod>
+  </url>
 </urlset>

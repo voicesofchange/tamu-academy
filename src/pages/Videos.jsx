@@ -6,6 +6,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageMeta from '@/components/seo/PageMeta';
+import NewLessonCards from '@/components/videos/NewLessonCards';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -377,6 +378,9 @@ export default function Videos() {
           </div>
         )}
       </PageSection>
+
+      {/* ── Lessons 5–7 ─────────────────────────────────────────────────────── */}
+      <NewLessonCards />
 
       {/* ── Final CTA ─────────────────────────────────────────────────────── */}
       <motion.div

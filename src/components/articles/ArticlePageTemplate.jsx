@@ -89,7 +89,7 @@ export default function ArticlePageTemplate({ article }) {
           className="font-body"
           style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}
         >
-          {article.category}
+          {article.eyebrow || article.category}
         </motion.span>
 
         <motion.h1
@@ -184,7 +184,7 @@ export default function ArticlePageTemplate({ article }) {
           style={{ marginBottom: '3.5rem' }}
         >
           <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-            Watch the Related Episode
+            {article.videoEmbedLabel || 'Watch the Related Episode'}
           </p>
           <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
             <iframe

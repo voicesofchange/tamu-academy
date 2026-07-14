@@ -18,6 +18,7 @@ export default function PageMeta({
   type = 'website',
   noindex = false,
   nofollow = false,   // defaults false — set true only for intentionally isolated pages
+  image,              // optional absolute URL for og:image / twitter:image
 }) {
   const canonical = `${BASE_URL}${path ?? '/'}`;
 
@@ -62,16 +63,24 @@ export default function PageMeta({
     setMeta('meta[property="og:type"]', 'content', type);
     setMeta('meta[property="og:site_name"]', 'content', 'Tamu Academy');
 
+    // Open Graph image
+    if (image) {
+      setMeta('meta[property="og:image"]', 'content', image);
+    }
+
     // Twitter
-    setMeta('meta[name="twitter:card"]', 'content', 'summary');
+    setMeta('meta[name="twitter:card"]', 'content', image ? 'summary_large_image' : 'summary');
     setMeta('meta[name="twitter:title"]', 'content', title);
     setMeta('meta[name="twitter:description"]', 'content', description);
+    if (image) {
+      setMeta('meta[name="twitter:image"]', 'content', image);
+    }
 
     // Cleanup: restore on unmount so stale tags don't persist during navigation
     return () => {
       document.title = 'Tamu Academy';
     };
-  }, [title, description, canonical, type, noindex, nofollow]);
+  }, [title, description, canonical, type, noindex, nofollow, image]);
 
   return null;
 }
