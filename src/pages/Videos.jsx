@@ -408,11 +408,11 @@ export default function Videos() {
             Explore Resources →
           </Link>
           <Link
-            to="/programmes"
+            to="/courses"
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Explore Programmes →
+            Explore Courses →
           </Link>
         </div>
       </motion.div>
