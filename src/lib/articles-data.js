@@ -562,8 +562,6 @@ export const ARTICLES = [
     readingTime: 6,
     videoId: 'S4C8P-8QJKs',
     videoTitle: 'Is the ICC Biased Against Africa?',
-    eyebrow: 'Lesson 5',
-    videoEmbedLabel: 'Watch the video lesson',
     sections: [
       {
         heading: null,
@@ -670,8 +668,6 @@ export const ARTICLES = [
     readingTime: 7,
     videoId: 'GosyUDP_4hE',
     videoTitle: 'After the Guns Go Silent',
-    eyebrow: 'Lesson 6',
-    videoEmbedLabel: 'Watch the video lesson',
     sections: [
       {
         heading: null,
@@ -779,8 +775,6 @@ export const ARTICLES = [
     readingTime: 6,
     videoId: 'zScIxcNwgFo',
     videoTitle: 'Climate Is a Mental Health Crisis',
-    eyebrow: 'Lesson 7',
-    videoEmbedLabel: 'Watch the video lesson',
     safetyNote: 'This article discusses climate-related distress, self-harm, suicide, displacement, and loss.',
     sections: [
       {

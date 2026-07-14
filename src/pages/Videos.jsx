@@ -6,7 +6,6 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageMeta from '@/components/seo/PageMeta';
-import NewLessonCards from '@/components/videos/NewLessonCards';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -82,6 +81,39 @@ const LESSONS = [
       'How does economic power affect political power between nations?',
       'What would a more equitable global economic system look like, and who would need to give something up?',
     ],
+  },
+  {
+    id: 'is-the-icc-biased-against-africa',
+    title: 'Is the ICC Biased Against Africa?',
+    description: "The ICC's Africa-heavy record is real, but the deeper bias may lie in the court's jurisdiction, membership rules, and Security Council veto.",
+    category: 'Global Affairs',
+    label: 'Lesson 5',
+    videoId: 'S4C8P-8QJKs',
+    videoUrl: 'https://www.youtube.com/embed/S4C8P-8QJKs',
+    thumbnail: 'https://i.ytimg.com/vi/S4C8P-8QJKs/hqdefault.jpg',
+    discussionQuestions: [],
+  },
+  {
+    id: 'after-the-guns-go-silent',
+    title: 'After the Guns Go Silent',
+    description: 'Peace does not begin and end with disarmament. Durable peace requires reintegration, community ownership, truth, and repaired relationships.',
+    category: 'Global Affairs',
+    label: 'Lesson 6',
+    videoId: 'GosyUDP_4hE',
+    videoUrl: 'https://www.youtube.com/embed/GosyUDP_4hE',
+    thumbnail: 'https://i.ytimg.com/vi/GosyUDP_4hE/hqdefault.jpg',
+    discussionQuestions: [],
+  },
+  {
+    id: 'climate-is-a-mental-health-crisis',
+    title: 'Climate Is a Mental Health Crisis',
+    description: 'Climate change is not only an environmental crisis. It is also a crisis of grief, identity, community, belonging, and mental health.',
+    category: 'Mental Health',
+    label: 'Lesson 7',
+    videoId: 'zScIxcNwgFo',
+    videoUrl: 'https://www.youtube.com/embed/zScIxcNwgFo',
+    thumbnail: 'https://i.ytimg.com/vi/zScIxcNwgFo/hqdefault.jpg',
+    discussionQuestions: [],
   },
 ];
 
@@ -378,9 +410,6 @@ export default function Videos() {
           </div>
         )}
       </PageSection>
-
-      {/* ── Lessons 5–7 ─────────────────────────────────────────────────────── */}
-      <NewLessonCards />
 
       {/* ── Final CTA ─────────────────────────────────────────────────────── */}
       <motion.div
