@@ -407,10 +407,199 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
           },
           {
             number: 'Module 3',
+            route: 'module-3',
             title: 'Inflation, Employment and the Cost of Living',
             description:
               'Explains inflation, household budgets, purchasing power, wages, employment, underemployment, and economic policy choices.',
             status: 'In development',
+            estimatedTime: '40\u201355 minutes, excluding optional discussion',
+            competency:
+              'By the end of this module, learners should be able to analyze a household cost-of-living situation by identifying the main price pressures, assessing changes in nominal and real income, describing employment or underemployment conditions, and evaluating one policy response and its trade-offs.',
+            overview: [
+              'Inflation, employment, and the cost of living are often presented as national statistics, but households experience them through food prices, rent, transport, fuel, wages, work hours, and difficult budget choices. This module explains how broad economic indicators become everyday pressures and why households do not experience inflation or employment conditions in the same way.',
+              'Learners distinguish nominal income from real purchasing power, examine employment as a spectrum that includes underemployment and labour-force exit, and evaluate how government and central-bank responses involve trade-offs.',
+            ],
+            learningObjectives: [
+              'Define inflation in clear everyday language and distinguish it from a rise in the price of one item.',
+              'Explain how a consumer price basket is used to measure changes in the general price level.',
+              'Describe how inflation affects household budgets and purchasing power.',
+              'Distinguish nominal income from real income or real wages.',
+              'Differentiate employment, unemployment, underemployment, and labour-force exit.',
+              'Evaluate how policy responses to inflation and employment involve trade-offs.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Inflation',
+                definition:
+                  'Inflation is a sustained increase in the general level of prices across an economy. A single product becoming more expensive is not necessarily inflation; inflation refers to broader price increases across many goods and services.',
+                example:
+                  'Food, transport, rent, and energy prices rise across several months, reducing what the same income can buy.',
+              },
+              {
+                term: 'Consumer Price Basket and CPI',
+                definition:
+                  'Statistical agencies track a representative basket of goods and services commonly purchased by households. The Consumer Price Index, or CPI, estimates how the cost of that basket changes over time. It is an average, so individual households may experience different pressures.',
+                example:
+                  'A household that spends a large share of income on food may feel higher food inflation more strongly than the national average suggests.',
+              },
+              {
+                term: 'Cost of Living',
+                definition:
+                  'The cost of living is the amount of money required to maintain a particular standard of living. It includes food, housing, transport, energy, healthcare, education, communication, and other daily needs.',
+                example:
+                  'A rise in transport fares can affect access to work and school even when a household\u2019s rent is unchanged.',
+              },
+              {
+                term: 'Purchasing Power',
+                definition:
+                  'Purchasing power describes how much a unit of income can buy. When prices rise faster than income, purchasing power falls and households must reduce consumption, use savings, borrow, or give up other priorities.',
+                example:
+                  'A monthly income that once covered food, rent, and transport may no longer cover the same basket after prices rise.',
+              },
+              {
+                term: 'Nominal and Real Income',
+                definition:
+                  'Nominal income is the amount of money a person receives. Real income adjusts for price changes and reflects what that income can actually purchase. A nominal wage increase does not improve living standards when prices rise even faster.',
+                example:
+                  'A worker receives a 5 percent raise while their regular living costs rise by 8 percent, leaving them with lower real purchasing power.',
+              },
+              {
+                term: 'Employment, Unemployment, and Underemployment',
+                definition:
+                  'Employment status exists on a spectrum. Underemployment includes working too few hours, earning insufficient income, or performing work that does not fully use one\u2019s skills. Unemployment refers to people without work who are available and actively seeking it.',
+                example:
+                  'A trained graduate working irregular casual shifts while seeking full-time work is employed but underemployed.',
+              },
+              {
+                term: 'Labour-Force Exit',
+                definition:
+                  'Labour-force exit includes people who are not working and are not currently seeking work. Some leave because of education, caregiving, disability, retirement, or discouragement after repeated unsuccessful job searches.',
+                example:
+                  'A discouraged worker stops applying for jobs after months of rejection and is no longer counted as unemployed under common statistical definitions.',
+              },
+              {
+                term: 'Policy Responses and Trade-offs',
+                definition:
+                  'Central banks may raise interest rates to reduce inflation, while governments may use taxes, subsidies, social protection, public investment, or employment programmes. Every response has costs and benefits, so policy should match the source of the problem.',
+                example:
+                  'Higher interest rates may slow price pressure but also make loans more expensive for households and businesses.',
+              },
+            ],
+            reflectionQuestions: [
+              'Which recent price increase has had the greatest effect on households in your community? Explain why that expense is difficult to reduce.',
+              'Think of a person whose income increased but whose living standard did not improve. How might inflation, work hours, debt, or household obligations explain the difference?',
+              'Choose one policy response to rising living costs, such as an interest-rate increase, food subsidy, cash transfer, tax reduction, or public-transport investment. Who might benefit, and who might carry a cost?',
+            ],
+            quiz: {
+              passingScore: 3,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best defines inflation?',
+                  options: [
+                    'Any increase in the price of one product',
+                    'A sustained increase in the general level of prices across an economy',
+                    'A reduction in the number of people working',
+                    'A government decision to increase wages',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Inflation refers to a broad and sustained rise in the general price level. A single price increase may have a specific cause and does not necessarily represent economy-wide inflation.',
+                },
+                {
+                  id: 2,
+                  prompt:
+                    'A worker receives a 5 percent wage increase while the cost of their usual household basket rises by 8 percent. What is the best interpretation?',
+                  options: [
+                    'Both nominal and real income increased by the same amount',
+                    'Nominal income increased, but real purchasing power likely declined',
+                    'The worker became unemployed',
+                    'Inflation no longer affects the worker',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'The worker earns more money in nominal terms, but prices rose faster than income. The wage therefore buys less than before.',
+                },
+                {
+                  id: 3,
+                  prompt: 'Which example best illustrates underemployment?',
+                  options: [
+                    'A worker has stable full-time hours and sufficient income',
+                    'A qualified electrician receives only a few casual hours each week and wants more work',
+                    'A retired person is not seeking work',
+                    'A student chooses not to work during an examination period',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Underemployment includes too few hours, insufficient income, or work that does not fully use a person\u2019s skills.',
+                },
+                {
+                  id: 4,
+                  prompt:
+                    'A central bank raises interest rates to reduce inflation. Which trade-off is most likely?',
+                  options: [
+                    'Loans may become more expensive for households and businesses',
+                    'Every household immediately receives a higher wage',
+                    'Imported goods automatically become free',
+                    'Underemployment disappears immediately',
+                  ],
+                  correctIndex: 0,
+                  feedback:
+                    'Higher interest rates can reduce borrowing and spending, but they also increase financing costs and may slow investment or hiring.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'Choose one household or worker affected by rising living costs. Identify one major price pressure, describe the person\u2019s income or employment situation, explain whether their real purchasing power is improving or declining, and evaluate one policy response that could help. Include at least one trade-off or limitation.',
+                  feedback:
+                    'Compare your response against the elements named in the question \u2014 a major price pressure, the person\u2019s income or employment situation, whether real purchasing power is improving or declining, and one policy response with at least one trade-off or limitation.',
+                },
+              ],
+            },
+            activity: {
+              title: 'Household Cost-of-Living Pressure Map',
+              purpose:
+                'Analyze how changes in prices, income, employment, institutions, and policy affect one household or worker.',
+              instructions: [
+                'Choose a real or realistic household or worker scenario from an African community. Use specific details where possible. You may analyze your own household, a worker you know, or a constructed case based on local conditions.',
+                'Complete each section. Your final analysis should explain how prices, income, employment, institutions, and policy interact, rather than treating the cost of living as a single isolated problem.',
+              ],
+              fields: [
+                { id: 'scenario', label: 'Define the Household or Worker Scenario', helper: 'Describe the household or worker you are analyzing. Include location, household size or responsibilities, and relevant economic circumstances.' },
+                { id: 'income_sources', label: 'Map Income Sources and Stability', helper: 'What are the main sources of income, and how stable or predictable are they?' },
+                { id: 'essential_expenditures', label: 'Identify Essential Expenditures', helper: 'What are the household\u2019s main regular expenses \u2014 food, rent, transport, energy, healthcare, education, communication, or others?' },
+                { id: 'price_pressures', label: 'Identify Price Pressures', helper: 'Which prices have increased most, and how strongly do they affect this household?' },
+                { id: 'budget_adjustments', label: 'Trace Budget Adjustments and Trade-offs', helper: 'What budget pressure is the household facing, and what trade-offs or adjustments are they making?' },
+                { id: 'nominal_real_income', label: 'Compare Nominal and Real Income', helper: 'How has nominal income changed, and what has happened to real purchasing power?' },
+                { id: 'employment_conditions', label: 'Examine Employment and Labour Conditions', helper: 'What is the employment status, and is there underemployment, work insecurity, or labour-force exit?' },
+                { id: 'institutions_support', label: 'Identify Institutions and Support Systems', helper: 'Which institutions, policies, or support systems \u2014 banks, employers, social protection, government programmes \u2014 affect the situation?' },
+                { id: 'policy_response', label: 'Evaluate One Policy Response', helper: 'Which one policy response could help, and how would it work?' },
+                { id: 'policy_tradeoffs', label: 'Identify Policy Trade-offs and Distribution', helper: 'What are the trade-offs, limitations, or distributional effects of that policy, and who is most affected?' },
+                { id: 'final_analysis', label: 'Final Household Economic Analysis', helper: 'Explain how prices, income, employment, institutions, and policy interact for this household, using at least four concepts from the module.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete Questions 1\u20134 and answer Question 5.',
+              'Answer at least 3 of the 4 auto-scored questions correctly.',
+              'Complete the Household Cost-of-Living Pressure Map.',
+            ],
+            closingText: [
+              'Inflation and employment are not only national statistics. They become real through food prices, rent, transport, wages, work hours, debt, and the choices households must make when income no longer stretches as far.',
+              'A complete analysis distinguishes nominal income from real purchasing power, recognizes underemployment and labour-force exit, and asks how policy responses distribute benefits and costs.',
+              'In the next module, learners will examine trade, debt, foreign exchange, commodity dependence, and the global structures connecting African economies to international markets.',
+            ],
+            sources: [
+              'Kenya National Bureau of Statistics, Consumer Price Index and labour-market publications.',
+              'Central Bank of Kenya, Monetary Policy Statements and inflation materials.',
+              'International Labour Organization, ILOSTAT labour-market indicators and definitions.',
+              'World Bank, World Development Indicators on inflation, employment, unemployment, and labour-force participation.',
+              'African Development Bank, African Economic Outlook reports.',
+              'Fourie, F. C. v. N., and Burger, P. How to Think and Reason in Macroeconomics.',
+            ],
           },
           {
             number: 'Module 4',
