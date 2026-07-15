@@ -782,10 +782,181 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
           },
           {
             number: 'Module 5',
+            route: 'module-5',
             title: 'Inequality, Institutions and Development',
             description:
               'Examines income, wealth, gender, geographic, and generational inequality and how institutions shape opportunity and development.',
             status: 'In development',
+            estimatedTime: '45\u201360 minutes, excluding optional discussion',
+            competency:
+              'By the end of this module, learners should be able to analyze one inequality or development challenge by identifying its dimensions, affected groups, institutional and historical causes, distribution of benefits and risks, barriers to participation, and one practical reform that could expand inclusive development.',
+            overview: [
+              'Economic growth can increase national output, investment, and public revenue while leaving large groups excluded from land, finance, quality education, healthcare, secure work, and political voice. Development therefore cannot be evaluated through GDP alone.',
+              'This module examines inequality as a multidimensional issue shaped by assets, geography, gender, generation, history, and institutions. Learners use an inclusive-development framework to analyze who gains access to opportunity, who remains excluded, and what institutional changes could expand capability, security, accountability, and dignity.',
+            ],
+            learningObjectives: [
+              'Define inequality beyond income and identify several dimensions of unequal access and security.',
+              'Distinguish income, wealth, spatial, gender, and generational inequality.',
+              'Explain why GDP growth does not automatically reduce exclusion or improve human wellbeing.',
+              'Describe how formal and informal institutions shape access to land, finance, education, justice, and public services.',
+              'Connect historical and geographic patterns to present-day inequality and development outcomes.',
+              'Evaluate one development challenge using access, voice, capability, security, accountability, and dignity.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Growth and Development',
+                definition:
+                  'Economic growth refers to an increase in output or income. Development asks whether people gain real improvements in health, education, security, opportunity, participation, and dignity. Growth can support development, but the benefits do not distribute themselves automatically.',
+              },
+              {
+                term: 'Income and Wealth Inequality',
+                definition:
+                  'Income inequality concerns differences in earnings and flows of money. Wealth inequality concerns ownership of assets such as land, housing, businesses, savings, livestock, and financial holdings. Wealth often provides security and opportunity across generations.',
+              },
+              {
+                term: 'Spatial and Regional Inequality',
+                definition:
+                  'Opportunity can differ sharply by location. Roads, schools, hospitals, internet access, formal employment, courts, and public administration are often concentrated in cities or favored regions, leaving rural and historically marginalized areas with fewer choices.',
+              },
+              {
+                term: 'Gender and Generational Inequality',
+                definition:
+                  'Gender inequality appears through unpaid care work, employment access, inheritance, safety, financial access, and control over productive assets. Generational inequality affects young people who face limited jobs, housing, land, credit, or inherited wealth.',
+              },
+              {
+                term: 'Formal and Informal Institutions',
+                definition:
+                  'Formal institutions include laws, courts, schools, banks, tax systems, and land registries. Informal institutions include family networks, social norms, patronage, trust, community obligations, and customary rules. Both can expand opportunity or reinforce exclusion.',
+              },
+              {
+                term: 'Historical Institutional Legacies',
+                definition:
+                  'Past systems of land allocation, labor control, infrastructure, education, and extraction can shape present opportunities. Historical legacies do not make change impossible, but they help explain why inequality persists across places and generations.',
+              },
+              {
+                term: 'Capability and Inclusive Development',
+                definition:
+                  'Inclusive development asks whether people have the real freedom and resources to participate in economic life and pursue lives they value. Access, voice, capability, security, accountability, and dignity provide a broader standard than GDP alone.',
+              },
+            ],
+            reflectionQuestions: [
+              'Identify one form of inequality that affects your community. Is it mainly about income, wealth, geography, gender, generation, institutional access, or a combination?',
+              'Think of one formal or informal institution that shapes access to opportunity. Who does it help, who may be excluded, and why?',
+              'Choose one development project or period of economic growth. What evidence would you need to determine whether the benefits were broadly shared?',
+            ],
+            quiz: {
+              passingScore: 3,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best distinguishes economic growth from development?',
+                  options: [
+                    'Growth measures only population, while development measures exports',
+                    'Growth concerns increases in output, while development also considers wellbeing, opportunity, capability, and distribution',
+                    'Growth and development always mean exactly the same thing',
+                    'Development refers only to foreign aid',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Economic growth concerns increases in output, while development also considers wellbeing, opportunity, capability, and how gains are distributed.',
+                },
+                {
+                  id: 2,
+                  prompt: 'Which example best represents wealth inequality?',
+                  options: [
+                    'Two workers receive different monthly wages',
+                    'One household owns land, housing, and financial assets while another owns no significant assets',
+                    'Food prices increase across a country',
+                    'A government changes an interest rate',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Wealth inequality concerns unequal ownership of assets such as land, housing, businesses, and financial holdings.',
+                },
+                {
+                  id: 3,
+                  prompt: 'How can an institution reinforce inequality?',
+                  options: [
+                    'By applying rules or access requirements that mainly benefit people who already possess assets, connections, or influence',
+                    'By guaranteeing that every person receives the same outcome',
+                    'By eliminating every informal relationship',
+                    'By measuring GDP more frequently',
+                  ],
+                  correctIndex: 0,
+                  feedback:
+                    'Institutions can reinforce inequality when rules, access requirements, or enforcement mainly benefit people who already possess assets, connections, or influence.',
+                },
+                {
+                  id: 4,
+                  prompt: 'Which question is most consistent with an inclusive-development framework?',
+                  options: [
+                    'Did national output rise?',
+                    'Did exports increase?',
+                    'Were people able to gain access, voice, capability, security, accountability, and dignity?',
+                    'Did one sector attract foreign investment?',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Inclusive development asks whether people gain access, voice, capability, security, accountability, and dignity.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'Choose one inequality or development challenge affecting a country, region, or community. Identify the groups involved, explain which institutions and historical or geographic conditions shape the issue, assess who has access and who is excluded, and recommend one institutional or policy change that could expand capability and dignity.',
+                  feedback:
+                    'Compare your response against the elements named in the question \u2014 the groups involved, the institutions and historical or geographic conditions, who has access and who is excluded, and one institutional or policy change that could expand capability and dignity.',
+                },
+              ],
+            },
+            activity: {
+              title: 'Inequality and Institutional Access Map',
+              purpose:
+                'Analyze one inequality or exclusion challenge by examining its dimensions, institutions, historical and geographic roots, distribution of opportunity, barriers, voice, accountability, and possible reforms.',
+              instructions: [
+                'Select one real inequality or exclusion challenge affecting a country, region, community, social group, economic sector, rural or urban area, gender group, youth population, or historically marginalized population.',
+                'Complete each section. Use your final assessment to explain whether current growth or policy arrangements are inclusive.',
+              ],
+              fields: [
+                { id: 'challenge', label: 'Select the Inequality or Development Challenge', helper: 'Identify one real inequality or exclusion issue affecting a country, region, community, or group. Explain why it matters.' },
+                { id: 'groups', label: 'Identify the Main Groups', helper: 'Who is affected? Include groups that benefit, groups that are excluded, decision makers, and institutions with influence.' },
+                { id: 'dimensions', label: 'Map the Dimensions of Inequality', helper: 'Which dimensions are present: income, wealth, land, education, healthcare, finance, employment, geography, gender, generation, political voice, or security?' },
+                { id: 'assets_opportunity', label: 'Examine Assets and Opportunity', helper: 'Who owns or controls land, housing, businesses, finance, technology, education, networks, or other productive assets? How does this affect opportunity?' },
+                { id: 'formal_institutions', label: 'Identify Formal Institutions', helper: 'Which laws, courts, schools, banks, tax systems, land registries, government agencies, or public programs shape the issue?' },
+                { id: 'informal_institutions', label: 'Identify Informal Institutions', helper: 'Which family networks, norms, customary rules, patronage relationships, trust systems, or community obligations shape access and exclusion?' },
+                { id: 'historical_geographic', label: 'Examine Historical and Geographic Conditions', helper: 'What historical decisions, land systems, infrastructure patterns, migration, regional disparities, or past policies help explain the present situation?' },
+                { id: 'barriers', label: 'Trace Barriers to Participation', helper: 'What prevents excluded groups from accessing education, health, finance, employment, land, markets, justice, or political voice?' },
+                { id: 'distribution', label: 'Analyze Distribution', helper: 'Who captures the gains from economic activity or public investment? Who carries the costs, risks, unpaid labor, displacement, or insecurity?' },
+                { id: 'voice_accountability', label: 'Assess Voice and Accountability', helper: 'Who participates in decisions? Which institutions are answerable to affected communities? Where is accountability weak?' },
+                { id: 'capability_dignity', label: 'Evaluate Capability, Security, and Dignity', helper: 'How does the issue affect people\u2019s real freedom to pursue valued lives, withstand shocks, and participate with dignity?' },
+                { id: 'reforms', label: 'Propose Institutional or Policy Changes', helper: 'Identify practical reforms that could expand access, redistribute opportunity, strengthen accountability, or remove barriers.' },
+                { id: 'final_assessment', label: 'Final Inclusive-Development Assessment', helper: 'Explain whether current growth or policy arrangements are inclusive. Use at least four concepts from this module to support your conclusion.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete Questions 1\u20134 and answer Question 5.',
+              'Answer at least 3 of the 4 auto-scored questions correctly.',
+              'Complete the Inequality and Institutional Access Map.',
+            ],
+            closingText: [
+              'Growth matters, but distribution matters too. Institutions influence who can access land, education, finance, justice, employment, public services, and political voice. Historical and geographic patterns can deepen those differences across generations.',
+              'Inclusive development asks whether people have access, voice, capability, security, accountability, and dignity \u2014 not only whether national output increased.',
+              'In the next module, learners will examine Africa\u2019s economic futures through industrialization, technology, regional integration, climate resilience, ownership, and shared prosperity.',
+            ],
+            sources: [
+              'Cerra, V., Lama, R., and Loayza, N. Links Between Growth, Inequality, and Poverty. IMF Working Paper 21/68.',
+              'Chong, A., and Gradstein, M. Inequality and Institutions. The Review of Economics and Statistics, 89(3), 454-465.',
+              'Banerjee, A. V., and Iyer, L. History, Institutions, and Economic Performance. American Economic Review, 95(4), 1190-1213.',
+              'Easaw, J., and Savoia, A. Inequality in Developing Economies: The Role of Institutional Development. ECINEQ Working Papers.',
+              'International Labour Organization. Women and Men in the Informal Economy: A Statistical Update.',
+              'UNDP Human Development Reports and inequality-adjusted human development materials.',
+              'African Development Bank, African Economic Outlook reports.',
+              'World Bank, World Development Indicators on poverty, inequality, health, education, and access.',
+              'Amin, S. Unequal Development and related work on African political economy.',
+            ],
           },
           {
             number: 'Module 6',
