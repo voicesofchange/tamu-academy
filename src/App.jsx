@@ -13,6 +13,7 @@ import Landing from './pages/Landing';
 import About from './pages/About';
 import Courses from './pages/Courses';
 import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
+import Module1Economics from './pages/Module1Economics';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import Videos from './pages/Videos';
@@ -56,6 +57,7 @@ const AuthenticatedApp = () => {
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />

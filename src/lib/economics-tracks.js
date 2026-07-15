@@ -74,10 +74,163 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
         modules: [
           {
             number: 'Module 1',
+            route: 'module-1',
             title: 'Economics Is About More Than Money',
             description:
               'Introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between individual choices and the wider economy.',
             status: 'In development',
+            estimatedTime: '35\u201350 minutes, excluding optional discussion',
+            competency:
+              'By the end of this lesson, learners should be able to analyze an everyday economic decision by identifying the limited resources involved, the available alternatives, the opportunity cost, the relevant incentives, and the institutions or social relationships shaping the choice.',
+            overview: [
+              'Economics is not limited to money, banks, businesses, or financial markets. It examines how people, households, communities, businesses, and governments make choices when time, income, land, labour, information, and other resources are limited.',
+              'This lesson introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between personal decisions and the wider economy.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Scarcity',
+                definition:
+                  'Scarcity means that available resources are limited relative to the different ways people may want or need to use them. Scarcity does not always mean that nothing is available. It means choices must be made because time, income, land, labour, public funding, and other resources cannot satisfy every possible use at once.',
+                example:
+                  'A household may have enough income to cover food, rent, transport, and school expenses, but not enough to fund every need at the preferred level.',
+              },
+              {
+                term: 'Trade-off',
+                definition:
+                  'A trade-off occurs when choosing more of one option requires accepting less of another. Every decision has a trade-off because resources used for one purpose are no longer fully available for another.',
+                example:
+                  'A government that directs more funding toward a major road project may have less funding available for clinics, schools, water systems, or social protection.',
+              },
+              {
+                term: 'Opportunity Cost',
+                definition:
+                  'Opportunity cost is the value of the best alternative given up when a choice is made. It is not necessarily the full list of everything that was rejected. It is the most valuable realistic alternative that was not selected.',
+                example:
+                  'A student who spends Saturday working may earn income, but the opportunity cost could be the study time, rest, or family responsibility they would otherwise have prioritized.',
+              },
+              {
+                term: 'Incentives',
+                definition:
+                  'Incentives are factors that encourage or discourage particular choices. They can be financial, social, legal, cultural, political, or emotional. People do not respond only to money.',
+                example:
+                  'A higher wage may encourage someone to accept a job. Family expectations may encourage remittances. Community recognition may encourage volunteering.',
+              },
+              {
+                term: 'Institutions',
+                definition:
+                  'Institutions are the formal and informal rules, systems, and relationships that shape economic choices. They affect which choices are available, who can access opportunities, and who carries risk.',
+                example:
+                  'Formal institutions include laws, courts, schools, banks, tax systems, land registries, and government agencies. Informal institutions include family expectations, community norms, chamas, trust, cultural practices, and social obligations.',
+              },
+            ],
+            reflectionQuestions: [
+              'Think of an important decision you or your household made recently. What limited resources influenced the decision?',
+              'Describe one situation in which family, culture, or community expectations influenced an economic choice. Did the choice make sense when social obligations and relationships were considered?',
+              'Think of a government or community decision that affects your area. Who appears to benefit? Who carries the cost? What alternative use of the resources was available?',
+            ],
+            quiz: {
+              passingScore: 4,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best defines scarcity?',
+                  options: [
+                    'A situation in which no resources exist',
+                    'A situation in which resources are limited relative to possible uses',
+                    'A temporary increase in prices',
+                    'A decision made only by governments',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Scarcity means resources are limited relative to the many possible ways they could be used.',
+                },
+                {
+                  id: 2,
+                  prompt:
+                    'A county government chooses to spend additional funding on a new road instead of expanding a health clinic. What is the opportunity cost?',
+                  options: [
+                    'The total price of the road',
+                    'The taxes collected by the county',
+                    'The clinic expansion that was not funded',
+                    'The number of people using the road',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Opportunity cost is the most valuable alternative given up \u2014 in this case, expanding the clinic.',
+                },
+                {
+                  id: 3,
+                  prompt: 'Which of the following is an informal institution?',
+                  options: [
+                    'A national court',
+                    'A commercial bank',
+                    'A government tax agency',
+                    'A community savings group based on trust and shared obligations',
+                  ],
+                  correctIndex: 3,
+                  feedback:
+                    'Community savings groups may operate through trust, relationships, and shared norms.',
+                },
+                {
+                  id: 4,
+                  prompt:
+                    'A worker sends part of their income to support relatives even though saving the money would increase their personal financial security. Which explanation best applies the broader economic lens used in this lesson?',
+                  options: [
+                    'The worker does not understand economics.',
+                    'The choice is necessarily irrational because it reduces personal savings.',
+                    'The choice may reflect family obligations, social incentives, shared security, and cultural expectations.',
+                    'The choice has no economic significance because it involves relatives.',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Economic decisions can reflect family responsibility, culture, reciprocity, and collective security.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'A student must choose between attending a paid work shift and preparing for an important examination. Identify the scarce resources, the two alternatives, the likely opportunity cost of each choice, and one incentive that may influence the decision.',
+                  feedback:
+                    'Compare your answer against the key concepts of scarcity, alternatives, opportunity cost, and incentives, and consider whether your explanation covered all four elements.',
+                },
+              ],
+            },
+            activity: {
+              title: 'Everyday Economic Decision Map',
+              purpose:
+                'Learners apply the lesson\u2019s concepts to a real decision affecting an individual, household, community, business, or government.',
+              instructions: [
+                'Choose one economic decision. It may involve household spending, school or employment, starting a business, farming, migration, remittances, public spending, transport, land, or community development.',
+                'Complete each section. Use full sentences where requested and refer to at least three lesson concepts in your final assessment.',
+              ],
+              fields: [
+                { id: 'decision', label: 'Decision', helper: 'What decision was made or must be made?' },
+                { id: 'scarce_resources', label: 'Scarce resources', helper: 'Which limited resources affect the decision? Consider money, time, land, labour, information, transport, credit, public funding, social support, or another resource.' },
+                { id: 'alternatives', label: 'Alternatives', helper: 'What realistic options were available?' },
+                { id: 'opportunity_cost', label: 'Opportunity cost', helper: 'What is the most valuable alternative given up? Why was it valuable?' },
+                { id: 'incentives', label: 'Incentives', helper: 'What encouraged or discouraged the decision? Consider income, prices, taxes, rules, family expectations, cultural obligations, community recognition, risk, security, or future opportunity.' },
+                { id: 'formal_institutions', label: 'Formal institutions', helper: 'Which formal institutions shaped the decision? Consider laws, banks, schools, government agencies, courts, employers, and land systems.' },
+                { id: 'informal_institutions', label: 'Informal institutions', helper: 'Which informal institutions shaped the decision? Consider family, community networks, chamas, social norms, cultural expectations, trust, or religious institutions.' },
+                { id: 'who_benefits', label: 'Who benefits', helper: 'Who benefits from the decision?' },
+                { id: 'who_carries_cost', label: 'Who carries the cost or risk', helper: 'Who carries the cost or risk?' },
+                { id: 'fairness', label: 'Fairness assessment', helper: 'Are the benefits and costs distributed fairly?' },
+                { id: 'final_analysis', label: 'Final analysis', helper: 'Do you think the decision was reasonable under the circumstances? Explain your answer using at least three concepts from the lesson.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete the five-question knowledge check.',
+              'Score at least 4 out of 5.',
+              'Complete the Everyday Economic Decision Map.',
+            ],
+            closingText: [
+              'Economics begins with choices. Those choices are shaped by limited resources, competing alternatives, incentives, institutions, relationships, culture, and power.',
+              'The purpose of economic analysis is not simply to judge whether a choice was good or bad. It is to understand the conditions under which the choice was made, what was given up, who benefited, and who carried the cost.',
+              'In the next module, learners will apply this framework to the formal, informal, household, and community systems that shape how African economies actually work.',
+            ],
+            sources: [],
           },
           {
             number: 'Module 2',
@@ -149,4 +302,16 @@ export function getEconomicsCourseBySlug(slug) {
     }
   }
   return null;
+}
+
+/**
+ * Retrieve a module by its route key (e.g. 'module-1') within a course.
+ * Returns { track, course, module } or null if not found.
+ */
+export function getEconomicsModule(courseSlug, moduleRoute) {
+  const found = getEconomicsCourseBySlug(courseSlug);
+  if (!found) return null;
+  const module = found.course.modules.find((m) => m.route === moduleRoute);
+  if (!module) return null;
+  return { track: found.track, course: found.course, module };
 }

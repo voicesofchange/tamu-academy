@@ -183,3 +183,34 @@ html {
     animation: none;
   }
 }
+
+/* Printable layout for the Everyday Economic Decision Map (no dependency).
+   Only the marked print area is shown, restyled for black-on-white output. */
+@media print {
+  body * { visibility: hidden !important; }
+  .tamu-print-area, .tamu-print-area * { visibility: visible !important; }
+  .tamu-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #ffffff !important;
+    color: #111111 !important;
+    padding: 0 !important;
+  }
+  .tamu-print-area h1,
+  .tamu-print-area h2,
+  .tamu-print-area h3,
+  .tamu-print-area label,
+  .tamu-print-area p,
+  .tamu-print-area span {
+    color: #111111 !important;
+  }
+  .tamu-print-area textarea {
+    color: #111111 !important;
+    background: #ffffff !important;
+    border: 1px solid #555555 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

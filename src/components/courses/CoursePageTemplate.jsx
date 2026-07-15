@@ -120,7 +120,11 @@ export default function CoursePageTemplate({ course }) {
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((module) => (
-            <ModuleCard key={module.number} module={module} />
+            <ModuleCard
+              key={module.number}
+              module={module}
+              to={module.route && import.meta.env.DEV ? `/courses/${course.slug}/${module.route}` : null}
+            />
           ))}
         </div>
       </PageSection>

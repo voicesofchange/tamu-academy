@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import StatusBadge from '@/components/page/StatusBadge';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -9,8 +10,8 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  * Modules are intentionally non-interactive until learning materials are ready:
  * no Link, no route, no navigation target.
  */
-export default function ModuleCard({ module }) {
-  return (
+export default function ModuleCard({ module, to }) {
+  const card = (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -32,4 +33,9 @@ export default function ModuleCard({ module }) {
       </p>
     </motion.div>
   );
+  return to ? (
+    <Link to={to} style={{ textDecoration: 'none', display: 'block' }}>
+      {card}
+    </Link>
+  ) : card;
 }
