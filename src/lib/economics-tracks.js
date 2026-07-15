@@ -234,10 +234,176 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
           },
           {
             number: 'Module 2',
+            route: 'module-2',
             title: 'How African Economies Actually Work',
             description:
               'Examines formal and informal work, household production, agriculture, services, small enterprise, infrastructure, and global value chains.',
             status: 'In development',
+            estimatedTime: '40\u201355 minutes, excluding optional discussion',
+            competency:
+              'By the end of this module, learners should be able to analyze one everyday economic activity by identifying its formal, informal, household, and community dimensions; the sectors and workers involved; the institutions and infrastructure supporting it; and its connection to wider markets and value chains.',
+            overview: [
+              'African economies cannot be understood only through formal jobs, registered companies, GDP statistics, or large corporations. Everyday economic life also depends on informal work, household production, unpaid care, agriculture, services, small enterprises, community networks, infrastructure, and regional and global markets.',
+              'This module provides a broader framework for seeing how these systems interact. It emphasizes that what is not fully counted may still be economically essential, and that local activity is shaped by institutions, infrastructure, history, and global value chains.',
+            ],
+            learningObjectives: [
+              'Explain why African economies should not be reduced to GDP, formal employment, or large corporations.',
+              'Distinguish formal, informal, household, and community-based economic activity.',
+              'Identify how agriculture, services, small enterprise, trade, and digital activity connect.',
+              'Explain why informal and unpaid work can be economically significant even when undercounted.',
+              'Describe how infrastructure and institutions shape productivity and opportunity.',
+              'Trace how a local activity connects to a wider market or global value chain.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Formal Economic Activity',
+                definition:
+                  'Formal activity operates within recognized legal and administrative systems. Businesses may be registered, licensed, taxed, and required to follow employment, accounting, and regulatory rules. Formal workers may have contracts, predictable wages, legal protections, or benefits.',
+              },
+              {
+                term: 'Informal Economic Activity',
+                definition:
+                  'Informal activity operates partly or fully outside some systems of registration, taxation, labour protection, or regulation. Informal does not automatically mean illegal, disorganized, or unimportant. It often provides income where formal employment is limited, while also exposing workers to instability and weak protection.',
+              },
+              {
+                term: 'Household Production and Unpaid Care',
+                definition:
+                  'Households produce essential economic value through cooking, caregiving, childcare, water collection, subsistence farming, household management, and unpaid family labour. This work may not involve a wage, but it supports paid employment, education, health, and daily survival.',
+              },
+              {
+                term: 'Economic Sectors and Interdependence',
+                definition:
+                  'Agriculture, industry, and services are connected rather than isolated. Farming links to transport, storage, processing, finance, retail, and exports. Services include both professional work and everyday activities such as transport, retail, hospitality, and domestic services.',
+              },
+              {
+                term: 'Underemployment',
+                definition:
+                  'Underemployment occurs when a person works fewer hours than they need, earns insufficient income, or performs work that does not fully use their skills. A person can therefore be working and still be economically insecure.',
+              },
+              {
+                term: 'Institutions and Infrastructure',
+                definition:
+                  'Economic possibility depends on systems such as roads, electricity, internet access, schools, banks, courts, property systems, local government, regulation, and public trust. Individual effort matters, but it operates within these surrounding conditions.',
+              },
+              {
+                term: 'Global Value Chains and Value Capture',
+                definition:
+                  'A local product may pass through producers, processors, exporters, global buyers, retailers, and consumers. Participation in the chain does not guarantee equal benefit. The stages controlling processing, branding, finance, logistics, or consumer access often capture more value.',
+              },
+            ],
+            reflectionQuestions: [
+              'Think of one economic activity that is common in your community. Which parts are formal, informal, household-based, or community-supported?',
+              'Identify one type of unpaid or undercounted work that makes paid economic activity possible. Who performs it, and what would happen if it stopped?',
+              'Choose one local worker or small business. Which institutions and infrastructure expand or limit their opportunity?',
+            ],
+            quiz: {
+              passingScore: 3,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best describes informal economic activity?',
+                  options: [
+                    'Activity that is always illegal and should not be counted',
+                    'Activity operating partly or fully outside some registration, taxation, labour-protection, or regulatory systems',
+                    'Activity performed only within households',
+                    'Activity that never interacts with formal institutions',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Informal activity operates partly or fully outside some formal registration, taxation, labour-protection, or regulatory systems. It is not automatically illegal or unimportant.',
+                },
+                {
+                  id: 2,
+                  prompt: 'Why is unpaid care work economically significant?',
+                  options: [
+                    'It has no economic value because no wage is paid',
+                    'It matters only when it is performed by a registered business',
+                    'It supports paid work, education, health, and household survival even when it is not fully counted',
+                    'It is the same as unemployment',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Unpaid care and household production support paid work, education, health, and survival even when no wage is exchanged.',
+                },
+                {
+                  id: 3,
+                  prompt: 'Which example best illustrates underemployment?',
+                  options: [
+                    'A worker has stable hours, a contract, and sufficient income',
+                    'A trained technician works a few casual hours and wants more work',
+                    'A retired person is not seeking employment',
+                    'A student chooses not to work during examinations',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Underemployment includes too few hours, insufficient income, or work that does not fully use a person\u2019s skills.',
+                },
+                {
+                  id: 4,
+                  prompt:
+                    'A farmer produces tomatoes, but poor roads cause delays and spoilage before the tomatoes reach market. Which lesson concept best explains the constraint?',
+                  options: [
+                    'Infrastructure shapes productivity and market access',
+                    'The farmer is not participating in the economy',
+                    'Informal work has no connection to formal systems',
+                    'GDP automatically solves local transport problems',
+                  ],
+                  correctIndex: 0,
+                  feedback:
+                    'Roads and transport systems affect market access, spoilage, productivity, and income.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'Choose one local economic activity, such as a market vendor, boda boda service, farm, repair shop, childcare arrangement, or mobile-money kiosk. Identify one formal or informal feature, one supporting institution or infrastructure system, one type of hidden or undercounted work, and one connection to a wider market or value chain.',
+                  feedback:
+                    'Compare your response against the four elements named in the question \u2014 a formal or informal feature, a supporting institution or infrastructure system, hidden or undercounted work, and a connection to a wider market or value chain \u2014 and consider whether your explanation showed how they interact.',
+                },
+              ],
+            },
+            activity: {
+              title: 'Local Economic Activity Systems Map',
+              purpose:
+                'Analyze one real economic activity through formal, informal, household, institutional, sectoral, and market connections.',
+              instructions: [
+                'Choose one economic activity from your community or another African setting. Examples include a market stall, boda boda service, farm, mobile-money kiosk, tailoring business, food vendor, construction crew, childcare arrangement, repair shop, transport route, cooperative, or digital service.',
+                'Complete each section using specific details. Your final analysis should explain how the activity depends on systems that may not be immediately visible.',
+              ],
+              fields: [
+                { id: 'activity_location', label: 'Economic activity and location', helper: 'What economic activity are you analyzing, and where does it take place?' },
+                { id: 'people_roles', label: 'People and roles (paid and unpaid)', helper: 'Who participates? Note paid workers, unpaid contributors, owners, family members, and customers.' },
+                { id: 'dimensions', label: 'Formal, informal, household, and community dimensions', helper: 'Which parts of the activity are formal, informal, household-based, or community-supported?' },
+                { id: 'sectors_inputs', label: 'Sectors, resources, and inputs', helper: 'Which sectors connect to the activity (e.g. agriculture, services, trade, transport) and what resources or inputs does it rely on?' },
+                { id: 'institutions_infrastructure', label: 'Institutions and infrastructure', helper: 'Which institutions (laws, banks, local government, schools) and infrastructure (roads, electricity, internet) make the activity possible or limit it?' },
+                { id: 'hidden_work', label: 'Hidden or undercounted work', helper: 'What unpaid, household, or undercounted labour supports the activity, and who performs it?' },
+                { id: 'market_connections', label: 'Market or value-chain connections', helper: 'How does the activity connect to wider markets, suppliers, processors, exporters, or global value chains?' },
+                { id: 'who_captures_value', label: 'Who captures value', helper: 'Where in the chain is value captured, and by whom?' },
+                { id: 'who_carries_risk', label: 'Who carries risk or instability', helper: 'Who carries the risk, instability, or exposure to loss?' },
+                { id: 'barriers_opportunities', label: 'Barriers and opportunities', helper: 'What barriers limit the activity, and what opportunities could strengthen it?' },
+                { id: 'final_analysis', label: 'Final systems analysis', helper: 'Explain how the activity depends on systems that may not be immediately visible, using at least four concepts from the module.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete Questions 1\u20134 and answer Question 5.',
+              'Answer at least 3 of the 4 auto-scored questions correctly.',
+              'Complete the Local Economic Activity Systems Map.',
+            ],
+            closingText: [
+              'African economies are not limited to what appears in formal records. They are also built through informal work, households, care, small enterprises, community relationships, agriculture, services, and local systems of exchange.',
+              'A complete economic analysis asks what work is visible, what work is hidden, which systems make the activity possible, who captures the value, and how local choices connect to wider institutions and markets.',
+              'In the next module, learners will examine how inflation, employment, wages, and the cost of living turn national economic indicators into everyday household pressures.',
+            ],
+            sources: [
+              'International Labour Organization, ILOSTAT resources on informality and labour markets.',
+              'World Bank, World Development Indicators on employment by sector.',
+              'Gibbon, P., and Ponte, S. Trading Down: Africa, Value Chains, and the Global Economy.',
+              'Oloruntoba, S. O., and Falola, T. The Political Economy of Africa.',
+              'Cooper, F. Africa and the World Economy.',
+            ],
           },
           {
             number: 'Module 3',

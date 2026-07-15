@@ -28,18 +28,30 @@ const disabledStyle = {
 
 /**
  * Previous / Next / Return-to-course navigation.
- * In the pilot, Previous is disabled (this is the first module) and
- * Next (Module 2) is disabled until that module is built.
+ * prevModule and nextModule come from the course module order; a module
+ * without a route renders disabled. When prevModule is null (the first
+ * module) Previous is disabled. Next is always disabled in the pilot since
+ * upcoming modules are not yet available.
  */
-export default function ModuleNav({ coursePath, nextLabel }) {
+export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel }) {
+  const prevPath = prevModule && prevModule.route ? `/courses/${courseSlug}/${prevModule.route}` : null;
+  const nextTitle = nextModule ? `${nextModule.number} is not yet available` : 'Next module is not yet available';
+
   return (
     <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-        <span aria-disabled="true" style={disabledStyle} title="This is the first module">
-          <ChevronLeft size={14} aria-hidden="true" />
-          Previous Module
-        </span>
-        <span aria-disabled="true" style={disabledStyle} title="Module 2 is not yet available">
+        {prevPath ? (
+          <Link to={prevPath} className="font-body" style={navLinkStyle}>
+            <ChevronLeft size={14} aria-hidden="true" />
+            Previous: {prevModule.number} — {prevModule.title}
+          </Link>
+        ) : (
+          <span aria-disabled="true" style={disabledStyle} title="This is the first module">
+            <ChevronLeft size={14} aria-hidden="true" />
+            Previous Module
+          </span>
+        )}
+        <span aria-disabled="true" style={disabledStyle} title={nextTitle}>
           {nextLabel}
           <ChevronRight size={14} aria-hidden="true" />
         </span>

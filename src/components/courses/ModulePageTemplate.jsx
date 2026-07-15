@@ -19,6 +19,11 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
 export default function ModulePageTemplate({ course, module }) {
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${module.route}`;
+  const moduleIndex = course.modules.findIndex((m) => m.route === module.route);
+  const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
+  const nextModule =
+    moduleIndex >= 0 && moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
+  const nextLabel = nextModule ? `Next: ${nextModule.number}` : 'Next: Module 2';
 
   return (
     <PageLayout>
@@ -79,6 +84,17 @@ export default function ModulePageTemplate({ course, module }) {
           <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
         ))}
       </PageSection>
+
+      {/* Learning objectives */}
+      {module.learningObjectives && (
+        <PageSection eyebrow="Objectives" heading="Learning Objectives">
+          <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+            {module.learningObjectives.map((o, i) => (
+              <li key={i} style={{ marginBottom: '0.6rem' }}>{o}</li>
+            ))}
+          </ol>
+        </PageSection>
+      )}
 
       {/* Key concepts */}
       <PageSection eyebrow="Concepts" heading="Key Concepts">
@@ -158,7 +174,13 @@ export default function ModulePageTemplate({ course, module }) {
         )}
       </PageSection>
 
-      <ModuleNav coursePath={coursePath} nextLabel="Next: Module 2" />
+      <ModuleNav
+        coursePath={coursePath}
+        courseSlug={course.slug}
+        prevModule={prevModule}
+        nextModule={nextModule}
+        nextLabel={nextLabel}
+      />
     </PageLayout>
   );
 }
