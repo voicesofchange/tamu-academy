@@ -27,8 +27,10 @@ export default function KnowledgeCheck({ quiz }) {
   const [answers, setAnswers] = useState(() => quiz.questions.map((q) => (q.written ? '' : null)));
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const [q5Complete, setQ5Complete] = useState(false);
 
-  const passingScore = quiz.passingScore || 4;
+  const mcTotal = quiz.questions.filter((q) => !q.written).length;
+  const passingScore = quiz.passingScore || 3;
 
   const setOption = (qi, oi) => {
     if (submitted) return;
@@ -50,29 +52,32 @@ export default function KnowledgeCheck({ quiz }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let s = 0;
+    let mcScore = 0;
+    let q5 = false;
     quiz.questions.forEach((q, qi) => {
       if (q.written) {
-        if ((answers[qi] || '').trim().length >= 20) s += 1;
+        q5 = (answers[qi] || '').trim().length >= 20;
       } else if (answers[qi] === q.correctIndex) {
-        s += 1;
+        mcScore += 1;
       }
     });
-    setScore(s);
+    setScore(mcScore);
+    setQ5Complete(q5);
     setSubmitted(true);
   };
 
   const handleRetry = () => {
-    setAnswers(quiz.questions.map((q) => (q.written ? '' : null)));
+    setAnswers((prev) => quiz.questions.map((q, qi) => (q.written ? prev[qi] : null)));
     setSubmitted(false);
     setScore(0);
+    setQ5Complete(false);
   };
 
   const allAnswered = quiz.questions.every((q, qi) =>
     q.written ? (answers[qi] || '').trim().length > 0 : answers[qi] !== null
   );
 
-  const passed = score >= passingScore;
+  const passed = submitted && score >= passingScore && q5Complete;
 
   return (
     <form onSubmit={handleSubmit} aria-label="Knowledge check">
@@ -156,13 +161,16 @@ export default function KnowledgeCheck({ quiz }) {
       ) : (
         <div role="status" aria-live="polite" style={{ marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-            <StatusBadge label={`${score} / ${quiz.questions.length} correct`} />
-            <StatusBadge label={passed ? 'Passed' : 'Below passing score'} />
+            <StatusBadge label={`${score} of ${mcTotal} graded correct`} />
+            <StatusBadge label={q5Complete ? 'Question 5 completed' : 'Question 5 needs a response'} />
+            <StatusBadge label={passed ? 'Passing' : 'Below passing threshold'} />
           </div>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
             {passed
-              ? `You met the completion requirement (${passingScore} out of ${quiz.questions.length}). Compare the feedback below with your responses.`
-              : `The passing score is ${passingScore} out of ${quiz.questions.length}. Review the key concepts and try again.`}
+              ? `You met the completion requirement: at least ${passingScore} of ${mcTotal} graded questions correct and a completed written response to Question 5. Review the feedback below.`
+              : q5Complete
+                ? `You answered ${score} of ${mcTotal} graded questions correctly. Passing requires at least ${passingScore} of ${mcTotal}. You can retry Questions 1\u20134; your Question 5 response will be kept.`
+                : `Please add a substantive written response to Question 5. You answered ${score} of ${mcTotal} graded questions correctly. Your Question 5 response will be kept when you retry.`}
           </p>
           <button
             type="button"

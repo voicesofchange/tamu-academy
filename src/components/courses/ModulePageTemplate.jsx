@@ -111,7 +111,7 @@ export default function ModulePageTemplate({ course, module }) {
       {/* Knowledge check */}
       <PageSection eyebrow="Check" heading="Knowledge Check">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Five questions. Questions 1–4 are selectable; question 5 asks for a written response. Feedback appears only after you submit. Passing score: {module.quiz.passingScore} out of {module.quiz.questions.length}. You can try again after feedback.
+          Five questions. Questions 1\u20134 are selectable and automatically scored. Question 5 is a required written application response and is not marked correct or incorrect. Passing requires at least {module.quiz.passingScore} of the {module.quiz.questions.filter((q) => !q.written).length} graded questions correct and a completed Question 5. Feedback appears only after you submit; you can retry Questions 1\u20134 and your Question 5 response will be kept.
         </p>
         <KnowledgeCheck quiz={module.quiz} />
       </PageSection>

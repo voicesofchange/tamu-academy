@@ -6,6 +6,8 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleCard from '@/components/courses/ModuleCard';
+import { useAuth } from '@/lib/AuthContext';
+import { canViewInDevelopment } from '@/lib/module-access';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -16,6 +18,8 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  */
 export default function CoursePageTemplate({ course }) {
   const metaDescription = course.description;
+  const { isAuthenticated, user } = useAuth();
+  const allowDevModules = canViewInDevelopment({ isAuthenticated, role: user?.role });
 
   const courseFacts = [
     ['Pillar', course.pillar],
@@ -123,7 +127,7 @@ export default function CoursePageTemplate({ course }) {
             <ModuleCard
               key={module.number}
               module={module}
-              to={module.route && import.meta.env.DEV ? `/courses/${course.slug}/${module.route}` : null}
+              to={module.route && allowDevModules ? `/courses/${course.slug}/${module.route}` : null}
             />
           ))}
         </div>

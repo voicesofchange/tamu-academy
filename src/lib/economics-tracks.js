@@ -129,7 +129,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Think of a government or community decision that affects your area. Who appears to benefit? Who carries the cost? What alternative use of the resources was available?',
             ],
             quiz: {
-              passingScore: 4,
+              passingScore: 3,
               questions: [
                 {
                   id: 1,
@@ -222,7 +222,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Review the key concepts.',
               'Respond to at least one reflection question.',
               'Complete the five-question knowledge check.',
-              'Score at least 4 out of 5.',
+              'Score at least 3 of 4 graded questions correct and complete Question 5.',
               'Complete the Everyday Economic Decision Map.',
             ],
             closingText: [
