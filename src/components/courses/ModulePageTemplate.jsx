@@ -23,7 +23,7 @@ export default function ModulePageTemplate({ course, module }) {
   const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
   const nextModule =
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
-  const nextLabel = nextModule ? `Next: ${nextModule.number}` : 'Next: Module 2';
+  const nextLabel = nextModule ? `Next: ${nextModule.number} — ${nextModule.title}` : 'Next: Module 4';
 
   return (
     <PageLayout>

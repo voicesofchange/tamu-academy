@@ -28,13 +28,15 @@ const disabledStyle = {
 
 /**
  * Previous / Next / Return-to-course navigation.
- * prevModule and nextModule come from the course module order; a module
- * without a route renders disabled. When prevModule is null (the first
- * module) Previous is disabled. Next is always disabled in the pilot since
- * upcoming modules are not yet available.
+ * prevModule and nextModule come from the course module order. A control is
+ * enabled only when that adjacent module has been built (has a route); modules
+ * without a route render disabled. This component only renders inside the
+ * preview/allowed module page, so in public production (where the "Module in
+ * development" state is shown) no module-to-module links appear at all.
  */
 export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel }) {
   const prevPath = prevModule && prevModule.route ? `/courses/${courseSlug}/${prevModule.route}` : null;
+  const nextPath = nextModule && nextModule.route ? `/courses/${courseSlug}/${nextModule.route}` : null;
   const nextTitle = nextModule ? `${nextModule.number} is not yet available` : 'Next module is not yet available';
 
   return (
@@ -51,10 +53,17 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
             Previous Module
           </span>
         )}
-        <span aria-disabled="true" style={disabledStyle} title={nextTitle}>
-          {nextLabel}
-          <ChevronRight size={14} aria-hidden="true" />
-        </span>
+        {nextPath ? (
+          <Link to={nextPath} className="font-body" style={navLinkStyle}>
+            {nextLabel}
+            <ChevronRight size={14} aria-hidden="true" />
+          </Link>
+        ) : (
+          <span aria-disabled="true" style={disabledStyle} title={nextTitle}>
+            {nextLabel}
+            <ChevronRight size={14} aria-hidden="true" />
+          </span>
+        )}
       </div>
       <Link to={coursePath} className="font-body" style={navLinkStyle}>
         <ChevronLeft size={14} aria-hidden="true" />
