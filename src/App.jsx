@@ -12,6 +12,7 @@ import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Courses from './pages/Courses';
+import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import Videos from './pages/Videos';
@@ -54,6 +55,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />

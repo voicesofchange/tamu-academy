@@ -6,6 +6,8 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
+import TrackCard from '@/components/courses/TrackCard';
+import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -159,6 +161,19 @@ export default function Courses() {
               </p>
             </motion.div>
           ))}
+
+          {area.id === 'economics-and-development' && (
+            <>
+              <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginTop: '1.75rem', marginBottom: '1rem' }}>
+                Competency-Based Learning Tracks
+              </span>
+              {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => (
+                <div key={track.slug} style={{ marginBottom: '1.25rem' }}>
+                  <TrackCard track={track} />
+                </div>
+              ))}
+            </>
+          )}
 
           {area.extra && (
             <motion.div
