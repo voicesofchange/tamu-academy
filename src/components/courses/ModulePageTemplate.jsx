@@ -161,6 +161,15 @@ export default function ModulePageTemplate({ course, module }) {
         ))}
       </PageSection>
 
+      {/* Course closing — final module only */}
+      {module.courseClosingText && (
+        <PageSection eyebrow="Course Closing" heading="Course Closing">
+          {module.courseClosingText.map((para, i) => (
+            <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
+          ))}
+        </PageSection>
+      )}
+
       {/* Sources placeholder */}
       <PageSection eyebrow="Sources" heading="Sources and Further Reading">
         {module.sources && module.sources.length > 0 ? (
@@ -180,6 +189,7 @@ export default function ModulePageTemplate({ course, module }) {
         prevModule={prevModule}
         nextModule={nextModule}
         nextLabel={nextLabel}
+        endOfCourse={module.endOfCourse}
       />
     </PageLayout>
   );

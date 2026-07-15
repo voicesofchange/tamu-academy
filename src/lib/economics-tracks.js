@@ -960,10 +960,196 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
           },
           {
             number: 'Module 6',
+            route: 'module-6',
             title: 'Africa\u2019s Economic Futures',
             description:
               'Explores industrialization, technology, the future of work, the AfCFTA, climate resilience, ownership, and shared prosperity.',
             status: 'In development',
+            estimatedTime: '45\u201360 minutes, excluding optional discussion',
+            competency:
+              'By the end of this module, learners should be able to design a future-oriented economic strategy for an African country, region, sector, or community by connecting productive capacity, value creation, industrialization, technology, decent work, regional integration, climate resilience, ownership, institutions, and shared prosperity.',
+            overview: [
+              'Africa\u2019s economic future is not predetermined. Demographic change, urbanization, technology, climate pressure, regional integration, and shifting global markets create both serious risks and genuine possibilities.',
+              'This module brings together the full course and asks learners to move from diagnosis to strategy. Learners examine how value creation, industrialization, digital systems, the future of work, regional integration, climate resilience, ownership, and institutions can be combined into an inclusive economic pathway. The central question is not simply what grows, but who owns productive assets, who makes decisions, who captures value, and whether transformation expands dignity and shared prosperity.',
+            ],
+            learningObjectives: [
+              'Explain why Africa\u2019s economic future is shaped by policy, institutional, and ownership choices rather than destiny.',
+              'Describe how processing, manufacturing, branding, and ownership create more value than raw-material extraction alone.',
+              'Identify opportunities and risks associated with industrialization, digital technology, artificial intelligence, and changing labor markets.',
+              'Explain how regional integration and the AfCFTA can support African supply chains and larger markets.',
+              'Connect climate resilience and green transformation to economic development and environmental justice.',
+              'Evaluate an economic strategy using ownership, capability, dignity, accountability, resilience, and shared prosperity.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Economic Futures and Agency',
+                definition:
+                  'Economic futures are not forecasts that arrive automatically. They are shaped by choices about public policy, institutions, investment, education, ownership, infrastructure, and regional cooperation. History and global power constrain options, but they do not eliminate agency.',
+              },
+              {
+                term: 'Structural Transformation and Value Creation',
+                definition:
+                  'Structural transformation occurs when an economy develops more productive and diverse activities. Moving from raw extraction toward processing, manufacturing, services, branding, technology, and ownership can retain more skills, income, employment, and profit locally.',
+              },
+              {
+                term: 'Industrialization and Productive Capacity',
+                definition:
+                  'Industrialization is the sustained ability to produce goods and services at increasing levels of productivity. It may include agro-processing, pharmaceuticals, construction materials, renewable-energy equipment, textiles, logistics, and regional manufacturing. It requires infrastructure, finance, skills, institutions, and deliberate policy.',
+              },
+              {
+                term: 'Digital Economy and Technological Sovereignty',
+                definition:
+                  'Digital systems can expand access to finance, information, markets, health, and education. Technological sovereignty asks who owns platforms, infrastructure, data, intellectual property, and decision-making systems. Inclusion requires electricity, affordable connectivity, skills, safeguards, and local capacity.',
+              },
+              {
+                term: 'Future of Work and Social Protection',
+                definition:
+                  'The future of work includes formal employment, informal livelihoods, platform work, automation, entrepreneurship, and care work. A strong strategy should create productive work while extending labor rights, social protection, skills development, and security to workers whose employment is changing.',
+              },
+              {
+                term: 'Regional Integration and the AfCFTA',
+                definition:
+                  'Regional integration can expand markets, reduce barriers, and connect producers across borders. Its developmental value depends on whether it builds African supply chains, productive capacity, infrastructure, and fair opportunities for countries and firms with different levels of capacity.',
+              },
+              {
+                term: 'Climate Resilience and Green Transformation',
+                definition:
+                  'Climate resilience means strengthening the ability of economies and communities to withstand and adapt to climate shocks. Green transformation can connect renewable energy, climate-smart agriculture, sustainable cities, adaptation, and environmental justice to new industries and livelihoods.',
+              },
+              {
+                term: 'Ownership, Institutions, and Shared Prosperity',
+                definition:
+                  'Ownership determines who controls land, firms, infrastructure, technology, data, natural resources, and intellectual property. Institutions determine how decisions are made and gains are distributed. Shared prosperity requires broad participation, accountability, dignity, and fair access to the benefits of transformation.',
+              },
+            ],
+            reflectionQuestions: [
+              'Which economic sector or capability should your country or community prioritize over the next decade, and why?',
+              'Think of one technology or industrial opportunity. What would need to be locally owned, regulated, or governed for the benefits to be broadly shared?',
+              'What is one major trade-off between rapid economic growth and climate resilience, worker protection, regional equity, or community ownership? How could it be managed?',
+            ],
+            quiz: {
+              passingScore: 3,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best distinguishes raw extraction from value creation?',
+                  options: [
+                    'Raw extraction always creates more employment than manufacturing',
+                    'Value creation adds processing, skills, technology, branding, or ownership that can retain more income and capability locally',
+                    'Value creation means stopping all trade with other countries',
+                    'Raw extraction and value creation are identical stages of production',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Value creation occurs when processing, manufacturing, services, technology, branding, or ownership add productive capability and allow more income, skills, and profit to remain locally.',
+                },
+                {
+                  id: 2,
+                  prompt: 'Which policy approach is most consistent with inclusive digital transformation?',
+                  options: [
+                    'Expanding digital platforms without investing in electricity, connectivity, skills, or worker protection',
+                    'Combining infrastructure, affordable access, local capacity, data governance, skills, and safeguards for workers and communities',
+                    'Allowing only foreign firms to own digital infrastructure and data',
+                    'Treating technology as separate from institutions and inequality',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Inclusive digital transformation requires infrastructure, access, skills, local capacity, governance, and protections. Technology alone does not guarantee broad participation or fair outcomes.',
+                },
+                {
+                  id: 3,
+                  prompt: 'When is regional integration most likely to support structural transformation?',
+                  options: [
+                    'When it only increases the movement of imported finished goods',
+                    'When each country avoids regional coordination and supply chains',
+                    'When it connects African producers, infrastructure, finance, standards, and markets in ways that expand productive capacity',
+                    'When smaller economies are excluded from implementation decisions',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Regional integration supports transformation when it helps build African supply chains, productive capacity, infrastructure, and market access rather than merely reorganizing existing imports.',
+                },
+                {
+                  id: 4,
+                  prompt: 'Which statement best describes economic sovereignty in this module?',
+                  options: [
+                    'Complete isolation from global trade and technology',
+                    'The capacity to make strategic decisions, negotiate terms, govern key assets, and retain meaningful value while participating in the global economy',
+                    'Government ownership of every business and household asset',
+                    'Refusing all foreign investment regardless of its terms',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Economic sovereignty concerns strategic capacity, ownership, bargaining power, and the ability to retain value. It does not require isolation or the rejection of all external partnership.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'Choose one future economic opportunity or challenge affecting an African country, region, sector, or community. Design a strategy that addresses value creation, productive capacity, technology, work and skills, regional integration, climate resilience, ownership, institutions, and shared prosperity. Identify at least two major risks or trade-offs and explain how your strategy would manage them.',
+                  feedback:
+                    'Compare your response against the elements named in the question \u2014 the opportunity or challenge, value creation, productive capacity, technology, work and skills, regional integration, climate resilience, ownership and institutions, shared prosperity, and at least two major risks or trade-offs with how your strategy would manage them.',
+                },
+              ],
+            },
+            activity: {
+              title: 'African Economic Futures Action Framework',
+              purpose:
+                'Design a future-oriented economic strategy that connects productive capacity, value creation, industrialization, technology, work, regional integration, climate resilience, ownership, institutions, and shared prosperity.',
+              instructions: [
+                'Design a future-oriented economic strategy for one African country, region, city, sector, or community.',
+                'Complete each section. Use your final strategy to explain how the plan advances productive capacity, ownership, dignity, resilience, accountability, and shared prosperity.',
+              ],
+              fields: [
+                { id: 'place_sector', label: 'Select the Place, Sector, or Economic Challenge', helper: 'Identify the country, region, community, sector, or economic challenge your strategy will address. Explain why it matters.' },
+                { id: 'ten_year_vision', label: 'Define the Ten-Year Vision', helper: 'Describe the economic future you want to help create over the next ten years. What should be different for workers, households, firms, communities, and public institutions?' },
+                { id: 'assets_constraints', label: 'Assess Current Assets and Constraints', helper: 'Identify existing resources, skills, infrastructure, institutions, firms, community knowledge, and regional connections. Also identify major constraints and vulnerabilities.' },
+                { id: 'value_creation', label: 'Move from Extraction to Value Creation', helper: 'Explain how the strategy will increase processing, manufacturing, services, branding, technology, or ownership rather than relying only on raw-material extraction.' },
+                { id: 'productive_capacity', label: 'Build Industrial and Productive Capacity', helper: 'Identify the sectors, infrastructure, finance, skills, standards, research, or public investments needed to expand productive capacity.' },
+                { id: 'technology_digital', label: 'Use Technology and Digital Systems', helper: 'Explain how technology, data, platforms, artificial intelligence, or digital infrastructure will be used. Who should own, govern, and benefit from these systems?' },
+                { id: 'future_of_work', label: 'Prepare for the Future of Work', helper: 'Identify the jobs and livelihoods the strategy could create, change, or displace. Explain the skills, worker protections, social protection, and care systems required.' },
+                { id: 'regional_integration', label: 'Use Regional Integration and Markets', helper: 'Explain how regional trade, the AfCFTA, neighboring countries, or African supply chains could strengthen the strategy and expand markets.' },
+                { id: 'climate_resilience', label: 'Build Climate Resilience and Green Transformation', helper: 'Explain how the strategy will respond to climate risks, environmental limits, energy needs, adaptation, and environmental justice.' },
+                { id: 'ownership_sovereignty', label: 'Strengthen Ownership and Economic Sovereignty', helper: 'Identify who should own or control land, firms, infrastructure, technology, data, intellectual property, natural resources, and profits. Explain what value should remain locally.' },
+                { id: 'institutions_governance', label: 'Identify Institutions and Governance', helper: 'Identify the public, private, regional, community, educational, financial, and legal institutions needed. Explain how accountability and public participation will be protected.' },
+                { id: 'inclusion_prosperity', label: 'Define Inclusion and Shared Prosperity', helper: 'Explain how women, youth, rural communities, informal workers, small enterprises, and historically excluded groups will participate and benefit.' },
+                { id: 'risks_tradeoffs', label: 'Identify Risks and Trade-Offs', helper: 'Identify at least two risks or trade-offs, such as debt, displacement, automation, environmental harm, unequal regional gains, elite capture, or dependence on external firms. Explain how they will be managed.' },
+                { id: 'implementation_path', label: 'Set an Implementation Path', helper: 'List the first three actions, the actors responsible, a realistic time horizon, and indicators that would show whether the strategy is working.' },
+                { id: 'final_strategy', label: 'Final Economic Futures Strategy', helper: 'Summarize the strategy and explain how it advances productive capacity, ownership, dignity, resilience, accountability, and shared prosperity. Use at least six concepts from this module.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete Questions 1\u20134 and answer Question 5.',
+              'Answer at least 3 of the 4 auto-scored questions correctly.',
+              'Complete the African Economic Futures Action Framework.',
+            ],
+            closingText: [
+              'Africa\u2019s economic future will not be determined by one technology, one industry, one agreement, or one leader. It will emerge from choices about productive capacity, ownership, institutions, regional cooperation, workers, climate resilience, and the distribution of economic power.',
+              'The final question of this course is therefore not simply whether African economies will grow. It is what kind of economies will be built, who will own them, who will participate, and who they are meant to serve.',
+              'Learners are now prepared to complete the African Economic Systems Analysis milestone by applying the course framework to one real economic issue and proposing a grounded response.',
+            ],
+            courseClosingText: [
+              'You have reached the end of the six-module learning sequence. Full course completion requirements and the African Economic Systems Analysis milestone will become available when the course launches.',
+            ],
+            endOfCourse: {
+              label: 'Course modules complete',
+              milestone: 'Applied milestone coming soon: African Economic Systems Analysis',
+            },
+            sources: [
+              'African Continental Free Trade Area Secretariat. Official materials on the AfCFTA and regional integration.',
+              'African Development Bank. African Economic Outlook reports on structural transformation, jobs, and regional development.',
+              'UN Trade and Development. Trade and Development Reports and Economic Development in Africa reports.',
+              'International Labour Organization. Future of Work, informal employment, skills, and social-protection materials.',
+              'United Nations Development Programme. Human Development Reports and capability-centered development materials.',
+              'World Bank. World Development Indicators on industry, infrastructure, employment, trade, energy, and development.',
+              'Fofack, H. The Idea of Economic Development: Views from Africa.',
+              'Amin, S. Work on African political economy, dependency, and unequal development.',
+              'Gibbon, P., and Ponte, S. Trading Down: Africa, Value Chains, and the Global Economy.',
+              'Oloruntoba, S. O., and Falola, T. The Political Economy of Africa.',
+            ],
           },
         ],
         milestone: {

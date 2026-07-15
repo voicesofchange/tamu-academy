@@ -18,6 +18,7 @@ import Module2Economics from './pages/Module2Economics';
 import Module3Economics from './pages/Module3Economics';
 import Module4Economics from './pages/Module4Economics';
 import Module5Economics from './pages/Module5Economics';
+import Module6Economics from './pages/Module6Economics';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import Videos from './pages/Videos';
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />

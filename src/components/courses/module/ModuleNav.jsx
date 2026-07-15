@@ -34,7 +34,7 @@ const disabledStyle = {
  * preview/allowed module page, so in public production (where the "Module in
  * development" state is shown) no module-to-module links appear at all.
  */
-export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel }) {
+export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel, endOfCourse }) {
   const prevPath = prevModule && prevModule.route ? `/courses/${courseSlug}/${prevModule.route}` : null;
   const nextPath = nextModule && nextModule.route ? `/courses/${courseSlug}/${nextModule.route}` : null;
   const nextTitle = nextModule ? `${nextModule.number} is not yet available` : 'Next module is not yet available';
@@ -58,6 +58,15 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
             {nextLabel}
             <ChevronRight size={14} aria-hidden="true" />
           </Link>
+        ) : endOfCourse ? (
+          <div style={{ textAlign: 'right' }}>
+            <span className="font-body" style={{ display: 'inline-block', color: 'rgba(212,161,42,0.85)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.3)', borderRadius: '2px', padding: '0.2rem 0.65rem' }}>
+              {endOfCourse.label}
+            </span>
+            <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', letterSpacing: '0.06em', fontStyle: 'italic', margin: '0.55rem 0 0 0' }}>
+              {endOfCourse.milestone}
+            </p>
+          </div>
         ) : (
           <span aria-disabled="true" style={disabledStyle} title={nextTitle}>
             {nextLabel}
