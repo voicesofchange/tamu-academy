@@ -603,10 +603,182 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
           },
           {
             number: 'Module 4',
+            route: 'module-4',
             title: 'Trade, Debt and the Global Economy',
             description:
               'Introduces imports, exports, foreign exchange, commodity dependence, value chains, government borrowing, debt service, and global economic power.',
             status: 'In development',
+            estimatedTime: '45\u201360 minutes, excluding optional discussion',
+            competency:
+              'By the end of this module, learners should be able to evaluate one trade or debt arrangement by identifying its economic purpose, foreign-exchange exposure, value chain, local value capture, borrowing terms, public-budget effects, beneficiaries, risks, and possible safeguards.',
+            overview: [
+              'African economies are connected to global markets through imports, exports, finance, foreign exchange, investment, and public borrowing. These connections can expand opportunity and productive capacity, but they can also create vulnerability when countries depend on a narrow range of commodities, import essential goods, borrow in foreign currency, or capture only a small share of value in global supply chains.',
+              'This module provides a practical framework for evaluating trade and debt without treating either as automatically good or bad. The focus is on structure, bargaining power, value capture, repayment terms, public choices, and who ultimately benefits or carries risk.',
+            ],
+            learningObjectives: [
+              'Explain imports, exports, trade balances, and foreign exchange in clear language.',
+              'Describe why commodity dependence can create exposure to global price shocks.',
+              'Explain how global value chains distribute value and bargaining power unevenly.',
+              'Distinguish productive public borrowing from debt that becomes difficult to sustain.',
+              'Connect exchange-rate changes and debt service to household prices and public budgets.',
+              'Evaluate one trade or debt arrangement by examining benefits, risks, terms, and alternatives.',
+            ],
+            keyConcepts: [
+              {
+                term: 'Imports, Exports, and the Trade Balance',
+                definition:
+                  'Imports are goods and services purchased from other countries. Exports are sold abroad and generate income and foreign exchange. A trade deficit is not automatically evidence of failure; its meaning depends on what is imported, how it is financed, and whether imports expand productive capacity.',
+              },
+              {
+                term: 'Foreign Exchange and Exchange Rates',
+                definition:
+                  'International trade and debt payments often require foreign currency. When a national currency loses value, imported fuel, medicine, machinery, and foreign-currency debt become more expensive in local terms.',
+              },
+              {
+                term: 'Commodity Dependence and Price Shocks',
+                definition:
+                  'An economy is commodity-dependent when a narrow range of raw materials provides a large share of export earnings or public revenue. Global price changes can then affect foreign exchange, government income, employment, and public spending.',
+              },
+              {
+                term: 'Global Value Chains and Value Capture',
+                definition:
+                  'A product may move from producer to processor, exporter, global buyer, retailer, and consumer. Processing, branding, logistics, technology, finance, and market access often capture more value than raw production.',
+              },
+              {
+                term: 'Productive Borrowing and Debt Sustainability',
+                definition:
+                  'Borrowing can support development when it finances useful infrastructure or productive capacity on affordable and transparent terms. Debt becomes harder to sustain when interest is high, repayment is short, currency risk is large, or projects do not create lasting value.',
+              },
+              {
+                term: 'Debt Service and Fiscal Space',
+                definition:
+                  'Debt service is the payment of principal and interest. High debt service reduces fiscal space \u2014 the room available for healthcare, education, infrastructure, social protection, public employment, and climate resilience.',
+              },
+              {
+                term: 'Bargaining Power and Economic Sovereignty',
+                definition:
+                  'Trade and debt outcomes depend on who sets prices, controls technology and finance, owns productive assets, and has alternatives. Economic sovereignty concerns a country or community\u2019s capacity to make meaningful choices rather than accept terms without bargaining power.',
+              },
+            ],
+            reflectionQuestions: [
+              'Choose one imported good that is important in your community. How would a weaker national currency affect its price and the people who depend on it?',
+              'Think of one major export from an African country. Where along the value chain is most value likely created, and what would help more value remain locally?',
+              'Consider one public loan or infrastructure project. What evidence would you need before deciding whether the borrowing is productive and fair?',
+            ],
+            quiz: {
+              passingScore: 3,
+              questions: [
+                {
+                  id: 1,
+                  prompt: 'Which statement best explains a trade deficit?',
+                  options: [
+                    'It always proves that an economy has failed',
+                    'It occurs when the value of imports exceeds the value of exports',
+                    'It means a country has no exports',
+                    'It occurs only when a government borrows from another country',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'A trade deficit occurs when imports exceed exports. Its implications depend on what is imported, how it is financed, and whether imports expand productive capacity.',
+                },
+                {
+                  id: 2,
+                  prompt:
+                    'What is a likely effect when a national currency loses value against the currency used to pay for imports?',
+                  options: [
+                    'Imports become cheaper in local currency',
+                    'Foreign-currency debt becomes easier to repay',
+                    'Imported fuel and medicine may become more expensive in local currency',
+                    'Global commodity prices disappear',
+                  ],
+                  correctIndex: 2,
+                  feedback:
+                    'Currency depreciation raises the local-currency cost of imports and foreign-currency obligations.',
+                },
+                {
+                  id: 3,
+                  prompt:
+                    'Which change would most directly help a producing country retain more value from a commodity?',
+                  options: [
+                    'Exporting only the raw commodity',
+                    'Expanding local processing, branding, and market access',
+                    'Eliminating all domestic suppliers',
+                    'Avoiding all regional trade',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Local processing, branding, and market access can help a producing economy retain more value.',
+                },
+                {
+                  id: 4,
+                  prompt: 'What does debt service refer to?',
+                  options: [
+                    'The value of all goods exported in one year',
+                    'Principal and interest payments made on debt',
+                    'Any public spending on roads or schools',
+                    'The amount of money held by private banks',
+                  ],
+                  correctIndex: 1,
+                  feedback:
+                    'Debt service consists of principal and interest payments.',
+                },
+                {
+                  id: 5,
+                  written: true,
+                  prompt:
+                    'Choose one trade agreement, export sector, public loan, or infrastructure project. Explain its purpose, identify who benefits and who carries risk, describe any foreign-exchange or debt exposure, assess how much value or productive capacity remains locally, and recommend one safeguard or alternative.',
+                  feedback:
+                    'Compare your response against the elements named in the question \u2014 the arrangement\u2019s purpose, who benefits and who carries risk, any foreign-exchange or debt exposure, how much value or productive capacity remains locally, and one safeguard or alternative.',
+                },
+              ],
+            },
+            activity: {
+              title: 'Trade and Debt Evaluation Framework',
+              purpose:
+                'Evaluate one real trade, export, borrowing, infrastructure, or debt arrangement by examining its structure, value capture, currency exposure, benefits, risks, public effects, and alternatives.',
+              instructions: [
+                'Select one real or hypothetical arrangement to evaluate: a trade agreement, public loan, infrastructure project, export sector, foreign investment arrangement, government borrowing decision, commodity export relationship, or debt restructuring proposal.',
+                'Complete each section. Use your final assessment to explain whether the arrangement is likely to expand productive capacity and shared benefit.',
+              ],
+              fields: [
+                { id: 'arrangement', label: 'Select the Arrangement or Economic Issue', helper: 'Identify one trade agreement, export sector, public loan, infrastructure project, or debt arrangement. Briefly explain why it matters.' },
+                { id: 'purpose', label: 'Define the Intended Economic Purpose', helper: 'What problem is the arrangement meant to solve? What economic, social, or infrastructure outcome is expected?' },
+                { id: 'flows', label: 'Map the Main Economic Flows', helper: 'What goods, services, money, technology, or resources move into and out of the country or community?' },
+                { id: 'value_chain', label: 'Examine the Value Chain', helper: 'Who produces, processes, finances, transports, brands, sells, and consumes? Where is the greatest value captured?' },
+                { id: 'local_value', label: 'Assess Local Value Retention', helper: 'What jobs, skills, taxes, profits, ownership, or productive capacity remain locally? What value leaves?' },
+                { id: 'currency_exposure', label: 'Identify Currency and Price Exposure', helper: 'Is payment, borrowing, or repayment denominated in foreign currency? How could exchange-rate or commodity-price changes affect the arrangement?' },
+                { id: 'borrowing_terms', label: 'Examine Borrowing and Repayment Terms', helper: 'If debt is involved, identify the lender, purpose, interest, repayment period, security or conditions, and expected source of repayment.' },
+                { id: 'institutions', label: 'Identify Institutions and Decision Makers', helper: 'Which governments, firms, lenders, regional institutions, communities, or regulators shape the arrangement? Who has bargaining power?' },
+                { id: 'benefits_risks', label: 'Map Benefits, Costs, and Risks', helper: 'Who receives the main benefits? Who carries financial, social, environmental, or political risk?' },
+                { id: 'public_budget', label: 'Examine Public Budget Effects', helper: 'Could repayment or implementation affect healthcare, education, infrastructure, social protection, employment, or climate adaptation?' },
+                { id: 'alternatives', label: 'Consider Alternatives and Safeguards', helper: 'What alternative partners, financing structures, local-content requirements, transparency measures, or accountability protections could improve the arrangement?' },
+                { id: 'final_assessment', label: 'Final Trade and Debt Assessment', helper: 'Is the arrangement likely to expand productive capacity and shared benefit? Explain your conclusion using at least four concepts from this module.' },
+              ],
+            },
+            completionRequirements: [
+              'Watch the recorded lesson.',
+              'Review the key concepts.',
+              'Respond to at least one reflection question.',
+              'Complete Questions 1\u20134 and answer Question 5.',
+              'Answer at least 3 of the 4 auto-scored questions correctly.',
+              'Complete the Trade and Debt Evaluation Framework.',
+            ],
+            closingText: [
+              'Trade and borrowing can support growth, infrastructure, and employment. But the outcomes depend on what is traded, how debt is structured, who controls the valuable stages of production, what currency is used, and how risk is distributed.',
+              'The central questions are: Who benefits? Who carries the risk? What value stays locally? Does the arrangement expand productive capacity? What alternatives or safeguards exist?',
+              'In the next module, learners will examine inequality, institutions, and why economic growth does not automatically become shared opportunity.',
+            ],
+            sources: [
+              'World Bank, International Debt Statistics and World Development Indicators.',
+              'International Monetary Fund, balance-of-payments, exchange-rate, and debt-sustainability materials.',
+              'UN Trade and Development, Trade and Development Reports and commodity analysis.',
+              'African Development Bank, African Economic Outlook reports.',
+              'World Trade Organization, international trade and global value-chain materials.',
+              'Gibbon, P., and Ponte, S. Trading Down: Africa, Value Chains, and the Global Economy.',
+              'Cooper, F. Africa and the World Economy.',
+              'Amin, S. African political economy and unequal development.',
+              'Oloruntoba, S. O., and Falola, T. The Political Economy of Africa.',
+            ],
           },
           {
             number: 'Module 5',
