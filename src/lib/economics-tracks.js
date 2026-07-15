@@ -80,6 +80,10 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between individual choices and the wider economy.',
             status: 'In development',
             estimatedTime: '35\u201350 minutes, excluding optional discussion',
+            video: {
+              embedUrl: 'https://www.youtube.com/embed/6DPU4eouAt8',
+              title: 'Lesson 1: Economics Is About More Than Money',
+            },
             competency:
               'By the end of this lesson, learners should be able to analyze an everyday economic decision by identifying the limited resources involved, the available alternatives, the opportunity cost, the relevant incentives, and the institutions or social relationships shaping the choice.',
             overview: [

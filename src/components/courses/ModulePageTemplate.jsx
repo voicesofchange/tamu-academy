@@ -69,13 +69,32 @@ export default function ModulePageTemplate({ course, module }) {
         </div>
       </header>
 
-      {/* Video placeholder */}
+      {/* Video lesson — embedded recording when available, placeholder otherwise */}
       <PageSection eyebrow="Video Lesson" heading="Recorded Lesson">
-        <div style={{ padding: '3rem 2rem', border: '1px dashed rgba(212,161,42,0.25)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', textAlign: 'center' }}>
-          <p className="font-body" style={{ ...bodyText, margin: 0, color: 'rgba(245,239,224,0.6)' }}>
-            Recorded lesson coming soon.
-          </p>
-        </div>
+        {module.video ? (
+          <>
+            <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)', backgroundColor: '#000000' }}>
+              <iframe
+                src={module.video.embedUrl}
+                title={module.video.title}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
+              />
+            </div>
+            <p className="font-body" style={{ ...bodyText, marginTop: '1rem', marginBottom: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.62)' }}>
+              {module.video.title}
+            </p>
+          </>
+        ) : (
+          <div style={{ padding: '3rem 2rem', border: '1px dashed rgba(212,161,42,0.25)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', textAlign: 'center' }}>
+            <p className="font-body" style={{ ...bodyText, margin: 0, color: 'rgba(245,239,224,0.6)' }}>
+              Recorded lesson coming soon.
+            </p>
+          </div>
+        )}
       </PageSection>
 
       {/* Module overview */}
