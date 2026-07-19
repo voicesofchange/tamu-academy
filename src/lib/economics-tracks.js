@@ -621,6 +621,10 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Introduces imports, exports, foreign exchange, commodity dependence, value chains, government borrowing, debt service, and global economic power.',
             status: 'In development',
             estimatedTime: '45\u201360 minutes, excluding optional discussion',
+            video: {
+              embedUrl: 'https://www.youtube.com/embed/tYnKUHHsOAM',
+              title: 'Lesson 4: Trade, Debt and the Global Economy',
+            },
             competency:
               'By the end of this module, learners should be able to evaluate one trade or debt arrangement by identifying its economic purpose, foreign-exchange exposure, value chain, local value capture, borrowing terms, public-budget effects, beneficiaries, risks, and possible safeguards.',
             overview: [
