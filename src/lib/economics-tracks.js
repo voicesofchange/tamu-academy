@@ -421,6 +421,10 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Explains inflation, household budgets, purchasing power, wages, employment, underemployment, and economic policy choices.',
             status: 'In development',
             estimatedTime: '40\u201355 minutes, excluding optional discussion',
+            video: {
+              embedUrl: 'https://www.youtube.com/embed/LRvVTa5fxVc',
+              title: 'Lesson 3: Inflation, Employment and the Cost of Living',
+            },
             competency:
               'By the end of this module, learners should be able to analyze a household cost-of-living situation by identifying the main price pressures, assessing changes in nominal and real income, describing employment or underemployment conditions, and evaluating one policy response and its trade-offs.',
             overview: [
