@@ -244,6 +244,10 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
               'Examines formal and informal work, household production, agriculture, services, small enterprise, infrastructure, and global value chains.',
             status: 'In development',
             estimatedTime: '40\u201355 minutes, excluding optional discussion',
+            video: {
+              embedUrl: 'https://www.youtube.com/embed/M9llDPq54LE',
+              title: 'Lesson 2: How African Economies Actually Work',
+            },
             competency:
               'By the end of this module, learners should be able to analyze one everyday economic activity by identifying its formal, informal, household, and community dimensions; the sectors and workers involved; the institutions and infrastructure supporting it; and its connection to wider markets and value chains.',
             overview: [
