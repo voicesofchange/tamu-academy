@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import { base44 } from '@/api/base44Client';
+import { Link } from 'react-router-dom';
 
 /**
  * LaunchLanding — temporary public front door for Tamu Academy.
@@ -266,7 +267,30 @@ export default function LaunchLanding() {
                 margin: '0 0 1.5rem',
               }}
             >
-              Be among the first to receive course-launch updates and access information.
+              Be among the first to receive course-launch updates and early-access information.
+            </p>
+
+            {/* Notice at Collection — visible before submission */}
+            <p
+              className="font-body"
+              style={{
+                color: 'rgba(245,239,224,0.6)',
+                fontSize: '0.78rem',
+                lineHeight: 1.65,
+                fontWeight: 300,
+                margin: '0 0 1.5rem',
+                textAlign: 'left',
+              }}
+            >
+              <span style={{ color: 'rgba(245,239,224,0.78)', fontWeight: 500 }}>Notice at Collection:</span>{' '}
+              Tamu Academy collects your email address and consent to send requested course-launch and Early Access
+              updates. We do not sell your information or share it for cross-context behavioral advertising. We
+              retain it while you remain subscribed and as reasonably necessary to honor communication and legal
+              obligations. Review our{' '}
+              <Link to="/privacy" className="font-body" style={{ color: '#D4A12A', textDecoration: 'underline' }}>
+                Privacy Policy
+              </Link>{' '}
+              for more information.
             </p>
 
             {status === 'success' ? (
@@ -496,6 +520,24 @@ export default function LaunchLanding() {
                       {errors.consent}
                     </p>
                   )}
+                  <p style={{ margin: '0.7rem 0 0', textAlign: 'left' }}>
+                    <Link
+                      to="/privacy"
+                      className="font-body"
+                      style={{
+                        color: 'rgba(212,161,42,0.95)',
+                        fontSize: '0.74rem',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        borderBottom: '1px solid rgba(212,161,42,0.35)',
+                        paddingBottom: '0.15rem',
+                      }}
+                    >
+                      Privacy Policy
+                    </Link>
+                  </p>
                 </div>
 
                 {status === 'error' && (
@@ -599,6 +641,22 @@ export default function LaunchLanding() {
           }}
         >
           &copy; 2026 Waiyaki House LLC. All rights reserved.
+        </p>
+        <p style={{ margin: '0.85rem 0 0' }}>
+          <Link
+            to="/privacy"
+            className="font-body"
+            style={{
+              color: 'rgba(212,161,42,0.85)',
+              fontSize: '0.64rem',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              fontWeight: 500,
+            }}
+          >
+            Privacy Policy
+          </Link>
         </p>
       </footer>
 

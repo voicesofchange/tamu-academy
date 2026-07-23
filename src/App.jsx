@@ -31,6 +31,7 @@ import WhoControlsTheGlobalEconomy from './pages/articles/WhoControlsTheGlobalEc
 import IsTheICCBiasedAgainstAfricaArticle from './pages/articles/IsTheICCBiasedAgainstAfrica';
 import AfterTheGunsGoSilentArticle from './pages/articles/AfterTheGunsGoSilent';
 import ClimateIsAMentalHealthCrisisArticle from './pages/articles/ClimateIsAMentalHealthCrisis';
+import Privacy from './pages/Privacy';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="/articles" element={<Articles />} />
       <Route path="/articles/the-real-cost-of-always-achieving" element={<TheRealCostOfAlwaysAchieving />} />
       <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
