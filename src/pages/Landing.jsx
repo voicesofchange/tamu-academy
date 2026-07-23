@@ -14,7 +14,19 @@ import HowTamuWorks from '@/components/landing/HowTamuWorks';
 import HomeInstitutionalLearning from '@/components/landing/HomeInstitutionalLearning';
 import SiteFooter from '@/components/landing/SiteFooter';
 
+// Temporary public front door. While the academy and its first learning
+// pathway remain in development, the root homepage renders a focused,
+// editorial coming-soon surface (LaunchLanding). The original full homepage
+// is preserved below and is restored by setting LAUNCH_MODE to false.
+import LaunchLanding from '@/components/landing/LaunchLanding';
+
+const LAUNCH_MODE = true;
+
 export default function Landing() {
+  if (LAUNCH_MODE) {
+    return <LaunchLanding />;
+  }
+
   return (
     <div
       style={{

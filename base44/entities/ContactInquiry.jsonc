@@ -31,6 +31,7 @@
       "type": "string",
       "title": "Inquiry Type",
       "enum": [
+        "Early Access Signup",
         "Prospective Learner or Programme Interest",
         "Educator or Facilitator",
         "University or Institutional Partnership",
