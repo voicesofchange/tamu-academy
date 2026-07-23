@@ -194,7 +194,7 @@ export default function LaunchLanding() {
             <br />
             just to learn.
             <br />
-            You are here to <span style={{ color: '#D4A12A' }}>understand</span>.
+            You are here to <span style={{ color: '#D4A12A' }}>understand</span>—and apply.
           </h1>
 
           {/* Positioning statement */}
@@ -209,7 +209,7 @@ export default function LaunchLanding() {
               margin: '0 0 1.5rem',
             }}
           >
-            Not information. Understanding.
+            Not just information. Practical understanding.
           </p>
 
           {/* Supporting copy */}
@@ -224,10 +224,10 @@ export default function LaunchLanding() {
               maxWidth: '520px',
             }}
           >
-            The histories. The institutions. The economies. The systems of power.
+            The histories. The institutions. The economies. The cultures. The ideas shaping Africa and the world.
             <br />
             <br />
-            Everything you need to understand the forces shaping Africa—and build what comes next.
+            Culturally grounded learning designed to help you think critically, navigate complex systems, make informed decisions, and build better futures.
           </p>
 
           {/* Early Access form */}
