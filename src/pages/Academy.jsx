@@ -98,7 +98,7 @@ export default function Academy() {
             <a href="/#early-access" className="academy-cta-primary font-body">
               Join Early Access
             </a>
-            <Link to="/contact#send-an-inquiry" className="academy-cta-secondary font-body">
+            <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
               Discuss a Partnership
             </Link>
           </div>
@@ -223,7 +223,7 @@ export default function Academy() {
             <a href="/#early-access" className="academy-cta-primary font-body">
               Join Early Access
             </a>
-            <Link to="/contact#send-an-inquiry" className="academy-cta-secondary font-body">
+            <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
               Discuss a Partnership
             </Link>
           </div>

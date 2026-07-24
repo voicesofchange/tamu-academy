@@ -58,7 +58,7 @@ export default function ProgramHighlights() {
         </p>
 
         <div className="academy-cta-row">
-          <Link to="/contact" className="academy-cta-secondary font-body">
+          <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
             {PILOT.actionLabel}
           </Link>
         </div>

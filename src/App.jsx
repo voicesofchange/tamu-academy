@@ -33,6 +33,7 @@ import AfterTheGunsGoSilentArticle from './pages/articles/AfterTheGunsGoSilent';
 import ClimateIsAMentalHealthCrisisArticle from './pages/articles/ClimateIsAMentalHealthCrisis';
 import Privacy from './pages/Privacy';
 import Academy from './pages/Academy';
+import PartnershipInquiry from './pages/PartnershipInquiry';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -76,6 +77,7 @@ const AuthenticatedApp = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/academy" element={<Academy />} />
+      <Route path="/partnership-inquiry" element={<PartnershipInquiry />} />
       <Route path="/articles" element={<Articles />} />
       <Route path="/articles/the-real-cost-of-always-achieving" element={<TheRealCostOfAlwaysAchieving />} />
       <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
