@@ -320,6 +320,69 @@ export default function LaunchLanding() {
                 >
                   Thank you for joining the Tamu Academy early-access list. We&rsquo;ll share launch updates as the academy becomes available.
                 </p>
+
+                {/* Voluntary Substack invitation — shown only on confirmed success */}
+                <div
+                  role="group"
+                  aria-labelledby="launch-success-substack-heading"
+                  style={{
+                    marginTop: '1.5rem',
+                    paddingTop: '1.5rem',
+                    borderTop: '1px solid rgba(212,161,42,0.18)',
+                  }}
+                >
+                  <p
+                    id="launch-success-substack-heading"
+                    className="font-body"
+                    style={{
+                      color: 'rgba(245,239,224,0.78)',
+                      fontSize: '0.88rem',
+                      lineHeight: 1.6,
+                      fontWeight: 300,
+                      margin: '0 0 1rem',
+                    }}
+                  >
+                    In the meantime, you can also follow Tamu Academy on Substack for educational insights, academy updates, and developing ideas.
+                  </p>
+
+                  <a
+                    href="https://substack.com/@tamuacademy?r=3jsnyk&utm_campaign=profile&utm_medium=profile-page"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Follow Tamu Academy on Substack (opens in a new tab — external service)"
+                    className="font-body launch-success-substack"
+                    style={{
+                      display: 'inline-block',
+                      color: '#1A130E',
+                      backgroundColor: '#D4A12A',
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      fontWeight: 500,
+                      fontFamily: "'DM Sans', sans-serif",
+                      border: '1px solid transparent',
+                      borderRadius: '3px',
+                      padding: '0.85rem 1.6rem',
+                      textDecoration: 'none',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Follow Tamu Academy on Substack
+                  </a>
+
+                  <p
+                    className="font-body"
+                    style={{
+                      color: 'rgba(245,239,224,0.55)',
+                      fontSize: '0.74rem',
+                      lineHeight: 1.55,
+                      fontWeight: 300,
+                      margin: '0.85rem 0 0',
+                    }}
+                  >
+                    Following Tamu Academy on Substack is optional and requires a separate action through Substack. Joining the Early Access list does not automatically subscribe you to Substack.
+                  </p>
+                </div>
               </div>
             ) : (
               <form
@@ -682,6 +745,10 @@ export default function LaunchLanding() {
           outline-offset: 3px;
         }
         .launch-checkbox:focus-visible {
+          outline: 2px solid rgba(212,161,42,0.7);
+          outline-offset: 3px;
+        }
+        .launch-success-substack:focus-visible {
           outline: 2px solid rgba(212,161,42,0.7);
           outline-offset: 3px;
         }
