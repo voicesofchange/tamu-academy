@@ -214,7 +214,7 @@ export default function Privacy() {
               <li style={{ marginBottom: '0.55rem' }}>Send the course-launch updates and early-access information you requested.</li>
               <li style={{ marginBottom: '0.55rem' }}>Respond to contact inquiries and partnership requests.</li>
               <li style={{ marginBottom: '0.55rem' }}>Operate, maintain, and improve our website, courses, and learning materials.</li>
-              <li style={{ marginBottom: '0.55rem' }}>Understand, in aggregate, how visitors reach and use Tamu Academy.</li>
+              <li style={{ marginBottom: '0.55rem' }}>Review basic technical and security information to operate, protect, troubleshoot, and improve the website.</li>
               <li style={{ marginBottom: '0.55rem' }}>Meet our legal, security, and operational obligations.</li>
             </ul>
             <p className="font-body" style={bodyText}>
@@ -250,11 +250,30 @@ export default function Privacy() {
           <section style={{ marginBottom: '2rem' }}>
             <h2 className="font-heading" style={h2Style}>5. Cookies, Local Storage, and Tracking</h2>
             <p className="font-body" style={bodyText}>
-              We use minimal cookies and browser storage to operate the site and remember your preferences, such as
-              saved activity responses in courses. We do not use advertising cookies or third-party tracking pixels.
-              We do not engage in cross-context behavioral advertising. You can clear cookies and local storage
-              through your browser settings at any time, though doing so may remove saved activity responses and
-              preferences.
+              Tamu Academy does not currently use advertising cookies, analytics pixels, or third-party tracking
+              pixels.
+            </p>
+            <p className="font-body" style={bodyText}>
+              Some course activities use local storage to save optional activity responses in your browser. This
+              information remains on your device unless you choose to clear it or share it separately.
+            </p>
+            <p className="font-body" style={bodyText}>
+              Our pages may include embedded YouTube videos. When you load or interact with an embedded video,
+              Google or YouTube may collect technical and usage information and may use cookies or similar
+              technologies under their own privacy practices.
+            </p>
+            <p className="font-body" style={bodyText}>
+              Some browsers send &ldquo;Do Not Track&rdquo; signals. Tamu Academy does not currently respond
+              differently to these signals because we do not use personal information for cross-site behavioral
+              advertising.
+            </p>
+            <p className="font-body" style={bodyText}>
+              Third-party services, including YouTube, may collect information about your activity over time and
+              across different websites according to their own privacy policies.
+            </p>
+            <p className="font-body" style={bodyText}>
+              You can clear cookies and local storage through your browser settings. Doing so may remove saved
+              activity responses or preferences.
             </p>
           </section>
 
@@ -303,8 +322,9 @@ export default function Privacy() {
             <p className="font-body" style={bodyText}>
               We may update this Privacy Policy from time to time. We will revise the &ldquo;Last updated&rdquo; date
               at the top of this page when we do. If we make material changes, we will provide a notice on this page
-              or through other reasonable communication. Continued use of our site after changes take effect
-              indicates your acceptance of the updated practices.
+              or through other reasonable communication. Changes will take effect when the updated policy is posted
+              unless another effective date is stated. When required, we will provide additional notice before
+              materially different practices take effect.
             </p>
           </section>
 
@@ -324,6 +344,10 @@ export default function Privacy() {
               >
                 info@sustainthevoices.org
               </a>
+            </p>
+            <p className="font-body" style={bodyText}>
+              The info@sustainthevoices.org inbox is designated to receive communications on behalf of Tamu Academy.
+              Tamu Academy remains operated by Waiyaki House LLC.
             </p>
             <p className="font-body" style={bodyText}>
               You may also use this address to unsubscribe, request access to or deletion of your information, or
