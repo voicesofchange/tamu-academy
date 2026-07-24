@@ -117,43 +117,97 @@ export default function LaunchLanding() {
     >
       <PageMeta
         title="Tamu Academy — Learn the Systems Shaping Africa"
-        description="Tamu Academy is a learning venture of Waiyaki House LLC, developing practical, culturally grounded learning in economics, governance, public policy, global affairs, and social change. Join the early-access list for launch updates."
+        description="Tamu Academy is a learning venture of Waiyaki House, developing practical, culturally grounded learning in economics, governance, public policy, global affairs, and social change. Join the early-access list for launch updates."
         path="/"
       />
 
-      {/* Top brand area */}
+      {/* Minimal top navigation */}
       <header
         style={{
-          padding: 'clamp(2rem, 6vw, 4rem) clamp(1.5rem, 6vw, 4rem) 0',
-          textAlign: 'center',
+          padding: 'clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 5vw, 3rem)',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          borderBottom: '1px solid rgba(212,161,42,0.12)',
+          flexWrap: 'wrap',
         }}
       >
-        <p
+        <Link
+          to="/"
+          aria-label="Tamu Academy — home"
           className="font-heading"
           style={{
             color: '#F5EFE0',
-            fontSize: 'clamp(1.1rem, 2.4vw, 1.4rem)',
+            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             fontWeight: 500,
-            margin: 0,
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'baseline',
+            gap: '0.4rem',
           }}
         >
           Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
-        </p>
-        <p
-          className="font-body"
+          <span
+            className="font-body launch-topnav-attr"
+            style={{
+              color: 'rgba(92,117,111,0.95)',
+              fontSize: '0.6rem',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              fontWeight: 400,
+            }}
+          >
+            A Waiyaki House learning venture
+          </span>
+        </Link>
+        <nav
+          aria-label="Primary"
           style={{
-            color: 'rgba(92,117,111,0.95)',
-            fontSize: '0.68rem',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            fontWeight: 400,
-            margin: '0.85rem 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.25rem',
+            flexWrap: 'wrap',
           }}
         >
-          A Waiyaki House LLC learning venture
-        </p>
+          <Link
+            to="/academy"
+            className="font-body launch-nav-link"
+            style={{
+              color: 'rgba(245,239,224,0.85)',
+              fontSize: '0.72rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              fontWeight: 500,
+              textDecoration: 'none',
+            }}
+          >
+            Explore the Academy
+          </Link>
+          <a
+            href="#early-access"
+            className="font-body launch-nav-join"
+            style={{
+              color: '#1A130E',
+              backgroundColor: '#D4A12A',
+              fontSize: '0.7rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              fontWeight: 500,
+              fontFamily: "'DM Sans', sans-serif",
+              border: '1px solid transparent',
+              borderRadius: '3px',
+              padding: '0.6rem 1.1rem',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Join Early Access
+          </a>
+        </nav>
       </header>
 
       {/* Main */}
@@ -188,73 +242,109 @@ export default function LaunchLanding() {
               fontWeight: 400,
               lineHeight: 1.18,
               letterSpacing: '0.005em',
-              margin: '0 0 1.75rem',
-            }}
-          >
-            You are not here
-            <br />
-            just to learn.
-            <br />
-            You are here to <span style={{ color: '#D4A12A' }}>understand</span>—and apply.
-          </h1>
-
-          {/* Positioning statement */}
-          <p
-            className="font-body"
-            style={{
-              color: '#D4A12A',
-              fontSize: 'clamp(0.62rem, 1.4vw, 0.74rem)',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              fontWeight: 500,
               margin: '0 0 1.5rem',
             }}
           >
-            Not just information. Practical understanding.
-          </p>
+            Learn the systems shaping Africa.
+            <br />
+            Build what comes next.
+          </h1>
 
           {/* Supporting copy */}
           <p
             className="font-body"
             style={{
               color: 'rgba(245,239,224,0.78)',
-              fontSize: 'clamp(0.95rem, 2vw, 1.08rem)',
-              lineHeight: 1.85,
+              fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+              lineHeight: 1.7,
               fontWeight: 300,
-              margin: '0 auto 2.75rem',
-              maxWidth: '520px',
+              margin: '0 auto 2.25rem',
+              maxWidth: '560px',
             }}
           >
-            The histories. The institutions. The economies. The cultures. The ideas shaping Africa and the world.
-            <br />
-            <br />
-            Culturally grounded learning designed to help you think critically, navigate complex systems, make informed decisions, and build better futures.
+            Culturally grounded learning in economics, governance, technology, wellbeing, history, and global affairs.
           </p>
+
+          {/* Primary actions */}
+          <div
+            className="launch-actions"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.85rem',
+              justifyContent: 'center',
+              margin: '0 auto 2.75rem',
+            }}
+          >
+            <a
+              href="#early-access"
+              className="font-body launch-cta-primary"
+              style={{
+                display: 'inline-block',
+                color: '#1A130E',
+                backgroundColor: '#D4A12A',
+                fontSize: '0.72rem',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                fontFamily: "'DM Sans', sans-serif",
+                border: '1px solid transparent',
+                borderRadius: '3px',
+                padding: '0.85rem 1.6rem',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                transition: 'background-color 0.25s ease',
+              }}
+            >
+              Join Early Access
+            </a>
+            <Link
+              to="/academy"
+              className="font-body launch-cta-secondary"
+              style={{
+                display: 'inline-block',
+                color: '#F5EFE0',
+                backgroundColor: 'transparent',
+                fontSize: '0.72rem',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                fontFamily: "'DM Sans', sans-serif",
+                border: '1px solid rgba(212,161,42,0.5)',
+                borderRadius: '3px',
+                padding: '0.8rem 1.55rem',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                transition: 'border-color 0.25s ease, color 0.25s ease',
+              }}
+            >
+              Explore the Academy
+            </Link>
+          </div>
 
           {/* Early Access form */}
           <section
+            id="early-access"
             aria-labelledby="early-access-heading"
             style={{
               borderTop: '1px solid rgba(212,161,42,0.18)',
               paddingTop: '2.25rem',
+              scrollMarginTop: '90px',
             }}
           >
             <h2
               id="early-access-heading"
-              className="font-body"
+              className="font-heading"
               style={{
-                position: 'absolute',
-                width: '1px',
-                height: '1px',
-                padding: 0,
-                margin: '-1px',
-                overflow: 'hidden',
-                clip: 'rect(0,0,0,0)',
-                whiteSpace: 'nowrap',
-                border: 0,
+                color: '#F5EFE0',
+                fontSize: 'clamp(1.4rem, 3vw, 1.9rem)',
+                fontWeight: 400,
+                letterSpacing: '0.01em',
+                margin: '0 0 0.6rem',
+                textAlign: 'left',
               }}
             >
-              Early Access signup
+              Join Early Access
             </h2>
 
             <p
@@ -265,9 +355,10 @@ export default function LaunchLanding() {
                 lineHeight: 1.6,
                 fontWeight: 300,
                 margin: '0 0 1.5rem',
+                textAlign: 'left',
               }}
             >
-              Be among the first to receive course-launch updates and early-access information.
+              Receive course-launch updates and early-access information.
             </p>
 
             {/* Notice at Collection — visible before submission */}
@@ -283,14 +374,13 @@ export default function LaunchLanding() {
               }}
             >
               <span style={{ color: 'rgba(245,239,224,0.78)', fontWeight: 500 }}>Notice at Collection:</span>{' '}
-              Tamu Academy collects your email address and consent to send requested course-launch and Early Access
-              updates. We do not sell your information or share it for cross-context behavioral advertising. We
-              retain it while you remain subscribed and as reasonably necessary to honor communication and legal
-              obligations. Review our{' '}
+              We collect your email and consent to send requested Tamu Academy updates. We do not sell or share your
+              information for behavioral advertising. We retain it while you remain subscribed and as needed to honor
+              your preferences. Read our{' '}
               <Link to="/privacy" className="font-body" style={{ color: '#D4A12A', textDecoration: 'underline' }}>
                 Privacy Policy
-              </Link>{' '}
-              for more information.
+              </Link>
+              .
             </p>
 
             {status === 'success' ? (
@@ -562,7 +652,7 @@ export default function LaunchLanding() {
                         fontWeight: 300,
                       }}
                     >
-                      I agree to receive Tamu Academy course launch updates and early-access information. I understand that I can unsubscribe from future communications.
+                      I agree to receive Tamu Academy updates and understand that I can unsubscribe at any time.
                       <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
                       <span className="launch-sr-only"> (required)</span>
                     </span>
@@ -666,7 +756,7 @@ export default function LaunchLanding() {
             margin: 0,
           }}
         >
-          A Waiyaki House LLC learning venture
+          A Waiyaki House learning venture
         </p>
         <p
           className="font-body"
@@ -692,7 +782,7 @@ export default function LaunchLanding() {
             maxWidth: '460px',
           }}
         >
-          Tamu Academy is a learning venture of Waiyaki House LLC.
+          Tamu Academy is a learning venture of Waiyaki House.
         </p>
         <p
           className="font-body"
@@ -751,6 +841,28 @@ export default function LaunchLanding() {
         .launch-success-substack:focus-visible {
           outline: 2px solid rgba(212,161,42,0.7);
           outline-offset: 3px;
+        }
+        .launch-cta-primary:focus-visible,
+        .launch-cta-secondary:focus-visible,
+        .launch-nav-link:focus-visible,
+        .launch-nav-join:focus-visible {
+          outline: 2px solid rgba(212,161,42,0.7);
+          outline-offset: 3px;
+        }
+        .launch-cta-primary:hover { background-color: rgba(212,161,42,0.85); }
+        .launch-cta-secondary:hover { border-color: rgba(212,161,42,0.85); color: #D4A12A; }
+        .launch-nav-join:hover { background-color: rgba(212,161,42,0.85); }
+        .launch-nav-link:hover { color: #D4A12A; }
+        @media (max-width: 600px) {
+          .launch-topnav-attr { display: none; }
+        }
+        @media (max-width: 420px) {
+          .launch-actions { flex-direction: column; align-items: stretch; }
+          .launch-actions > a { text-align: center; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .launch-cta-primary,
+          .launch-cta-secondary { transition: none !important; }
         }
         .launch-label:focus-within {
           outline: none;
