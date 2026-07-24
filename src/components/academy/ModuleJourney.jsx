@@ -177,58 +177,6 @@ export default function ModuleJourney() {
       if (rafId == null) rafId = requestAnimationFrame(update);
     };
 
-    /* ====== TEMPORARY DIAGNOSTIC (remove after live-preview confirmation) ======
-       Logs once on mount + samples scroll-driven var writes for the first 8s.
-       Gated to dev/preview build only via import.meta.env.DEV (Vite). */
-    const isDev =
-      typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
-    if (isDev) {
-      try {
-        const supportInfo =
-          typeof CSS !== 'undefined' && typeof CSS.supports === 'function'
-            ? CSS.supports('animation-timeline', 'view()')
-            : false;
-        console.log('[ModuleJourney diagnostic]', {
-          cssAnimationTimelineSupported: supportInfo,
-          reducedMotionActive: reduceMq.matches,
-          itemCount: items.length,
-          renderedPath: 'js-primary (rAF + CSS variables)',
-        });
-      } catch (e) {
-        /* swallow */
-      }
-    }
-
-    let diagnosticBudgetMs = 8000;
-    const diagnosticStart = performance.now();
-    let lastSampleTime = 0;
-    const onDiagnosticScroll = () => {
-      if (performance.now() - diagnosticStart > diagnosticBudgetMs) return;
-      const now = performance.now();
-      if (now - lastSampleTime < 240) return;
-      lastSampleTime = now;
-      const samples = items.map((el, i) =>
-        el
-          ? {
-              i,
-              op: el.style.getPropertyValue('--module-opacity'),
-              sc: el.style.getPropertyValue('--module-scale'),
-              ty: el.style.getPropertyValue('--module-ty'),
-              nop: el.style.getPropertyValue('--number-opacity'),
-            }
-          : null
-      );
-      console.log('[ModuleJourney scroll update]', samples);
-    };
-    if (isDev) {
-      window.addEventListener('scroll', onDiagnosticScroll, { passive: true });
-      setTimeout(() => {
-        window.removeEventListener('scroll', onDiagnosticScroll);
-        console.log('[ModuleJourney diagnostic] ended after 8s.');
-      }, 8200);
-    }
-    /* ====== END TEMPORARY DIAGNOSTIC ====== */
-
     /* Begin update loop immediately + on scroll/resize. Single passive
        scroll listener coalesces a single rAF per frame. */
     update();
@@ -239,7 +187,6 @@ export default function ModuleJourney() {
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
-      window.removeEventListener('scroll', onDiagnosticScroll);
       activeObserver.disconnect();
       activeClassObserver.disconnect();
     };
