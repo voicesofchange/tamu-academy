@@ -99,11 +99,37 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.entities.ContactInquiry.create(record);
 
-    // Send notification email
-    const emailBody = `New contact inquiry received on Tamu Academy.\n\nName: ${full_name}\nEmail: ${email}\nCountry: ${country}${record.city_or_community ? '\nCity/Community: ' + record.city_or_community : ''}${record.organization ? '\nOrganization: ' + record.organization : ''}${record.role ? '\nRole: ' + record.role : ''}\nInquiry Type: ${inquiry_type}${programme_interest ? '\nProgramme Interest: ' + programme_interest : ''}\n\nMessage:\n${record.message}${referral_source ? '\n\nReferral Source: ' + referral_source : ''}\nUpdates Consent: ${record.updates_consent ? 'Yes' : 'No'}`;
+    // Send notification email. Free-text inputs are HTML-escaped before being
+    // inserted into the notification body/subject so a malicious submission
+    // cannot inject markup into the administrator's email client. Enum
+    // fields (inquiry_type, programme_interest, referral_source) are already
+    // whitelist-validated above and are safe to interpolate directly.
+    const amp = '&' + 'amp;';
+    const lt = '&' + 'lt;';
+    const gt = '&' + 'gt;';
+    const quot = '&' + 'quot;';
+    const apos = '&' + '#39;';
+    const escapeEmail = (s) =>
+      (typeof s === 'string'
+        ? s
+            .replace(/&/g, amp)
+            .replace(/</g, lt)
+            .replace(/>/g, gt)
+            .replace(/"/g, quot)
+            .replace(/'/g, apos)
+        : '');
+    const escName = escapeEmail(full_name);
+    const escEmail = escapeEmail(email);
+    const escCountry = escapeEmail(country);
+    const escCity = escapeEmail(record.city_or_community);
+    const escOrg = escapeEmail(record.organization);
+    const escRole = escapeEmail(record.role);
+    const escMessage = escapeEmail(record.message);
+
+    const emailBody = `New contact inquiry received on Tamu Academy.\n\nName: ${escName}\nEmail: ${escEmail}\nCountry: ${escCountry}${escCity ? '\nCity/Community: ' + escCity : ''}${escOrg ? '\nOrganization: ' + escOrg : ''}${escRole ? '\nRole: ' + escRole : ''}\nInquiry Type: ${inquiry_type}${programme_interest ? '\nProgramme Interest: ' + programme_interest : ''}\n\nMessage:\n${escMessage}${referral_source ? '\n\nReferral Source: ' + referral_source : ''}\nUpdates Consent: ${record.updates_consent ? 'Yes' : 'No'}`;
     await base44.asServiceRole.integrations.Core.SendEmail({
       to: 'info@sustainthevoices.org',
-      subject: `New Inquiry: ${inquiry_type} — ${full_name}`,
+      subject: `New Inquiry: ${inquiry_type} — ${escName}`,
       body: emailBody,
     }).catch((err) => console.warn('[submitContactInquiry] Email notification failed:', err.message));
 
