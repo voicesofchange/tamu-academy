@@ -91,7 +91,7 @@ function FieldError({ id, message }) {
   return <p id={id} role="alert" style={errorStyle}>{message}</p>;
 }
 
-export default function ContactInquiryForm({ presetType, presetProgramme, sourcePage }) {
+export default function ContactInquiryForm({ presetType, presetProgramme, sourcePage, successVariant }) {
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
   const paramProgramme = urlParams.get('programme');
@@ -206,6 +206,13 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
   };
 
   if (status === 'success') {
+    const isPartnership = successVariant === 'partnership';
+    const heading = isPartnership
+      ? 'Thank you for reaching out.'
+      : 'Thank You for Connecting With Tamu Academy.';
+    const message = isPartnership
+      ? 'Your partnership inquiry has been received. The Tamu Academy team will review the information and follow up using the contact details you provided.'
+      : 'Your inquiry has been received. Tamu Academy will review the information you provided as capacity allows.';
     return (
       <div
         ref={successRef}
@@ -218,24 +225,43 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           Received
         </p>
         <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
-          Thank You for Connecting With Tamu Academy.
+          {heading}
         </h2>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.75rem' }}>
-          Your inquiry has been received. Tamu Academy will review the information you provided as capacity allows.
+          {message}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem' }}>
-          <Link
-            to="/"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
-          >
-            Return to the Homepage
-          </Link>
-          <Link
-            to="/programmes"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
-          >
-            Explore Programmes
-          </Link>
+          {isPartnership ? (
+            <>
+              <Link
+                to="/academy"
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+              >
+                Return to the Academy
+              </Link>
+              <Link
+                to="/"
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+              >
+                Return to the Homepage
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/"
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+              >
+                Return to the Homepage
+              </Link>
+              <Link
+                to="/programmes"
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+              >
+                Explore Programmes
+              </Link>
+            </>
+          )}
         </div>
       </div>
     );

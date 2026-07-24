@@ -57,7 +57,7 @@ export default function PartnershipInquiry() {
             className="pi-form-wrap"
             aria-label="Partnership inquiry form"
           >
-            <ContactInquiryForm sourcePage="/partnership-inquiry" />
+            <ContactInquiryForm sourcePage="/partnership-inquiry" successVariant="partnership" />
           </section>
         </div>
       </main>
