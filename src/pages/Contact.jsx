@@ -40,7 +40,7 @@ export default function Contact() {
       </PageSection>
 
       {/* Form section */}
-      <PageSection heading="Send an Inquiry">
+      <PageSection id="send-an-inquiry" heading="Send an Inquiry">
         {/* Pre-form notice */}
         <div style={{ marginBottom: '1.75rem', padding: '1rem 1.4rem', border: '1px solid rgba(212,161,42,0.16)', borderRadius: '3px', backgroundColor: 'rgba(212,161,42,0.025)' }}>
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 0.5rem' }}>
