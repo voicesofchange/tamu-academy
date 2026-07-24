@@ -6,8 +6,9 @@ const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 /**
  * Shortened public descriptions. Titles are pulled from the live module
  * objects in economics-tracks.js so the public page stays in sync with the
- * internal curriculum; internal long descriptions, learning objectives,
- * quizzes, and activities are NOT exposed here.
+ * internal curriculum; internal long descriptions, quizzes, and activities
+ * are NOT exposed here. Module previews are not interactive and never link
+ * to gated module routes.
  */
 const MODULE_PREVIEWS = [
   'Scarcity, trade-offs, opportunity cost, incentives, institutions, and everyday economic choices.',
@@ -18,23 +19,63 @@ const MODULE_PREVIEWS = [
   'Industrialization, technology, regional integration, climate resilience, ownership, and shared prosperity.',
 ];
 
-// Motion ranges (px). Layer 1 (number) moves opposite to scroll; Layer 2
-// (accent) moves in the same axis at a smaller magnitude and opposite sign.
-const NUMBER_MOVE_DESKTOP = 140;
-const NUMBER_MOVE_TABLET = 80;
-const ACCENT_MOVE_DESKTOP = 70;
-const ACCENT_MOVE_TABLET = 40;
-const ENTRANCE_MOVE = 24; // foreground entrance on every viewport size
+/* ----- Piecewise interpolation tables (match the spec's progress curve) ----- */
+const ROW_STOPS = [
+  { p: 0.0, opacity: 0.15, scale: 0.92, ty: 70 },
+  { p: 0.25, opacity: 0.55, scale: 0.96, ty: 35 },
+  { p: 0.5, opacity: 1, scale: 1, ty: 0 },
+  { p: 0.75, opacity: 1, scale: 1, ty: -8 },
+  { p: 1.0, opacity: 0.78, scale: 0.985, ty: -30 },
+];
+const ROW_STOPS_MOBILE = [
+  { p: 0.0, opacity: 0.35, scale: 0.97, ty: 30 },
+  { p: 0.5, opacity: 1, scale: 1, ty: 0 },
+  { p: 1.0, opacity: 0.9, scale: 1, ty: -10 },
+];
+const NUMBER_STOPS = [
+  { p: 0.0, opacity: 0.06, scale: 0.78, ty: 20 },
+  { p: 0.5, opacity: 0.18, scale: 1, ty: 0 },
+  { p: 1.0, opacity: 0.1, scale: 1.08, ty: -20 },
+];
+const NUMBER_STOPS_MOBILE = [
+  { p: 0.0, opacity: 0.05, scale: 0.86, ty: 12 },
+  { p: 0.5, opacity: 0.14, scale: 1, ty: 0 },
+  { p: 1.0, opacity: 0.08, scale: 1.05, ty: -8 },
+];
+const ACCENT_STOPS = [
+  { p: 0.0, scaleX: 0, opacity: 0 },
+  { p: 0.5, scaleX: 1, opacity: 1 },
+  { p: 1.0, scaleX: 0.5, opacity: 0.5 },
+];
 
-function getRange() {
-  if (typeof window === 'undefined') {
-    return { number: NUMBER_MOVE_DESKTOP, accent: ACCENT_MOVE_DESKTOP };
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+
+function sampleStops(stops, p) {
+  if (p <= stops[0].p) return stops[0];
+  if (p >= stops[stops.length - 1].p) return stops[stops.length - 1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (p <= stops[i + 1].p) {
+      const a = stops[i];
+      const b = stops[i + 1];
+      const t = (p - a.p) / (b.p - a.p);
+      const out = { p };
+      for (const k of Object.keys(a)) {
+        if (k === 'p') continue;
+        out[k] = lerp(a[k], b[k], t);
+      }
+      return out;
+    }
   }
-  const w = window.innerWidth || 1024;
-  if (w >= 1024) return { number: NUMBER_MOVE_DESKTOP, accent: ACCENT_MOVE_DESKTOP };
-  if (w >= 768) return { number: NUMBER_MOVE_TABLET, accent: ACCENT_MOVE_TABLET };
-  return { number: 0, accent: 0 }; // mobile: no JS parallax (entrance only)
+  return stops[stops.length - 1];
 }
+
+/* Native CSS scroll-driven animation detection. When true, CSS handles the
+   scroll-linked transforms entirely; JS only runs the active-marker mark. */
+const NATIVE_SUPPORTED =
+  typeof CSS !== 'undefined' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('animation-timeline', 'view()');
 
 export default function ModuleJourney() {
   const found = getEconomicsCourseBySlug(COURSE_SLUG);
@@ -50,18 +91,15 @@ export default function ModuleJourney() {
 
     const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    // Active-marker observer: fires when a row enters the central ~20% of
-    // the viewport. We pick the topmost intersecting row so scrolling down
-    // transitions cleanly through module 1 → 6.
+    /* Active marker: topmost row intersecting the central ~20% strip wins. */
     const activeObserver = new IntersectionObserver(
       (entries) => {
         let bestIdx = null;
         let bestTop = Infinity;
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          const top = entry.boundingClientRect.top;
-          if (top < bestTop) {
-            bestTop = top;
+          if (entry.boundingClientRect.top < bestTop) {
+            bestTop = entry.boundingClientRect.top;
             bestIdx = Number(entry.target.dataset.index);
           }
         }
@@ -71,71 +109,97 @@ export default function ModuleJourney() {
       },
       { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
+    items.forEach((el) => el && activeObserver.observe(el));
 
-    // Entrance observer: each foreground content block fades/rises once.
-    // Unobserves immediately so it never fires again for the same row.
-    const entranceObserver = new IntersectionObserver(
+    /* Render an "active" class on the closest row so the title can deepen. */
+    const activeClassObserver = new IntersectionObserver(
       (entries) => {
+        let bestIdx = -1;
+        let bestTop = Infinity;
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('academy-module-entered');
-            entranceObserver.unobserve(entry.target);
+          if (!entry.isIntersecting) continue;
+          if (entry.boundingClientRect.top < bestTop) {
+            bestTop = entry.boundingClientRect.top;
+            bestIdx = Number(entry.target.dataset.index);
           }
         }
+        items.forEach((el, i) => {
+          if (el) el.classList.toggle('is-active-module', i === bestIdx);
+        });
       },
-      { threshold: 0.18 }
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
     );
+    items.forEach((el) => el && activeClassObserver.observe(el));
 
-    items.forEach((el) => {
-      if (el) {
-        activeObserver.observe(el);
-        const content = el.querySelector('[data-module-content]');
-        if (content) entranceObserver.observe(content);
-      }
-    });
-
-    // Parallax via rAF + passive scroll. Foreground scrolls normally; we only
-    // transform Layer 1 (number) and Layer 2 (accent). No scroll hijacking.
     let rafId = null;
+    let cleanupFn = null;
+    const isMobile = () => (window.innerWidth || 1024) < 768;
+
+    /* ----- JS FALLBACK: only runs when native scroll-driven animations are
+       unavailable. Writes CSS custom properties per rAF batch; never uses
+       React state during animation frames. ----- */
+    const writeDefaults = (el) => {
+      el.style.setProperty('--module-opacity', 1);
+      el.style.setProperty('--module-scale', 1);
+      el.style.setProperty('--module-ty', '0px');
+      el.style.setProperty('--number-opacity', 0.1);
+      el.style.setProperty('--number-scale', 1);
+      el.style.setProperty('--number-ty', '0px');
+      el.style.setProperty('--accent-scalex', 1);
+      el.style.setProperty('--accent-opacity', 1);
+    };
+
     const update = () => {
       rafId = null;
-      if (reduceMq.matches) return;
-      const range = getRange();
-      if (range.number === 0) return; // mobile: no JS parallax
+      if (reduceMq.matches) {
+        for (const el of items) el && writeDefaults(el);
+        return;
+      }
       const vh = window.innerHeight || 1;
-      for (let i = 0; i < items.length; i++) {
-        const el = items[i];
+      const rowStops = isMobile() ? ROW_STOPS_MOBILE : ROW_STOPS;
+      const numStops = isMobile() ? NUMBER_STOPS_MOBILE : NUMBER_STOPS;
+      for (const el of items) {
         if (!el) continue;
         const rect = el.getBoundingClientRect();
         const center = rect.top + rect.height / 2;
-        // progress: -1 when row center is at viewport bottom, +1 at top
-        const progress = (vh / 2 - center) / (vh / 2);
-        const numberEl = el.querySelector('[data-parallax-number]');
-        const accentEl = el.querySelector('[data-parallax-accent]');
-        if (numberEl) {
-          // Number drifts UP as the user scrolls down → moves slower than page
-          numberEl.style.transform = `translate3d(0, ${(progress * -range.number).toFixed(2)}px, 0)`;
-        }
-        if (accentEl) {
-          // Accent moves opposite direction at a smaller magnitude
-          accentEl.style.transform = `translate3d(0, ${(progress * range.accent).toFixed(2)}px, 0)`;
-        }
+        const progress = clamp01(1 - center / vh);
+        const row = sampleStops(rowStops, progress);
+        const num = sampleStops(numStops, progress);
+        const acc = sampleStops(ACCENT_STOPS, progress);
+        el.style.setProperty('--module-opacity', row.opacity.toFixed(3));
+        el.style.setProperty('--module-scale', row.scale.toFixed(4));
+        el.style.setProperty('--module-ty', `${row.ty.toFixed(2)}px`);
+        el.style.setProperty('--number-opacity', num.opacity.toFixed(3));
+        el.style.setProperty('--number-scale', num.scale.toFixed(4));
+        el.style.setProperty('--number-ty', `${num.ty.toFixed(2)}px`);
+        el.style.setProperty('--accent-scalex', acc.scaleX.toFixed(3));
+        el.style.setProperty('--accent-opacity', acc.opacity.toFixed(3));
       }
     };
+
     const schedule = () => {
       if (rafId == null) rafId = requestAnimationFrame(update);
     };
 
-    update();
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
+    if (!NATIVE_SUPPORTED) {
+      update();
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule, { passive: true });
+      cleanupFn = () => {
+        window.removeEventListener('scroll', schedule);
+        window.removeEventListener('resize', schedule);
+      };
+    } else if (reduceMq.matches) {
+      /* Reduced-motion on a native-supporting browser: also reset to full
+         visible so any invertible defaults stay readable. */
+      for (const el of items) el && writeDefaults(el);
+    }
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
+      if (cleanupFn) cleanupFn();
       activeObserver.disconnect();
-      entranceObserver.disconnect();
+      activeClassObserver.disconnect();
     };
   }, [course]);
 
@@ -172,31 +236,17 @@ export default function ModuleJourney() {
                   alignRight ? 'academy-module-right' : 'academy-module-left'
                 }`}
               >
-                {/* Layer 1 — oversized decorative module number */}
+                {/* Oversized decorative module number (Layer 1, aria-hidden) */}
                 <div className="academy-module-number-wrap" aria-hidden="true">
-                  <span
-                    className="academy-module-number font-heading"
-                    data-parallax-number
-                  >
-                    {idx}
-                  </span>
+                  <span className="academy-module-number font-heading">{idx}</span>
                 </div>
 
-                {/* Layer 2 — restrained accent band (opposite direction) */}
-                <span
-                  className="academy-module-accent"
-                  data-parallax-accent
-                  aria-hidden="true"
-                />
+                {/* Accent gold rule that grows with scroll progress (Layer 2) */}
+                <span className="academy-module-accent-line" aria-hidden="true" />
 
-                {/* Layer 3 — foreground content (scrolls normally, entrance only) */}
-                <div
-                  className="academy-module-content"
-                  data-module-content
-                >
-                  <p className="academy-eyebrow academy-eyebrow-mute">
-                    Module {idx}
-                  </p>
+                {/* Foreground content (Layer 3) */}
+                <div className="academy-module-content">
+                  <p className="academy-eyebrow academy-eyebrow-mute">Module {idx}</p>
                   <h3 className="academy-module-title font-heading">{m.title}</h3>
                   <p className="academy-module-desc font-body">{preview}</p>
                   <p className="academy-status academy-status-line">
@@ -241,15 +291,9 @@ export default function ModuleJourney() {
   max-width: 1280px;
   margin: 0 auto;
 }
-.academy-modules-wrap {
-  position: relative;
-}
-@media (min-width: 1024px) {
-  .academy-modules-wrap { padding-right: 3rem; }
-}
-@media (min-width: 768px) and (max-width: 1023px) {
-  .academy-modules-wrap { padding-right: 2.25rem; }
-}
+.academy-modules-wrap { position: relative; }
+@media (min-width: 1024px) { .academy-modules-wrap { padding-right: 3rem; } }
+@media (min-width: 768px) and (max-width: 1023px) { .academy-modules-wrap { padding-right: 2.25rem; } }
 
 .academy-modules-list {
   list-style: none;
@@ -258,7 +302,7 @@ export default function ModuleJourney() {
   position: relative;
 }
 
-/* ---------- Layer containers ---------- */
+/* ---------- Module row (Layer 3 container) ---------- */
 .academy-module-row {
   position: relative;
   min-height: 78vh;
@@ -267,18 +311,25 @@ export default function ModuleJourney() {
   padding: clamp(2rem, 5vw, 4rem) 0;
   overflow: hidden;
   border-bottom: 1px solid rgba(212,161,42,0.1);
+  /* Variable defaults — content remains visible if neither JS nor CSS-native
+     animations are active. */
+  --module-opacity: 1;
+  --module-scale: 1;
+  --module-ty: 0px;
+  --number-opacity: 0.1;
+  --number-scale: 1;
+  --number-ty: 0px;
+  --accent-scalex: 1;
+  --accent-opacity: 1;
+  opacity: var(--module-opacity, 1);
+  transform: translate3d(0, var(--module-ty, 0px), 0) scale(var(--module-scale, 1));
+  will-change: transform, opacity;
 }
 .academy-module-row:nth-child(even) {
-  background: linear-gradient(
-    180deg,
-    rgba(245,239,224,0.012) 0%,
-    rgba(245,239,224,0.03) 50%,
-    rgba(245,239,224,0.012) 100%
-  );
+  background: linear-gradient(180deg, rgba(245,239,224,0.012) 0%, rgba(245,239,224,0.03) 50%, rgba(245,239,224,0.012) 100%);
 }
 
-/* Layer 1 — oversized number (centered inside a wrapper so JS transform
-   adds movement on top of position, never replacing a centering transform) */
+/* ---------- Layer 1 — oversized decorative number ---------- */
 .academy-module-number-wrap {
   position: absolute;
   inset: 0;
@@ -298,66 +349,46 @@ export default function ModuleJourney() {
 }
 .academy-module-number {
   font-size: clamp(11rem, 28vw, 22rem);
-  color: rgba(212,161,42,0.09);
+  color: #D4A12A;
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 0.85;
   user-select: none;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  opacity: var(--number-opacity, 0.1);
+  transform: translate3d(0, var(--number-ty, 0px), 0) scale(var(--number-scale, 1));
 }
-.academy-module-right .academy-module-number {
-  color: rgba(245,239,224,0.07);
-}
+.academy-module-right .academy-module-number { color: #F5EFE0; }
 
-/* Layer 2 — wide translucent accent band (moves opposite to number) */
-.academy-module-accent {
+/* ---------- Layer 2 — accent gold rule that grows with progress ---------- */
+.academy-module-accent-line {
   position: absolute;
   left: 0;
   right: 0;
-  top: 32%;
-  height: clamp(4rem, 12vw, 8rem);
-  background: linear-gradient(
-    90deg,
-    rgba(212,161,42,0) 0%,
-    rgba(212,161,42,0.08) 50%,
-    rgba(212,161,42,0) 100%
-  );
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(212,161,42,0) 0%, rgba(212,161,42,0.65) 50%, rgba(212,161,42,0) 100%);
+  transform-origin: left center;
+  opacity: var(--accent-opacity, 1);
+  transform: scaleX(var(--accent-scalex, 1));
   z-index: 1;
   pointer-events: none;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
 }
-.academy-module-right .academy-module-accent {
-  top: 56%;
-  background: linear-gradient(
-    90deg,
-    rgba(92,117,111,0) 0%,
-    rgba(92,117,111,0.07) 50%,
-    rgba(92,117,111,0) 100%
-  );
+.academy-module-right .academy-module-accent-line {
+  background: linear-gradient(90deg, rgba(92,117,111,0) 0%, rgba(92,117,111,0.55) 50%, rgba(92,117,111,0) 100%);
 }
 
-/* Layer 3 — foreground content */
+/* ---------- Layer 3 — foreground content ---------- */
 .academy-module-content {
   position: relative;
   z-index: 2;
   max-width: 46ch;
   padding: 0 clamp(1.5rem, 5vw, 3.5rem);
-  opacity: 0.7;
-  transform: translate3d(0, ${ENTRANCE_MOVE}px, 0);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  text-align: left;
 }
-.academy-module-entered .academy-module-content {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-.academy-module-left .academy-module-content {
-  margin-right: auto;
-}
-.academy-module-right .academy-module-content {
-  margin-left: auto;
-}
+.academy-module-left .academy-module-content { margin-right: auto; }
+.academy-module-right .academy-module-content { margin-left: auto; }
 .academy-module-title {
   color: #F5EFE0;
   font-size: clamp(1.6rem, 3.6vw, 2.3rem);
@@ -365,13 +396,17 @@ export default function ModuleJourney() {
   line-height: 1.2;
   margin: 0.4rem 0 0.85rem;
   letter-spacing: 0.005em;
+  transition: color 0.3s ease;
 }
 .academy-module-desc {
-  color: rgba(245,239,224,0.75);
+  color: rgba(245,239,224,0.78);
   font-size: clamp(0.98rem, 2vw, 1.1rem);
   line-height: 1.7;
   font-weight: 300;
   margin: 0 0 1rem;
+}
+.academy-module-row.is-active-module .academy-module-title {
+  color: #FFFFFF;
 }
 
 /* ---------- Progress rail ---------- */
@@ -390,12 +425,12 @@ export default function ModuleJourney() {
   padding: 0;
   margin: 0;
   height: 100%;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   position: relative;
-  min-height: 70vh;
 }
 .academy-progress-list::before {
   content: '';
@@ -441,7 +476,68 @@ export default function ModuleJourney() {
   border-color: rgba(212,161,42,0.55);
 }
 
-/* ---------- Tablet (768–1023) ---------- */
+/* ========== NATIVE CSS SCROLL-DRIVEN ANIMATIONS (preferred where supported) ========== */
+@supports (animation-timeline: view()) {
+  .academy-module-row {
+    animation: mod-row linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  .academy-module-number {
+    animation: mod-number linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  .academy-module-accent-line {
+    animation: mod-accent linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes mod-row {
+    0%   { opacity: 0.15; transform: scale(0.92) translateY(70px); }
+    25%  { opacity: 0.55; transform: scale(0.96) translateY(35px); }
+    50%  { opacity: 1;    transform: scale(1)    translateY(0); }
+    75%  { opacity: 1;    transform: scale(1)    translateY(-8px); }
+    100% { opacity: 0.78; transform: scale(0.985) translateY(-30px); }
+  }
+  @keyframes mod-number {
+    0%   { opacity: 0.06; transform: scale(0.78) translateY(20px); }
+    50%  { opacity: 0.18; transform: scale(1)    translateY(0); }
+    100% { opacity: 0.1;  transform: scale(1.08) translateY(-20px); }
+  }
+  @keyframes mod-accent {
+    0%   { opacity: 0;   transform: scaleX(0); }
+    50%  { opacity: 1;   transform: scaleX(1); }
+    100% { opacity: 0.5; transform: scaleX(0.5); }
+  }
+
+  @media (max-width: 767px) {
+    .academy-module-row {
+      animation-name: mod-row-mobile;
+      animation-range: cover 5% cover 95%;
+    }
+    .academy-module-number { animation-name: mod-number-mobile; }
+    .academy-module-accent-line { animation-name: mod-accent-mobile; }
+    @keyframes mod-row-mobile {
+      0%   { opacity: 0.35; transform: scale(0.97) translateY(30px); }
+      50%  { opacity: 1;    transform: scale(1)    translateY(0); }
+      100% { opacity: 0.9;  transform: scale(1)   translateY(-10px); }
+    }
+    @keyframes mod-number-mobile {
+      0%   { opacity: 0.05; transform: scale(0.86) translateY(12px); }
+      50%  { opacity: 0.14; transform: scale(1)    translateY(0); }
+      100% { opacity: 0.08; transform: scale(1.05) translateY(-8px); }
+    }
+    @keyframes mod-accent-mobile {
+      0%   { opacity: 0;   transform: scaleX(0); }
+      50%  { opacity: 1;   transform: scaleX(1); }
+      100% { opacity: 0.5; transform: scaleX(0.5); }
+    }
+  }
+}
+
+/* ---------- Tablet (768–1023): keep desktop animation; tighter layout ---------- */
 @media (max-width: 1023px) and (min-width: 768px) {
   .academy-module-row { min-height: 68vh; }
   .academy-module-number { font-size: clamp(8rem, 22vw, 14rem); }
@@ -449,11 +545,9 @@ export default function ModuleJourney() {
   .academy-progress-rail { right: 0.5rem; }
 }
 
-/* ---------- Mobile (<768) ---------- */
+/* ---------- Mobile (<768): one-column, scroll-triggered fade+rise ---------- */
 @media (max-width: 767px) {
-  .academy-module-journey {
-    padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 5vw, 2rem);
-  }
+  .academy-module-journey { padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 5vw, 2rem); }
   .academy-modules-wrap { padding-right: 0; }
   .academy-module-row {
     min-height: auto;
@@ -463,41 +557,31 @@ export default function ModuleJourney() {
   }
   .academy-module-number-wrap {
     align-items: flex-start;
-    justify-content: flex-start;
-    padding: 0.5rem 0 0 0;
+    justify-content: flex-start !important;
+    padding: 0.5rem 0 0 0 !important;
   }
-  .academy-module-left .academy-module-number-wrap,
-  .academy-module-right .academy-module-number-wrap {
-    justify-content: flex-start;
-    padding: 0.5rem 0 0 0;
-  }
-  .academy-module-number {
-    font-size: clamp(5rem, 22vw, 8rem);
-    color: rgba(212,161,42,0.1);
-  }
-  .academy-module-accent { display: none; }
+  .academy-module-number { font-size: clamp(5rem, 22vw, 8rem); }
+  .academy-module-accent-line { top: 30%; }
   .academy-module-content {
     max-width: 100%;
     padding: 0;
-    margin: clamp(2.5rem, 12vw, 4rem) 0 0 0;
+    margin: clamp(2.5rem, 12vw, 4rem) 0 0 0 !important;
   }
   .academy-progress-rail { display: none; }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  .academy-module-row,
   .academy-module-number,
-  .academy-module-accent {
-    transform: none !important;
-    will-change: auto;
-  }
-  .academy-module-content {
+  .academy-module-accent-line {
+    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
   }
   .academy-progress-dot,
-  .academy-progress-label {
+  .academy-progress-label,
+  .academy-module-title {
     transition: none !important;
   }
 }
