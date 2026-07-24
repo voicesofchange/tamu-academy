@@ -19,8 +19,7 @@ import SiteFooter from '@/components/landing/SiteFooter';
 // editorial coming-soon surface (LaunchLanding). The original full homepage
 // is preserved below and is restored by setting LAUNCH_MODE to false.
 import LaunchLanding from '@/components/landing/LaunchLanding';
-
-const LAUNCH_MODE = true;
+import { LAUNCH_MODE } from '@/lib/site-mode';
 
 export default function Landing() {
   if (LAUNCH_MODE) {

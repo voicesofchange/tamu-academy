@@ -7,6 +7,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
+import SoftLaunchGate from '@/components/SoftLaunchGate';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
@@ -61,6 +62,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
+      <Route element={<SoftLaunchGate />}>
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
@@ -92,6 +94,7 @@ const AuthenticatedApp = () => {
       <Route path="/partner" element={<Navigate to="/contact?type=partnership" replace />} />
       <Route path="/insights" element={<Navigate to="/resources" replace />} />
       <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };
