@@ -19,7 +19,8 @@ const MODULE_PREVIEWS = [
   'Industrialization, technology, regional integration, climate resilience, ownership, and shared prosperity.',
 ];
 
-/* ----- Piecewise interpolation tables (match the spec's progress curve) ----- */
+/* Piecewise interpolation tables. progress 0.5 = section center at
+   viewport vertical center; progress 0 = far below; progress 1 = far above. */
 const ROW_STOPS = [
   { p: 0.0, opacity: 0.15, scale: 0.92, ty: 70 },
   { p: 0.25, opacity: 0.55, scale: 0.96, ty: 35 },
@@ -70,13 +71,6 @@ function sampleStops(stops, p) {
   return stops[stops.length - 1];
 }
 
-/* Native CSS scroll-driven animation detection. When true, CSS handles the
-   scroll-linked transforms entirely; JS only runs the active-marker mark. */
-const NATIVE_SUPPORTED =
-  typeof CSS !== 'undefined' &&
-  typeof CSS.supports === 'function' &&
-  CSS.supports('animation-timeline', 'view()');
-
 export default function ModuleJourney() {
   const found = getEconomicsCourseBySlug(COURSE_SLUG);
   const course = found?.course;
@@ -85,13 +79,12 @@ export default function ModuleJourney() {
 
   useEffect(() => {
     if (!course || !course.modules || course.modules.length === 0) return;
-
     const items = itemsRef.current;
     if (!items || items.length === 0) return;
 
     const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    /* Active marker: topmost row intersecting the central ~20% strip wins. */
+    /* Active marker (progress rail) — topmost row in the central strip wins. */
     const activeObserver = new IntersectionObserver(
       (entries) => {
         let bestIdx = null;
@@ -111,7 +104,7 @@ export default function ModuleJourney() {
     );
     items.forEach((el) => el && activeObserver.observe(el));
 
-    /* Render an "active" class on the closest row so the title can deepen. */
+    /* Active class on the closest row deepens the title. */
     const activeClassObserver = new IntersectionObserver(
       (entries) => {
         let bestIdx = -1;
@@ -132,12 +125,8 @@ export default function ModuleJourney() {
     items.forEach((el) => el && activeClassObserver.observe(el));
 
     let rafId = null;
-    let cleanupFn = null;
     const isMobile = () => (window.innerWidth || 1024) < 768;
 
-    /* ----- JS FALLBACK: only runs when native scroll-driven animations are
-       unavailable. Writes CSS custom properties per rAF batch; never uses
-       React state during animation frames. ----- */
     const writeDefaults = (el) => {
       el.style.setProperty('--module-opacity', 1);
       el.style.setProperty('--module-scale', 1);
@@ -149,6 +138,13 @@ export default function ModuleJourney() {
       el.style.setProperty('--accent-opacity', 1);
     };
 
+    /**
+     * Per-frame progress write. Pure CSS-variable writes — no React state
+     * in the animation loop, GPU-friendly opacity + transform driven by
+     * var() in CSS. This is the PRIMARY path for all browsers; native
+     * scroll-timeline CSS was tested first (per spec) and reported support
+     * without visible animation in the live preview, so JS is used here.
+     */
     const update = () => {
       rafId = null;
       if (reduceMq.matches) {
@@ -181,23 +177,69 @@ export default function ModuleJourney() {
       if (rafId == null) rafId = requestAnimationFrame(update);
     };
 
-    if (!NATIVE_SUPPORTED) {
-      update();
-      window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', schedule, { passive: true });
-      cleanupFn = () => {
-        window.removeEventListener('scroll', schedule);
-        window.removeEventListener('resize', schedule);
-      };
-    } else if (reduceMq.matches) {
-      /* Reduced-motion on a native-supporting browser: also reset to full
-         visible so any invertible defaults stay readable. */
-      for (const el of items) el && writeDefaults(el);
+    /* ====== TEMPORARY DIAGNOSTIC (remove after live-preview confirmation) ======
+       Logs once on mount + samples scroll-driven var writes for the first 8s.
+       Gated to dev/preview build only via import.meta.env.DEV (Vite). */
+    const isDev =
+      typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.DEV;
+    if (isDev) {
+      try {
+        const supportInfo =
+          typeof CSS !== 'undefined' && typeof CSS.supports === 'function'
+            ? CSS.supports('animation-timeline', 'view()')
+            : false;
+        console.log('[ModuleJourney diagnostic]', {
+          cssAnimationTimelineSupported: supportInfo,
+          reducedMotionActive: reduceMq.matches,
+          itemCount: items.length,
+          renderedPath: 'js-primary (rAF + CSS variables)',
+        });
+      } catch (e) {
+        /* swallow */
+      }
     }
+
+    let diagnosticBudgetMs = 8000;
+    const diagnosticStart = performance.now();
+    let lastSampleTime = 0;
+    const onDiagnosticScroll = () => {
+      if (performance.now() - diagnosticStart > diagnosticBudgetMs) return;
+      const now = performance.now();
+      if (now - lastSampleTime < 240) return;
+      lastSampleTime = now;
+      const samples = items.map((el, i) =>
+        el
+          ? {
+              i,
+              op: el.style.getPropertyValue('--module-opacity'),
+              sc: el.style.getPropertyValue('--module-scale'),
+              ty: el.style.getPropertyValue('--module-ty'),
+              nop: el.style.getPropertyValue('--number-opacity'),
+            }
+          : null
+      );
+      console.log('[ModuleJourney scroll update]', samples);
+    };
+    if (isDev) {
+      window.addEventListener('scroll', onDiagnosticScroll, { passive: true });
+      setTimeout(() => {
+        window.removeEventListener('scroll', onDiagnosticScroll);
+        console.log('[ModuleJourney diagnostic] ended after 8s.');
+      }, 8200);
+    }
+    /* ====== END TEMPORARY DIAGNOSTIC ====== */
+
+    /* Begin update loop immediately + on scroll/resize. Single passive
+       scroll listener coalesces a single rAF per frame. */
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
-      if (cleanupFn) cleanupFn();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      window.removeEventListener('scroll', onDiagnosticScroll);
       activeObserver.disconnect();
       activeClassObserver.disconnect();
     };
@@ -311,8 +353,8 @@ export default function ModuleJourney() {
   padding: clamp(2rem, 5vw, 4rem) 0;
   overflow: hidden;
   border-bottom: 1px solid rgba(212,161,42,0.1);
-  /* Variable defaults — content remains visible if neither JS nor CSS-native
-     animations are active. */
+  /* Variable defaults — content remains fully visible before JS writes
+     per-frame values, so the page is readable even if JS is disabled. */
   --module-opacity: 1;
   --module-scale: 1;
   --module-ty: 0px;
@@ -476,68 +518,7 @@ export default function ModuleJourney() {
   border-color: rgba(212,161,42,0.55);
 }
 
-/* ========== NATIVE CSS SCROLL-DRIVEN ANIMATIONS (preferred where supported) ========== */
-@supports (animation-timeline: view()) {
-  .academy-module-row {
-    animation: mod-row linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-  .academy-module-number {
-    animation: mod-number linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-  .academy-module-accent-line {
-    animation: mod-accent linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-
-  @keyframes mod-row {
-    0%   { opacity: 0.15; transform: scale(0.92) translateY(70px); }
-    25%  { opacity: 0.55; transform: scale(0.96) translateY(35px); }
-    50%  { opacity: 1;    transform: scale(1)    translateY(0); }
-    75%  { opacity: 1;    transform: scale(1)    translateY(-8px); }
-    100% { opacity: 0.78; transform: scale(0.985) translateY(-30px); }
-  }
-  @keyframes mod-number {
-    0%   { opacity: 0.06; transform: scale(0.78) translateY(20px); }
-    50%  { opacity: 0.18; transform: scale(1)    translateY(0); }
-    100% { opacity: 0.1;  transform: scale(1.08) translateY(-20px); }
-  }
-  @keyframes mod-accent {
-    0%   { opacity: 0;   transform: scaleX(0); }
-    50%  { opacity: 1;   transform: scaleX(1); }
-    100% { opacity: 0.5; transform: scaleX(0.5); }
-  }
-
-  @media (max-width: 767px) {
-    .academy-module-row {
-      animation-name: mod-row-mobile;
-      animation-range: cover 5% cover 95%;
-    }
-    .academy-module-number { animation-name: mod-number-mobile; }
-    .academy-module-accent-line { animation-name: mod-accent-mobile; }
-    @keyframes mod-row-mobile {
-      0%   { opacity: 0.35; transform: scale(0.97) translateY(30px); }
-      50%  { opacity: 1;    transform: scale(1)    translateY(0); }
-      100% { opacity: 0.9;  transform: scale(1)   translateY(-10px); }
-    }
-    @keyframes mod-number-mobile {
-      0%   { opacity: 0.05; transform: scale(0.86) translateY(12px); }
-      50%  { opacity: 0.14; transform: scale(1)    translateY(0); }
-      100% { opacity: 0.08; transform: scale(1.05) translateY(-8px); }
-    }
-    @keyframes mod-accent-mobile {
-      0%   { opacity: 0;   transform: scaleX(0); }
-      50%  { opacity: 1;   transform: scaleX(1); }
-      100% { opacity: 0.5; transform: scaleX(0.5); }
-    }
-  }
-}
-
-/* ---------- Tablet (768–1023): keep desktop animation; tighter layout ---------- */
+/* ---------- Tablet (768–1023) ---------- */
 @media (max-width: 1023px) and (min-width: 768px) {
   .academy-module-row { min-height: 68vh; }
   .academy-module-number { font-size: clamp(8rem, 22vw, 14rem); }
@@ -545,7 +526,7 @@ export default function ModuleJourney() {
   .academy-progress-rail { right: 0.5rem; }
 }
 
-/* ---------- Mobile (<768): one-column, scroll-triggered fade+rise ---------- */
+/* ---------- Mobile (<768) ---------- */
 @media (max-width: 767px) {
   .academy-module-journey { padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 5vw, 2rem); }
   .academy-modules-wrap { padding-right: 0; }
@@ -575,7 +556,6 @@ export default function ModuleJourney() {
   .academy-module-row,
   .academy-module-number,
   .academy-module-accent-line {
-    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
