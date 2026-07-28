@@ -745,6 +745,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       ],
     },
     'module-5': {
+      formatVersion: 'expanded',
       number: 'Module 5',
       route: 'module-5',
       title: 'Inequality, Institutions and Development',
@@ -809,7 +810,7 @@ export const ECONOMICS_MODULE_CONTENT = {
         'Choose one development project or period of economic growth. What evidence would you need to determine whether the benefits were broadly shared?',
       ],
       quiz: {
-        passingScore: 3,
+        passingScore: 4,
         questions: [
           {
             id: 1,
@@ -897,13 +898,164 @@ export const ECONOMICS_MODULE_CONTENT = {
           { id: 'final_assessment', label: 'Final Inclusive-Development Assessment', helper: 'Explain whether current growth or policy arrangements are inclusive. Use at least four concepts from this module to support your conclusion.' },
         ],
       },
+      media: {
+        primary: {
+          id: 'f00obkyqspk',
+          embedUrl: 'https://www.youtube-nocookie.com/embed/F00oBKyqSPk',
+          watchUrl: 'https://www.youtube.com/watch?v=F00oBKyqSPk',
+          attributionLabel: 'Primary video',
+          source: {
+            title: 'Africa\u2019s Pulse: Why Tackling Inequality is Essential for Growth',
+            speakerOrOrganization: 'Office of the Chief Economist, Africa Region, World Bank Group',
+            publisher: 'World Bank Group',
+            watchUrl: 'https://www.youtube.com/watch?v=F00oBKyqSPk',
+            whySelected: 'The World Bank Africa\u2019s Pulse is a flagship semi-annual regional economic update that synthesises growth, poverty, and inequality data and is widely cited in African economic analysis. The brief overview reinforces Tamu Academy\u2019s explanation of why GDP growth alone does not deliver shared prosperity.',
+            disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+          },
+        },
+        supporting: [
+          {
+            id: 'nsqqxj3jlsg',
+            embedUrl: 'https://www.youtube-nocookie.com/embed/nSQqxJ3jLsg',
+            watchUrl: 'https://www.youtube.com/watch?v=nSQqxJ3jLsg',
+            attributionLabel: 'Supporting video',
+            source: {
+              title: 'African Development Week Highlights: Inequality in Africa',
+              speakerOrOrganization: 'African Development Bank African Development Week panel participants (individual speakers not confirmed)',
+              publisher: 'CNBC Africa, broadcasting the African Development Bank African Development Week',
+              watchUrl: 'https://www.youtube.com/watch?v=nSQqxJ3jLsg',
+              whySelected: 'African Development Week convenes ministry of finance officials, economists, and civil society voices from across the continent under the African Development Bank\u2019s convening. Reporting from the event gives learners additional perspective on the institutional response side of inequality and on whose voice is included in policy debate.',
+              disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+            },
+          },
+        ],
+      },
+      watchingQuestions: [
+        'How does the speaker distinguish between economic growth and shared development? Which African countries or regions are used as evidence?',
+        'Where does inequality appear in the video as income, wealth, spatial, gender, or generational difference? Which groups are named as most affected?',
+        'Which institutions and policies are identified as widening or reducing inequality, and what evidence is offered for each?',
+        'What assumptions does the video make about governance, taxation, education, or land? Where do those claims match or differ from your country\u2019s experience?',
+        'Which numbers, framings, or narratives did you find most compelling, and which would you want to verify with additional evidence?',
+      ],
+      explanation: [
+        'Economic growth and development are not the same. Growth measures whether output, investment, and total income rise. Development asks whether people gain the real freedom, resources, and institutions to participate in economic life, pursue valued lives, and withstand shocks. A country can grow without broadening opportunity, and in some cases it grows precisely because gains concentrate among a few.',
+        'Colonial economic arrangements left durable patterns in land ownership, infrastructure, education, and administrative capacity. Many present-day disparities \u2014 between coast and interior, urban and rural, central and peripheral regions, particular ethnic and linguistic groups, men and women \u2014 trace back to decisions about who held land title, who was drafted into wage labour, who received schools and clinics, and who was confined to reserves. History does not determine the present. It helps explain why inequality persists across generations even after decades of independence and growth.',
+        'Inequality is multidimensional. Income inequality compares flows of earnings. Wealth inequality compares ownership of assets such as land, housing, savings, businesses, livestock, and financial products, and it is often more stable across a generation. Spatial inequality compares access to roads, electricity, piped water, internet, schools, hospitals, courts, and financial services. Gender inequality shows in unpaid care work, inheritance, financial access, control over land, and exposure to violence. Generational inequality affects young people facing limited jobs, housing, land, or credit.',
+        'National averages can conceal these differences. A country with rising average income can have improved living standards in three large cities while rural regions struggle to access electricity, maternal healthcare, and secondary education. Reading aggregate indicators alongside subnational and group-level evidence is the first habit of inclusive-development analysis.',
+        'Institutions both widen inequality and can narrow it. Formal institutions \u2014 constitutions, courts, schools, banks, tax authorities, land registries \u2014 distribute opportunities and constraints. Informal institutions \u2014 customary norms, family networks, patronage, trust, community obligations \u2014 shape how formal rules apply in practice. Inclusive development depends on whether institutions give excluded groups real voice, capability, security, accountability, and dignity, not only whether they raise national output.',
+        'Inequality also affects the conditions under which growth can continue. Large gaps in income and wealth can reduce trust, weaken political participation, slow investment in public goods, and increase the risk of instability. Reducing inequality is therefore not a separate ethical project from economic growth. It shapes whether growth is sustainable, who growth serves, and how durable development becomes.',
+      ],
+      caseStudy: {
+        title: 'Case Study: National Growth, Unequal Access \u2014 Kenya\u2019s Arid and Semi-Arid Lands',
+        location: 'Northern and north-eastern Kenya \u2014 the Arid and Semi-Arid Lands (ASAL) counties',
+        intro: 'Kenya is one of East Africa\u2019s larger economies. National growth has averaged several percentage points a year outside drought periods, and Nairobi, Mombasa, the wider Central region, and a small number of counties together account for a large share of national output and formal employment. The Arid and Semi-Arid Lands (ASAL) counties \u2014 including Turkana, Marsabit, Mandera, Wajir, Garissa, West Pokot, Isiolo, and Tana River \u2014 cover a substantial share of land area and population, yet consistently post lower indicators for school completion, safe water, household electricity, maternal health, and paved roads than the national averages. The case allows learners to compare a national growth figure with the access realities of a large peripheral region.',
+        sections: [
+          {
+            heading: 'Growth at the centre',
+            paragraphs: [
+              'A national GDP figure summarises a country\u2019s total output. In Kenya, much of that activity originates in Nairobi, the wider Central corridor, and Mombasa. Government revenue, formal private employment, and university enrolment concentrate in those areas. The Kenya National Bureau of Statistics and World Bank Kenya Economic Updates repeatedly show that a few counties dominate national output, while a larger set of counties, including the ASAL counties, contribute smaller shares.',
+            ],
+          },
+          {
+            heading: 'Employment and livelihoods',
+            paragraphs: [
+              'In many ASAL counties, formal employment is concentrated in teachers, nurses, police, county administration, and a small number of NGOs and donor-funded programmes. Pastoral livestock keeping, small-scale trade, and casual labour are common informal livelihoods. Drought cycles regularly reduce herds and household income, and emergency relief expenditure can substitute for productive investment.',
+            ],
+          },
+          {
+            heading: 'Education',
+            paragraphs: [
+              'Primary completion rates are lower in several northern districts than in the rest of Kenya, and the share of girls completing secondary school has been a particular concern. Distance to school, language of instruction, household labour demands, and water-collection time shape who can attend regularly. The Kenya Demographic and Health Surveys and UNESCO Institute for Statistics document persistent subnational gaps.',
+            ],
+          },
+          {
+            heading: 'Infrastructure, public services, and institutional response',
+            paragraphs: [
+              'Paved road density, household electricity connection, and proximity to a trained health facility are lower in many ASAL counties than in central Kenya. Kenya\u2019s 2010 Constitution devolved budget and service delivery to 47 counties; the Equalisation Fund targets historically marginalised constituencies; cash transfer, school feeding, and drought response programmes are delivered through county governments, the National Government, and partners such as UNICEF.',
+              'Devolution has expanded county-level financing. Persistent challenges include implementation capacity, recurrent budgeting dominance over development spending, weak procurement accountability, and the long horizon needed to build roads, power, and skilled workforce in low-density regions.',
+            ],
+          },
+        ],
+        comparison: [
+          { dimension: 'National GDP growth', narrative: 'Non-drought national growth has averaged around several percentage points a year, with a few counties producing most output (World Bank Kenya Economic Update; Kenya National Bureau of Statistics).' },
+          { dimension: 'Electricity connection', narrative: 'Household electricity access in northern Kenya counties remains well below the national average, even after rural electrification expansion (Kenya National Bureau of Statistics; World Bank Energy Atlas).' },
+          { dimension: 'Safe water', narrative: 'Access to improved water sources lags the national average, and drought deepens collection times and health risk (UNICEF Kenya WASH).' },
+          { dimension: 'Maternal and child health', narrative: 'Skilled-birth-attendant coverage and under-five immunisation rates in several ASAL counties remain below national averages (Kenya Demographic and Health Surveys; UNICEF Kenya).' },
+          { dimension: 'Education completion', narrative: 'Primary and secondary completion rates, especially for girls, lag the national average across several northern counties (Kenya National Bureau of Statistics; UNESCO Institute for Statistics).' },
+          { dimension: 'Paved road density', narrative: 'Paved road density in northern Kenya is markedly lower than in central Kenya; travel times to clinics, schools, and markets remain long (Kenya Roads Board; African Development Bank reports).' },
+        ],
+        takeaways: [
+          'National indicators and subnational realities can diverge sharply. Reading only national figures can conceal concentrated exclusion.',
+          'Colonial-era infrastructure and administrative patterns persist across generations, but they do not lock outcomes in: devolution and equity instruments can shift them.',
+          'Inclusive-development analysis uses access, voice, capability, security, accountability, and dignity rather than output alone.',
+          'Devolution since 2010, the Equalisation Fund, social protection, infrastructure maintenance, and targeted investment in women and girls remain live policy levers.',
+        ],
+        sources: [
+          'World Bank Kenya Economic Update',
+          'Kenya National Bureau of Statistics',
+          'Kenya Demographic and Health Surveys',
+          'UNICEF Kenya',
+          'African Development Bank, Kenya Country Strategic Pillars',
+          'Institute of Economic Affairs Kenya',
+        ],
+      },
+      policyActivity: {
+        title: 'Tackling Inequality: Choices and Trade-Offs',
+        purpose: 'Make four policy decisions an African government might face in responding to inequality, and review the likely effects and limitations of each choice.',
+        framing: 'You are advising a fictional country \u2014 Awanda \u2014 where growth is rising but inequality across regions, gender, and generations is widening. Consider each decision independently. In practice, multiple instruments combine and interact.',
+        summaryStatement: 'No single choice below is uniformly best. Each option has expected effects, costs, and limitations. In real policy, instruments combine and trade against one another.',
+        decisions: [
+          {
+            id: 'spatial',
+            categoryLabel: 'Spatial and regional inequality',
+            prompt: 'Which approach should Awanda take to reduce geographic inequality in access to services?',
+            options: [
+              { id: 'a', label: 'Decentralise the public-service budget to elected regional and county governments.', effects: 'Moves resources and decision-making closer to under-served regions; supports local accountability and more locally appropriate services.', limitations: 'Can entrench local elite capture or service fragmentation; requires sustained capacity-building, oversight, and predictable transfers to function.' },
+              { id: 'b', label: 'Fund targeted national infrastructure investment in the most under-served regions.', effects: 'Builds roads, power, water, and connectivity in lagging regions; can unblock private investment and reduce travel and energy costs.', limitations: 'Heavy financial cost; risk of white-elephant projects and elite-driven siting; slower payoff if institutions and maintenance are weak.' },
+              { id: 'c', label: 'Maintain centralised delivery with new minimum national standards.', effects: 'Preserves a single national system, clearer accountability to a national citizen, and avoids duplication of administrative capacity.', limitations: 'Standards set centrally may underweight local needs; without explicit equity weighting they risk reinforcing the historical concentration of services.' },
+            ],
+          },
+          {
+            id: 'gender',
+            categoryLabel: 'Gendered inequality',
+            prompt: 'Which package should Awanda prioritise to address gender-based inequality in land, finance, and paid work?',
+            options: [
+              { id: 'a', label: 'Land and inheritance law reform with enforcement and awareness.', effects: 'Gives women legal access to and control over productive assets across a generation, when enforced; can shift household bargaining power.', limitations: 'Enforcement is constrained by customary institutions and court access; protected rights may not be exercised without cultural, financial, and legal support.' },
+              { id: 'b', label: 'Subsidised finance for women entrepreneurs.', effects: 'Improves women\u2019s access to working capital; supports small and women-led enterprise; visible entry-points.', limitations: 'Reaches only those who can apply; credit without markets, value chains, or savings protection can deepen debt; supply-side reforms alone rarely shift unpaid care norms.' },
+              { id: 'c', label: 'Publicly funded care services (childcare, eldercare, health support).', effects: 'Frees women\u2019s time for paid work, study, and participation; supports children\u2019s early development.', limitations: 'High fiscal cost and labour-intensive delivery; requires trained, paid care workers, oversight, and sustained public commitment.' },
+            ],
+          },
+          {
+            id: 'taxation',
+            categoryLabel: 'Taxation for redistribution and services',
+            prompt: 'How should Awanda redesign taxation to fund inclusive services without detonating growth or compliance?',
+            options: [
+              { id: 'a', label: 'Strengthen progressive personal income tax and reduce exemptions.', effects: 'Targets capacity to pay; can raise revenue for services when enforcement and taxpayer trust are present.', limitations: 'Weak where formal employment is small; tax morality depends on visible service delivery and on protection from arbitrary assessment.' },
+              { id: 'b', label: 'Introduce or strengthen property and wealth taxation.', effects: 'Captures gains from asset appreciation; can fund local services if linked to visible neighbourhood improvements.', limitations: 'Politically hard; assessment quality, disputes, and taxpayer trust in collections all matter; risks of regressive incidence if improperly designed.' },
+              { id: 'c', label: 'Keep consumption taxes with exemptions on essentials.', effects: 'Stable revenue source; relatively easy to administer through VAT infrastructure.', limitations: 'VAT remains at least partly regressive; exemptions are complex and may benefit middle-men more than poor households; equity gains depend on how revenue is spent.' },
+            ],
+          },
+          {
+            id: 'accountability',
+            categoryLabel: 'Voice and accountability',
+            prompt: 'How should Awanda deepen excluded groups\u2019 voice in development decisions?',
+            options: [
+              { id: 'a', label: 'Strengthen local councils and citizen oversight committees for public budgets.', effects: 'Builds local democratic capacity; can surface excluded needs and supports learning by doing.', limitations: 'Sustained only with legal protection, paid staff time, transparent data, and credible sanctions when recommendations are ignored.' },
+              { id: 'b', label: 'Expand formal consultation before large public projects.', effects: 'Surfaces local knowledge, identifies risk, and can reduce displacement harm.', limitations: 'Without binding effect, consultations can become ritualised; affected groups may not have time or resources to participate equally.' },
+              { id: 'c', label: 'Independent anti-corruption and audit institutions with strong legal powers.', effects: 'Targets elite capture and diversion of public resources; supports public trust when independent and well-resourced.', limitations: 'Limits capture of funds but does not by itself redistribute voice or access; political will is needed to act on findings.' },
+            ],
+          },
+        ],
+      },
       completionRequirements: [
-        'Watch the recorded lesson.',
-        'Review the key concepts.',
-        'Respond to at least one reflection question.',
+        'Watch the recorded lessons.',
+        'Engage with the Tamu Academy introduction and the original Tamu Academy explanation.',
+        'Answer the questions to consider while watching.',
+        'Review the key concepts and the African case study.',
+        'Complete the interactive policy activity: Tackling Inequality: Choices and Trade-Offs.',
         'Complete Questions 1\u20134 and answer Question 5.',
-        'Answer at least 3 of the 4 auto-scored questions correctly.',
-        'Complete the Inequality and Institutional Access Map.',
+        'Answer at least 4 of the 4 auto-scored questions correctly.',
+        'Respond to at least one reflection prompt.',
       ],
       closingText: [
         'Growth matters, but distribution matters too. Institutions influence who can access land, education, finance, justice, employment, public services, and political voice. Historical and geographic patterns can deepen those differences across generations.',
@@ -923,6 +1075,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       ],
     },
     'module-6': {
+      formatVersion: 'expanded',
       number: 'Module 6',
       route: 'module-6',
       title: 'Africa\u2019s Economic Futures',
@@ -992,7 +1145,7 @@ export const ECONOMICS_MODULE_CONTENT = {
         'What is one major trade-off between rapid economic growth and climate resilience, worker protection, regional equity, or community ownership? How could it be managed?',
       ],
       quiz: {
-        passingScore: 3,
+        passingScore: 4,
         questions: [
           {
             id: 1,
@@ -1082,13 +1235,203 @@ export const ECONOMICS_MODULE_CONTENT = {
           { id: 'final_strategy', label: 'Final Economic Futures Strategy', helper: 'Summarize the strategy and explain how it advances productive capacity, ownership, dignity, resilience, accountability, and shared prosperity. Use at least six concepts from this module.' },
         ],
       },
+      media: {
+        primary: {
+          id: 'g7oepiuaoyy',
+          embedUrl: 'https://www.youtube-nocookie.com/embed/G7oepiUaoeY',
+          watchUrl: 'https://www.youtube.com/watch?v=G7oepiUaoeY',
+          attributionLabel: 'Primary video',
+          source: {
+            title: 'Africa\u2019s Future Depends on the Choices We Make Today | ADIF 2026 Highlights',
+            speakerOrOrganization: 'United Nations Economic Commission for Africa (UNECA)',
+            publisher: 'United Nations Economic Commission for Africa (UNECA)',
+            watchUrl: 'https://www.youtube.com/watch?v=G7oepiUaoeY',
+            whySelected: 'Hosted by UNECA at the Africa Drought and Innovation Forum, the panel frames African economic futures around choices about agency, ownership, productive capacity, regional integration, and climate. The framing reinforces Tamu Academy\u2019s emphasis on economic strategy rather than raw growth forecasts.',
+            disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+          },
+        },
+        supporting: [
+          {
+            id: 'zihe6dn0hge',
+            embedUrl: 'https://www.youtube-nocookie.com/embed/zIhe6DN0hGE',
+            watchUrl: 'https://www.youtube.com/watch?v=zIhe6DN0hGE',
+            attributionLabel: 'Supporting video 1',
+            source: {
+              title: 'The African Continental Free Trade Area #AfCFTA (English version)',
+              speakerOrOrganization: 'African Union Commission',
+              publisher: 'African Union',
+              watchUrl: 'https://www.youtube.com/watch?v=zIhe6DN0hGE',
+              whySelected: 'Official AU overview of the AfCFTA, the largest regional free-trade area by participating countries, illustrates regional integration in practice \u2014 opportunities for African supply chains, productive capacity, and value capture, alongside implementation questions on harmonised standards, payments, and rules of origin.',
+              disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+            },
+          },
+          {
+            id: '8n0do_tahke',
+            embedUrl: 'https://www.youtube-nocookie.com/embed/8n0do_tAHkE',
+            watchUrl: 'https://www.youtube.com/watch?v=8n0do_tAHkE',
+            attributionLabel: 'Supporting video 2',
+            source: {
+              title: 'The future of industrial development in Africa',
+              speakerOrOrganization: 'United Nations Industrial Development Organization (UNIDO)',
+              publisher: 'United Nations Industrial Development Organization (UNIDO)',
+              watchUrl: 'https://www.youtube.com/watch?v=8n0do_tAHkE',
+              whySelected: 'UNIDO is the UN specialised agency on industrial development. The video frames industrialisation through processing, value addition, jobs, skills, regional value chains, and environmental sustainability \u2014 themes that connect directly to Tamu Academy\u2019s module on Africa\u2019s economic futures.',
+              disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+            },
+          },
+        ],
+      },
+      watchingQuestions: [
+        'How does the UNECA panel frame African agency in shaping economic futures? Where does agency interact with global trade, technology, or climate?',
+        'What evidence does the African Union video give for the developmental value of the AfCFTA, and which implementation challenges are named?',
+        'How does the UNIDO video relate industrial development to jobs, skills, processing, and regional value chains rather than to raw extraction?',
+        'Who is assumed to own the technology, infrastructure, and value chains discussed in each video? Where is local ownership made explicit and where is it absent?',
+        'Which trade-offs, risks, or omissions did the videos name or seem to minimise?',
+      ],
+      explanation: [
+        'Africa\u2019s economic future is not a forecast that arrives automatically. Demographic change, urbanisation, climate pressure, technology, regional integration, and global market shifts open risks and opportunities, but outcomes depend on policy, institutions, and ownership choices.',
+        'Regional trade through the AfCFTA can expand markets and connect African producers. Its developmental value depends on whether it builds African supply chains, productive capacity, infrastructure, and fair opportunities for countries and firms of different capacities \u2014 not only on faster cross-border movement of finished goods.',
+        'Industrialisation and value addition mean moving up value chains through processing, manufacturing, branding, technology, and ownership. African economies that export raw goods often retain a small share of the global value of finished products; capturing more value locally requires infrastructure, finance, skills, standards, and deliberate policy over time.',
+        'Digital technology can expand access to finance, information, markets, health, and education. Technological sovereignty asks who owns the platforms, infrastructure, data, intellectual property, and decision-making systems. Inclusion requires electricity, affordable connectivity, skills, safeguards, and local capacity \u2014 not only imported platforms.',
+        'Green industrialisation links renewable energy, climate-smart agriculture, sustainable cities, and adaptation to new industries and livelihoods. Africa\u2019s low historical emissions footprint sits alongside acute vulnerability to climate shocks and a real opportunity to build energy access through renewables rather than fossil lock-in.',
+        'Food systems, infrastructure, and regional supply chains are connected. Cold chains, water management, processing capacity, and cross-border trade corridors together shape whether surplus becomes food security and rural employment when drought or supply shocks hit.',
+        'Africa has a young and growing workforce. Productive work for youth \u2014 including for young women \u2014 depends on education, skills, labour rights, entrepreneurship support, and macro policy that sustains demand. A demographic dividend becomes a demographic deficit without jobs.',
+        'Africa\u2019s weight in the global economy is rising. Strategic capacity to negotiate terms, govern key assets, retain value, and choose partners channels whether integration into global value chains expands African capability or reproduces commodity dependence.',
+        'Different strategies carry different trade-offs. Heavy industrial policy can build capability but risks debt and elite capture. Open-market integration can attract capital but risks thinning ownership. Green transitions may require more upfront cost. The point of strategy is to recognise competing priorities, resource limits, public accountability, and who benefits from each choice \u2014 not to search for a single perfect blueprint.',
+      ],
+      caseStudy: {
+        title: 'Case Study: Digital Leapfrog, Inclusion, and Ownership \u2014 Kenya\u2019s M-Pesa',
+        location: 'Kenya; East African mobile-money ecosystem',
+        intro: 'Since 2007, M-Pesa has grown into one of the largest mobile-money platforms in the world and an emblem of African digital innovation. The case lets learners examine three threads of this module \u2014 digital technology, ownership, and regional integration \u2014 within a single African case.',
+        sections: [
+          {
+            heading: 'Context',
+            paragraphs: [
+              'M-Pesa was launched in 2007 by Safaricom, at the time partly owned by Vodafone of the United Kingdom and partly by Kenyan institutional and household shareholders. The service let users send and receive money through any mobile phone without a bank account, registered through a network of agents.',
+            ],
+          },
+          {
+            heading: 'Inclusion',
+            paragraphs: [
+              'M-Pesa brought mobile wallets to millions of Kenyan adults who had previously been outside the formal banking system. It made small domestic transfers and savings economically viable where formal banking fees had made them unworkable. Studies by Suri and Jack, the World Bank Global Findex, and GSMA document measurable effects on household consumption smoothing, savings, and small enterprise cash flow.',
+            ],
+          },
+          {
+            heading: 'Ownership and value capture',
+            paragraphs: [
+              'The initial technology platform was developed with Vodafone, which received royalties on the model in several markets. Safaricom\u2019s Kenyan staff, suppliers, shareholders, and the national tax base all benefit from operating revenue. The case shows that digital leapfrog can deliver inclusion while still raising questions of techno-sovereignty and where the technology rents flow.',
+            ],
+          },
+          {
+            heading: 'Regional and pan-African spillover',
+            paragraphs: [
+              'The M-Pesa model was replicated in Tanzania, Mozambique, the DRC, Egypt, Lesotho, and Ghana through Vodacom and Vodafone operations and partner banks. GSMA State of the Industry reports on mobile money track spillover across markets. Interoperability, regulatory cooperation, and cross-border remittances remain live frontiers for regional integration, including through the AfCFTA Digital Trade Protocol.',
+            ],
+          },
+        ],
+        comparison: [
+          { dimension: 'Account access', narrative: 'Millions of Kenyan adults who had no formal bank account now hold and use mobile wallets; mobile money reshaped domestic payments (World Bank Findex).' },
+          { dimension: 'Feasibility of small transfers', narrative: 'Mobile-money fees made very small domestic transfers economically viable where bank fees had been unaffordable, lowering the practical cost of moving money across families.' },
+          { dimension: 'Ownership of technology rents', narrative: 'Vodafone, the majority shareholder of Safaricom at launch, initially earned royalties on the platform; broader Kenyan ownership of Safaricom grew over time through transfers and local shareholding.' },
+          { dimension: 'Women\u2019s inclusion', narrative: 'Mobile money reached women who had been excluded from banks; impact studies also examine unpaid-care time and intra-household control.' },
+          { dimension: 'Regional spillover', narrative: 'The model has been adopted in Tanzania, Mozambique, DRC, Egypt, Lesotho, and Ghana (GSMA). Cross-border interoperability is an active frontier.' },
+          { dimension: 'Data governance', narrative: 'Mobile-money record data sits with the operator and the Central Bank of Kenya; data rights, consumer protection, and surveillance remain unresolved policy questions.' },
+        ],
+        takeaways: [
+          'Digital innovation can leapfrog legacy banking without solving every question of platform, data, and rent ownership.',
+          'Inclusion at scale combined with shareholder and rent structures creates a tension between coverage and technological sovereignty.',
+          'An inclusive digital strategy pairs infrastructure, skills, regulation, data governance, and ownership, not technology alone.',
+          'Regional interoperability extends digital scaling into the AfCFTA \u2014 a tangible example of how domestic innovation and regional integration interlock.',
+        ],
+        sources: [
+          'World Bank Global Findex',
+          'Central Bank of Kenya, National Payments Strategy',
+          'GSMA State of the Industry Report on Mobile Money',
+          'Safaricom PLC annual reports',
+          'Suri, T., and Jack, W. (Science, 2016)',
+          'UN Trade and Development, Digital Economy Report',
+        ],
+      },
+      policyActivity: {
+        title: 'Awanda 2040: A Ten-Year Economic Strategy',
+        purpose: 'Build a ten-year economic strategy for Awanda by choosing across six policy pillars: regional trade, value addition, digital development, employment, agriculture and food systems, and green industry. Multiple choices form a single strategy; consider competing priorities, resource limits, public accountability, and who benefits.',
+        framing: 'Awanda is a fictional coastal African country of about 35 million people. It has a small manufacturing base; most exports are unprocessed raw materials and agricultural goods; youth unemployment is rising; small technology hubs are emerging; and energy supply is unreliable. Public borrowing room is limited, and government must allocate resources deliberately.',
+        summaryStatement: 'There is no single perfect strategy. Each choice reflects priorities, allocates limited resources, and accepts trade-offs about who benefits and who carries the risk.',
+        showStrategySummary: true,
+        strategySummaryLabel: 'Your Ten-Year Strategy for Awanda',
+        fictionalCountry: 'Awanda, fictional coastal African country of about 35 million people',
+        decisions: [
+          {
+            id: 'regional-trade',
+            categoryLabel: 'Regional trade',
+            prompt: 'How will Awanda trade regionally under the AfCFTA?',
+            options: [
+              { id: 'a', label: 'Deepen AfCFTA participation with customs modernisation, payments integration, and harmonised standards.', effects: 'Expands market access, lowers final-goods frictions, supports continental supply chains, and signals serious regional commitment.', limitations: 'Requires customs and standards capacity; benefits unevenly distributed across firms and regions; smallholders may face competitive pressure without parallel support.' },
+              { id: 'b', label: 'Selective AfCFTA engagement: open only value chains where Awanda has potential advantage.', effects: 'Protects sensitive sectors; focuses scarce implementation capacity where Awanda already has capability.', limitations: 'Slower regional-integration gains; risks losing first-mover advantages in supply chains that move elsewhere; can entrench protected incumbents.' },
+              { id: 'c', label: 'Keep current bilateral and traditional partners and wait for AfCFTA operational maturity.', effects: 'Lower implementation cost and political friction in the short run; protects established revenue.', limitations: 'Continues dependence on a few commodity markets; misses early supply-chain positioning and risks being late when continental rules mature.' },
+            ],
+          },
+          {
+            id: 'value-addition',
+            categoryLabel: 'Industrialisation and value addition',
+            prompt: 'How will Awanda move from raw extraction to higher local value capture?',
+            options: [
+              { id: 'a', label: 'Agro-processing, packaging, and branding for Awanda\u2019s main agricultural exports.', effects: 'Channels incremental value addition; creates rural employment; raises export unit value; supports smallholders when fair-priced.', limitations: 'Requires cold chain, finance, energy, and standards; vulnerable to global price instability and supermarket requirements.' },
+              { id: 'b', label: 'Heavy industry and strategic-minerals processing with public-private partnerships.', effects: 'High value capture on mineral outputs if priced and owned carefully; can anchor capable industrial clusters and jobs.', limitations: 'High capital cost; debt, environmental, and political risks; risk of foreign-owned profit take unless ownership is structured.' },
+              { id: 'c', label: 'Service and digital exports, including business-process and creative industries.', effects: 'Lower capital intensity; jobs for women and youth; uses emerging digital infrastructure; broad participation.', limitations: 'Dependent on connectivity, skills, and platforms Awanda may not own; environmental and energy footprint scales with growth.' },
+            ],
+          },
+          {
+            id: 'digital-development',
+            categoryLabel: 'Digital development',
+            prompt: 'How will Awanda invest in digital systems and who will own them?',
+            options: [
+              { id: 'a', label: 'Universal electrification, affordable connectivity, and digital-skills investment first.', effects: 'Closes infrastructure gap; broad participation; supports inclusion before introducing advanced services.', limitations: 'Long build-out timeline; needs fiscal commitment; advanced digital opportunity may slow while basics are built.' },
+              { id: 'b', label: 'National data sovereignty, cloud infrastructure, and locally owned fintech and platform governance.', effects: 'Keeps technology rents in Awanda; protects citizen data; supports future domestic platform capability.', limitations: 'Very high capital and skills cost; may delay broad access if substituting for imported platforms; needs regional interoperability.' },
+              { id: 'c', label: 'Open-market digital growth with light-touch rules.', effects: 'Fast adoption; entrepreneurs and consumers benefit from existing global platforms; lower public cost.', limitations: 'Digital rents flow abroad; data, IP, and platform governance sit outside Awanda\u2019s control; weak protection for workers and small enterprises.' },
+            ],
+          },
+          {
+            id: 'employment',
+            categoryLabel: 'Employment and skills',
+            prompt: 'How will Awanda tackle youth unemployment and the future of work?',
+            options: [
+              { id: 'a', label: 'Large public works plus technical and vocational training.', effects: 'Fast direct employment; visible infrastructure; skills on the job; countercyclical in downturns.', limitations: 'Fiscally expensive; risk of low-skill lock-in; quality and women\u2019s participation depend on design.' },
+              { id: 'b', label: 'Formal-sector growth strategy through enterprise credit, infrastructure, and labour-market reform.', effects: 'Builds durable formal jobs; broadens tax base; social protection follows formal employment.', limitations: 'Formalisation is slow; risk that reform without companion measures hurts informal workers before formal jobs appear.' },
+              { id: 'c', label: 'Universal basic skills plus portable social protection across formal and informal work.', effects: 'Reaches all workers; covers risk right now; supports women and informal workers; addresses precarity regardless of sector.', limitations: 'High fiscal cost; needs administrative capacity; politically harder when no immediate employment payoff.' },
+            ],
+          },
+          {
+            id: 'agriculture',
+            categoryLabel: 'Agriculture and food systems',
+            prompt: 'How will Awanda strengthen food security and rural livelihoods?',
+            options: [
+              { id: 'a', label: 'Climate-smart agriculture, irrigation, extension, and rural finance.', effects: 'Builds resilience; raises smallholder productivity; supports rural employment; aligns with environmental limits.', limitations: 'Long time horizon; extension and irrigation require institutional continuity; yields remain sensitive to climate shocks.' },
+              { id: 'b', label: 'Agro-industrial corridors with large estates and contract farming.', effects: 'High output and processing scale; predictable exports; faster logistics modernisation.', limitations: 'Land and water displacement; risk of rent extraction by large farms; benefits concentrated unless contract reform is robust.' },
+              { id: 'c', label: 'Import substitution for stable staples plus targeted reserves.', effects: 'Reduces exposure to global price shocks; protects low-income household food cost; supports domestic producers.', limitations: 'Can mask inefficiency; storage, quality, and corruption are risks; trade partners may retaliate; opportunity cost in other sectors.' },
+            ],
+          },
+          {
+            id: 'green-industry',
+            categoryLabel: 'Green industry and energy',
+            prompt: 'How will Awanda build energy access while reducing fossil lock-in?',
+            options: [
+              { id: 'a', label: 'Renewable energy grid expansion, storage, and regional power trade.', effects: 'Builds long-term low-carbon power; aligns with climate commitments; lowers long-run energy costs.', limitations: 'High upfront capital; storage and grid-stabilisation skills scarce; regional cooperation required for full value capture.' },
+              { id: 'b', label: 'Mix gas transition fuels with renewables for industrial baseload.', effects: 'Maintains baseload for heavy industry in the medium term; accelerates manufacturing.', limitations: 'Carbon lock-in risk; gas price exposure; conflicts with long-term climate commitments and financiers.' },
+              { id: 'c', label: 'Slow renewable build-out and keep existing fossil generation.', effects: 'Low immediate capital cost; protects existing rent.', limitations: 'Continues pollution and import dependence; misses green export opportunities (green hydrogen, green steel); stranded-asset risk.' },
+            ],
+          },
+        ],
+      },
       completionRequirements: [
-        'Watch the recorded lesson.',
-        'Review the key concepts.',
-        'Respond to at least one reflection question.',
+        'Watch the recorded lessons.',
+        'Engage with the Tamu Academy introduction and the original Tamu Academy explanation.',
+        'Answer the questions to consider while watching.',
+        'Review the key concepts and the African case study.',
+        'Complete the interactive strategy activity: Awanda 2040: A Ten-Year Economic Strategy.',
         'Complete Questions 1\u20134 and answer Question 5.',
-        'Answer at least 3 of the 4 auto-scored questions correctly.',
-        'Complete the African Economic Futures Action Framework.',
+        'Answer at least 4 of the 4 auto-scored questions correctly.',
+        'Respond to at least one reflection prompt.',
       ],
       closingText: [
         'Africa\u2019s economic future will not be determined by one technology, one industry, one agreement, or one leader. It will emerge from choices about productive capacity, ownership, institutions, regional cooperation, workers, climate resilience, and the distribution of economic power.',

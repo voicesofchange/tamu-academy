@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import ModulePageTemplate from '@/components/courses/ModulePageTemplate';
+import ModuleExpandedTemplate from '@/components/courses/module/ModuleExpandedTemplate';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
 import { getEconomicsModule } from '@/lib/economics-tracks';
 import PageNotFound from '@/lib/PageNotFound';
@@ -82,6 +83,10 @@ export default function ModuleRoutePage({ moduleRoute }) {
 
   if (status === 'denied') {
     return <ModuleDevelopmentState course={found.course} module={found.module} />;
+  }
+
+  if (module && module.formatVersion === 'expanded') {
+    return <ModuleExpandedTemplate course={found.course} module={module} />;
   }
 
   return <ModulePageTemplate course={found.course} module={module} />;
