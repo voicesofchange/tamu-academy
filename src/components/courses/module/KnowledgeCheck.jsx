@@ -31,6 +31,7 @@ export default function KnowledgeCheck({ quiz }) {
 
   const mcTotal = quiz.questions.filter((q) => !q.written).length;
   const passingScore = quiz.passingScore || 3;
+  const hasWritten = quiz.questions.some((q) => q.written);
 
   const setOption = (qi, oi) => {
     if (submitted) return;
@@ -53,16 +54,18 @@ export default function KnowledgeCheck({ quiz }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     let mcScore = 0;
-    let q5 = false;
+    let writtenRequired = false;
+    let writtenComplete = true;
     quiz.questions.forEach((q, qi) => {
       if (q.written) {
-        q5 = (answers[qi] || '').trim().length >= 20;
+        writtenRequired = true;
+        if ((answers[qi] || '').trim().length < 20) writtenComplete = false;
       } else if (answers[qi] === q.correctIndex) {
         mcScore += 1;
       }
     });
     setScore(mcScore);
-    setQ5Complete(q5);
+    setQ5Complete(!writtenRequired || writtenComplete);
     setSubmitted(true);
   };
 
@@ -161,16 +164,20 @@ export default function KnowledgeCheck({ quiz }) {
       ) : (
         <div role="status" aria-live="polite" style={{ marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-            <StatusBadge label={`${score} of ${mcTotal} graded correct`} />
-            <StatusBadge label={q5Complete ? 'Question 5 completed' : 'Question 5 needs a response'} />
+            <StatusBadge label={hasWritten ? `${score} of ${mcTotal} graded correct` : `${score} of ${mcTotal} correct`} />
+            {hasWritten && (
+              <StatusBadge label={q5Complete ? 'Question 5 completed' : 'Question 5 needs a response'} />
+            )}
             <StatusBadge label={passed ? 'Passing' : 'Below passing threshold'} />
           </div>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
             {passed
-              ? `You met the completion requirement: at least ${passingScore} of ${mcTotal} graded questions correct and a completed written response to Question 5. Review the feedback below.`
-              : q5Complete
-                ? `You answered ${score} of ${mcTotal} graded questions correctly. Passing requires at least ${passingScore} of ${mcTotal}. You can retry Questions 1\u20134; your Question 5 response will be kept.`
-                : `Please add a substantive written response to Question 5. You answered ${score} of ${mcTotal} graded questions correctly. Your Question 5 response will be kept when you retry.`}
+              ? (hasWritten
+                ? `You met the completion requirement: at least ${passingScore} of ${mcTotal} graded questions correct and a completed written response to Question 5. Review the feedback below.`
+                : `You met the completion requirement: at least ${passingScore} of the ${mcTotal} questions correct. Review the feedback below.`)
+              : (hasWritten && !q5Complete
+                ? `Please add a substantive written response to Question 5. You answered ${score} of ${mcTotal} graded questions correctly. Your Question 5 response will be kept when you retry.`
+                : `You answered ${score} of ${mcTotal} questions correctly. Answer at least four of the five questions correctly to pass. You can retry.`)}
           </p>
           <button
             type="button"

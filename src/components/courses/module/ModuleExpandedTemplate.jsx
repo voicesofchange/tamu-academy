@@ -34,8 +34,8 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  *  13. Educational feedback after submission
  *  14. Reflection prompt
  *  15. Completion requirements
- *  16. Previous and next lesson navigation
- *  17. Sources and further learning
+ *  16. Sources and further learning
+ *  17. Previous and next lesson navigation
  *
  * Existing fields on the module object are reused (overview is repurposed
  * as the Tamu Academy introduction; learningObjectives, keyConcepts,
@@ -60,11 +60,6 @@ export default function ModuleExpandedTemplate({ course, module }) {
   const media = module.media || {};
   const primaryVideo = media.primary || null;
   const supportingVideos = media.supporting || [];
-
-  const mcTotal = (module.quiz && module.quiz.questions ? module.quiz.questions : []).filter(
-    (q) => !q.written
-  ).length;
-  const passingScore = (module.quiz && module.quiz.passingScore) || 4;
 
   return (
     <PageLayout>
@@ -312,7 +307,7 @@ export default function ModuleExpandedTemplate({ course, module }) {
       {module.quiz && (
         <PageSection eyebrow="Check" heading="Knowledge Check">
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-            {`Five questions. Questions 1\u20134 are selectable and automatically scored. Question 5 is a required written application response and is not marked correct or incorrect. Passing requires at least ${passingScore} of ${mcTotal} graded questions correct and a completed Question 5. Feedback appears only after you submit; you can retry Questions 1\u20134 and your Question 5 response will be kept.`}
+            {`Five multiple-choice questions. Answer at least four of the five questions correctly to pass. Feedback appears only after you submit; you can retry the knowledge check at any time.`}
           </p>
           <KnowledgeCheck quiz={module.quiz} />
         </PageSection>
@@ -372,7 +367,7 @@ export default function ModuleExpandedTemplate({ course, module }) {
         </PageSection>
       )}
 
-      {/* 17. Sources and further learning */}
+      {/* 16. Sources and further learning */}
       {module.sources && module.sources.length > 0 && (
         <PageSection eyebrow="Sources" heading="Sources and Further Reading">
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
@@ -385,7 +380,7 @@ export default function ModuleExpandedTemplate({ course, module }) {
         </PageSection>
       )}
 
-      {/* 16. Previous and next lesson navigation */}
+      {/* 17. Previous and next lesson navigation */}
       <ModuleNav
         coursePath={coursePath}
         courseSlug={course.slug}

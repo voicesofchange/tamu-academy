@@ -866,11 +866,17 @@ export const ECONOMICS_MODULE_CONTENT = {
           },
           {
             id: 5,
-            written: true,
             prompt:
-              'Choose one inequality or development challenge affecting a country, region, or community. Identify the groups involved, explain which institutions and historical or geographic conditions shape the issue, assess who has access and who is excluded, and recommend one institutional or policy change that could expand capability and dignity.',
+              'A country has had strong national growth, but a large region consistently lags in school completion, electricity, safe water, and access to trained health workers. Which response best applies the inclusive-development framework introduced in this module?',
+            options: [
+              'Set only a higher national-output target and measure success by GDP growth in the lagging region',
+              'Examine who has access and who is excluded, the formal and informal institutions shaping exclusion, the historical and geographic conditions behind the gap, and propose an institutional reform that expands access, voice, capability, and dignity',
+              'Raise the national income-tax rate without changing public-service delivery or institutions in the lagging region',
+              'Concentrate all new services in the capital city and assume residents of the lagging region will eventually migrate',
+            ],
+            correctIndex: 1,
             feedback:
-              'Compare your response against the elements named in the question \u2014 the groups involved, the institutions and historical or geographic conditions, who has access and who is excluded, and one institutional or policy change that could expand capability and dignity.',
+              'An inclusive-development response examines access, voice, capability, security, accountability, and dignity; recognises formal and informal institutions and historical or geographic conditions; and proposes institutional reform rather than relying on national output growth alone.',
           },
         ],
       },
@@ -1053,8 +1059,8 @@ export const ECONOMICS_MODULE_CONTENT = {
         'Answer the questions to consider while watching.',
         'Review the key concepts and the African case study.',
         'Complete the interactive policy activity: Tackling Inequality: Choices and Trade-Offs.',
-        'Complete Questions 1\u20134 and answer Question 5.',
-        'Answer at least 4 of the 4 auto-scored questions correctly.',
+        'Complete all five knowledge check questions.',
+        'Answer at least 4 of the 5 multiple-choice questions correctly.',
         'Respond to at least one reflection prompt.',
       ],
       closingText: [
@@ -1201,11 +1207,17 @@ export const ECONOMICS_MODULE_CONTENT = {
           },
           {
             id: 5,
-            written: true,
             prompt:
-              'Choose one future economic opportunity or challenge affecting an African country, region, sector, or community. Design a strategy that addresses value creation, productive capacity, technology, work and skills, regional integration, climate resilience, ownership, institutions, and shared prosperity. Identify at least two major risks or trade-offs and explain how your strategy would manage them.',
+              'A government is designing a ten-year economic strategy for an African country with a young and growing workforce, a small manufacturing base, and heavy dependence on raw-commodity exports. Which strategy best reflects this module\u2019s emphasis on productive capacity, ownership, and shared prosperity?',
+            options: [
+              'Continue exporting all raw commodities unprocessed and import finished goods, leaving technology, branding, and value capture to foreign firms',
+              'Invest in productive capacity, processing and value addition, regional integration, climate resilience, and digital systems while strengthening local ownership, institutions, and worker protections so that more value and capability remain local',
+              'Borrow heavily to build an unconnected large-scale industrial park without a clear market, ownership, climate, or accountability plan',
+              'Ignore regional integration and the AfCFTA and assume that the national market alone will attract investment',
+            ],
+            correctIndex: 1,
             feedback:
-              'Compare your response against the elements named in the question \u2014 the opportunity or challenge, value creation, productive capacity, technology, work and skills, regional integration, climate resilience, ownership and institutions, shared prosperity, and at least two major risks or trade-offs with how your strategy would manage them.',
+              'A strategy that combines productive capacity, processing and value addition, regional integration, climate resilience, and digital systems with stronger local ownership, institutions, and worker protections can extend value capture and shared prosperity rather than reproducing commodity dependence.',
           },
         ],
       },
@@ -1429,8 +1441,8 @@ export const ECONOMICS_MODULE_CONTENT = {
         'Answer the questions to consider while watching.',
         'Review the key concepts and the African case study.',
         'Complete the interactive strategy activity: Awanda 2040: A Ten-Year Economic Strategy.',
-        'Complete Questions 1\u20134 and answer Question 5.',
-        'Answer at least 4 of the 4 auto-scored questions correctly.',
+        'Complete all five knowledge check questions.',
+        'Answer at least 4 of the 5 multiple-choice questions correctly.',
         'Respond to at least one reflection prompt.',
       ],
       closingText: [
