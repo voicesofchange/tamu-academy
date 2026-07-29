@@ -40,8 +40,13 @@ import {
  *     but does NOT persist anything anywhere.
  *
  * RESPONSE SHAPE (minimal — never serializes the full curriculum):
- *   { scenarioId, submittedOptionIndex, bestResponseIndex, isCorrect,
- *     feedback }
+ *   { isCorrect, feedback } only.
+ *   scenarioId / submittedOptionIndex are NOT returned — the frontend
+ *   already knows both from local component state.
+ *   bestResponseIndex stays exclusively in the protected server
+ *   curriculum (MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS) and is
+ *   never returned to the browser, in this response or the initial
+ *   lesson response.
  */
 export default async function(req: Request): Promise<Response> {
   try {
@@ -133,15 +138,16 @@ export default async function(req: Request): Promise<Response> {
 
     const isCorrect = rawIndex === answer.bestResponseIndex;
 
-    // Return ONLY the minimal evaluation payload. No key, no scenario
-    // text, no learner ID, no full curriculum. The learner already
-    // supplied the scenarioId and selectedIndex; we mirror both back
-    // alongside the only new data: bestResponseIndex, isCorrect, and
-    // the approved feedback string.
+    // Return ONLY the two fields the frontend needs: `isCorrect` and
+    // `feedback`. The learner already knows their submitted option from
+    // local component state, and `bestResponseIndex` remains
+    // exclusively in the protected server curriculum — it never
+    // appears in the initial lesson response or this submission
+    // response. `scenarioId` and `submittedOptionIndex` are also
+    // omitted from the response: the frontend supplied both, so
+    // mirroring them back would leak no new information but is also
+    // unnecessary, and the leaner payload is preferable.
     return Response.json({
-      scenarioId,
-      submittedOptionIndex: rawIndex,
-      bestResponseIndex: answer.bestResponseIndex,
       isCorrect,
       feedback: answer.feedback,
     });

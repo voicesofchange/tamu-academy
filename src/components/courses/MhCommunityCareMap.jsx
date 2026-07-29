@@ -110,7 +110,7 @@ export default function MhCommunityCareMap({ config }) {
   }
 
   const [rowsByRing, setRowsByRing] = useState(initialRings);
-  const [printBlankNow, setPrintBlankNow] = useState(false);
+  const [blankPrintActive, setBlankPrintActive] = useState(false);
 
   function addSupport(ringId) {
     setRowsByRing((prev) => ({
@@ -129,7 +129,6 @@ export default function MhCommunityCareMap({ config }) {
   }
 
   function updateField(ringId, idx, key, value) {
-    if (printBlankNow) return;
     setRowsByRing((prev) => {
       const next = [...prev[ringId]];
       next[idx] = { ...next[idx], [key]: value };
@@ -147,16 +146,37 @@ export default function MhCommunityCareMap({ config }) {
     window.print();
   }
 
+  // Print blank worksheet WITHOUT mutating the active worksheet state.
+  // The blank template (rendered alongside the worksheet as a sibling)
+  // takes over the printable area while blankPrintActive is true; the
+  // populated worksheet is marked print:hidden so it stays on screen
+  // but disappears from the printout. After the print dialog closes
+  // (via the afterprint event, with a setTimeout fallback) the state
+  // is restored to its normal screen+print layout. The learner's
+  // entries are never read, copied, cleared, or overwritten during
+  // this action.
   function handlePrintBlank() {
-    if (printBlankNow) return;
-    setPrintBlankNow(true);
-    setTimeout(() => {
-      try {
-        window.print();
-      } finally {
-        setPrintBlankNow(false);
-      }
-    }, 250);
+    setBlankPrintActive(true);
+    const cleanup = () => {
+      setBlankPrintActive(false);
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        try {
+          window.print();
+        } catch (err) {
+          // best-effort — fall through to the timeout cleanup
+        } finally {
+          // Fallback in case the afterprint event does not fire
+          setTimeout(cleanup, 200);
+        }
+      });
+    });
+    // Safety net for the rare case both afterprint and the
+    // post-print timeout fail to fire.
+    setTimeout(cleanup, 6000);
   }
 
   return (
@@ -191,15 +211,20 @@ export default function MhCommunityCareMap({ config }) {
       </div>
 
       {/* Printable area — the existing @media print rule in
-          src/index.css hides everything except .tamu-print-area */}
-      <div className="tamu-print-area">
+          src/index.css hides everything except .tamu-print-area.
+          When blankPrintActive is true, this div is marked
+          print:hidden (hidden in print, visible on screen) and the
+          separate blank template below takes over the printable
+          area. The learner's active worksheet entries are never
+          referenced, copied, or mutated during a blank print. */}
+      <div className={blankPrintActive ? 'print:hidden' : 'tamu-print-area'}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{config.overview}</p>
 
         {config.ringDefinitions.map((ring) => (
           <section key={ring.id} style={{ marginBottom: '1.5rem' }} aria-label={ring.label}>
-            <h4 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, marginBottom: '0.6rem' }}>
+            <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, marginBottom: '0.6rem' }}>
               {ring.label}
-            </h4>
+            </h3>
 
             {rowsByRing[ring.id].map((row, idx) => (
               <div
@@ -213,7 +238,6 @@ export default function MhCommunityCareMap({ config }) {
               >
                 {config.entryFields.map((field) => {
                   const key = fieldIdToKey(field.id);
-                  const value = printBlankNow ? '' : row[key] || '';
                   return (
                     <div key={field.id} style={{ marginBottom: '0.7rem' }}>
                       <label
@@ -225,8 +249,7 @@ export default function MhCommunityCareMap({ config }) {
                       </label>
                       <textarea
                         id={`cm-${ring.id}-${idx}-${field.id}`}
-                        value={value}
-                        readOnly={printBlankNow}
+                        value={row[key] || ''}
                         onChange={(e) => updateField(ring.id, idx, key, e.target.value)}
                         style={textareaStyle}
                         aria-label={field.label}
@@ -255,6 +278,46 @@ export default function MhCommunityCareMap({ config }) {
           </section>
         ))}
 
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', marginTop: '1rem', fontSize: '0.85rem', marginBottom: 0 }}>
+          {config.printReminder}
+        </p>
+      </div>
+
+      {/* Separate blank template — print-only. The learner's active
+          worksheet entries are never referenced or mutated. Rendered
+          alongside the worksheet; on screen the Tailwind `hidden`
+          class keeps it display:none. When blankPrintActive is true,
+          the template also gets `tamu-print-area` plus `print:block`
+          (the latter overrides `hidden` inside @media print), making
+          it the only printable area on the page. */}
+      <div
+        className={blankPrintActive ? 'tamu-print-area hidden print:block' : 'hidden'}
+        aria-hidden="true"
+      >
+        <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.35rem', fontWeight: 400, marginBottom: '0.7rem' }}>
+          {config.heading} — Blank Worksheet
+        </h3>
+        {config.ringDefinitions.map((ring) => (
+          <section key={`blank-${ring.id}`} style={{ marginBottom: '1.4rem' }} aria-label={ring.label}>
+            <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.55rem' }}>
+              {ring.label}
+            </h3>
+            {config.entryFields.map((field) => (
+              <div key={field.id} style={{ marginBottom: '0.65rem' }}>
+                <label className="font-body" style={labelStyle}>
+                  {field.label}
+                </label>
+                <textarea
+                  value=""
+                  readOnly
+                  tabIndex={-1}
+                  style={textareaStyle}
+                  aria-label={`${field.label} (blank)`}
+                />
+              </div>
+            ))}
+          </section>
+        ))}
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', marginTop: '1rem', fontSize: '0.85rem', marginBottom: 0 }}>
           {config.printReminder}
         </p>

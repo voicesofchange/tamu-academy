@@ -174,8 +174,8 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
         >
           {scenario.options.map((opt, i) => {
             const isSelected = selectedIndex === i;
-            const isBest = result && i === result.bestResponseIndex;
-            const wasSubmitted = result && result.submittedOptionIndex === i;
+            const isBest = result && result.isCorrect && isSelected;
+            const wasSubmitted = result && isSelected;
             let style = optionBase;
             if (result) {
               if (isBest) style = optionBest;
