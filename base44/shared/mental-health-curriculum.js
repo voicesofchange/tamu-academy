@@ -96,12 +96,9 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: null,
-      // The 14 implemented section identifiers for the Module 1 content
-      // stage. Section identifiers for the scenario, activity,
-      // reflection, knowledge check, completion requirements, closing
-      // text, and optional assignment are intentionally NOT in this list
-      // because those sections are not implemented in this stage and
-      // arbitrary extra identifiers remain rejected.
+      // The 20 implemented section identifiers for Module 1.
+      // The optional extended assignment identifier is intentionally NOT
+      // in this list. Arbitrary extra identifiers remain rejected.
       sections: [
         'module-overview',
         'learning-objectives',
@@ -120,6 +117,8 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'community-of-care-map',
         'private-reflection',
         'knowledge-check',
+        'closing-section',
+        'completion-requirements',
         'sources',
       ],
     },

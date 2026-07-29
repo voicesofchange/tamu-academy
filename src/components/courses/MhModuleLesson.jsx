@@ -11,6 +11,7 @@ import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 import MhCommunityCareMap from '@/components/courses/MhCommunityCareMap';
 import MhPrivateReflection from '@/components/courses/MhPrivateReflection';
 import MhKnowledgeCheck from '@/components/courses/MhKnowledgeCheck';
+import MhModuleCompletion from '@/components/courses/MhModuleCompletion';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -409,19 +410,13 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         />
       </PageSection>
 
-      {/* Unavailable notice — updated for the knowledge-check stage so
-          it no longer references the five-question knowledge check
-          (now implemented). The notice still flags the completion
-          requirements, closing text, and optional extended academic
-          assignment. */}
-      <div style={unavailableBoxStyle} aria-label="Upcoming Module 1 components">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
-          Coming soon in Module 1
-        </span>
-        <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-          The following Module 1 components are being prepared for later release: the completion requirements, the closing text, and the optional extended academic assignment.
-        </p>
-      </div>
+      {/* 18. closing-section + completion-requirements (MhModuleCompletion renders both sections) */}
+      <PageSection id="closing-section">
+        <MhModuleCompletion
+          courseSlug="mental-health-community-and-culture"
+          moduleRoute="module-1"
+        />
+      </PageSection>
 
       {/* 14. sources */}
       <PageSection id="sources" eyebrow="Sources" heading="Sources and Further Learning">
