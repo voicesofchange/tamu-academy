@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
 import MhModuleShell from '@/components/courses/MhModuleShell';
+import MhModuleLesson from '@/components/courses/MhModuleLesson';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
 import PageNotFound from '@/lib/PageNotFound';
 
@@ -12,25 +14,77 @@ const COURSE_SLUG = 'mental-health-community-and-culture';
  * set, and future content-gating path that does not touch the existing
  * economics structure.
  *
- * Phase 1 behavior:
+ * BEHAVIOR (Phase 1 content stage for Module 1):
  *   - Resolves the module's PUBLIC preview metadata (title, status,
  *     estimated time, short description, prerequisite route) from
  *     mental-health-tracks.js. This data is safe to bundle publicly.
- *   - Renders ONLY that shell metadata, the navigation position, and an
- *     appropriate unavailable message ("In Development" or "Coming
- *     Soon"). No lesson content, knowledge check, applied activity, or
- *     reflection prompt is rendered in Phase 1.
+ *   - Fetches the protected module content (for Module 1, the staged
+ *     lesson object) from the role-gated `getMentalHealthModule` backend
+ *     function. The function returns 403 to non-admin viewers during
+ *     development (and will add enrollment + publication + prerequisite
+ *     checks on top of that gate after launch). On 200 with a `lesson`
+ *     object, this wrapper renders `MhModuleLesson` to display the
+ *     educational material. On 403 / 404 / no-lesson, it falls back to
+ *     the existing `MhModuleShell` (showing the public metadata and an
+ *     unavailable message).
  *
- * Future phases will fetch protected module content from the role-gated
- * `getMentalHealthModule` backend function after authentication,
- * enrollment, publication status, and prerequisite checks. Until then
- * the BLOCKED-by-default behavior of the backend function (admin-only)
- * mirrors the economics provider, and the missing-progress state is
- * only evidence the learner has not started — it is never the basis for
- * leaking unpublished content.
+ * SAFETY NOTES:
+ *   - No `updateMentalHealthProgress` call is triggered by simply opening
+ *     the module. Progress acknowledgments are not written during this
+ *     content stage, regardless of viewer. (The backend function
+ *     remains available for future stages and is still restricted by the
+ *     per-module section allow-list and the protected-field guard.)
+ *   - The base44.functions.invoke response is the Axios response object;
+ *     the function's JSON return lives at `res.data`.
+ *   - The wrapper never directly imports the protected
+ *     `mental-health-curriculum.js` server-side module. Frontend code
+ *     reads lesson content only through the backend function response.
  */
 export default function MhModuleRoutePage({ moduleRoute }) {
   const found = getMentalHealthModule(COURSE_SLUG, moduleRoute);
+  const [state, setState] = useState({ status: 'loading', module: null });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await base44.functions.invoke('getMentalHealthModule', {
+          courseSlug: COURSE_SLUG,
+          moduleRoute,
+        });
+        if (cancelled) return;
+        const mod = res && res.data && res.data.module;
+        if (mod && mod.contentAvailable && mod.lesson) {
+          setState({ status: 'lesson', module: mod });
+        } else if (mod) {
+          setState({ status: 'shell', module: mod });
+        } else {
+          setState({ status: 'shell', module: null });
+        }
+      } catch (err) {
+        if (cancelled) return;
+        // 403 (non-admin during development) and any network error both
+        // fall back to the public shell state — no protected content is
+        // displayed to a viewer who is not authorized for this course.
+        setState({ status: 'shell', module: null });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [moduleRoute]);
+
   if (!found) return <PageNotFound />;
+
+  if (state.status === 'lesson' && state.module && state.module.lesson) {
+    return (
+      <MhModuleLesson
+        course={found.course}
+        module={found.module}
+        lesson={state.module.lesson}
+      />
+    );
+  }
+
   return <MhModuleShell course={found.course} module={found.module} />;
 }
