@@ -192,18 +192,6 @@ export default function ModuleExpandedTemplate({ course, module }) {
         {supportingVideos.map((v, i) => (
           <LessonVideo key={v.id || i} video={v} />
         ))}
-        {!primaryVideo && supportingVideos.length === 0 && (
-          <div
-            style={{
-              padding: '2rem',
-              border: '1px dashed rgba(212,161,42,0.25)',
-              borderRadius: '4px',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ color: 'rgba(245,239,224,0.6)', marginBottom: 0 }}>Recorded lessons coming soon.</p>
-          </div>
-        )}
       </PageSection>
 
       {/* 7. Questions to consider while watching */}
