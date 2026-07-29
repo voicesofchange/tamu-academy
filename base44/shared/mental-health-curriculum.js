@@ -268,10 +268,10 @@ export const MENTAL_HEALTH_MODULE_1_LESSON = {
   },
   coreMedia: {
     primary: {
-      title: 'What We Can Learn from the African Philosophy of Ubuntu',
+      title: 'What we can learn from the African philosophy of Ubuntu',
       publisher: 'BBC Global / BBC Reel',
-      watchUrl: 'https://www.youtube.com/watch?v=Q84dGvzCxGg',
-      embedUrl: 'https://www.youtube-nocookie.com/embed/Q84dGvzCxGg',
+      watchUrl: 'https://www.youtube.com/watch?v=7UojwMiRpNM',
+      embedUrl: 'https://www.youtube-nocookie.com/embed/7UojwMiRpNM',
       attributionLabel: 'BBC Global / BBC Reel',
       roleInModule:
         'Short introduction to Ubuntu as a philosophy of shared humanity and relational personhood.',
