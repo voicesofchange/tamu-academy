@@ -11,8 +11,8 @@ import { MENTAL_HEALTH_COURSE, MENTAL_HEALTH_LEARNING_AREA } from '@/lib/mental-
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 /**
- * Course overview page for the Mental Health pillar course, "Ubuntu and
- * Mental Health: Community, Culture, and Collective Healing." Reuses the
+ * Course overview page for the Mental Health pillar course, "Mental Health, Community
+ * and Culture." Reuses the
  * existing Tamu Academy design system (PageLayout, PageHero, PageSection,
  * StatusBadge, ModuleCard, fonts, colors). Separate from the economics
  * course overview (UnderstandingAfricanEconomies) — uses its own metadata

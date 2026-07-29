@@ -3,7 +3,7 @@ import MhModuleShell from '@/components/courses/MhModuleShell';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
 import PageNotFound from '@/lib/PageNotFound';
 
-const COURSE_SLUG = 'ubuntu-and-mental-health';
+const COURSE_SLUG = 'mental-health-community-and-culture';
 
 /**
  * Reusable module route page for the Mental Health pillar course.

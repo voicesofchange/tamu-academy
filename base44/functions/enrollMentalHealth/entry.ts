@@ -1,30 +1,36 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
+import {
+  courseExists,
+  isEnrollmentOpen,
+} from '../../shared/mental-health-curriculum.js';
 
 /**
  * Authenticated enrollment endpoint for the Mental Health pillar course.
  *
- * Phase 1: Provisions the future access path. Enrollment records are
- * created using the service role specifically because direct learner
- * creation is blocked by the CourseEnrollment entity's RLS rule
- * (create/update/delete limited to admins / service role). The learner
- * ID is derived from the authenticated request and is NEVER read from
- * the body.
+ * CORRECTION-PASS UPDATES (Phase 1 correction):
+ *   - Course slug changed to `mental-health-community-and-culture` and
+ *     is sourced from the canonical server config in
+ *     base44/shared/mental-health-curriculum.js.
+ *   - Server-controlled `enrollmentOpen` flag is the canonical gate for
+ *     non-admin enrollment. While false (current development state),
+ *     ordinary authenticated users receive HTTP 403 "Enrollment closed"
+ *     even when they call this function with the correct course slug.
+ *   - The function refuses ANY body containing `enrollmentOpen` or
+ *     `enrollment_open`. No browser-supplied value can flip the flag.
+ *   - Administrators may still call this function for testing while
+ *     enrollment is closed; the gate above is bypassed for admins.
+ *   - The learner ID continues to be derived from the authenticated
+ *     user only; any client-supplied `learner_id` is ignored.
+ *   - The CourseEnrollment row now sets `updated_at` on create (matches
+ *     the corrected entity schema).
  *
- * Guarantees (matched against implementation requirement #6):
- *   1. Obtains the current user from the authenticated request.
- *   2. Never accepts learner_id from the browser.
- *   3. Validates the requested course slug against the approved list.
- *   4. Prevents duplicate enrollment (returns existing row when found).
- *   5. Returns the enrollment record (or the existing one).
- *   6. Not exposed via a public UI button during development.
- *
- * Completion counters such as status:'completed' or completed_at cannot
- * be set through this endpoint — only the initial enrollment row is
- * created here with status='active' and enrolled_at set to now.
+ * GUARANTEES (preserved from the original Phase 1):
+ *   - De-duplicates by (learner_id, course_slug); returns the existing
+ *     row when one exists.
+ *   - Only writes status='active', enrolled_at=now, updated_at=now on
+ *     create. status='completed' and completed_at are NEVER set by this
+ *     function — completion is deferred to a later grading function.
  */
-
-const COURSE_SLUG = 'ubuntu-and-mental-health';
-
 export default async function(req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
@@ -39,6 +45,8 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const isAdmin = user.role === 'admin';
+
     let body = {};
     try {
       body = await req.json();
@@ -46,22 +54,37 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    // Phase 1: only the foundational course is enrollable.
+    // Refuse any body that attempts to override the enrollment flag.
+    // The server-controlled `enrollmentOpen` value is the only authority
+    // and no browser-supplied key may flip it.
+    if (body && typeof body === 'object') {
+      for (const key of Object.keys(body)) {
+        if (key === 'enrollmentOpen' || key === 'enrollment_open') {
+          return Response.json({ error: 'Forbidden field' }, { status: 403 });
+        }
+      }
+    }
+
     const requestedCourseSlug =
       typeof body.courseSlug === 'string' ? body.courseSlug : '';
-    if (requestedCourseSlug !== COURSE_SLUG) {
+    if (!courseExists(requestedCourseSlug)) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    // Block direct client-supplied learner_id by ignoring it entirely.
-    // The learner's own ID is the only one used here.
+    // Enrollment gate for non-admins. Admins may call this function for
+    // testing during development even while enrollment is closed.
+    if (!isAdmin && !isEnrollmentOpen()) {
+      return Response.json({ error: 'Enrollment closed' }, { status: 403 });
+    }
+
+    // Direct client-supplied learner_id is ignored; only user.id is used.
     const learnerId = user.id;
     const now = new Date().toISOString();
 
-    // Check for an existing enrollment. Use the service-role client
-    // because the RLS read rule (owner-or-admin) blocks an app-user
-    // token from listing across all rows. Service role bypasses RLS for
-    // this trusted lookup.
+    // De-dupe — return existing row when one already exists. Service
+    // role is used because the entity's read RLS allows only the owner
+    // (or admin), and this trusted function pre-creates the row using
+    // its own authority.
     const existing = await base44.asServiceRole.entities.CourseEnrollment.filter({
       learner_id: learnerId,
       course_slug: requestedCourseSlug,
@@ -76,6 +99,7 @@ export default async function(req: Request): Promise<Response> {
       course_slug: requestedCourseSlug,
       status: 'active',
       enrolled_at: now,
+      updated_at: now,
     });
 
     return Response.json({ enrollment: created, alreadyEnrolled: false });

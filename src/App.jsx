@@ -81,14 +81,16 @@ const AuthenticatedApp = () => {
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
-      <Route path="/courses/ubuntu-and-mental-health" element={<UbuntuMentalHealth />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-1" element={<MhModule1 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-2" element={<MhModule2 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-3" element={<MhModule3 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-4" element={<MhModule4 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-5" element={<MhModule5 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-6" element={<MhModule6 />} />
-      <Route path="/courses/ubuntu-and-mental-health/module-7" element={<MhModule7 />} />
+      <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
+      <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-4" element={<MhModule4 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-5" element={<MhModule5 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-6" element={<MhModule6 />} />
+      <Route path="/courses/mental-health-community-and-culture/module-7" element={<MhModule7 />} />
+      {/* Retired mental health course slug — redirect to corrected course identity */}
+      <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />
