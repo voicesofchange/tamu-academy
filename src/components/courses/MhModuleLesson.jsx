@@ -7,6 +7,9 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
+import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
+import MhCommunityCareMap from '@/components/courses/MhCommunityCareMap';
+import MhPrivateReflection from '@/components/courses/MhPrivateReflection';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -373,13 +376,36 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         {renderParagraphs(lesson.caseStudy.paragraphs)}
       </PageSection>
 
-      {/* Unavailable notice for upcoming Lesson sections */}
+      {/* 14. interactive-scenario (stage 2) */}
+      <PageSection id="interactive-scenario" eyebrow="Apply" heading="Interactive Scenario: Care Without Control">
+        <MhInteractiveScenario
+          courseSlug="mental-health-community-and-culture"
+          moduleSlug="module-1"
+          scenario={lesson.interactiveScenario}
+        />
+      </PageSection>
+
+      {/* 15. community-of-care-map (stage 2 — fully browser-local) */}
+      <PageSection id="community-of-care-map" eyebrow="Applied Activity" heading={lesson.communityOfCareMap.heading}>
+        <MhCommunityCareMap config={lesson.communityOfCareMap} />
+      </PageSection>
+
+      {/* 16. private-reflection (stage 2 — display only, no input fields) */}
+      <PageSection id="private-reflection" eyebrow="Reflect" heading={lesson.privateReflection.heading}>
+        <MhPrivateReflection config={lesson.privateReflection} />
+      </PageSection>
+
+      {/* Unavailable notice — updated for stage 2 to no longer
+          reference the scenario, Care Map activity, or reflection,
+          which are now implemented. The notice still flags the
+          knowledge check, completion requirements, closing text,
+          and optional extended academic assignment. */}
       <div style={unavailableBoxStyle} aria-label="Upcoming Module 1 components">
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
           Coming soon in Module 1
         </span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-          The following Module 1 components are being prepared for later release: the interactive scenario and educational feedback, the Community of Care Map activity, the private reflection prompt, the five-question knowledge check and grading, the completion requirements, the closing text, and the optional extended academic assignment.
+          The following Module 1 components are being prepared for later release: the five-question knowledge check and grading, the completion requirements, the closing text, and the optional extended academic assignment.
         </p>
       </div>
 

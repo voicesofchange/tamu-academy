@@ -116,6 +116,9 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'community-strain',
         'central-takeaway',
         'case-study',
+        'interactive-scenario',
+        'community-of-care-map',
+        'private-reflection',
         'sources',
       ],
     },
@@ -413,7 +416,129 @@ export const MENTAL_HEALTH_MODULE_1_LESSON = {
         'Evidence note: This publication is a study protocol. It describes an evaluation that researchers planned to conduct and should not be presented as completed outcome evidence.',
     },
   ],
+  // ============ STAGE 2 CONTENT ADDITIONS (interactive scenario,
+  // Community of Care Map, private reflection) ============
+  // Interactive scenario — public-facing block: prompt + four answer
+  // options only. The correct answer index and educational feedback
+  // are kept in MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS (declared
+  // below). NEVER include bestResponseIndex, correctIndex, isCorrect,
+  // or feedback as fields on this object — those are released only by
+  // checkMentalHealthScenario after the learner submits a selection.
+  interactiveScenario: {
+    scenarioId: 'care-without-control',
+    prePromptLine:
+      'The “Care Without Control” case study introduced Lerato. Use this short scenario to apply Ubuntu-informed principles.',
+    prompt: 'Which response best balances mutual care, dignity, and safety?',
+    options: [
+      'Tell Lerato that family duty must come first because Ubuntu requires sacrifice.',
+      'Tell Lerato to stop helping anyone and solve the problem entirely on her own.',
+      'Ask what support she wants, offer concrete help, respect confidentiality, discuss boundaries, and provide information about qualified support.',
+      'Share Lerato’s situation with the wider family so everyone can decide what she should do.',
+    ],
+    instructionLine:
+      'Select one response, then submit to see the approved educational feedback. Your selection is not saved anywhere on this platform.',
+  },
+  // Community of Care Map — entirely browser-local worksheet. The
+  // learner's entries never leave the browser page in this stage.
+  // Components render this object directly; no field adds storage.
+  communityOfCareMap: {
+    heading: 'Community of Care Map',
+    overview:
+      'Map support for yourself, a fictional person, or a composite scenario across four rings below.',
+    ringDefinitions: [
+      { id: 'trusted-people', label: 'Trusted people' },
+      { id: 'community-spaces-groups', label: 'Community spaces and groups' },
+      { id: 'supportive-practices', label: 'Supportive practices' },
+      { id: 'qualified-urgent-support', label: 'Qualified and urgent support' },
+    ],
+    entryFields: [
+      { id: 'offers', label: 'What it can offer' },
+      { id: 'cannot-safely-provide', label: 'What it cannot safely provide' },
+      { id: 'consent-or-privacy', label: 'A consent or privacy boundary' },
+      { id: 'over-concentration', label: 'Where responsibility is concentrated too heavily' },
+      { id: 'care-gap', label: 'One care gap' },
+      { id: 'next-step', label: 'One realistic next step' },
+    ],
+    preActivityReminder:
+      'You may use a fictional or composite example. You do not need to disclose personal experiences, diagnoses, trauma, or private family information.',
+    privacyNotice: [
+      'You may use a fictional or composite example.',
+      'Personal disclosure is not required.',
+      'Entries remain temporarily in the current browser page.',
+      'Refreshing or closing the page clears the entries.',
+      'Do not enter diagnoses, trauma details, names, or unnecessary private information.',
+    ],
+    printReminder:
+      'Printed or locally saved copies are controlled by you and should be stored carefully.',
+    addSupportLabel: 'Add support for this ring',
+    removeSupportLabel: 'Remove this support',
+    clearWorksheetLabel: 'Clear worksheet',
+    clearWorksheetConfirm:
+      'Remove all entries across all four rings? This cannot be undone.',
+    printLabel: 'Print worksheet',
+    printBlankLabel: 'Print blank worksheet',
+  },
+  // Private reflection — display only. There is NO online reflection
+  // field on this page. The learner reflects privately, optionally in
+  // a private offline notebook.
+  privateReflection: {
+    heading: 'Private Reflection',
+    preActivityReminder:
+      'You may use a fictional or composite example. You do not need to disclose personal experiences, diagnoses, trauma, or private family information.',
+    prompt:
+      'Where do Ubuntu-like values already appear in your life, community, or a fictional setting? Name one way they support wellbeing and one way they may need stronger boundaries or inclusion.',
+    privacyStatement:
+      'Keep this reflection private unless you freely choose to share it. Do not include diagnoses, trauma details, names, or other sensitive information in a public form.',
+    guidanceNotes: [
+      'Reflect privately. The course does not store anything you write here.',
+      'If you wish, write your reflection in a private offline notebook. Do not type it into an online form on this site.',
+      'You may use a fictional setting instead of a personal experience.',
+      'Avoid names, diagnoses, trauma details, and unnecessary sensitive information.',
+    ],
+    offlineBanner:
+      'This section has no online response field by design. Please conduct your reflection offline and in private.',
+  },
 };
+
+/**
+ * PROTECTED SCENARIO ANSWER KEY — server-side-only.
+ *
+ * Released to the role-gated `checkMentalHealthScenario` function
+ * AFTER the learner submits a valid selection. This constant is NEVER
+ * imported by any src/ file, NEVER returned by `getMentalHealthModule`,
+ * and NEVER embedded in any browser bundle.
+ *
+ * The `lesson.interactiveScenario` object above carries only the
+ * scenarioId, prompt, options, and instruction. The two protected
+ * fields below (bestResponseIndex, feedback) are the only answer
+ * material and the only thing checkMentalHealthScenario adds to its
+ * return payload beyond what the learner already submitted.
+ */
+export const MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS = {
+  'care-without-control': {
+    optionsCount: 4,
+    bestResponseIndex: 2,
+    feedback:
+      'This response treats Lerato as part of a community without surrendering her voice, privacy, boundaries, or right to professional care.',
+  },
+};
+
+/** Whether the given scenario identifier has a protected answer key. */
+export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
+  if (!courseExists(courseSlug)) return false;
+  if (moduleRoute !== 'module-1') return false;
+  if (typeof scenarioId !== 'string' || !scenarioId) return false;
+  return Object.prototype.hasOwnProperty.call(
+    MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS,
+    scenarioId,
+  );
+}
+
+/** Returns the protected answer key for the scenario or null if unsupported. */
+export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
+  if (!isScenarioSupported(courseSlug, moduleRoute, scenarioId)) return null;
+  return MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS[scenarioId];
+}
 
 /**
  * Phase 2 early content stage — lookup for the role-gated
