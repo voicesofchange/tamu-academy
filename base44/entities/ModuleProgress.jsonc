@@ -1,0 +1,118 @@
+{
+  "name": "ModuleProgress",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "module_slug": {
+      "type": "string",
+      "title": "Module Slug"
+    },
+    "status": {
+      "type": "string",
+      "title": "Module Status",
+      "enum": [
+        "in_progress",
+        "completed"
+      ],
+      "default": "in_progress"
+    },
+    "last_section_id": {
+      "type": "string",
+      "title": "Last Section Visited"
+    },
+    "core_media_acknowledged_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Core Media Acknowledged At"
+    },
+    "lesson_and_case_reviewed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Lesson and Case Reviewed At"
+    },
+    "activity_acknowledged_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Activity Acknowledged At"
+    },
+    "activity_completion_mode": {
+      "type": "string",
+      "title": "Activity Completion Mode",
+      "enum": [
+        "browser_private",
+        "offline",
+        "fictional"
+      ]
+    },
+    "reflection_acknowledged_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Reflection Acknowledged At"
+    },
+    "reflection_completion_mode": {
+      "type": "string",
+      "title": "Reflection Completion Mode",
+      "enum": [
+        "private",
+        "fictional"
+      ]
+    },
+    "quiz_passed": {
+      "type": "boolean",
+      "title": "Quiz Passed",
+      "default": false
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Completed At"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "module_slug",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.learner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

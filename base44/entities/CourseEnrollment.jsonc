@@ -1,0 +1,72 @@
+{
+  "name": "CourseEnrollment",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "status": {
+      "type": "string",
+      "title": "Enrollment Status",
+      "enum": [
+        "active",
+        "completed"
+      ],
+      "default": "active"
+    },
+    "enrolled_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Enrolled At"
+    },
+    "last_module_slug": {
+      "type": "string",
+      "title": "Last Module Slug"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Completed At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "status",
+    "enrolled_at"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.learner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

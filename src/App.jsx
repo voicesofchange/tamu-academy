@@ -35,6 +35,14 @@ import ClimateIsAMentalHealthCrisisArticle from './pages/articles/ClimateIsAMent
 import Privacy from './pages/Privacy';
 import Academy from './pages/Academy';
 import PartnershipInquiry from './pages/PartnershipInquiry';
+import UbuntuMentalHealth from './pages/UbuntuMentalHealth';
+import MhModule1 from './pages/MhModule1';
+import MhModule2 from './pages/MhModule2';
+import MhModule3 from './pages/MhModule3';
+import MhModule4 from './pages/MhModule4';
+import MhModule5 from './pages/MhModule5';
+import MhModule6 from './pages/MhModule6';
+import MhModule7 from './pages/MhModule7';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -73,6 +81,14 @@ const AuthenticatedApp = () => {
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
+      <Route path="/courses/ubuntu-and-mental-health" element={<UbuntuMentalHealth />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-1" element={<MhModule1 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-2" element={<MhModule2 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-3" element={<MhModule3 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-4" element={<MhModule4 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-5" element={<MhModule5 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-6" element={<MhModule6 />} />
+      <Route path="/courses/ubuntu-and-mental-health/module-7" element={<MhModule7 />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/videos" element={<Videos />} />
