@@ -55,7 +55,7 @@ import {
  *     answer the learner actually chose. Never raw answer-key fields.
  *   - Stores ONLY the ordinary assessment fields already supported by
  *     the QuizAttempt entity: learner_id (server-derived),
- *     course_slug, module_slug, attempt_number (server-computed),
+ *     course_slug, module_slug,
  *     score, total_questions, passed, submitted_at. No answer array
  *     (the entity has no `answers` field), no reflections, no Care
  *     Map data, no scenario selections, no diagnoses.
@@ -200,51 +200,16 @@ export default async function(req: Request): Promise<Response> {
 
     const passed = score >= answerKey.passingThreshold;
 
-    // CONCURRENCY-SAFE ATTEMPT NUMBERING.
-    //
-    // The prior implementation performed read-then-increment on the
-    // QuizAttempt list for (learner, course, module). Two simultaneous
-    // submissions (multiple browser tabs, retries, accidental double
-    // clicks) could both finish the read before either had committed,
-    // causing both to compute and write the same `attempt_number`
-    // (observed `attempt_number: 1` for both records during prior
-    // parallel validation).
-    //
-    // The fix is create-then-position, using the platform's
-    // server-assigned `created_date` as the canonical monotonic
-    // ordering (microsecond-resolution per write, identical for every
-    // concurrent reader of the same row set):
-    //
-    //   1. Create the record with `attempt_number = 0` — a placeholder
-    //      that the schema accepts because `attempt_number` is
-    //      `integer` + `required` with no minimum constraint, and the
-    //      field is not consumed by any UI semantic anywhere in the
-    //      app (only this function and the schema reference it; see
-    //      the codebase scan in this stage's report).
-    //   2. Re-read all of this learner's attempts for the same course
-    //      + module in ascending `created_date` order. Every concurrent
-    //      reader of the same row set sees the same deterministic order.
-    //   3. Compute this record's 1-based position in that order by id.
-    //      Each submission only patches ITS OWN record's
-    //      `attempt_number` by `created.id`, so concurrent
-    //      submissions targeting different record IDs cannot collide.
-    //
-    // Uniqueness follows from `created_date` being server-assigned and
-    // unique per write: every record occupies a distinct position in
-    // the sorted list, so each `attempt_number` is distinct within the
-    // (learner_id, course_slug, module_slug) set. The browser response
-    // continues to expose only { score, totalQuestions, passed,
-    // feedback }; attempt_number is never returned to the client.
-
-    // Step 1 — create the record with a placeholder attempt_number.
-    // The platform assigns a unique, monotonic created_date here.
-    let created = null;
+    // Exactly ONE QuizAttempt per accepted submission. The platform
+    // assigns id, created_date, and updated_date automatically. Attempt
+    // ordering is reconstructed at read time by sorting by
+    // created_date ascending with id ascending as a deterministic
+    // tie-breaker; no application-side ordinal is computed or stored.
     try {
-      created = await base44.asServiceRole.entities.QuizAttempt.create({
+      await base44.asServiceRole.entities.QuizAttempt.create({
         learner_id: user.id,
         course_slug: courseSlug,
         module_slug: moduleSlug,
-        attempt_number: 0,
         score,
         total_questions: answerKey.totalQuestions,
         passed,
@@ -259,48 +224,6 @@ export default async function(req: Request): Promise<Response> {
         { error: 'Could not record attempt. Please retry.' },
         { status: 500 },
       );
-    }
-
-    // Step 2 — re-read all of this learner's attempts for the same
-    // course + module in ascending created_date order. The explicit
-    // learner_id filter narrows the result to the current user's
-    // rows regardless of role.
-    let orderedAttempts = [];
-    try {
-      orderedAttempts = await base44.entities.QuizAttempt.filter(
-        {
-          learner_id: user.id,
-          course_slug: courseSlug,
-          module_slug: moduleSlug,
-        },
-        'created_date',
-        1000,
-      );
-    } catch (err) {
-      orderedAttempts = [];
-    }
-    const orderedList = Array.isArray(orderedAttempts) ? orderedAttempts : [];
-    const createdId = created && created.id;
-    const position = createdId
-      ? orderedList.findIndex((r) => r && r.id === createdId) + 1
-      : 0;
-
-    // Step 3 — patch this single record's attempt_number to the
-    // computed position. Concurrent submissions target different
-    // record IDs, so the patches are independent and cannot collide.
-    // If the patch fails the record keeps its placeholder (0); the
-    // uniqueness guarantee holds as long as such failures are rare.
-    if (position > 0) {
-      try {
-        await base44.asServiceRole.entities.QuizAttempt.update(createdId, {
-          attempt_number: position,
-        });
-      } catch (err) {
-        console.error(
-          '[submitMentalHealthQuiz] attempt_number patch failed:',
-          err && err.message,
-        );
-      }
     }
 
     return Response.json({

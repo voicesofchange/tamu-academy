@@ -14,10 +14,6 @@
       "type": "string",
       "title": "Module Slug"
     },
-    "attempt_number": {
-      "type": "integer",
-      "title": "Attempt Number"
-    },
     "score": {
       "type": "integer",
       "title": "Score"
@@ -41,7 +37,6 @@
     "learner_id",
     "course_slug",
     "module_slug",
-    "attempt_number",
     "score",
     "total_questions",
     "submitted_at"
