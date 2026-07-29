@@ -119,6 +119,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'interactive-scenario',
         'community-of-care-map',
         'private-reflection',
+        'knowledge-check',
         'sources',
       ],
     },
@@ -498,6 +499,89 @@ export const MENTAL_HEALTH_MODULE_1_LESSON = {
     offlineBanner:
       'This section has no online response field by design. Please conduct your reflection offline and in private.',
   },
+  // Knowledge check — public-facing block: quiz identifier, question
+  // wording, response options, retry rules, and the passing-score
+  // information the content pack shows to learners. Correct answer
+  // indices, per-answer grading, and approved correct/incorrect
+  // feedback are kept in MENTAL_HEALTH_MODULE_1_QUIZ_ANSWERS (declared
+  // below, after the scenario helpers). NEVER include correctIndex,
+  // correctAnswer, correctResponse, isCorrect, answerKey, scoringKey,
+  // per-answer grading text, facilitationNotes, or assessmentCriteria
+  // as fields on this object — those are released to submitMentalHealthQuiz
+  // only after the learner submits answers, and only as the approved
+  // learner-facing feedback for the option they actually chose.
+  knowledgeCheck: {
+    quizId: 'module-1-knowledge-check',
+    heading: 'Knowledge Check',
+    preActivityReminder:
+      'Personal disclosure is not required for this knowledge check. Do not write personal diagnoses, trauma details, or names anywhere in this quiz.',
+    numberOfQuestions: 5,
+    passingThreshold: 4,
+    passingDescription:
+      'Passing requires 4 out of 5 correct answers.',
+    educationalDisclaimer:
+      'This knowledge check is educational and is not clinical advice, a diagnostic tool, or a substitute for professional support.',
+    instructions:
+      'Select one response to each question, then submit. The system grades your answers on submission and shows your score and the approved feedback for each question.',
+    retryInstructions:
+      'You may retake this knowledge check as many times as you wish. After each submission you will see your latest score and the approved feedback per question. Change any answer before submitting again.',
+    questions: [
+      {
+        questionId: 'ubuntu-personhood',
+        prompt: "What does Ubuntu propose about personhood?",
+        options: [
+          "Individuals are isolated minds, with identity separate from any relationships.",
+          "A person becomes a person through other persons (umuntu ngumuntu ngabantu).",
+          "The community always determines the choices of each individual.",
+          "Identity has nothing to do with belonging or relationships.",
+        ],
+      },
+      {
+        questionId: 'community-both-sides',
+        prompt:
+          "How does Module 1 ask you to view the relationship between Ubuntu values and mental wellbeing?",
+        options: [
+          "Ubuntu always protects wellbeing in every community without exception.",
+          "Ubuntu eliminates all forms of strain in community life.",
+          "Ubuntu can both protect and strain mental wellbeing, and both sides must be examined.",
+          "Ubuntu rejects the need for clinical or qualified professional support.",
+        ],
+      },
+      {
+        questionId: 'care-without-control',
+        prompt:
+          "If a community member is exhausted by caregiving obligations, which response best balances Ubuntu-informed principles and safety?",
+        options: [
+          "Tell her that family duty must come first because Ubuntu requires sacrifice.",
+          "Tell her to stop helping anyone and solve the problem entirely on her own.",
+          "Ask what support she wants, offer concrete help, respect confidentiality, discuss boundaries, and provide information about qualified support.",
+          "Share her situation with the wider family so everyone can decide what she should do.",
+        ],
+      },
+      {
+        questionId: 'community-strain-forms',
+        prompt:
+          "Which set of forms of strain can communal life produce even when Ubuntu values are present?",
+        options: [
+          "Obligation, silence, exclusion, or unequal caregiving.",
+          "Only benefits and never harms.",
+          "Negative outcomes in every situation without any exception.",
+          "Only individual clinical concerns unrelated to community.",
+        ],
+      },
+      {
+        questionId: 'ubuntu-clinical-coexistence',
+        prompt:
+          "Which statement best describes the module's comparison between Ubuntu's relational emphasis and an individual clinical emphasis?",
+        options: [
+          "Ubuntu makes clinical mental health care unnecessary in every case.",
+          "Individual clinical care is universally preferred and Ubuntu is irrelevant.",
+          "Both emphases should be compared without treating either as internally uniform, and Ubuntu's relational view and clinical care can coexist and inform each other.",
+          "Ubuntu should fully replace clinical mental health care in every community.",
+        ],
+      },
+    ],
+  },
 };
 
 /**
@@ -538,6 +622,90 @@ export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
 export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
   if (!isScenarioSupported(courseSlug, moduleRoute, scenarioId)) return null;
   return MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS[scenarioId];
+}
+
+/**
+ * PROTECTED QUIZ ANSWER KEY — server-side-only.
+ *
+ * Released to the role-gated `submitMentalHealthQuiz` function AFTER
+ * the learner submits a valid quiz. This constant is NEVER imported by
+ * any `src/` file, NEVER returned by `getMentalHealthModule`, and NEVER
+ * embedded in any browser bundle.
+ *
+ * The public-facing `lesson.knowledgeCheck` object carries only the
+ * quizId, question wording, response options, passing information,
+ * and retry instructions. The protected fields below (correctIndex,
+ * correctFeedback, incorrectFeedback) are released to
+ * `submitMentalHealthQuiz`'s return payload — as the per-question
+ * learner-facing feedback for the option the learner chose
+ * (correctFeedback when they matched correctIndex, incorrectFeedback
+ * otherwise) — but NEVER as raw correct-index fields, and never as
+ * the full answer key object.
+ */
+export const MENTAL_HEALTH_MODULE_1_QUIZ_ANSWERS = {
+  'module-1-knowledge-check': {
+    totalQuestions: 5,
+    passingThreshold: 4,
+    items: {
+      'ubuntu-personhood': {
+        optionsCount: 4,
+        correctIndex: 1,
+        correctFeedback:
+          'Ubuntu proposes "umuntu ngumuntu ngabantu" — a person becomes a person through other persons. This relational view does not eliminate individual voice; it locates wellbeing in belonging and mutual recognition.',
+        incorrectFeedback:
+          "Reconsider: Ubuntu's central claim is relational — a person becomes a person through other persons. The relational view does not say the community always overrides individual choice, that identity is unrelated to belonging, or that persons are isolated minds.",
+      },
+      'community-both-sides': {
+        optionsCount: 4,
+        correctIndex: 2,
+        correctFeedback:
+          'Module 1 examines both sides of communal life: the protection created by belonging and mutual care, and the strain created by obligation, coercion, silence, exclusion, or unequal caregiving.',
+        incorrectFeedback:
+          'Reconsider: the module asks you to look at both protection and strain — Ubuntu can support belonging and mutual care, but communal life can also create obligation, silence, exclusion, or unequal caregiving.',
+      },
+      'care-without-control': {
+        optionsCount: 4,
+        correctIndex: 2,
+        correctFeedback:
+          'This response treats the person as part of a community without surrendering voice, privacy, boundaries, or access to qualified professional support — care without control.',
+        incorrectFeedback:
+          'Reconsider: balance Ubuntu-informed care with safety — ask what support the person wants, offer concrete help, respect confidentiality, discuss boundaries, and provide information about qualified support rather than coercion, isolation, or exposure.',
+      },
+      'community-strain-forms': {
+        optionsCount: 4,
+        correctIndex: 0,
+        correctFeedback:
+          'The module identifies obligation, coercion, silence, exclusion, and unequal caregiving as forms of strain communal life can produce even when its values emphasize mutual care.',
+        incorrectFeedback:
+          'Reconsider: Ubuntu does not guarantee community wellbeing. Strain can include obligation, silence, exclusion, or unequal caregiving — honest inspection is part of this module.',
+      },
+      'ubuntu-clinical-coexistence': {
+        optionsCount: 4,
+        correctIndex: 2,
+        correctFeedback:
+          "Module 1's learning objectives ask you to compare a relational emphasis with a dominant individual clinical emphasis without treating either as internally uniform; the two can complement each other.",
+        incorrectFeedback:
+          'Reconsider: the module asks you to compare both emphases without treating either as internally uniform — Ubuntu does not eliminate or replace clinical care, nor does a clinical emphasis erase the role of relationships and belonging.',
+      },
+    },
+  },
+};
+
+/** Whether the given quiz identifier has a protected answer key. */
+export function isQuizSupported(courseSlug, moduleRoute, quizId) {
+  if (!courseExists(courseSlug)) return false;
+  if (moduleRoute !== 'module-1') return false;
+  if (typeof quizId !== 'string' || !quizId) return false;
+  return Object.prototype.hasOwnProperty.call(
+    MENTAL_HEALTH_MODULE_1_QUIZ_ANSWERS,
+    quizId,
+  );
+}
+
+/** Returns the protected answer key for the quiz or null if unsupported. */
+export function getQuizAnswerKey(courseSlug, moduleRoute, quizId) {
+  if (!isQuizSupported(courseSlug, moduleRoute, quizId)) return null;
+  return MENTAL_HEALTH_MODULE_1_QUIZ_ANSWERS[quizId];
 }
 
 /**
