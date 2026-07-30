@@ -334,7 +334,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         {renderParagraphs(lesson.caseStudy.conclusion)}
       </PageSection>
 
-      <PageSection id="interactive-scenario" eyebrow="Interactive Scenario" heading="Response Design">
+      <PageSection id="interactive-scenario" eyebrow="Interactive Scenario" heading={lesson.interactiveScenario.title}>
         <MhInteractiveScenario
           courseSlug={course.slug}
           moduleSlug={mod.route}

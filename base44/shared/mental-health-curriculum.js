@@ -944,8 +944,9 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
   // public-facing block only) ============
   //
   // Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md.
-  // Carries ONLY the scenarioId, prompt, four response options, and a
-  // generic instruction line. NEVER include bestResponseIndex,
+  // Carries ONLY the scenarioId, title, prompt, and four response
+  // options. No instructionLine is stored (no exact wording was
+  // authorized for this stage). NEVER include bestResponseIndex,
   // correctIndex, isCorrect, feedback, feedbackByOption, answerKey, or
   // any evaluation data here — those live exclusively in
   // MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS and are released only by
@@ -953,6 +954,7 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
   // selection.
   interactiveScenario: {
     scenarioId: 'praise-that-becomes-pressure',
+    title: 'Response Design',
     prompt:
       'Which plan best responds to both cases without erasing resilience or reducing the problem to individual coping?',
     options: [
@@ -961,8 +963,6 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
       'Ask what support each person wants, protect privacy, share practical burdens where possible, connect them with culturally responsive and qualified support, and address harmful work or service conditions.',
       'Refer both people immediately to a specialist and avoid discussing family, culture, work, racism, or financial pressure.',
     ],
-    instructionLine:
-      'Select one response, then submit to see the approved educational feedback. Your selection is not saved anywhere on this platform.',
   },
 };
 
