@@ -129,11 +129,32 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: 'module-1',
-      // Stage 1 of the Module 2 content rollout added only the two
-      // approved introductory section identifiers. Arbitrary extra
-      // identifiers remain rejected by isSectionAllowed until later
-      // approved stages add them.
-      sections: ['module-overview', 'learning-objectives'],
+      // Stage 1 added the two introductory identifiers. Stage 2 adds the
+      // approved core media, questions to consider, Tamu Academy
+      // introduction, nine explanation, and key-concepts identifiers in
+      // the content pack's order. Arbitrary extra identifiers remain
+      // rejected by isSectionAllowed. Deferred identifiers (comparative
+      // case study, interactive scenario, Strength Without Silence Lab,
+      // private reflection, knowledge check, closing, completion,
+      // sources, optional extended assignment) are intentionally not
+      // yet present.
+      sections: [
+        'module-overview',
+        'learning-objectives',
+        'core-media',
+        'questions-to-consider',
+        'tamu-introduction',
+        'stress-is-not-a-moral-failure',
+        'stressors-are-layered',
+        'stigma-has-more-than-one-form',
+        'strength-can-protect',
+        'strength-can-also-become-a-demand',
+        'gendered-strength-narratives',
+        'history-and-institutions-matter',
+        'strength-without-silence',
+        'help-seeking-is-a-pathway',
+        'key-concepts',
+      ],
     },
     {
       route: 'module-3',
@@ -658,6 +679,222 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
     earlyDisclaimer:
       'This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services.',
   },
+  // ============ STAGE 2 CONTENT ADDITIONS (core media, questions to
+  // consider, Original Tamu Academy introduction, the nine explanation
+  // sections, and the nine key concepts) ============
+  //
+  // Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md.
+  // Wording and ordering match the content pack exactly. Do not rewrite,
+  // shorten, expand, or replace this material.
+  //
+  // Core media: the approved Sangu Delle TED talk only. The optional
+  // Brother Be Well resource is intentionally NOT present at this stage
+  // (deferred to a sources-only appearance in a later stage). No
+  // scenario, lab, reflection, quiz, closing, completion, sources, or
+  // extended-assignment fields are present yet.
+  coreMedia: {
+    primary: {
+      title: "There's No Shame in Taking Care of Your Mental Health",
+      speaker: 'Sangu Delle',
+      publisher: 'TED',
+      event: 'TEDLagos Ideas Search, February 2017',
+      watchUrl: 'https://www.youtube.com/watch?v=BvpmZktlBFs',
+      embedUrl: 'https://www.youtube-nocookie.com/embed/BvpmZktlBFs',
+      officialPageUrl: 'https://www.ted.com/talks/sangu_delle_there_s_no_shame_in_taking_care_of_your_mental_health',
+      officialPageLabel: 'Open the official TED page (transcript and captions available)',
+      attributionLabel: 'TED · TEDLagos Ideas Search, February 2017 · Sangu Delle',
+      roleInModule: 'A first person account of stress, anxiety, masculinity, stigma, and the decision to seek support.',
+      attributionStatement:
+        'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+    },
+  },
+  // Questions to consider while watching — reflective prompts only.
+  // No response field, submission, tracking, or completion condition is
+  // attached to these anywhere on the platform.
+  questionsToConsider: [
+    "What messages about masculinity, emotion, and self reliance shaped Sangu Delle's first response to distress?",
+    'Which parts of his experience involved personal beliefs, and which involved wider social expectations?',
+    'When can endurance be useful, and when can it become silence or isolation?',
+    'What made it possible for him to name what he was experiencing and accept support?',
+    'How might the story differ for women, gender diverse people, migrants, people affected by conflict, or people living where services are scarce?',
+  ],
+  tamuIntroduction: {
+    paragraphs: [
+      'Strength is not the problem. People and communities have relied on courage, discipline, faith, humor, responsibility, protest, kinship, and persistence to survive difficult conditions. The problem begins when strength becomes a narrow command: never show pain, never need help, never rest, and never disappoint anyone.',
+      'That command does not arise in a vacuum. It may develop under economic insecurity, conflict, migration, racism, discrimination, gendered labor, family responsibility, or a health system that offers few trustworthy options. Silence can therefore be an adaptation to real risk. A person may worry about gossip, employment, family reputation, immigration consequences, cost, poor treatment, or being misunderstood by a provider.',
+      'This module does not blame culture for mental health inequities. It asks a more careful question: what does a strength narrative protect, what does it cost, and what would allow people to keep its dignity while releasing its silence?',
+    ],
+  },
+  // The nine approved explanation sections in the content pack's order.
+  // Each carries its stable sectionId, heading, and a flexible block set
+  // (paragraphs, numberedItems, trailingParagraphs, or subsections).
+  // Courtesy stigma appears as the fifth numbered item INSIDE the
+  // "Stigma has more than one form" explanation; it is NOT promoted to
+  // the key-concepts glossary.
+  explanation: [
+    {
+      sectionId: 'stress-is-not-a-moral-failure',
+      heading: 'Stress is not a moral failure',
+      paragraphs: [
+        "A stressor is a demand, threat, loss, transition, or pressure. Stress is the response that may follow. It can involve physical changes, thoughts, emotions, behavior, and relationships. Some stress can support focus and adaptation. Persistent or overwhelming stress can exhaust a person's capacity, especially when demands are high and control, rest, safety, or support are low.",
+        'Distress is not proof of weak character. It is also not automatically a mental health diagnosis. People can experience grief, fear, exhaustion, anger, worry, numbness, sleep disruption, or difficulty concentrating for many reasons. A qualified professional considers duration, severity, functioning, risk, health conditions, culture, and context before making a diagnosis.',
+      ],
+    },
+    {
+      sectionId: 'stressors-are-layered',
+      heading: 'Stressors are layered',
+      paragraphs: [
+        'African countries and diaspora communities are diverse. No single list describes everyone. In different settings, relevant pressures may include:',
+      ],
+      numberedItems: [
+        'Economic insecurity, unemployment, unsafe work, debt, or the expectation to support several households.',
+        'Conflict, political violence, displacement, climate shocks, or interrupted education.',
+        'Migration, family separation, uncertain legal status, language barriers, and pressure to appear successful abroad.',
+        'Racism, anti Blackness, xenophobia, religious discrimination, and unequal treatment in schools, workplaces, housing, policing, or health care.',
+        'Gendered expectations involving caregiving, provision, marriage, appearance, emotional restraint, or exposure to violence.',
+        'Youth pressures involving academic performance, social media, family expectations, limited employment, and uncertainty about the future.',
+        'Service shortages, distance, cost, confidentiality concerns, poor quality care, or lack of culturally and linguistically responsive providers.',
+      ],
+      trailingParagraphs: [
+        'These pressures can accumulate. An individual coping skill may help, but it cannot by itself repair unsafe work, discrimination, forced displacement, unaffordable care, or an unfair distribution of responsibility.',
+      ],
+    },
+    {
+      sectionId: 'stigma-has-more-than-one-form',
+      heading: 'Stigma has more than one form',
+      paragraphs: [
+        'Stigma is not only an insulting word or a negative belief. It can operate at several levels:',
+      ],
+      numberedItems: [
+        '**Public stigma:** stereotypes, prejudice, ridicule, avoidance, or exclusion directed at people associated with mental distress or a diagnosis.',
+        '**Anticipated stigma:** the expectation that disclosure or help seeking will lead to shame, rejection, gossip, punishment, or lost opportunity.',
+        '**Internalized stigma:** absorbing negative messages and applying them to oneself, such as believing that needing help proves failure.',
+        '**Structural stigma:** rules, budgets, institutional practices, and service arrangements that reduce access, rights, quality, or participation.',
+        '**Courtesy stigma:** shame or discrimination directed at relatives, caregivers, or associates of a person experiencing mental health concerns.',
+      ],
+      trailingParagraphs: [
+        'Stigma affects help seeking when people reasonably expect social or institutional harm. Education matters, but anti stigma work must also improve confidentiality, affordability, quality, rights, and available services.',
+      ],
+    },
+    {
+      sectionId: 'strength-can-protect',
+      heading: 'Strength can protect',
+      paragraphs: [
+        'Strength narratives may offer:',
+      ],
+      numberedItems: [
+        'A language of dignity when people are devalued.',
+        'Persistence under racism, poverty, displacement, or exclusion.',
+        'Pride in family, culture, faith, work, and community responsibility.',
+        'A refusal to accept stereotypes of helplessness.',
+        'Motivation to protect others and act collectively.',
+      ],
+      trailingParagraphs: [
+        'It would be careless to tell people simply to abandon strength. A better approach respects why the narrative exists.',
+      ],
+    },
+    {
+      sectionId: 'strength-can-also-become-a-demand',
+      heading: 'Strength can also become a demand',
+      paragraphs: [
+        'A strength narrative becomes harmful when it is treated as a compulsory performance. Common costs include:',
+      ],
+      numberedItems: [
+        'Suppressing emotion because honesty is labeled weakness.',
+        'Carrying care, financial, or leadership burdens without relief.',
+        'Delaying help until distress becomes a crisis.',
+        'Hiding difficulty to protect family or community reputation.',
+        'Judging other people for expressing needs differently.',
+        'Receiving praise for endurance while institutions avoid fixing harmful conditions.',
+      ],
+      trailingParagraphs: [
+        'The issue is not resilience itself. The issue is who is required to be resilient, under what conditions, and at what cost.',
+      ],
+    },
+    {
+      sectionId: 'gendered-strength-narratives',
+      heading: 'Gendered strength narratives',
+      subsections: [
+        {
+          heading: 'The strong Black woman or Superwoman schema',
+          paragraphs: [
+            'Research with African American women has described expectations to display strength, suppress emotion, resist vulnerability, succeed despite limited resources, and prioritize care for others. Participants also described benefits, including preservation of self, family, and community, as well as costs involving stress and strained relationships.',
+            'This framework emerged from research with African American women. It should not be imposed on every Black woman, every African woman, or every diaspora community. Its value is in showing how a racialized and gendered strength role can be both protective and costly.',
+          ],
+        },
+        {
+          heading: 'Toughness and restrictive masculinity',
+          paragraphs: [
+            'Some boys and men learn that manhood requires control, provision, emotional restriction, independence, or readiness to endure pain. These messages may offer identity and belonging. When treated rigidly, they can make fear, sadness, tenderness, uncertainty, or help seeking appear unacceptable.',
+            'Masculinities are plural. African men, diaspora men, families, faith communities, and youth cultures do not share one script. The goal is not to replace manhood with a clinical stereotype. It is to widen the range of actions that can count as courage.',
+          ],
+        },
+        {
+          heading: 'Provider and migrant success narratives',
+          paragraphs: [
+            'People of any gender may be expected to become the dependable provider, the successful migrant, the eldest child who solves every problem, or the community leader who never falters. These roles can create meaning and pride. They can also make limits feel like betrayal.',
+          ],
+        },
+      ],
+    },
+    {
+      sectionId: 'history-and-institutions-matter',
+      heading: 'History and institutions matter',
+      paragraphs: [
+        'Colonial psychiatry in several African settings often emphasized racial hierarchy, institutional control, and imported categories rather than accessible care shaped by local communities. Present systems differ by country, and colonial history does not explain every modern barrier. Still, inherited institutions, centralized services, marginalization of local knowledge, and mistrust can shape how formal care is perceived.',
+        'Contemporary barriers also include underfunding, workforce shortages, urban concentration of specialists, cost, weak primary care integration, and insufficient youth services. In diaspora settings, racism and immigration systems can create additional stress and mistrust. Stigma therefore cannot be reduced to culture. It is connected to history, policy, institutional quality, and material conditions.',
+      ],
+    },
+    {
+      sectionId: 'strength-without-silence',
+      heading: 'Strength without silence',
+      paragraphs: [
+        'Use a five part lens:',
+      ],
+      numberedItems: [
+        '**Name the pressure.** What demands, losses, risks, or unequal conditions are present?',
+        '**Name the strength message.** What is the person expected to prove, hide, or carry?',
+        '**Protect what helps.** Preserve dignity, purpose, solidarity, courage, or cultural meaning.',
+        '**Release what harms.** Challenge compulsory silence, endless sacrifice, shame, coercion, or isolation.',
+        '**Widen the support pathway.** Add trusted people, shared responsibility, practical relief, culturally affirming services, qualified care, and system changes.',
+      ],
+      trailingParagraphs: [
+        'This approach does not turn vulnerability into a new requirement. People retain control over what they share, with whom, and when. Privacy and boundaries matter.',
+      ],
+    },
+    {
+      sectionId: 'help-seeking-is-a-pathway',
+      heading: 'Help seeking is a pathway, not one doorway',
+      paragraphs: [
+        'Support may involve:',
+      ],
+      numberedItems: [
+        'Personal practices such as rest, movement, spiritual practices, creative expression, or time in nature.',
+        'Trusted relationships and peer support.',
+        'Community groups, youth mentors, cultural organizations, or faith communities that respect consent and referral limits.',
+        'Primary care and qualified mental health professionals.',
+        'Practical assistance with food, housing, transport, school, work, caregiving, or legal concerns.',
+        'Urgent and emergency services when safety is at immediate risk.',
+      ],
+      trailingParagraphs: [
+        "No single pathway is right for everyone. Informal support should not pretend to be clinical treatment. Professional care should not ignore culture, material conditions, or the person's preferred supports.",
+      ],
+    },
+  ],
+  // The nine approved key concepts as a consolidated glossary, ordered as
+  // the content pack lists them (after the nine explanations). Courtesy
+  // stigma is intentionally NOT included here.
+  keyConcepts: [
+    { term: 'Stressor', definition: 'A demand, threat, loss, transition, or pressure that may produce a stress response.' },
+    { term: 'Distress', definition: 'Emotional, physical, cognitive, behavioral, or relational strain that may be temporary or persistent and is not by itself a diagnosis.' },
+    { term: 'Public stigma', definition: 'Social stereotypes, prejudice, ridicule, avoidance, or exclusion related to mental health.' },
+    { term: 'Anticipated stigma', definition: 'The expectation that disclosure or help seeking will lead to social or institutional harm.' },
+    { term: 'Internalized stigma', definition: 'Negative social messages that a person comes to apply to themselves.' },
+    { term: 'Structural stigma', definition: 'Policies, budgets, rules, and institutional practices that restrict rights, access, quality, or participation.' },
+    { term: 'Strength narrative', definition: 'A social message about endurance, self control, responsibility, toughness, or care that may provide meaning and protection but may also impose silence or unequal burdens.' },
+    { term: 'Help seeking', definition: 'The process of identifying a need and reaching toward informal, community, practical, health, or professional support.' },
+    { term: 'Culturally affirming support', definition: 'Support that respects language, identity, context, dignity, agency, community relationships, and preferred pathways while maintaining safety and appropriate standards of care.' },
+  ],
 };
 
 /**
