@@ -154,6 +154,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'strength-without-silence',
         'help-seeking-is-a-pathway',
         'key-concepts',
+        'case-study',
       ],
     },
     {
@@ -895,6 +896,49 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
     { term: 'Help seeking', definition: 'The process of identifying a need and reaching toward informal, community, practical, health, or professional support.' },
     { term: 'Culturally affirming support', definition: 'Support that respects language, identity, context, dignity, agency, community relationships, and preferred pathways while maintaining safety and appropriate standards of care.' },
   ],
+  // ============ STAGE 3 CONTENT ADDITION (comparative case study) ============
+  //
+  // Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md.
+  // Wording matches the content pack exactly. Do not rewrite, summarize,
+  // shorten, expand, or add to the case study.
+  //
+  // The case study is instructional content only. There is NO response
+  // field, discussion prompt, diagnostic label, recommendation, progress
+  // control, or completion acknowledgment attached to it.
+  //
+  // The privacyNotice is the exact pack notice required to appear
+  // immediately before the case study. It is rendered (not stored
+  // separately as a learner input) and is never used to invite or store
+  // personal disclosure.
+  //
+  // The reserved interactive-scenario identifier `praise-that-becomes-
+  // pressure` is intentionally NOT part of this object, not in Module 2's
+  // allow-list, and not consulted by checkMentalHealthScenario. It
+  // belongs to a later approved stage.
+  caseStudy: {
+    privacyNotice:
+      'You may use a fictional or composite example. You do not need to disclose personal experiences, diagnoses, trauma, immigration information, or private family circumstances.',
+    title: 'The Praise That Becomes Pressure',
+    introductoryNotice:
+      'These fictional cases are not intended to represent every person in either setting.',
+    cases: [
+      {
+        heading: 'Thandi in Durban',
+        paragraphs: [
+          "Thandi is a 27 year old teacher. She supports her mother and two younger siblings while managing a crowded classroom and a long commute. Colleagues praise her as the strong one who never complains. She has been sleeping poorly, experiencing headaches, and struggling to concentrate. She worries that asking for time off will harm her career. The nearest low cost service requires time away from work, and she is unsure whether her information will remain private.",
+        ],
+      },
+      {
+        heading: 'Kojo in Manchester',
+        paragraphs: [
+          "Kojo is a 22 year old Ghanaian born apprentice living in the United Kingdom. His relatives celebrate him as the family's success abroad and rely on part of his income. He has experienced racist comments at work and feels isolated from old friends. Some peers joke that therapy is not for men. A trusted football coach notices that Kojo has stopped attending practice. Primary care and a community organization are available, but Kojo expects a long wait and worries that a provider will misunderstand his culture.",
+        ],
+      },
+    ],
+    conclusion: [
+      'Neither vignette provides enough information for a diagnosis. Both show how praise can conceal strain. Thandi and Kojo are managing personal, relational, economic, and institutional pressures. Their strength deserves respect, but respect should not become an excuse to leave them carrying everything alone.',
+    ],
+  },
 };
 
 /**

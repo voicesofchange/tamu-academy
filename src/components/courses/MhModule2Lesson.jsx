@@ -302,6 +302,37 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         {renderConcepts(lesson.keyConcepts)}
       </PageSection>
 
+      <PageSection id="case-study" eyebrow="Case Study" heading={lesson.caseStudy.title}>
+        <div
+          aria-label="Privacy and safety notice"
+          style={{
+            marginTop: '0.25rem',
+            marginBottom: '1.6rem',
+            padding: '1.4rem 1.6rem',
+            border: '1px solid rgba(212,161,42,0.28)',
+            borderRadius: '4px',
+            backgroundColor: 'rgba(212,161,42,0.05)',
+          }}
+        >
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
+            Privacy and safety
+          </span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
+            {lesson.caseStudy.privacyNotice}
+          </p>
+        </div>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
+          {lesson.caseStudy.introductoryNotice}
+        </p>
+        {lesson.caseStudy.cases.map((c) => (
+          <div key={c.heading} style={{ marginBottom: '1.75rem' }}>
+            <h3 className="font-heading" style={termHeading}>{c.heading}</h3>
+            {renderParagraphs(c.paragraphs)}
+          </div>
+        ))}
+        {renderParagraphs(lesson.caseStudy.conclusion)}
+      </PageSection>
+
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
