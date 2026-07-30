@@ -105,7 +105,7 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Stress, Stigma, and Strength: Rethinking Mental Health Narratives in African and Diaspora Communities',
       description:
         'Examines how stress, stigma, masculinity, family expectations, migration, and structural conditions such as inequality and racism shape mental health experiences.',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       estimatedTime: '60 to 75 minutes',
       prerequisite: 'module-1',

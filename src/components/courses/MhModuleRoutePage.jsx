@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import MhModuleShell from '@/components/courses/MhModuleShell';
 import MhModuleLesson from '@/components/courses/MhModuleLesson';
+import MhModule2Lesson from '@/components/courses/MhModule2Lesson';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
 import PageNotFound from '@/lib/PageNotFound';
 
@@ -77,6 +78,19 @@ export default function MhModuleRoutePage({ moduleRoute }) {
   if (!found) return <PageNotFound />;
 
   if (state.status === 'lesson' && state.module && state.module.lesson) {
+    // Select the per-module lesson renderer. Module 1 keeps its
+    // existing MhModuleLesson path unchanged; Module 2 uses its own
+    // Stage 1 renderer (MhModule2Lesson). Other modules remain on the
+    // MhModuleShell fallback until their content stages land.
+    if (moduleRoute === 'module-2') {
+      return (
+        <MhModule2Lesson
+          course={found.course}
+          module={found.module}
+          lesson={state.module.lesson}
+        />
+      );
+    }
     return (
       <MhModuleLesson
         course={found.course}

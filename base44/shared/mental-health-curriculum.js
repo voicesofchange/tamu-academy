@@ -126,10 +126,14 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       route: 'module-2',
       number: 'Module 2',
       title: 'Stress, Stigma, and Strength: Rethinking Mental Health Narratives in African and Diaspora Communities',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: 'module-1',
-      sections: [],
+      // Stage 1 of the Module 2 content rollout added only the two
+      // approved introductory section identifiers. Arbitrary extra
+      // identifiers remain rejected by isSectionAllowed until later
+      // approved stages add them.
+      sections: ['module-overview', 'learning-objectives'],
     },
     {
       route: 'module-3',
@@ -584,6 +588,79 @@ export const MENTAL_HEALTH_MODULE_1_LESSON = {
 };
 
 /**
+ * MODULE 2 LESSON CONTENT — server-side-only (Stage 1 foundation).
+ *
+ * Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md.
+ *
+ * STAGE 1 SCOPE (do not regress — later stages add the rest):
+ *   This object carries ONLY the approved introductory material for
+ *   Module 2: the public module overview + competency, and the
+ *   learning objectives + the early educational disclaimer required
+ *   near the beginning.
+ *
+ *   The wording matches the content pack. Do not rewrite, shorten,
+ *   expand, or replace it.
+ *
+ * NOT YET PRESENT (deferred to later approved stages — never bundled,
+ *   never returned until those stages land):
+ *     - Core media (Sangu Delle primary video and Brother Be Well
+ *       optional supporting link — the latter remains in the sources
+ *       only for now)
+ *     - Questions to consider while watching
+ *     - Original Tamu Academy introduction
+ *     - The nine explanation sections (stress is not a moral failure;
+ *       stressors are layered; stigma has more than one form;
+ *       strength can protect; strength can also become a demand;
+ *       gendered strength narratives; history and institutions matter;
+ *       strength without silence; help seeking is a pathway)
+ *     - Key concepts
+ *     - Comparative case study
+ *     - Interactive scenario, including the reserved
+ *       `praise-that-becomes-pressure` scenario answer key
+ *     - Strength Without Silence Lab instructions
+ *     - Private reflection prompt
+ *     - Knowledge check questions, including the reserved
+ *       `module-2-knowledge-check` answer key
+ *     - Closing content
+ *     - Completion requirements
+ *     - Sources
+ *     - Optional extended academic assignment
+ *
+ *   None of those are reached by the Stage 1 renderer; none are
+ *   shipped to the browser. Answer keys, correct-answer indices,
+ *   scenario answers, activity responses, and facilitator notes are
+ *   never placed on this object.
+ *
+ * SECTION IDENTIFIERS:
+ *   Only `module-overview` and `learning-objectives` are in Module 2's
+ *   allow-list at this stage. The competency and the early disclaimer
+ *   render inside those two sections rather than as separately
+ *   navigable sections — the content pack does not require them as
+ *   standalone section identifiers.
+ */
+export const MENTAL_HEALTH_MODULE_2_LESSON = {
+  moduleOverview: {
+    paragraphs: [
+      'Strength can mean endurance, responsibility, courage, cultural pride, survival, and care for others. It can also become a rule that tells people to hide distress, refuse rest, carry unequal burdens, or delay support.',
+      'This module examines how economic pressure, conflict and displacement, migration, racism, gender expectations, service shortages, and inherited institutions shape mental wellbeing across different African and diaspora settings. Learners analyze stigma as both a social attitude and a structural barrier, then practice reframing strength so that honesty, boundaries, collective care, and professional support can exist alongside resilience.',
+    ],
+    competency:
+      'By the end of this module, learners should be able to analyze how stressors, stigma, strength narratives, and structural conditions interact, then propose a culturally affirming response that preserves resilience without requiring silence or self neglect.',
+  },
+  learningObjectives: {
+    objectives: [
+      'Identify major stressors that may affect people in different African and diaspora settings without treating those communities as uniform.',
+      'Distinguish public, anticipated, internalized, and structural forms of stigma.',
+      'Analyze how gendered and cultural strength narratives can provide protection while also limiting emotional expression, rest, and help seeking.',
+      'Explain how colonial institutions, racism, migration systems, economic inequality, conflict, and underfunded services can shape distress and access to care.',
+      'Reframe a strength message so that it supports dignity, agency, shared responsibility, and appropriate pathways to care.',
+    ],
+    earlyDisclaimer:
+      'This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services.',
+  },
+};
+
+/**
  * PROTECTED SCENARIO ANSWER KEY — server-side-only.
  *
  * Released to the role-gated `checkMentalHealthScenario` function
@@ -733,10 +810,16 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     contentAvailable: !!(m.sections && m.sections.length > 0),
     sections: m.sections || [],
   };
-  // Currently only Module 1 has a staged lesson object attached.
-  // Future modules will follow the same shape once their content lands.
+  // Module 1 ships its full lesson object. Module 2 ships the Stage 1
+  // foundation lesson object (overview, competency, objectives, and
+  // the early educational disclaimer) — its later approved stages will
+  // extend this in parallel with MENTAL_HEALTH_MODULE_2_LESSON.
+  // Modules 3 through 7 still return the shell only.
   if (m.route === 'module-1') {
     return { ...baseShell, lesson: MENTAL_HEALTH_MODULE_1_LESSON };
+  }
+  if (m.route === 'module-2') {
+    return { ...baseShell, lesson: MENTAL_HEALTH_MODULE_2_LESSON };
   }
   return baseShell;
 }
