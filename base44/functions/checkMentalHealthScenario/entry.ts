@@ -138,18 +138,20 @@ export default async function(req: Request): Promise<Response> {
 
     const isCorrect = rawIndex === answer.bestResponseIndex;
 
-    // Return ONLY the two fields the frontend needs: `isCorrect` and
-    // `feedback`. The learner already knows their submitted option from
-    // local component state, and `bestResponseIndex` remains
-    // exclusively in the protected server curriculum — it never
-    // appears in the initial lesson response or this submission
-    // response. `scenarioId` and `submittedOptionIndex` are also
-    // omitted from the response: the frontend supplied both, so
-    // mirroring them back would leak no new information but is also
-    // unnecessary, and the leaner payload is preferable.
+    // Per-option feedback (Module 2) takes precedence when present;
+    // otherwise the single `feedback` field (Module 1) is returned
+    // unchanged. Only the feedback for the submitted option is
+    // released; feedback for the other options stays exclusively in
+    // the protected server curriculum. `bestResponseIndex` is never
+    // returned, and `scenarioId` / `submittedOptionIndex` are omitted
+    // (the frontend already knows both from local component state).
+    const feedback = Array.isArray(answer.feedbackByOption)
+      ? answer.feedbackByOption[rawIndex] || ''
+      : answer.feedback;
+
     return Response.json({
       isCorrect,
-      feedback: answer.feedback,
+      feedback,
     });
   } catch (error) {
     console.error(

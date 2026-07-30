@@ -155,6 +155,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'help-seeking-is-a-pathway',
         'key-concepts',
         'case-study',
+        'interactive-scenario',
       ],
     },
     {
@@ -939,6 +940,30 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
       'Neither vignette provides enough information for a diagnosis. Both show how praise can conceal strain. Thandi and Kojo are managing personal, relational, economic, and institutional pressures. Their strength deserves respect, but respect should not become an excuse to leave them carrying everything alone.',
     ],
   },
+  // ============ STAGE 4 CONTENT ADDITION (interactive scenario,
+  // public-facing block only) ============
+  //
+  // Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md.
+  // Carries ONLY the scenarioId, prompt, four response options, and a
+  // generic instruction line. NEVER include bestResponseIndex,
+  // correctIndex, isCorrect, feedback, feedbackByOption, answerKey, or
+  // any evaluation data here — those live exclusively in
+  // MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS and are released only by
+  // checkMentalHealthScenario after the learner submits a valid
+  // selection.
+  interactiveScenario: {
+    scenarioId: 'praise-that-becomes-pressure',
+    prompt:
+      'Which plan best responds to both cases without erasing resilience or reducing the problem to individual coping?',
+    options: [
+      'Enroll both people in a resilience workshop and leave work, family, and service conditions unchanged.',
+      'Ask them to tell their stories publicly so their communities can learn that mental health matters.',
+      'Ask what support each person wants, protect privacy, share practical burdens where possible, connect them with culturally responsive and qualified support, and address harmful work or service conditions.',
+      'Refer both people immediately to a specialist and avoid discussing family, culture, work, racism, or financial pressure.',
+    ],
+    instructionLine:
+      'Select one response, then submit to see the approved educational feedback. Your selection is not saved anywhere on this platform.',
+  },
 };
 
 /**
@@ -964,21 +989,73 @@ export const MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS = {
   },
 };
 
+/**
+ * PROTECTED SCENARIO ANSWER KEY (Module 2) — server-side-only.
+ *
+ * Released to the role-gated `checkMentalHealthScenario` function AFTER
+ * the learner submits a valid selection. This constant is NEVER
+ * imported by any src/ file, NEVER returned by `getMentalHealthModule`,
+ * and NEVER embedded in any browser bundle.
+ *
+ * The public-facing `lesson.interactiveScenario` object carries only
+ * the scenarioId, prompt, options, and instruction line. The protected
+ * fields below (bestResponseIndex, feedbackByOption) are released to
+ * `checkMentalHealthScenario`'s return payload — as the learner-facing
+ * feedback for the option the learner actually submitted — but NEVER
+ * as a raw correct-index field, and never as feedback for options the
+ * learner did not submit.
+ *
+ * Indexing convention (unchanged from Module 1):
+ *   - optionsCount: total number of options (zero-based array length).
+ *   - bestResponseIndex: zero-based index of the best response. For
+ *     this scenario the approved best response is Option 3, so the
+ *     stored zero-based index is 2.
+ *   - feedbackByOption: array indexed by the submitted option's
+ *     zero-based index; only the element matching the submitted
+ *     selection is returned by checkMentalHealthScenario.
+ */
+export const MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS = {
+  'praise-that-becomes-pressure': {
+    optionsCount: 4,
+    bestResponseIndex: 2,
+    feedbackByOption: [
+      'Coping skills can be useful, but this plan places responsibility on the individual while leaving the main pressures untouched. Resilience education should not substitute for practical relief or institutional change.',
+      'Lived experience leadership can reduce stigma when participation is voluntary and supported. Requiring disclosure can violate privacy, expose people to harm, and turn vulnerability into another performance.',
+      'This is the strongest response. It respects agency, preserves privacy, shares responsibility, connects informal and professional support, and recognizes structural conditions.',
+      "Qualified care may be important, but a referral alone can miss cost, trust, culture, discrimination, family responsibility, and practical barriers. Professional care works better when it understands the person's full context.",
+    ],
+  },
+};
+
 /** Whether the given scenario identifier has a protected answer key. */
 export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
   if (!courseExists(courseSlug)) return false;
-  if (moduleRoute !== 'module-1') return false;
   if (typeof scenarioId !== 'string' || !scenarioId) return false;
-  return Object.prototype.hasOwnProperty.call(
-    MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS,
-    scenarioId,
-  );
+  if (moduleRoute === 'module-1') {
+    return Object.prototype.hasOwnProperty.call(
+      MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS,
+      scenarioId,
+    );
+  }
+  if (moduleRoute === 'module-2') {
+    return Object.prototype.hasOwnProperty.call(
+      MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS,
+      scenarioId,
+    );
+  }
+  return false;
 }
 
 /** Returns the protected answer key for the scenario or null if unsupported. */
 export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
   if (!isScenarioSupported(courseSlug, moduleRoute, scenarioId)) return null;
-  return MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS[scenarioId];
+  if (moduleRoute === 'module-1') {
+    return MENTAL_HEALTH_MODULE_1_SCENARIO_ANSWERS[scenarioId];
+  }
+  if (moduleRoute === 'module-2') {
+    return MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS[scenarioId];
+  }
+  return null;
 }
 
 /**

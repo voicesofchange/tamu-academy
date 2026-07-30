@@ -7,6 +7,7 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
+import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -331,6 +332,14 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
           </div>
         ))}
         {renderParagraphs(lesson.caseStudy.conclusion)}
+      </PageSection>
+
+      <PageSection id="interactive-scenario" eyebrow="Interactive Scenario" heading="Response Design">
+        <MhInteractiveScenario
+          courseSlug={course.slug}
+          moduleSlug={mod.route}
+          scenario={lesson.interactiveScenario}
+        />
       </PageSection>
 
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
