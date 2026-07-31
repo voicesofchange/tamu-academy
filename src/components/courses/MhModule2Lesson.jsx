@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
@@ -9,7 +9,6 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 import MhStrengthWithoutSilenceLab from '@/components/courses/MhStrengthWithoutSilenceLab';
-import MhModule2PrivateReflection from '@/components/courses/MhModule2PrivateReflection';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -56,6 +55,49 @@ const navDisabledStyle = {
   color: 'rgba(245,239,224,0.28)',
   cursor: 'not-allowed',
   borderColor: 'rgba(245,239,224,0.12)',
+};
+
+const reflectionPrivacyBox = {
+  padding: '1.4rem 1.6rem',
+  border: '1px solid rgba(212,161,42,0.28)',
+  borderRadius: '4px',
+  backgroundColor: 'rgba(212,161,42,0.05)',
+};
+const reflectionStarterStyle = {
+  color: '#F5EFE0',
+  fontSize: 'clamp(1.05rem, 2.4vw, 1.3rem)',
+  fontStyle: 'italic',
+  lineHeight: 1.6,
+  margin: '0 0 1rem',
+  borderLeft: '2px solid rgba(212,161,42,0.4)',
+  paddingLeft: '1.25rem',
+};
+const reflectionTextareaStyle = {
+  width: '100%',
+  maxWidth: '100%',
+  boxSizing: 'border-box',
+  padding: '0.85rem 1rem',
+  backgroundColor: 'rgba(245,239,224,0.04)',
+  border: '1px solid rgba(212,161,42,0.3)',
+  borderRadius: '4px',
+  color: '#F5EFE0',
+  fontSize: '0.97rem',
+  lineHeight: 1.6,
+  fontFamily: 'inherit',
+  resize: 'vertical',
+};
+const reflectionClearButtonStyle = {
+  marginTop: '1.25rem',
+  background: 'transparent',
+  border: '1px solid rgba(212,161,42,0.35)',
+  borderRadius: '2px',
+  padding: '0.55rem 1.2rem',
+  color: 'rgba(212,161,42,0.85)',
+  fontSize: '0.72rem',
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  fontWeight: 500,
+  cursor: 'pointer',
 };
 
 function renderParagraphs(paragraphs) {
@@ -163,8 +205,10 @@ function renderExplanation(section) {
  *   persisted, submitted, graded, or used for module completion.
  *
  *   Stage 6 (this stage): the Module 2 reflection section, rendered
- *   immediately after the applied activity. It is display only — no
- *   state, no inputs, no submission, and not a completion, progress, or
+ *   inline immediately after the applied activity. Two textareas hold
+ *   responses in temporary in component state only; nothing is
+ *   persisted, submitted, graded, stored, or sent to the backend. The
+ *   section is ungraded, optional, and not a completion, progress, or
  *   evaluation event.
  *
  * PRIVACY & TRUST BOUNDARY:
@@ -193,6 +237,13 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1
       ? course.modules[moduleIndex + 1]
       : null;
+
+  const [reflectionSentence, setReflectionSentence] = useState('');
+  const [reflectionSupportPathway, setReflectionSupportPathway] = useState('');
+  const clearReflection = () => {
+    setReflectionSentence('');
+    setReflectionSupportPathway('');
+  };
 
   return (
     <PageLayout>
@@ -358,7 +409,46 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
       </PageSection>
 
       <PageSection id="private-reflection" eyebrow="Reflection" heading={lesson.privateReflection.heading}>
-        <MhModule2PrivateReflection reflection={lesson.privateReflection} />
+        <div role="note" aria-label="Privacy notice" style={reflectionPrivacyBox}>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
+            {lesson.privateReflection.privacyNotice}
+          </p>
+        </div>
+        <div role="note" aria-label="Keep it private" style={{ ...reflectionPrivacyBox, marginTop: '1.25rem' }}>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
+            {lesson.privateReflection.privateNotice}
+          </p>
+        </div>
+        <p id="m2-refl-sentence-context-prompt" className="font-body" style={{ ...bodyText, marginTop: '1.6rem', marginBottom: '0.85rem' }}>
+          {lesson.privateReflection.prompt}
+        </p>
+        <blockquote id="m2-refl-sentence-context-starter" className="font-heading" style={reflectionStarterStyle}>
+          {lesson.privateReflection.sentenceStarter}
+        </blockquote>
+        <textarea
+          id="m2-refl-sentence-input"
+          aria-labelledby="m2-refl-sentence-context-prompt m2-refl-sentence-context-starter"
+          className="font-body"
+          style={reflectionTextareaStyle}
+          value={reflectionSentence}
+          onChange={(e) => setReflectionSentence(e.target.value)}
+          rows={4}
+        />
+        <p id="m2-refl-pathway-context" className="font-body" style={{ ...bodyText, marginTop: '1.6rem', marginBottom: '0.85rem' }}>
+          {lesson.privateReflection.followUpPrompt}
+        </p>
+        <textarea
+          id="m2-refl-pathway-input"
+          aria-labelledby="m2-refl-pathway-context"
+          className="font-body"
+          style={reflectionTextareaStyle}
+          value={reflectionSupportPathway}
+          onChange={(e) => setReflectionSupportPathway(e.target.value)}
+          rows={4}
+        />
+        <button type="button" onClick={clearReflection} className="font-body" style={reflectionClearButtonStyle}>
+          Clear reflection
+        </button>
       </PageSection>
 
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
