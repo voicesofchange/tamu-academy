@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 /**
- * MhStrengthWithoutSilenceLab — browser-only worksheet renderer for
- * the Module 2 "Strength Without Silence Lab" applied activity.
+ * MhStrengthWithoutSilenceLab — the browser local worksheet renderer
+ * for the Module 2 applied activity.
  *
  * All text and structure arrive via the `lab` prop, which is selected
  * from the authenticated `getMentalHealthModule` response (admin-gated

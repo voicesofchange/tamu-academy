@@ -156,7 +156,7 @@ function renderExplanation(section) {
  *   extended assignment. No placeholder, abbreviation, or invented
  *   preview of those sections is shown.
  *
- *   Stage 5 (this stage): the Strength Without Silence Lab, rendered
+ *   Stage 5 (this stage): the Module 2 applied activity, rendered
  *   immediately after the interactive scenario. The lab is a
  *   browser local worksheet only — all responses live in temporary
  *   component state, nothing is persisted, submitted, graded, or used
