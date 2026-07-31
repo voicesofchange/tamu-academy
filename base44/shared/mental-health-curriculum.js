@@ -156,6 +156,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'key-concepts',
         'case-study',
         'interactive-scenario',
+        'strength-without-silence-lab',
       ],
     },
     {
@@ -963,6 +964,155 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
       'Ask what support each person wants, protect privacy, share practical burdens where possible, connect them with culturally responsive and qualified support, and address harmful work or service conditions.',
       'Refer both people immediately to a specialist and avoid discussing family, culture, work, racism, or financial pressure.',
     ],
+  },
+  // ============ STAGE 5 CONTENT ADDITION (Strength Without Silence
+  // Lab) ============
+  //
+  // Authoritative source: Tamu-Academy-MH-Module-2-Base44-Content-Pack.md
+  // and the dedicated "Strength Without Silence Lab" document.
+  //
+  // This is the ONLY approved applied activity added in Stage 5. It is
+  // instructional, browser-local worksheet content. The object carries
+  // NO answer key, NO correct indices, NO grading logic, NO completion
+  // signal, and NO backend behavior. It is never an evaluated scenario,
+  // graded quiz, or completion event — it is intentionally NOT added to
+  // the scenario answer map or quiz answer structures.
+  //
+  // The renderer (MhStrengthWithoutSilenceLab) keeps every response,
+  // selection, and checkbox in temporary React component state only.
+  // Nothing here is persisted, submitted, tracked, branded as
+  // completion, or used to update ModuleProgress / QuizAttempt /
+  // CourseEnrollment.
+  strengthWithoutSilenceLab: {
+    eyebrow: 'MODULE 2 APPLIED ACTIVITY',
+    title: 'Strength Without Silence Lab',
+    subtitle: 'Preserving resilience while widening support',
+    course: 'Mental Health, Community and Culture',
+    module: 'Stress, Stigma, and Strength',
+    suggestedTime: '25 to 35 minutes',
+    submission: 'Private or facilitator reviewed; personal disclosure is not required',
+    privacy: {
+      heading: 'CHOOSE YOUR PRIVACY LEVEL',
+      notice: "Complete this lab for a fictional person, a composite scenario, or a general social message. Do not include diagnoses, trauma histories, names, addresses, immigration details, or other sensitive information. This is an educational activity and does not assess anyone's diagnosis or treatment needs.",
+    },
+    purpose: {
+      heading: 'Purpose',
+      text: 'This activity examines a strength narrative without dismissing the conditions that produced it. Your task is to protect what gives the message dignity or meaning, identify where it creates silence or unequal burdens, and design a wider pathway to support.',
+    },
+    fivePartLens: {
+      heading: 'The Five Part Lens',
+      items: [
+        'Name the pressure.',
+        'Name the strength message.',
+        'Protect what helps.',
+        'Release what harms.',
+        'Widen the support pathway.',
+      ],
+    },
+    selectScenario: {
+      heading: 'Part A: Select a Scenario',
+      instruction: 'Choose one. You may also create a fictional composite with no identifying details.',
+      scenarios: [
+        {
+          title: 'Scenario 1: The dependable man',
+          description: 'A young man is told that a dependable man handles pain alone. His family values his reliability, but he has stopped asking for help even when work and caregiving demands exceed his capacity.',
+        },
+        {
+          title: 'Scenario 2: The woman who manages every crisis',
+          description: 'A Black woman in a diaspora workplace is praised for staying composed and solving every crisis. Colleagues rely on her but rarely share the load or ask what support she needs.',
+        },
+        {
+          title: 'Scenario 3: The successful migrant',
+          description: 'A migrant provider hides financial and emotional strain because relatives and friends see life abroad as proof of success. The person fears that honesty will create worry, shame, or disappointment.',
+        },
+        {
+          title: 'Scenario 4: The always hopeful organizer',
+          description: 'A youth organizer is expected to remain hopeful for everyone after repeated community losses. Their public role makes rest and private grief feel like abandonment.',
+        },
+      ],
+      selectionLabel: 'Your selection',
+      compositeOption: 'My own fictional composite',
+    },
+    parts: {
+      namePressure: {
+        heading: 'Part B: Name the Pressure',
+        prompt: "List the demands, losses, risks, or unequal conditions in the scenario. Include at least one factor beyond the individual's attitudes or coping.",
+      },
+      nameStrengthMessage: {
+        heading: 'Part C: Name the Strength Message',
+        prompt: 'Write the rule or expectation in one sentence. What is the person expected to prove, hide, or carry?',
+      },
+      protectWhatHelps: {
+        heading: 'Part D: Protect What Helps',
+        prompt: 'What dignity, identity, purpose, solidarity, courage, cultural meaning, or practical value does the message provide?',
+      },
+      releaseWhatHarms: {
+        heading: 'Part E: Release What Harms',
+        prompt: 'Identify the hidden cost. Consider compulsory silence, emotional restriction, endless sacrifice, shame, overwork, isolation, delayed help, or unequal responsibility.',
+      },
+      reframeMessage: {
+        heading: 'Part F: Reframe the Message',
+        prompt: 'Rewrite the original strength message so that it keeps dignity while making room for honesty, limits, shared care, and support.',
+        originalLabel: 'Original message:',
+        reframedLabel: 'Reframed message:',
+      },
+      widenSupportPathway: {
+        heading: 'Part G: Widen the Support Pathway',
+        prompt: "Build a layered response. Include only options that fit the fictional person's preferences and context.",
+        layers: [
+          { name: 'Trusted person or peer', possibleRole: 'Listen, protect privacy, check in, and help identify choices.' },
+          { name: 'Community support', possibleRole: 'Offer belonging, practical help, mentoring, or culturally meaningful support.' },
+          { name: 'Practical relief', possibleRole: 'Reduce a burden involving work, money, transport, caregiving, school, or housing.' },
+          { name: 'Qualified care', possibleRole: 'Offer access to primary care or a qualified mental health professional when wanted or needed.' },
+          { name: 'Institutional change', possibleRole: 'Address workload, discrimination, confidentiality, cost, service access, or another system barrier.' },
+        ],
+        fullPathwayLabel: 'Describe the full pathway:',
+      },
+      consentAndBoundaries: {
+        heading: 'Part H: Consent and Boundaries',
+        prompt: "Name one boundary that protects the person's privacy or agency. Then name one action that should not be taken without consent.",
+        boundaryLabel: 'Boundary protecting privacy or agency',
+        actionLabel: 'Action that should not be taken without consent',
+      },
+    },
+    workedExample: {
+      heading: 'Worked Example',
+      introduction: 'Fictional example: A student leader is praised for being the person who keeps everyone calm during repeated campus crises. The student has stopped sleeping well and feels unable to step back.',
+      rows: [
+        { field: 'Pressure', response: 'Repeated crises, leadership expectations, limited staff support, and fear of disappointing peers.' },
+        { field: 'Strength message', response: 'A real leader stays calm and available no matter what.' },
+        { field: 'What it protects', response: 'Responsibility, trust, purpose, and commitment to the group.' },
+        { field: 'Hidden cost', response: 'Sleep loss, isolation, emotional suppression, and a workload the institution should share.' },
+        { field: 'Reframed message', response: 'A responsible leader builds shared capacity, names limits, and seeks support before exhaustion becomes crisis.' },
+        { field: 'Support pathway', response: 'A trusted peer check in, a rotating leadership schedule, time away, and confidential student support if wanted.' },
+        { field: 'Institutional change', response: 'Create trained backup leaders and a written response plan so one student is never the sole source of stability.' },
+      ],
+    },
+    optionalDialogueExtension: {
+      heading: 'Optional Dialogue Extension',
+      introduction: 'If this activity is completed in a group, discuss the fictional scenario only. Participants may pass, write privately, or use another scenario.',
+      prompts: [
+        'When does being strong help in this scenario?',
+        'When does it become an obligation that hides a problem?',
+        'What part of the message should be preserved?',
+        'What practical or institutional change would reduce the need for endless endurance?',
+        'How can support be offered without requiring disclosure?',
+      ],
+    },
+    completionCheck: {
+      heading: 'Completion Check',
+      items: [
+        'I identified at least one personal or relational pressure, one structural condition, and the strength message.',
+        'I described both its protective purpose and its possible cost.',
+        'I wrote a reframed message that preserves dignity.',
+        'I included a layered support pathway, one institutional change, and a consent or privacy protection.',
+        'I removed identifying and sensitive details.',
+      ],
+    },
+    revisionNotes: {
+      heading: 'Revision Notes',
+      prompt: 'After reviewing the lesson or receiving feedback, record one improvement to the reframed message or support pathway. Keep the scenario fictional and do not add identifying or sensitive information.',
+    },
   },
 };
 

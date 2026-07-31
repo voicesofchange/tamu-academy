@@ -8,6 +8,7 @@ import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
+import MhStrengthWithoutSilenceLab from '@/components/courses/MhStrengthWithoutSilenceLab';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -150,11 +151,16 @@ function renderExplanation(section) {
  *   explanation and is NOT promoted to the key-concepts glossary.
  *
  * NOT RENDERED (deferred to later approved stages — must not appear as
- *   available): the comparative case study, the interactive scenario,
- *   the Strength Without Silence Lab, private reflection, the
- *   knowledge check, closing content, completion requirements,
- *   sources, and the optional extended assignment. No placeholder,
- *   abbreviation, or invented preview of those sections is shown.
+ *   available): private reflection, the knowledge check, closing
+ *   content, completion requirements, sources, and the optional
+ *   extended assignment. No placeholder, abbreviation, or invented
+ *   preview of those sections is shown.
+ *
+ *   Stage 5 (this stage): the Strength Without Silence Lab, rendered
+ *   immediately after the interactive scenario. The lab is a
+ *   browser local worksheet only — all responses live in temporary
+ *   component state, nothing is persisted, submitted, graded, or used
+ *   for module completion.
  *
  * PRIVACY & TRUST BOUNDARY:
  *   This component never hard-codes protected curriculum wording. All
@@ -340,6 +346,10 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
           moduleSlug={mod.route}
           scenario={lesson.interactiveScenario}
         />
+      </PageSection>
+
+      <PageSection id="strength-without-silence-lab" eyebrow={lesson.strengthWithoutSilenceLab.eyebrow} heading={lesson.strengthWithoutSilenceLab.title}>
+        <MhStrengthWithoutSilenceLab lab={lesson.strengthWithoutSilenceLab} />
       </PageSection>
 
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
