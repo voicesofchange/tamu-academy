@@ -157,6 +157,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'case-study',
         'interactive-scenario',
         'strength-without-silence-lab',
+        'private-reflection',
       ],
     },
     {
@@ -1113,6 +1114,27 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
       heading: 'Revision Notes',
       prompt: 'After reviewing the lesson or receiving feedback, record one improvement to the reframed message or support pathway. Keep the scenario fictional and do not add identifying or sensitive information.',
     },
+  },
+  // ============ STAGE 6 CONTENT ADDITION (Private Reflection) ============
+  //
+  // Authoritative source: the Stage 6 content brief.
+  //
+  // Display-only reflection block. The renderer (MhModule2PrivateReflection)
+  // has NO state, NO input fields, NO submit/save/complete controls, and NO
+  // backend call. The sentence starter is shown as a fill-in-the-blank line
+  // for private/offline completion; nothing is captured, persisted, graded,
+  // or tracked. This section is ungraded, optional, not a completion event,
+  // not a progress event, not a submission, not an evaluated scenario, and
+  // not an analytics event. It does not update ModuleProgress, QuizAttempt,
+  // CourseEnrollment, or any other entity. It is separate from the Module 2
+  // applied activity and separate from the knowledge check.
+  privateReflection: {
+    heading: "Private Reflection",
+    privacyNotice: "You may use a fictional or composite example. You do not need to disclose personal experiences, diagnoses, trauma, immigration information, or private family circumstances.",
+    prompt: "Complete this sentence for a real or fictional context:",
+    sentenceStarter: "Strength can include endurance, but it can also include __________________ because __________________.",
+    followUpPrompt: "Then name one boundary, shared responsibility, or support pathway that would make that statement real.",
+    privateNotice: "Keep this reflection private unless you freely choose to share it. Do not include diagnoses, trauma details, names, immigration information, or other sensitive information in a public form.",
   },
 };
 

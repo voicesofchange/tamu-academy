@@ -9,6 +9,7 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 import MhStrengthWithoutSilenceLab from '@/components/courses/MhStrengthWithoutSilenceLab';
+import MhModule2PrivateReflection from '@/components/courses/MhModule2PrivateReflection';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -151,16 +152,20 @@ function renderExplanation(section) {
  *   explanation and is NOT promoted to the key-concepts glossary.
  *
  * NOT RENDERED (deferred to later approved stages — must not appear as
- *   available): private reflection, the knowledge check, closing
- *   content, completion requirements, sources, and the optional
- *   extended assignment. No placeholder, abbreviation, or invented
- *   preview of those sections is shown.
+ *   available): the knowledge check, closing content, completion
+ *   requirements, sources, and the optional extended assignment. No
+ *   placeholder, abbreviation, or invented preview of those sections is
+ *   shown.
  *
- *   Stage 5 (this stage): the Module 2 applied activity, rendered
- *   immediately after the interactive scenario. The lab is a
- *   browser local worksheet only — all responses live in temporary
- *   component state, nothing is persisted, submitted, graded, or used
- *   for module completion.
+ *   Stage 5: the Module 2 applied activity, rendered immediately after
+ *   the interactive scenario. The lab is a browser local worksheet only
+ *   — all responses live in temporary component state, nothing is
+ *   persisted, submitted, graded, or used for module completion.
+ *
+ *   Stage 6 (this stage): the Module 2 reflection section, rendered
+ *   immediately after the applied activity. It is display only — no
+ *   state, no inputs, no submission, and not a completion, progress, or
+ *   evaluation event.
  *
  * PRIVACY & TRUST BOUNDARY:
  *   This component never hard-codes protected curriculum wording. All
@@ -350,6 +355,10 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
 
       <PageSection id="strength-without-silence-lab" eyebrow={lesson.strengthWithoutSilenceLab.eyebrow} heading={lesson.strengthWithoutSilenceLab.title}>
         <MhStrengthWithoutSilenceLab lab={lesson.strengthWithoutSilenceLab} />
+      </PageSection>
+
+      <PageSection id="private-reflection" eyebrow="Reflection" heading={lesson.privateReflection.heading}>
+        <MhModule2PrivateReflection reflection={lesson.privateReflection} />
       </PageSection>
 
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
