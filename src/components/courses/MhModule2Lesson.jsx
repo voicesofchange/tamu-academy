@@ -201,7 +201,7 @@ function renderExplanation(section) {
  *
  *   Stage 7: the Module 2 knowledge check, rendered immediately after
  *   the private reflection. It is graded on the server by the
- *   checkMentalHealthQuiz backend function, which creates no
+ *   checkMentalHealthKnowledgeCheck backend function, which creates no
  *   QuizAttempt, ModuleProgress, or CourseEnrollment record and
  *   triggers no completion, certificate, payment, enrollment, or
  *   analytics event. The knowledge check is ungraded for module

@@ -118,7 +118,7 @@ function findResultForQuestion(feedback, questionId) {
  *     appears before submission — those fields are stripped from the
  *     lesson by getMentalHealthModuleContent before delivery.
  *   - On submission the component calls the sibling
- *     `checkMentalHealthQuiz` backend function, which grades entirely
+ *     `checkMentalHealthKnowledgeCheck` backend function, which grades entirely
  *     on the server against the protected curriculum. The client only
  *     sends { courseSlug, moduleSlug, answers: [{ questionId,
  *     selectedIndex }] }.
@@ -180,7 +180,7 @@ export default function MhModule2KnowledgeCheck({ courseSlug, moduleSlug, quiz }
 
     setPending(true);
     try {
-      const res = await base44.functions.invoke('checkMentalHealthQuiz', {
+      const res = await base44.functions.invoke('checkMentalHealthKnowledgeCheck', {
         courseSlug,
         moduleSlug,
         answers,
@@ -390,6 +390,18 @@ export default function MhModule2KnowledgeCheck({ courseSlug, moduleSlug, quiz }
             }}
           >
             Score: {result.score} of {result.totalQuestions}
+          </p>
+          <p
+            className="font-body"
+            style={{
+              ...bodyText,
+              margin: 0,
+              marginBottom: '0.5rem',
+              color: 'rgba(245,239,224,0.7)',
+              fontSize: '0.9rem',
+            }}
+          >
+            Passing score: {result.passingScore}
           </p>
           <p
             className="font-body"

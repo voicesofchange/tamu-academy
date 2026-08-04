@@ -1147,7 +1147,7 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
   // correctAnswerIndex and feedback are stripped before delivery, so
   // no answer key or feedback reaches the browser bundle. Grading and
   // feedback release happen exclusively in the role-gated
-  // checkMentalHealthQuiz backend function, only after a valid
+  // checkMentalHealthKnowledgeCheck backend function, only after a valid
   // submission. This object is never imported by any src/ file.
   //
   // The knowledge check is ungraded for module completion: it creates
@@ -1417,7 +1417,7 @@ export function getQuizAnswerKey(courseSlug, moduleRoute, quizId) {
  * the server-side source of truth; the module-2 branch below strips
  * those answer-key fields before returning the lesson, so no
  * correct index or feedback reaches the browser. Grading and
- * feedback release happen only in the separate checkMentalHealthQuiz
+ * feedback release happen only in the separate checkMentalHealthKnowledgeCheck
  * backend function, after a valid submission.
  */
 export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
@@ -1449,7 +1449,7 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     // to the browser), the answer-key fields are stripped from each
     // question so that no correct index or feedback reaches the
     // browser bundle. Grading and feedback release happen only in
-    // the separate checkMentalHealthQuiz backend function, after a
+    // the separate checkMentalHealthKnowledgeCheck backend function, after a
     // valid submission. All other Stage 1-6 fields are passed through
     // unchanged.
     const lesson = MENTAL_HEALTH_MODULE_2_LESSON;

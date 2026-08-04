@@ -13,8 +13,8 @@ import {
  *     the server against the protected
  *     MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck answer key.
  *   - Returns per-question feedback (isCorrect + the approved
- *     feedback string) plus score and pass status, ONLY after a
- *     valid submission.
+ *     feedback string) plus score, passing score, and pass status,
+ *     ONLY after a valid submission.
  *   - Creates NO QuizAttempt, ModuleProgress, or CourseEnrollment
  *     record. This is the deliberate Stage 7 distinction from the
  *     Module 1 `submitMentalHealthQuiz` grader, which records a
@@ -47,12 +47,16 @@ import {
  *     per-question feedback returned is the approved learner-facing
  *     `feedback` string for the question (released regardless of
  *     correct/incorrect, per the Stage 7 spec), never the raw
- *     answer-key object.
+ *     answer-key object. The passing score is read from the
+ *     protected knowledgeCheck object and returned as
+ *     `passingScore`; it is not duplicated as a separate grading
+ *     rule.
  *
  * RESPONSE SHAPE (minimal — never serializes the full curriculum):
  *   {
  *     score: <integer 0..totalQuestions>,
  *     totalQuestions: <integer>,
+ *     passingScore: <integer>,
  *     passed: <boolean>,
  *     feedback: [{ questionId: string, isCorrect: boolean, feedback: string }]
  *   }
@@ -187,12 +191,13 @@ export default async function(req: Request): Promise<Response> {
     return Response.json({
       score,
       totalQuestions,
+      passingScore,
       passed,
       feedback: gradedFeedback,
     });
   } catch (error) {
     console.error(
-      '[checkMentalHealthQuiz] Unexpected error:',
+      '[checkMentalHealthKnowledgeCheck] Unexpected error:',
       error && error.message,
     );
     return Response.json({ error: 'Internal error' }, { status: 500 });
