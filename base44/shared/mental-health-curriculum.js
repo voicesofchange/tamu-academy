@@ -160,6 +160,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'private-reflection',
         'knowledge-check',
         'closing-section',
+        'completion-requirements',
       ],
     },
     {
@@ -1248,6 +1249,31 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
     ],
     transition: "Module 3 moves into the family setting. It examines privacy, honor, hierarchy, prayer, caregiving, gender expectations, and practical ways to begin a mental health conversation without humiliating or dismissing the people involved.",
     finalDisclaimer: "This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services."
+  },
+  // ============ STAGE 9 CONTENT ADDITION (Completion Requirements) ============
+  //
+  // Display-only completion requirements block. The renderer
+  // (MhModule2Lesson) shows the heading and the six requirement items as
+  // plain informational text. There is NO checkbox, button, form,
+  // acknowledgment control, status indicator, React state, effect hook,
+  // backend call, storage call, entity operation, completion event, or
+  // progress operation. This section does not track whether a requirement
+  // is satisfied, does not read quiz/lab/reflection state, does not mark
+  // the module complete, and does not create or update ModuleProgress,
+  // QuizAttempt, or CourseEnrollment. It does not call
+  // completeMentalHealthModule or updateMentalHealthProgress. The
+  // module-2 branch of getMentalHealthModuleContent passes this object
+  // through unchanged (it carries no answer-key material).
+  completionRequirements: {
+    heading: "MODULE 2 COMPLETION REQUIREMENTS",
+    items: [
+      "Watch or review the primary media.",
+      "Review the original Tamu Academy explanation and comparative case study.",
+      "Complete the Strength Without Silence Lab using personal, fictional, or composite information.",
+      "Complete all five knowledge check questions.",
+      "Answer at least four of the five questions correctly.",
+      "Complete the private reflection or choose the fictional alternative."
+    ]
   },
 };
 

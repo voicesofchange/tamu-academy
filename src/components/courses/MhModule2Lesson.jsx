@@ -482,6 +482,14 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         </div>
       </PageSection>
 
+      <PageSection id="completion-requirements" eyebrow="Requirements" heading={lesson.completionRequirements.heading}>
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.completionRequirements.items.map((item, i) => (
+            <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>
+          ))}
+        </ol>
+      </PageSection>
+
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
