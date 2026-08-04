@@ -132,12 +132,12 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       // Stage 1 added the two introductory identifiers. Stage 2 adds the
       // approved core media, questions to consider, Tamu Academy
       // introduction, nine explanation, and key-concepts identifiers in
-      // the content pack's order. Arbitrary extra identifiers remain
-      // rejected by isSectionAllowed. Deferred identifiers (comparative
-      // case study, interactive scenario, Strength Without Silence Lab,
-      // private reflection, knowledge check, closing, completion,
-      // sources, optional extended assignment) are intentionally not
-      // yet present.
+      // the content pack's order. Stages 3-6 add the comparative case
+      // study, interactive scenario, Strength Without Silence Lab, and
+      // private reflection. Stage 7 adds the knowledge-check identifier.
+      // Arbitrary extra identifiers remain rejected by isSectionAllowed.
+      // Deferred identifiers (closing, completion, sources, optional
+      // extended assignment) are intentionally not yet present.
       sections: [
         'module-overview',
         'learning-objectives',
@@ -158,6 +158,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'interactive-scenario',
         'strength-without-silence-lab',
         'private-reflection',
+        'knowledge-check',
       ],
     },
     {
@@ -1136,6 +1137,92 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
     followUpPrompt: "Then name one boundary, shared responsibility, or support pathway that would make that statement real.",
     privateNotice: "Keep this reflection private unless you freely choose to share it. Do not include diagnoses, trauma details, names, immigration information, or other sensitive information in a public form.",
   },
+  // ============ STAGE 7 CONTENT ADDITION (Knowledge Check) ============
+  //
+  // Authoritative source: the Stage 7 content brief.
+  //
+  // Server-side source of truth for the Module 2 knowledge check. The
+  // public-facing block returned to the browser by
+  // getMentalHealthModuleContent is SANITIZED: each question's
+  // correctAnswerIndex and feedback are stripped before delivery, so
+  // no answer key or feedback reaches the browser bundle. Grading and
+  // feedback release happen exclusively in the role-gated
+  // checkMentalHealthQuiz backend function, only after a valid
+  // submission. This object is never imported by any src/ file.
+  //
+  // The knowledge check is ungraded for module completion: it creates
+  // no QuizAttempt, ModuleProgress, or CourseEnrollment record, and
+  // triggers no completion, certificate, payment, enrollment, or
+  // analytics event.
+  knowledgeCheck: {
+    heading: "MODULE 2 KNOWLEDGE CHECK",
+    subtitle: "Stress, Stigma, and Strength",
+    learnerInstruction: "Answer all five questions. Answer at least four of the five questions correctly to pass. Educational feedback appears after submission, and you may retry.",
+    privacyNotice: "This assessment checks understanding of course concepts. It does not ask for personal mental health information and does not evaluate anyone's health or diagnosis.",
+    passingScore: 4,
+    questions: [
+      {
+        id: "m2-q1",
+        prompt: "Which statement best distinguishes stress, distress, and a mental health diagnosis?",
+        options: [
+          "Any distress is proof of a mental health disorder.",
+          "Stress only comes from personal choices.",
+          "Distress may reflect strain in a person's life, but diagnosis requires qualified assessment of severity, duration, functioning, risk, health, culture, and context.",
+          "Strong people do not experience harmful stress."
+        ],
+        correctAnswerIndex: 2,
+        feedback: "Distress is real and deserves attention, but it is not automatically a diagnosis. Qualified assessment considers several factors and the person's context."
+      },
+      {
+        id: "m2-q2",
+        prompt: "A government funds one distant psychiatric institution while providing almost no affordable community or primary care services. Which concept best describes this barrier?",
+        options: [
+          "Public stigma only",
+          "Internalized stigma",
+          "Structural stigma",
+          "Personal weakness"
+        ],
+        correctAnswerIndex: 2,
+        feedback: "Structural stigma operates through budgets, institutions, rules, and service arrangements that restrict access, rights, quality, or participation."
+      },
+      {
+        id: "m2-q3",
+        prompt: "Which statement about strength narratives is most accurate?",
+        options: [
+          "They are always harmful and should be abandoned.",
+          "They can protect dignity and survival while also creating pressure to suppress emotion, overwork, or avoid help.",
+          "They affect every African and diaspora community in the same way.",
+          "They are caused only by family culture."
+        ],
+        correctAnswerIndex: 1,
+        feedback: "Strength narratives can carry pride, protection, and collective memory. The same narrative can become costly when it is compulsory or used to excuse unequal conditions."
+      },
+      {
+        id: "m2-q4",
+        prompt: "Which response best applies the Strength Without Silence lens?",
+        options: [
+          "Praise endurance and avoid discussing the pressures behind it.",
+          "Require public disclosure so stigma can be challenged.",
+          "Remove every responsibility from the person without asking what they want.",
+          "Identify the pressure, preserve dignity and agency, release compulsory silence, share burdens, and widen support options."
+        ],
+        correctAnswerIndex: 3,
+        feedback: "A strong response respects why endurance matters while making room for consent, boundaries, practical relief, culturally affirming care, and system change."
+      },
+      {
+        id: "m2-q5",
+        prompt: "Which statement best explains why stigma should not be treated only as a cultural attitude?",
+        options: [
+          "Stigma disappears as soon as people learn clinical vocabulary.",
+          "Help seeking is shaped by attitudes as well as cost, confidentiality, discrimination, service quality, workforce shortages, policy, and historical trust.",
+          "Culture has no influence on how distress is understood.",
+          "Professional referral is enough even when services are inaccessible or unsafe."
+        ],
+        correctAnswerIndex: 1,
+        feedback: "Social messages matter, but real access also depends on trustworthy institutions, affordable services, rights, confidentiality, and culturally responsive care."
+      }
+    ]
+  },
 };
 
 /**
@@ -1323,9 +1410,15 @@ export function getQuizAnswerKey(courseSlug, moduleRoute, quizId) {
  * The function still rejects any (courseSlug, moduleRoute) pair that
  * does not exist in MENTAL_HEALTH_COURSE_CONFIG, and still does not
  * expose admin-only content (correctIndex, scenario, quiz answers,
- * facilitation notes, etc.) in any response. This lesson object does
- * not contain that admin-only material, so no extra filtering is
- * required.
+ * facilitation notes, etc.) in any response. Module 1's lesson object
+ * carries no admin-only material, so no filtering is required for it.
+ * Module 2's lesson object (Stage 7) carries the knowledge-check
+ * answer key inline (correctAnswerIndex + feedback per question) as
+ * the server-side source of truth; the module-2 branch below strips
+ * those answer-key fields before returning the lesson, so no
+ * correct index or feedback reaches the browser. Grading and
+ * feedback release happen only in the separate checkMentalHealthQuiz
+ * backend function, after a valid submission.
  */
 export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
   const m = getModuleConfig(courseSlug, moduleRoute);
@@ -1349,7 +1442,33 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     return { ...baseShell, lesson: MENTAL_HEALTH_MODULE_1_LESSON };
   }
   if (m.route === 'module-2') {
-    return { ...baseShell, lesson: MENTAL_HEALTH_MODULE_2_LESSON };
+    // Stage 7: the Module 2 knowledge check carries the protected
+    // answer key (correctAnswerIndex + feedback) inline as the
+    // server-side source of truth. Before the lesson is returned to
+    // the role-gated getMentalHealthModule function (and from there
+    // to the browser), the answer-key fields are stripped from each
+    // question so that no correct index or feedback reaches the
+    // browser bundle. Grading and feedback release happen only in
+    // the separate checkMentalHealthQuiz backend function, after a
+    // valid submission. All other Stage 1-6 fields are passed through
+    // unchanged.
+    const lesson = MENTAL_HEALTH_MODULE_2_LESSON;
+    const sanitizedLesson = { ...lesson };
+    if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
+      sanitizedLesson.knowledgeCheck = {
+        heading: lesson.knowledgeCheck.heading,
+        subtitle: lesson.knowledgeCheck.subtitle,
+        learnerInstruction: lesson.knowledgeCheck.learnerInstruction,
+        privacyNotice: lesson.knowledgeCheck.privacyNotice,
+        passingScore: lesson.knowledgeCheck.passingScore,
+        questions: lesson.knowledgeCheck.questions.map((q) => ({
+          id: q.id,
+          prompt: q.prompt,
+          options: q.options,
+        })),
+      };
+    }
+    return { ...baseShell, lesson: sanitizedLesson };
   }
   return baseShell;
 }

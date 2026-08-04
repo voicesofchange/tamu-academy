@@ -9,6 +9,7 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 import MhStrengthWithoutSilenceLab from '@/components/courses/MhStrengthWithoutSilenceLab';
+import MhModule2KnowledgeCheck from '@/components/courses/MhModule2KnowledgeCheck';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -194,10 +195,17 @@ function renderExplanation(section) {
  *   explanation and is NOT promoted to the key-concepts glossary.
  *
  * NOT RENDERED (deferred to later approved stages — must not appear as
- *   available): the knowledge check, closing content, completion
- *   requirements, sources, and the optional extended assignment. No
- *   placeholder, abbreviation, or invented preview of those sections is
- *   shown.
+ *   available): closing content, completion requirements, sources, and
+ *   the optional extended assignment. No placeholder, abbreviation, or
+ *   invented preview of those sections is shown.
+ *
+ *   Stage 7: the Module 2 knowledge check, rendered immediately after
+ *   the private reflection. It is graded on the server by the
+ *   checkMentalHealthQuiz backend function, which creates no
+ *   QuizAttempt, ModuleProgress, or CourseEnrollment record and
+ *   triggers no completion, certificate, payment, enrollment, or
+ *   analytics event. The knowledge check is ungraded for module
+ *   completion.
  *
  *   Stage 5: the Module 2 applied activity, rendered immediately after
  *   the interactive scenario. The lab is a browser local worksheet only
@@ -449,6 +457,14 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         <button type="button" onClick={clearReflection} className="font-body" style={reflectionClearButtonStyle}>
           Clear reflection
         </button>
+      </PageSection>
+
+      <PageSection id="knowledge-check" eyebrow="Knowledge Check" heading={lesson.knowledgeCheck.heading}>
+        <MhModule2KnowledgeCheck
+          courseSlug={course.slug}
+          moduleSlug={mod.route}
+          quiz={lesson.knowledgeCheck}
+        />
       </PageSection>
 
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>

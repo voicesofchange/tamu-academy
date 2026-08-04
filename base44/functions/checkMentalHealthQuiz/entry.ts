@@ -1,0 +1,200 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
+import {
+  MENTAL_HEALTH_MODULE_2_LESSON,
+  courseExists,
+} from '../../shared/mental-health-curriculum.js';
+
+/**
+ * Role-gated, NON-RECORDING endpoint that grades the Module 2
+ * "Mental Health, Community and Culture" knowledge check.
+ *
+ * SCOPE (Stage 7 of Module 2 — knowledge check only):
+ *   - Grades the five-question Module 2 knowledge check entirely on
+ *     the server against the protected
+ *     MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck answer key.
+ *   - Returns per-question feedback (isCorrect + the approved
+ *     feedback string) plus score and pass status, ONLY after a
+ *     valid submission.
+ *   - Creates NO QuizAttempt, ModuleProgress, or CourseEnrollment
+ *     record. This is the deliberate Stage 7 distinction from the
+ *     Module 1 `submitMentalHealthQuiz` grader, which records a
+ *     QuizAttempt. Module 2's knowledge check is ungraded for
+ *     completion: it triggers no module completion, certificate,
+ *     payment, enrollment, or analytics event.
+ *
+ * TRUST BOUNDARY (mirrors getMentalHealthModule /
+ * checkMentalHealthScenario — do not relax):
+ *   - Unauthenticated public visitor → 403 Forbidden.
+ *   - Non-admin authenticated user → 403 Forbidden during this
+ *     development phase (admin-only access until Module 2 is
+ *     published). Learner-access checks will be layered on top of
+ *     the admin gate in a later launch phase.
+ *   - 400 for malformed/missing answers, unknown question IDs,
+ *     duplicate question IDs, invalid option indices, wrong answer
+ *     count, or any unexpected / protected body field.
+ *   - 404 for unknown (courseSlug, moduleSlug) pairs.
+ *
+ * PRIVACY / NON-EXFILTRATION:
+ *   - Never accepts a `learnerId`, `userId`, `score`, `passed`,
+ *     `feedback`, `correctIndex`, `correctAnswer`, `quizId`,
+ *     `status`, or `completed_at` field from the browser — any such
+ *     field is rejected with 400 Unsupported field.
+ *   - Per-answer entry fields are limited to `questionId` and
+ *     `selectedIndex`. Any other per-answer field is rejected.
+ *   - Grades against the protected server-side
+ *     MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck answer key only.
+ *     correctAnswerIndex never appears in the response. The
+ *     per-question feedback returned is the approved learner-facing
+ *     `feedback` string for the question (released regardless of
+ *     correct/incorrect, per the Stage 7 spec), never the raw
+ *     answer-key object.
+ *
+ * RESPONSE SHAPE (minimal — never serializes the full curriculum):
+ *   {
+ *     score: <integer 0..totalQuestions>,
+ *     totalQuestions: <integer>,
+ *     passed: <boolean>,
+ *     feedback: [{ questionId: string, isCorrect: boolean, feedback: string }]
+ *   }
+ */
+export default async function(req: Request): Promise<Response> {
+  try {
+    const base44 = createClientFromRequest(req);
+
+    // Server-side role gate. base44.auth.me() throws on a public app
+    // when no session token is present, so guard it and treat any
+    // failure, null user, or non-admin role as forbidden during Stage 7.
+    let user = null;
+    try {
+      user = await base44.auth.me();
+    } catch (err) {
+      user = null;
+    }
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    let body = {};
+    try {
+      body = await req.json();
+    } catch (err) {
+      body = {};
+    }
+
+    // Reject any browser-supplied protected / unexpected top-level field.
+    const allowedTopKeys = new Set(['courseSlug', 'moduleSlug', 'answers']);
+    for (const k of Object.keys(body)) {
+      if (!allowedTopKeys.has(k)) {
+        return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+      }
+    }
+
+    const courseSlug =
+      typeof body.courseSlug === 'string' ? body.courseSlug : '';
+    const moduleSlug =
+      typeof body.moduleSlug === 'string' ? body.moduleSlug : '';
+    const answers = Array.isArray(body.answers) ? body.answers : null;
+
+    if (!courseSlug) {
+      return Response.json({ error: 'Invalid course slug' }, { status: 400 });
+    }
+    if (!moduleSlug) {
+      return Response.json({ error: 'Invalid module slug' }, { status: 400 });
+    }
+
+    // This grader supports Module 2 only. Module 1 uses the recording
+    // submitMentalHealthQuiz grader.
+    if (!courseExists(courseSlug) || moduleSlug !== 'module-2') {
+      return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    const knowledgeCheck = MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
+    if (!knowledgeCheck || !Array.isArray(knowledgeCheck.questions)) {
+      // Defensive — no knowledge check configured.
+      return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    const totalQuestions = knowledgeCheck.questions.length;
+    const passingScore = knowledgeCheck.passingScore;
+
+    // Validate the answer array shape: must be present and exactly the
+    // right length (every question must be answered before submission).
+    if (!answers) {
+      return Response.json({ error: 'Missing answers' }, { status: 400 });
+    }
+    if (answers.length !== totalQuestions) {
+      return Response.json({ error: 'Wrong answer count' }, { status: 400 });
+    }
+
+    const knownIds = new Set(knowledgeCheck.questions.map((q) => q.id));
+    const seenIds = new Set();
+    let score = 0;
+    const gradedFeedback = [];
+
+    for (const entry of answers) {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        return Response.json({ error: 'Invalid answer entry' }, { status: 400 });
+      }
+      // Reject any unexpected per-answer field (e.g. score, isCorrect,
+      // correctIndex, learnerId submitted per-question).
+      const allowedEntryKeys = new Set(['questionId', 'selectedIndex']);
+      for (const k of Object.keys(entry)) {
+        if (!allowedEntryKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+      const questionId = typeof entry.questionId === 'string' ? entry.questionId : '';
+      const selectedIndex = entry.selectedIndex;
+      if (!questionId || !knownIds.has(questionId)) {
+        return Response.json({ error: 'Unknown question: ' + String(entry.questionId) }, { status: 400 });
+      }
+      if (seenIds.has(questionId)) {
+        return Response.json({ error: 'Duplicate question: ' + questionId }, { status: 400 });
+      }
+      seenIds.add(questionId);
+      const question = knowledgeCheck.questions.find((q) => q.id === questionId);
+      if (
+        typeof selectedIndex !== 'number' ||
+        !Number.isInteger(selectedIndex) ||
+        selectedIndex < 0
+      ) {
+        return Response.json({ error: 'Invalid selected option' }, { status: 400 });
+      }
+      if (!Array.isArray(question.options) || selectedIndex >= question.options.length) {
+        return Response.json({ error: 'Invalid selected option' }, { status: 400 });
+      }
+      const isCorrect = selectedIndex === question.correctAnswerIndex;
+      if (isCorrect) score += 1;
+      gradedFeedback.push({
+        questionId,
+        isCorrect,
+        feedback: question.feedback,
+      });
+    }
+
+    // Final defensive check: every approved question must have been
+    // graded exactly once.
+    if (seenIds.size !== totalQuestions) {
+      return Response.json({ error: 'Missing questions' }, { status: 400 });
+    }
+
+    const passed = score >= passingScore;
+
+    // NON-RECORDING: no QuizAttempt, ModuleProgress, or
+    // CourseEnrollment is created or updated. No completion,
+    // certificate, payment, enrollment, or analytics event is fired.
+
+    return Response.json({
+      score,
+      totalQuestions,
+      passed,
+      feedback: gradedFeedback,
+    });
+  } catch (error) {
+    console.error(
+      '[checkMentalHealthQuiz] Unexpected error:',
+      error && error.message,
+    );
+    return Response.json({ error: 'Internal error' }, { status: 500 });
+  }
+}
