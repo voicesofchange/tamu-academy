@@ -161,6 +161,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'knowledge-check',
         'closing-section',
         'completion-requirements',
+        'sources-further-learning',
       ],
     },
     {
@@ -1274,6 +1275,105 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
       "Answer at least four of the five questions correctly.",
       "Complete the private reflection or choose the fictional alternative."
     ]
+  },
+  // ============ STAGE 10 CONTENT ADDITION (Sources and Further
+  // Learning) ============
+  //
+  // Display-only sources and further learning block. The renderer
+  // (MhModule2Lesson) shows the heading, four source groups (each with
+  // a heading and a semantic list of citation + external URL links),
+  // the evidence and attribution notes heading, and the six notes as a
+  // semantic ordered list. There is NO form, input, button, checkbox,
+  // iframe, internal route, action handler, React state, effect hook,
+  // storage call, backend invocation, entity operation, completion
+  // event, progress operation, quiz state, lab state, reflection state,
+  // or enrollment state. Following a source link opens the original
+  // source in a new tab and does not change Module 2 state or create a
+  // record. This section is ungraded, not a completion event, not a
+  // progress event, not a submission, and not an analytics event. It
+  // does not read or change quiz state, mark the quiz as passed, mark
+  // Module 2 as complete, or create/update any learner record. The
+  // module-2 branch of getMentalHealthModuleContent passes this object
+  // through unchanged (it carries no answer-key material).
+  sourcesFurtherLearning: {
+    heading: "Sources and further learning",
+    groups: [
+      {
+        heading: "Core media and program example",
+        items: [
+          {
+            citation: "Sangu Delle. (2017). There's No Shame in Taking Care of Your Mental Health. TEDLagos Ideas Search.",
+            url: "https://www.ted.com/talks/sangu_delle_there_s_no_shame_in_taking_care_of_your_mental_health"
+          },
+          {
+            citation: "Brother Be Well. (2024). Manhood: The Real Meaning, Part 2.",
+            url: "https://brotherbewell.com/manhood-the-real-meaning-part-2/"
+          },
+          {
+            citation: "Mental Health California. Brother Be Well: Wellness for Boys and Men of Color.",
+            url: "https://www.mentalhealthca.org/brother-be-well"
+          }
+        ]
+      },
+      {
+        heading: "Mental health systems, stigma, and structural conditions",
+        items: [
+          {
+            citation: "World Health Organization Regional Office for Africa. (2022). Framework to Strengthen the Implementation of the Comprehensive Mental Health Action Plan 2013 to 2030 in the WHO African Region.",
+            url: "https://www.afro.who.int/sites/default/files/2022-07/AFR-RC72-5%20Framework%20to%20strengthen%20the%20implementation%20of%20the%20comprehensive%20mental%20health%20action%20plan%2020132030%20in%20the%20WHO%20African%20Region.pdf"
+          },
+          {
+            citation: "World Health Organization Regional Office for Africa. (2022). Barriers to Mental Health Care in Africa.",
+            url: "https://www.afro.who.int/news/barriers-mental-health-care-africa"
+          },
+          {
+            citation: "Thornicroft, G., Sunkel, C., Alikhon Aliev, A., et al. (2022). The Lancet Commission on ending stigma and discrimination in mental health. The Lancet, 400(10361), 1438 to 1480.",
+            url: "https://doi.org/10.1016/S0140-6736(22)01470-2"
+          },
+          {
+            citation: "World Health Organization. (2025). Social Determinants of Health.",
+            url: "https://www.who.int/news-room/fact-sheets/detail/social-determinants-of-health"
+          }
+        ]
+      },
+      {
+        heading: "Strength narratives, gender, and help seeking",
+        items: [
+          {
+            citation: "Woods-Giscombe, C. L. (2010). Superwoman schema: African American women's views on stress, strength, and health. Qualitative Health Research, 20(5), 668 to 683.",
+            url: "https://doi.org/10.1177/1049732310361892"
+          },
+          {
+            citation: "Carthron, D. L., Woods-Giscombe, C., Robinson, M. N., Devane-Johnson, S., & Corbie-Smith, G. (2016). Superwoman schema, stigma, spirituality, and culturally sensitive providers: Factors influencing African American women's use of mental health services. Journal of Best Practices in Health Professions Diversity, 9(1), 1124 to 1144.",
+            url: "https://pubmed.ncbi.nlm.nih.gov/33043323/"
+          },
+          {
+            citation: "Mokhwelepa, L. W., & Sumbane, G. O. (2025). Men's mental health matters: The impact of traditional masculinity norms on men's willingness to seek mental health support. American Journal of Men's Health, 19.",
+            url: "https://doi.org/10.1177/15579883251321670"
+          }
+        ]
+      },
+      {
+        heading: "History and context",
+        items: [
+          {
+            citation: "Alemu, R. E. G., Osborn, T. L., & Wasanga, C. M. (2023). The network approach: A path to decolonize mental health care. Frontiers in Public Health, 11, 1052077.",
+            url: "https://doi.org/10.3389/fpubh.2023.1052077"
+          }
+        ]
+      }
+    ],
+    evidenceAttributionNotes: {
+      heading: "Evidence and attribution notes",
+      items: [
+        "Sangu Delle's talk is a first person educational resource, not population level evidence and not clinical guidance.",
+        "The WHO Africa barriers article is a feature interview that illustrates system barriers and one program's perspective. Use the WHO regional framework for formal regional policy and system data.",
+        "The Superwoman Schema research is grounded in African American women's experiences. Do not generalize it to all Black women or all African and diaspora communities.",
+        "The masculinity review synthesizes studies across settings. Do not teach one fixed African masculinity or imply that all men resist help.",
+        "The Alemu, Osborn, and Wasanga article is a scholarly perspective that argues for a decolonizing approach. Present its claims as an evidence informed argument rather than uncontested consensus.",
+        "Brother Be Well is included as a practical educational example. Do not imply that Tamu Academy has a formal partnership, endorsement, or clinical affiliation with the organization."
+      ]
+    }
   },
 };
 

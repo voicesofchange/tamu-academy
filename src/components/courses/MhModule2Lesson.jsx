@@ -490,6 +490,37 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         </ol>
       </PageSection>
 
+      <PageSection id="sources-further-learning" eyebrow="Sources" heading={lesson.sourcesFurtherLearning.heading}>
+        {lesson.sourcesFurtherLearning.groups.map((group) => (
+          <div key={group.heading} style={{ marginBottom: '1.75rem' }}>
+            <h3 className="font-heading" style={termHeading}>{group.heading}</h3>
+            <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+              {group.items.map((source) => (
+                <li key={source.url} style={{ marginBottom: '0.85rem' }}>
+                  <span style={{ display: 'block', marginBottom: '0.35rem' }}>{source.citation}</span>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ ...externalLinkStyle, overflowWrap: 'anywhere', wordBreak: 'break-all' }}
+                  >
+                    {source.url}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <div style={{ marginTop: '1.5rem' }}>
+          <h3 className="font-heading" style={termHeading}>{lesson.sourcesFurtherLearning.evidenceAttributionNotes.heading}</h3>
+          <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+            {lesson.sourcesFurtherLearning.evidenceAttributionNotes.items.map((note, i) => (
+              <li key={i} style={{ marginBottom: '0.7rem' }}>{note}</li>
+            ))}
+          </ol>
+        </div>
+      </PageSection>
+
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
