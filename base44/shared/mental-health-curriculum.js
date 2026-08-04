@@ -159,6 +159,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'strength-without-silence-lab',
         'private-reflection',
         'knowledge-check',
+        'closing-section',
       ],
     },
     {
@@ -1222,6 +1223,31 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
         feedback: "Social messages matter, but real access also depends on trustworthy institutions, affordable services, rights, confidentiality, and culturally responsive care."
       }
     ]
+  },
+  // ============ STAGE 8 CONTENT ADDITION (Closing Section) ============
+  //
+  // Authoritative source: the Stage 8 content brief.
+  //
+  // Display-only closing block. The renderer (MhModule2Lesson) shows the
+  // heading, two paragraphs, the Module 3 educational transition sentence,
+  // and the final educational disclaimer. There is NO button, checkbox,
+  // acknowledgment control, form, backend call, link to Module 3, or
+  // completion behavior. The transition is a plain educational sentence,
+  // not navigation. This section is ungraded, not a completion event, not
+  // a progress event, not a submission, and not an analytics event. It
+  // does not read or change quiz state, mark the quiz as passed, mark
+  // Module 2 as complete, or create/update any learner record. It does
+  // not change publication or enrollment status. The module-2 branch of
+  // getMentalHealthModuleContent passes this object through unchanged
+  // (it carries no answer-key material).
+  closing: {
+    heading: "MODULE 2 CLOSING",
+    paragraphs: [
+      "Strength and vulnerability are not opposites. A person can be courageous and need rest, responsible and need boundaries, resilient and need help, proud of community and willing to challenge silence within it.",
+      "The deeper task is not to ask whether people are strong enough. It is to build relationships, institutions, and services that do not require endless strength as the price of dignity."
+    ],
+    transition: "Module 3 moves into the family setting. It examines privacy, honor, hierarchy, prayer, caregiving, gender expectations, and practical ways to begin a mental health conversation without humiliating or dismissing the people involved.",
+    finalDisclaimer: "This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services."
   },
 };
 

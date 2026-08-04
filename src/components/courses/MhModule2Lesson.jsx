@@ -467,6 +467,21 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         />
       </PageSection>
 
+      <PageSection id="closing-section" eyebrow="Closing" heading={lesson.closing.heading}>
+        {renderParagraphs(lesson.closing.paragraphs)}
+        <p className="font-body" style={{ ...bodyText, marginTop: '1.25rem', marginBottom: '1.25rem' }}>
+          {lesson.closing.transition}
+        </p>
+        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
+            Educational disclaimer
+          </span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
+            {lesson.closing.finalDisclaimer}
+          </p>
+        </div>
+      </PageSection>
+
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
