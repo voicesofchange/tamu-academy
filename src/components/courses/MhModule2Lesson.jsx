@@ -521,6 +521,25 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         </div>
       </PageSection>
 
+      <PageSection id="optional-extended-assignment" eyebrow={lesson.optionalExtendedAssignment.label} heading={lesson.optionalExtendedAssignment.heading}>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
+          {lesson.optionalExtendedAssignment.instruction}
+        </p>
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.optionalExtendedAssignment.requirements.map((item, i) => (
+            <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>
+          ))}
+        </ol>
+        <div style={disclaimerBoxStyle} aria-label="Personal disclosure notice">
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
+            Personal disclosure
+          </span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
+            {lesson.optionalExtendedAssignment.personalDisclosure}
+          </p>
+        </div>
+      </PageSection>
+
       <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (

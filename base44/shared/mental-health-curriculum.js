@@ -162,6 +162,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
         'closing-section',
         'completion-requirements',
         'sources-further-learning',
+        'optional-extended-assignment',
       ],
     },
     {
@@ -1374,6 +1375,35 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
         "Brother Be Well is included as a practical educational example. Do not imply that Tamu Academy has a formal partnership, endorsement, or clinical affiliation with the organization."
       ]
     }
+  },
+  // ============ STAGE 11 CONTENT ADDITION (Optional Extended
+  // Academic Assignment) ============
+  //
+  // Display-only optional extended academic assignment block. The
+  // renderer (MhModule2Lesson) shows the label, heading, instruction,
+  // the five requirements as a semantic ordered list, and the personal
+  // disclosure statement. There is NO form, input, text area, button,
+  // checkbox, file upload, internal route, external link, action
+  // handler, React state, effect hook, storage call, backend
+  // invocation, entity operation, completion event, progress
+  // operation, grading feature, rubric, due date, or assignment
+  // tracking. This assignment is optional and is NOT part of the six
+  // Module 2 completion requirements. Rendering this section does not
+  // create, update, or delete any record. The module-2 branch of
+  // getMentalHealthModuleContent passes this object through unchanged
+  // (it carries no answer-key material).
+  optionalExtendedAssignment: {
+    label: "Optional extended academic track",
+    heading: "Strength, Silence, and the Politics of Help Seeking",
+    instruction: "Write a 3 to 4 page analytical essay that:",
+    requirements: [
+      "Compares two strength narratives, with at least one grounded in an African setting and one grounded in a diaspora setting.",
+      "Explains the protective purpose and possible cost of each narrative.",
+      "Connects each narrative to at least one structural condition such as work, migration policy, racism, gendered labor, conflict, service access, or colonial institutional history.",
+      "Proposes a culturally affirming reframing that preserves dignity while widening support.",
+      "Uses at least three course sources."
+    ],
+    personalDisclosure: "Personal disclosure is not required."
   },
 };
 
