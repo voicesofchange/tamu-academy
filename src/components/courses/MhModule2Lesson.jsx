@@ -242,10 +242,6 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
   const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
-  const nextModule =
-    moduleIndex >= 0 && moduleIndex < course.modules.length - 1
-      ? course.modules[moduleIndex + 1]
-      : null;
 
   const [reflectionSentence, setReflectionSentence] = useState('');
   const [reflectionSupportPathway, setReflectionSupportPathway] = useState('');
@@ -565,9 +561,6 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
               &larr; Start of course
             </span>
           )}
-          <span className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.35)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            End of course
-          </span>
         </div>
         <Link to={coursePath} className="font-body" style={navLinkStyle}>
           &larr; Return to Course
