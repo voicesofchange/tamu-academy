@@ -149,7 +149,7 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Building Culturally Affirming Systems: Policy, Media, and Youth Advocacy for Global Mental Health',
       description:
         'Examines how policy, media, and youth advocacy can build culturally affirming systems for global mental health.',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       estimatedTime: '105 to 125 minutes',
       prerequisite: 'module-5',
