@@ -10,6 +10,7 @@ import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
 import MhStrengthWithoutSilenceLab from '@/components/courses/MhStrengthWithoutSilenceLab';
 import MhModule2KnowledgeCheck from '@/components/courses/MhModule2KnowledgeCheck';
+import MhModule2Progress from '@/components/courses/MhModule2Progress';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -248,9 +249,14 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
 
   const [reflectionSentence, setReflectionSentence] = useState('');
   const [reflectionSupportPathway, setReflectionSupportPathway] = useState('');
+  const [knowledgeCheckGradedCount, setKnowledgeCheckGradedCount] = useState(0);
   const clearReflection = () => {
     setReflectionSentence('');
     setReflectionSupportPathway('');
+  };
+
+  const handleKnowledgeCheckGraded = () => {
+    setKnowledgeCheckGradedCount((c) => c + 1);
   };
 
   return (
@@ -464,6 +470,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
           courseSlug={course.slug}
           moduleSlug={mod.route}
           quiz={lesson.knowledgeCheck}
+          onGraded={handleKnowledgeCheckGraded}
         />
       </PageSection>
 
@@ -488,6 +495,13 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
             <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>
           ))}
         </ol>
+        <MhModule2Progress
+          courseSlug={course.slug}
+          moduleRoute={mod.route}
+          completionRequirements={lesson.completionRequirements}
+          progressTracking={lesson.progressTracking}
+          refreshTrigger={knowledgeCheckGradedCount}
+        />
       </PageSection>
 
       <PageSection id="sources-further-learning" eyebrow="Sources" heading={lesson.sourcesFurtherLearning.heading}>

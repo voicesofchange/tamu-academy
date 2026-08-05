@@ -137,7 +137,7 @@ function findResultForQuestion(feedback, questionId) {
  *     their selections and re-answer; the next valid submission is
  *     graded again on the server (still with no record created).
  */
-export default function MhModule2KnowledgeCheck({ courseSlug, moduleSlug, quiz }) {
+export default function MhModule2KnowledgeCheck({ courseSlug, moduleSlug, quiz, onGraded }) {
   const [selections, setSelections] = useState({});
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState(null);
@@ -188,6 +188,7 @@ export default function MhModule2KnowledgeCheck({ courseSlug, moduleSlug, quiz }
       const data = res && res.data ? res.data : null;
       if (!data) throw new Error('No payload returned');
       setResult(data);
+      if (onGraded) onGraded(data);
     } catch (err) {
       setServerError('We could not grade your responses right now. Please try again.');
     } finally {

@@ -1,8 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   getModuleConfig,
+  getModulePrerequisite,
   isModulePublished,
   MENTAL_HEALTH_COURSE_SLUG,
+  MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS,
+  deriveModule2CompletedKeys,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -91,19 +94,130 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // --- Development-stage admin gate ---
-    // Module 1 remains unpublished. Only admins may invoke completion
-    // evaluation while it is unpublished.
-    if (user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
-    }
-
-    // --- Parse and validate body ---
+    // --- Parse body (before module routing) ---
     let body: Record<string, unknown> = {};
     try {
       body = await req.json();
     } catch (_) {
       body = {};
+    }
+
+    const courseSlug =
+      typeof body.courseSlug === 'string' ? body.courseSlug.trim() : '';
+    const moduleRoute =
+      typeof body.moduleRoute === 'string' ? body.moduleRoute.trim() : '';
+
+    // --- Module 2 branch (Stage 12) ---
+    // Isolated completion path for Module 2. Has its own publication and
+    // enrollment checks — refuses during unpublished preview for ALL
+    // users (including admins). Derives all six completion keys from
+    // server-side ModuleProgress data; never trusts browser-supplied
+    // completion data.
+    if (moduleRoute === 'module-2') {
+      // Reject any body containing protected fields.
+      if (body && typeof body === 'object') {
+        for (const key of Object.keys(body)) {
+          if (PROTECTED_BODY_FIELDS.has(key)) {
+            return Response.json({ error: 'Forbidden field' }, { status: 403 });
+          }
+        }
+      }
+      // Reject any field other than courseSlug and moduleRoute.
+      const allowedM2Keys = new Set(['courseSlug', 'moduleRoute']);
+      for (const k of Object.keys(body)) {
+        if (!allowedM2Keys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+      if (!courseSlug || courseSlug !== MENTAL_HEALTH_COURSE_SLUG) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      const m2Config = getModuleConfig(courseSlug, moduleRoute);
+      if (!m2Config) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      // Refuse completion during unpublished preview (ALL users).
+      if (!isModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      // Non-admin: check enrollment + prerequisite.
+      if (user.role !== 'admin') {
+        const m2Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          status: 'active',
+        });
+        if (!m2Enrollment || m2Enrollment.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        const m2Prereq = getModulePrerequisite(courseSlug, moduleRoute);
+        if (m2Prereq) {
+          const m2PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: m2Prereq,
+            status: 'completed',
+          });
+          if (!m2PrereqRows || m2PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+      }
+      // Derive all six completion keys from server-side ModuleProgress.
+      const m2Rows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+      });
+      const m2Row = m2Rows && m2Rows.length > 0 ? m2Rows[0] : null;
+      const m2CompletedKeys = m2Row ? deriveModule2CompletedKeys(m2Row) : [];
+      const m2AllComplete = MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS.every(
+        (k) => m2CompletedKeys.includes(k),
+      );
+      if (!m2AllComplete) {
+        const missing = MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS.filter(
+          (k) => !m2CompletedKeys.includes(k),
+        );
+        return Response.json({ completed: false, missing });
+      }
+      // Idempotent: preserve existing completion timestamp.
+      if (m2Row && m2Row.status === 'completed' && m2Row.completed_at) {
+        return Response.json({
+          completed: true,
+          alreadyCompleted: true,
+          completedAt: m2Row.completed_at,
+        });
+      }
+      const m2Now = new Date().toISOString();
+      if (m2Row) {
+        const m2Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+          m2Row.id,
+          { status: 'completed', completed_at: m2Now, updated_at: m2Now },
+        );
+        return Response.json({
+          completed: true,
+          completedAt: m2Updated.completed_at || m2Now,
+        });
+      }
+      const m2Created = await base44.asServiceRole.entities.ModuleProgress.create({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+        status: 'completed',
+        completed_at: m2Now,
+        updated_at: m2Now,
+      });
+      return Response.json({
+        completed: true,
+        completedAt: m2Created.completed_at || m2Now,
+      });
+    }
+
+    // --- Development-stage admin gate (Module 1) ---
+    // Module 1 remains unpublished. Only admins may invoke completion
+    // evaluation while it is unpublished.
+    if (user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Reject any body containing protected fields.
@@ -114,11 +228,6 @@ export default async function(req: Request): Promise<Response> {
         }
       }
     }
-
-    const courseSlug =
-      typeof body.courseSlug === 'string' ? body.courseSlug.trim() : '';
-    const moduleRoute =
-      typeof body.moduleRoute === 'string' ? body.moduleRoute.trim() : '';
 
     if (!courseSlug || !moduleRoute) {
       return Response.json({ error: 'Missing courseSlug or moduleRoute' }, { status: 400 });

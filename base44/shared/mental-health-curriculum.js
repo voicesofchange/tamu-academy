@@ -1405,7 +1405,111 @@ export const MENTAL_HEALTH_MODULE_2_LESSON = {
     ],
     personalDisclosure: "Personal disclosure is not required."
   },
+  // ============ STAGE 12 CONTENT ADDITION (Progress Tracking) ============
+  //
+  // Display-only progress tracking wording for the Module 2 completion
+  // requirements section. The renderer (MhModule2Lesson) reads these
+  // strings via lesson.progressTracking. There is NO form, input, or
+  // submission field here — the object carries only the learner-facing
+  // labels and messages. The browser must never hardcode these strings.
+  // The module-2 branch of getMentalHealthModuleContent passes this
+  // object through unchanged (it carries no answer-key material).
+  progressTracking: {
+    label: "Module 2 progress",
+    heading: "Complete Module 2",
+    privacyNote: "Only completion status is saved. Your lab, reflection, scenario, and knowledge check responses are not stored.",
+    markCompleteLabel: "Mark complete",
+    completedLabel: "Completed",
+    savingLabel: "Saving...",
+    completeModuleLabel: "Complete Module 2",
+    incompleteMessage: "Complete all six requirements before completing Module 2.",
+    completedMessage: "Module 2 is complete.",
+    unavailableMessage: "Progress saving is unavailable while this module is in administrator preview.",
+    errorMessage: "We could not save your progress. Please try again."
+  }
 };
+
+/**
+ * MODULE 2 COMPLETION KEYS — server-side-only.
+ *
+ * The six approved Module 2 completion requirement identifiers, in the
+ * approved order. These are requirement identifiers (not section
+ * identifiers). They correspond one-to-one to the six existing
+ * completion requirement strings in lesson.completionRequirements.items.
+ *
+ *   core-media                   -> core_media_acknowledged_at
+ *   lesson-and-case-study        -> lesson_and_case_reviewed_at
+ *   strength-without-silence-lab -> activity_acknowledged_at
+ *   knowledge-check-completed    -> knowledge_check_completed_at
+ *   knowledge-check-passed       -> quiz_passed
+ *   private-reflection           -> reflection_acknowledged_at
+ *
+ * The four self-attestable keys (core-media, lesson-and-case-study,
+ * strength-without-silence-lab, private-reflection) may be marked
+ * through the general updateMentalHealthProgress function. The two
+ * server-verified keys (knowledge-check-completed, knowledge-check-passed)
+ * are recorded only by checkMentalHealthKnowledgeCheck after a valid
+ * submission. interactive-scenario, closing-section,
+ * sources-further-learning, and optional-extended-assignment are
+ * intentionally NOT completion keys.
+ */
+export const MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS = [
+  "core-media",
+  "lesson-and-case-study",
+  "strength-without-silence-lab",
+  "knowledge-check-completed",
+  "knowledge-check-passed",
+  "private-reflection",
+];
+
+export const MENTAL_HEALTH_MODULE_2_SELF_ATTESTED_KEYS = new Set([
+  "core-media",
+  "lesson-and-case-study",
+  "strength-without-silence-lab",
+  "private-reflection",
+]);
+
+const MODULE_2_KEY_TO_FIELD = {
+  "core-media": "core_media_acknowledged_at",
+  "lesson-and-case-study": "lesson_and_case_reviewed_at",
+  "strength-without-silence-lab": "activity_acknowledged_at",
+  "knowledge-check-completed": "knowledge_check_completed_at",
+  "knowledge-check-passed": "quiz_passed",
+  "private-reflection": "reflection_acknowledged_at",
+};
+
+/** True if the key is one of the six approved Module 2 completion keys. */
+export function isModule2CompletionKey(key) {
+  return MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS.includes(key);
+}
+
+/** True if the key is one of the four self-attestable Module 2 keys. */
+export function isModule2SelfAttestedKey(key) {
+  return MENTAL_HEALTH_MODULE_2_SELF_ATTESTED_KEYS.has(key);
+}
+
+/** Returns the ModuleProgress field name for a Module 2 completion key. */
+export function getModule2CompletionField(key) {
+  return MODULE_2_KEY_TO_FIELD[key] || null;
+}
+
+/**
+ * Derives the completed Module 2 completion keys from a ModuleProgress
+ * row. Returns the keys in the approved order. Used by
+ * getMentalHealthProgress and completeMentalHealthModule (server-side
+ * only).
+ */
+export function deriveModule2CompletedKeys(row) {
+  if (!row) return [];
+  const keys = [];
+  if (row.core_media_acknowledged_at) keys.push("core-media");
+  if (row.lesson_and_case_reviewed_at) keys.push("lesson-and-case-study");
+  if (row.activity_acknowledged_at) keys.push("strength-without-silence-lab");
+  if (row.knowledge_check_completed_at) keys.push("knowledge-check-completed");
+  if (row.quiz_passed) keys.push("knowledge-check-passed");
+  if (row.reflection_acknowledged_at) keys.push("private-reflection");
+  return keys;
+}
 
 /**
  * PROTECTED SCENARIO ANSWER KEY — server-side-only.

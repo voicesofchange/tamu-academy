@@ -2,6 +2,9 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   MENTAL_HEALTH_MODULE_2_LESSON,
   courseExists,
+  getModulePrerequisite,
+  isModulePublished,
+  MENTAL_HEALTH_COURSE_SLUG,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -74,9 +77,11 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       user = null;
     }
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const isAdmin = user.role === 'admin';
 
     let body = {};
     try {
@@ -110,6 +115,37 @@ export default async function(req: Request): Promise<Response> {
     // submitMentalHealthQuiz grader.
     if (!courseExists(courseSlug) || moduleSlug !== 'module-2') {
       return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Determine eligibility for progress recording. Admins preview
+    // without recording. Non-admins need a published module + active
+    // enrollment + completed prerequisite; otherwise 403.
+    let canRecordProgress = false;
+    if (!isAdmin) {
+      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        status: 'active',
+      });
+      if (!enrollmentRows || enrollmentRows.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (!isModulePublished(courseSlug, moduleSlug)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const prereqRoute = getModulePrerequisite(courseSlug, moduleSlug);
+      if (prereqRoute) {
+        const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: prereqRoute,
+          status: 'completed',
+        });
+        if (!prereqRows || prereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      }
+      canRecordProgress = true;
     }
 
     const knowledgeCheck = MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
@@ -184,9 +220,46 @@ export default async function(req: Request): Promise<Response> {
 
     const passed = score >= passingScore;
 
-    // NON-RECORDING: no QuizAttempt, ModuleProgress, or
-    // CourseEnrollment is created or updated. No completion,
-    // certificate, payment, enrollment, or analytics event is fired.
+    // Stage 12: For an eligible learner (non-admin with active
+    // enrollment + published module + completed prerequisite), record
+    // knowledge check completion. Set knowledge_check_completed_at
+    // after every valid submission. Set quiz_passed to true only when
+    // the learner passes (score >= passingScore); a prior pass is
+    // never downgraded to false by a later failed attempt. No
+    // selections, answers, feedback, scores, or attempt details are
+    // stored. No QuizAttempt or CourseEnrollment record is created.
+    // For admins (current preview): no ModuleProgress record is
+    // created or updated; progressSaved is false.
+    if (canRecordProgress) {
+      const now = new Date().toISOString();
+      const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleSlug,
+      });
+      const progressRow = progressRows && progressRows.length > 0 ? progressRows[0] : null;
+      if (!progressRow) {
+        await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: moduleSlug,
+          status: 'in_progress',
+          knowledge_check_completed_at: now,
+          quiz_passed: passed,
+          updated_at: now,
+        });
+      } else {
+        const patch: Record<string, string | boolean> = {
+          updated_at: now,
+          knowledge_check_completed_at: now,
+        };
+        // Only upgrade quiz_passed to true; never downgrade.
+        if (passed && !progressRow.quiz_passed) {
+          patch.quiz_passed = true;
+        }
+        await base44.asServiceRole.entities.ModuleProgress.update(progressRow.id, patch);
+      }
+    }
 
     return Response.json({
       score,
@@ -194,6 +267,7 @@ export default async function(req: Request): Promise<Response> {
       passingScore,
       passed,
       feedback: gradedFeedback,
+      progressSaved: canRecordProgress,
     });
   } catch (error) {
     console.error(

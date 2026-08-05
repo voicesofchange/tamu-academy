@@ -69,6 +69,11 @@
       "title": "Quiz Passed",
       "default": false
     },
+    "knowledge_check_completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Knowledge Check Completed At"
+    },
     "completed_at": {
       "type": "string",
       "format": "date-time",

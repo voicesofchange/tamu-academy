@@ -3,6 +3,9 @@ import {
   getModuleConfig,
   getModulePrerequisite,
   isModulePublished,
+  isModule2SelfAttestedKey,
+  getModule2CompletionField,
+  deriveModule2CompletedKeys,
   isSectionAllowed,
   MENTAL_HEALTH_COURSE_SLUG,
 } from '../../shared/mental-health-curriculum.js';
@@ -137,6 +140,16 @@ function isAllowedActionShape(raw) {
         moduleRoute: raw.moduleRoute,
         payload: { mode: raw.mode },
       };
+    case 'acknowledge_module2_requirement':
+      if (typeof raw.requirementKey !== 'string' || raw.requirementKey.length === 0 || raw.requirementKey.length > 64) {
+        return null;
+      }
+      return {
+        action: raw.action,
+        courseSlug: raw.courseSlug,
+        moduleRoute: raw.moduleRoute,
+        payload: { requirementKey: raw.requirementKey },
+      };
     default:
       return null;
   }
@@ -194,6 +207,84 @@ export default async function(req: Request): Promise<Response> {
       if (!isSectionAllowed(msg.courseSlug, msg.moduleRoute, msg.payload.sectionId)) {
         return Response.json({ error: 'Invalid section identifier' }, { status: 400 });
       }
+    }
+
+    // Module 2 progress acknowledgment (Stage 12).
+    // Isolated branch: only for module-2, only the four self-attestable
+    // keys, refuses during unpublished preview for ALL users (including
+    // admins). Does not write activity_completion_mode or
+    // reflection_completion_mode for Module 2.
+    if (msg.action === 'acknowledge_module2_requirement') {
+      if (msg.moduleRoute !== 'module-2') {
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
+      }
+      if (!isModule2SelfAttestedKey(msg.payload.requirementKey)) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      // Refuse progress saving during unpublished preview (ALL users).
+      if (!isModulePublished(msg.courseSlug, msg.moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      // Non-admin: check enrollment + prerequisite.
+      if (!isAdmin) {
+        const m2Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          status: 'active',
+        });
+        if (!m2Enrollment || m2Enrollment.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        const m2Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
+        if (m2Prereq) {
+          const m2PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: msg.courseSlug,
+            module_slug: m2Prereq,
+            status: 'completed',
+          });
+          if (!m2PrereqRows || m2PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+      }
+      const m2Field = getModule2CompletionField(msg.payload.requirementKey);
+      if (!m2Field) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      const m2Now = new Date().toISOString();
+      const m2Existing = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        module_slug: msg.moduleRoute,
+      });
+      const m2ExistingRow = m2Existing && m2Existing.length > 0 ? m2Existing[0] : null;
+      if (!m2ExistingRow) {
+        const m2Created = await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: msg.moduleRoute,
+          status: 'in_progress',
+          [m2Field]: m2Now,
+          updated_at: m2Now,
+        });
+        return Response.json({
+          completedKeys: deriveModule2CompletedKeys(m2Created),
+          action: msg.action,
+        });
+      }
+      const m2Patch: Record<string, string> = { updated_at: m2Now };
+      if (!m2ExistingRow[m2Field]) {
+        m2Patch[m2Field] = m2Now;
+      }
+      const m2Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+        m2ExistingRow.id,
+        m2Patch,
+      );
+      return Response.json({
+        completedKeys: deriveModule2CompletedKeys(m2Updated),
+        action: msg.action,
+      });
     }
 
     // For non-admin: enforce the full access chain using the canonical
