@@ -565,15 +565,9 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
               &larr; Start of course
             </span>
           )}
-          {nextModule ? (
-            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>
-              {nextModule.number} &rarr;
-            </Link>
-          ) : (
-            <span aria-disabled="true" title="This is the last module" style={navDisabledStyle}>
-              End of course &rarr;
-            </span>
-          )}
+          <span className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.35)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+            End of course
+          </span>
         </div>
         <Link to={coursePath} className="font-body" style={navLinkStyle}>
           &larr; Return to Course
