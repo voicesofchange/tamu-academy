@@ -3,7 +3,7 @@ import VideoSourceCard from '@/components/courses/module/VideoSourceCard';
 
 /**
  * A single recorded lesson video block for the Tamu Academy expanded lesson
- * format: responsive 16:9 YouTube embed (privacy-enhanced youtube-nocookie),
+ * format: responsive 16:9 YouTube embed via the official YouTube player,
  * a direct YouTube link placed beneath the player, and the standardized
  * "About this source" attribution card. Uses the official YouTube player
  * only — no downloading, editing, copying, or reuploading.
