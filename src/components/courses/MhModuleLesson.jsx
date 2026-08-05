@@ -12,6 +12,7 @@ import MhCommunityCareMap from '@/components/courses/MhCommunityCareMap';
 import MhPrivateReflection from '@/components/courses/MhPrivateReflection';
 import MhKnowledgeCheck from '@/components/courses/MhKnowledgeCheck';
 import MhModuleCompletion from '@/components/courses/MhModuleCompletion';
+import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -236,6 +237,7 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
 
       {/* Module number, title, learning area, status, and estimated time */}
       <header style={{ marginBottom: '3rem' }}>
+        <ModuleEmblem />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
           <StatusBadge label={mod.number} />
           <StatusBadge label={mod.status} />
@@ -253,12 +255,13 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
           Estimated time: {mod.estimatedTime}
         </p>
         <motion.div
-          initial={{ opacity: 0, scaleX: 0.4 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
           aria-hidden="true"
-          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)', transformOrigin: 'left' }}
-        />
+        >
+          <GoldDivider width="220px" />
+        </motion.div>
       </header>
 
       {/* 1. module-overview (public module overview + competency) */}
@@ -424,7 +427,8 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
       </PageSection>
 
       {/* Navigation position within the seven-module course */}
-      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
+      <GoldDivider width="260px" margin="0 0 2rem" />
+      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
             <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>

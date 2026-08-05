@@ -11,6 +11,7 @@ import MhKijaniScenario from '@/components/courses/MhKijaniScenario';
 import MhAmplifyLab from '@/components/courses/MhAmplifyLab';
 import MhModule6KnowledgeCheck from '@/components/courses/MhModule6KnowledgeCheck';
 import MhModule6Progress from '@/components/courses/MhModule6Progress';
+import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -142,6 +143,7 @@ export default function MhModule6Lesson({ course, module: mod, lesson }) {
       <ModuleBreadcrumbs pillar={course.learningArea} track={course.title} course={course.title} coursePath={coursePath} moduleLabel={mod.number} />
 
       <header style={{ marginBottom: '3rem' }}>
+        <ModuleEmblem />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
           <StatusBadge label={mod.number} />
           <StatusBadge label={mod.status} />
@@ -149,7 +151,7 @@ export default function MhModule6Lesson({ course, module: mod, lesson }) {
         <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>{mod.title}</h1>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Learning area: {course.learningArea}</p>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>Estimated time: {mod.estimatedTime}</p>
-        <motion.div initial={{ opacity: 0, scaleX: 0.4 }} animate={{ opacity: 1, scaleX: 1 }} transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }} aria-hidden="true" style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)', transformOrigin: 'left' }} />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }} aria-hidden="true"><GoldDivider width="220px" /></motion.div>
       </header>
 
       {/* 1. Module identity and educational disclaimer */}
@@ -286,7 +288,8 @@ export default function MhModule6Lesson({ course, module: mod, lesson }) {
       </PageSection>
 
       {/* 20. Previous and next module navigation */}
-      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
+      <GoldDivider width="260px" margin="0 0 2rem" />
+      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
             <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>&larr; {prevModule.number}</Link>

@@ -5,6 +5,7 @@ import MhStoryLab from '@/components/courses/MhStoryLab';
 import MhModule7KnowledgeCheck from '@/components/courses/MhModule7KnowledgeCheck';
 import MhModule7Progress from '@/components/courses/MhModule7Progress';
 import MhModuleNav from '@/components/courses/MhModuleNav';
+import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -110,9 +111,11 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#1A130E', padding: '2rem 1.5rem 4rem' }}>
       <div style={{ maxWidth: '780px', margin: '0 auto' }}>
+        <ModuleEmblem />
         <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{course.title}</p>
         <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.75rem', fontWeight: 400, lineHeight: 1.2, marginBottom: '0.5rem' }}>Roots of Resilience: Storytelling, Survival, and Collective Healing</h1>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '2rem' }}>{moduleMeta.estimatedTime}</p>
+        <GoldDivider width="220px" margin="0 0 2rem" />
 
         {/* Module Overview */}
         <div style={sectionStyle}>
@@ -273,6 +276,8 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           <h2 className="font-heading" style={headingStyle}>{lesson.progressTracking.heading}</h2>
           <MhModule7Progress courseSlug={courseSlug} moduleRoute={moduleSlug} completionRequirements={lesson.completionRequirements} progressTracking={lesson.progressTracking} refreshTrigger={refreshTrigger} />
         </div>
+
+        <GoldDivider width="260px" margin="0 0 2rem" />
 
         {/* Navigation */}
         <MhModuleNav course={course} module={moduleMeta} courseSlug={courseSlug} />
