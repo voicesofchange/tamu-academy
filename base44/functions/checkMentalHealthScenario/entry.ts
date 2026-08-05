@@ -4,7 +4,6 @@ import {
   getScenarioAnswer,
   isModulePublished,
   getModulePrerequisite,
-  getModule3ScenarioCompleteMarker,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -202,10 +201,10 @@ export default async function(req: Request): Promise<Response> {
       : answer.feedback;
 
     // Module 3: record scenario completion when eligible. Sets
-    // last_section_id to the scenario-complete marker. No selection,
-    // score, or feedback is stored.
+    // interactive_scenario_completed_at to the current timestamp. No
+    // selection, score, or feedback is stored. last_section_id is
+    // preserved exclusively for its normal section tracking purpose.
     if (moduleSlug === 'module-3' && canRecordProgress) {
-      const marker = getModule3ScenarioCompleteMarker();
       const now = new Date().toISOString();
       const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
         learner_id: user.id,
@@ -219,12 +218,12 @@ export default async function(req: Request): Promise<Response> {
           course_slug: courseSlug,
           module_slug: moduleSlug,
           status: 'in_progress',
-          last_section_id: marker,
+          interactive_scenario_completed_at: now,
           updated_at: now,
         });
-      } else if (progressRow.last_section_id !== marker) {
+      } else if (!progressRow.interactive_scenario_completed_at) {
         await base44.asServiceRole.entities.ModuleProgress.update(progressRow.id, {
-          last_section_id: marker,
+          interactive_scenario_completed_at: now,
           updated_at: now,
         });
       }

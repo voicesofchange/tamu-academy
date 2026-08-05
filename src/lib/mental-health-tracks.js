@@ -116,7 +116,7 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Family Expectations and Cultural Scripts: Talking About Mental Health at Home',
       description:
         'Examines how family expectations and cultural scripts shape conversations about mental health at home and how learners can hold respectful, culturally grounded discussions.',
-      status: 'In Development',
+      status: 'Coming Soon',
       publicationStatus: 'unpublished',
       estimatedTime: '65 to 80 minutes',
       prerequisite: 'module-2',

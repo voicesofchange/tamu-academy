@@ -77,7 +77,6 @@ import {
   isModule3CompletionKey,
   isModule3SelfAttestedKey,
   getModule3CompletionField,
-  getModule3ScenarioCompleteMarker,
   deriveModule3CompletedKeys,
 } from './mental-health-module-3-content.js';
 
@@ -91,7 +90,6 @@ export {
   isModule3CompletionKey,
   isModule3SelfAttestedKey,
   getModule3CompletionField,
-  getModule3ScenarioCompleteMarker,
   deriveModule3CompletedKeys,
 };
 

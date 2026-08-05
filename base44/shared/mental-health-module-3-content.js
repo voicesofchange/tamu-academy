@@ -782,7 +782,7 @@ export const MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS = {
  *
  *   core-media-pair            -> core_media_acknowledged_at
  *   lesson-and-cases           -> lesson_and_case_reviewed_at
- *   interactive-scenario       -> last_section_id (marker: "m3-scenario-complete")
+ *   interactive-scenario       -> interactive_scenario_completed_at
  *   bridge-conversation-lab    -> activity_acknowledged_at
  *   knowledge-check-completed  -> knowledge_check_completed_at
  *   knowledge-check-passed     -> quiz_passed
@@ -815,14 +815,12 @@ export const MENTAL_HEALTH_MODULE_3_SELF_ATTESTED_KEYS = new Set([
 const MODULE_3_KEY_TO_FIELD = {
   'core-media-pair': 'core_media_acknowledged_at',
   'lesson-and-cases': 'lesson_and_case_reviewed_at',
-  'interactive-scenario': 'last_section_id',
+  'interactive-scenario': 'interactive_scenario_completed_at',
   'bridge-conversation-lab': 'activity_acknowledged_at',
   'knowledge-check-completed': 'knowledge_check_completed_at',
   'knowledge-check-passed': 'quiz_passed',
   'private-reflection': 'reflection_acknowledged_at',
 };
-
-const M3_SCENARIO_COMPLETE_MARKER = 'm3-scenario-complete';
 
 export function isModule3CompletionKey(key) {
   return MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS.includes(key);
@@ -836,16 +834,12 @@ export function getModule3CompletionField(key) {
   return MODULE_3_KEY_TO_FIELD[key] || null;
 }
 
-export function getModule3ScenarioCompleteMarker() {
-  return M3_SCENARIO_COMPLETE_MARKER;
-}
-
 export function deriveModule3CompletedKeys(row) {
   if (!row) return [];
   const keys = [];
   if (row.core_media_acknowledged_at) keys.push('core-media-pair');
   if (row.lesson_and_case_reviewed_at) keys.push('lesson-and-cases');
-  if (row.last_section_id === M3_SCENARIO_COMPLETE_MARKER) keys.push('interactive-scenario');
+  if (row.interactive_scenario_completed_at) keys.push('interactive-scenario');
   if (row.activity_acknowledged_at) keys.push('bridge-conversation-lab');
   if (row.knowledge_check_completed_at) keys.push('knowledge-check-completed');
   if (row.quiz_passed) keys.push('knowledge-check-passed');

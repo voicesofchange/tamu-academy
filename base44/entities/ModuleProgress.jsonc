@@ -74,6 +74,11 @@
       "format": "date-time",
       "title": "Knowledge Check Completed At"
     },
+    "interactive_scenario_completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Interactive Scenario Completed At"
+    },
     "completed_at": {
       "type": "string",
       "format": "date-time",
