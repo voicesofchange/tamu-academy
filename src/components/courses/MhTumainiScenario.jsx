@@ -352,8 +352,9 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       </p>
 
       {/* Step indicators — accessible method to return to and change
-          any answered decision. */}
-      <div role="list" aria-label="Scenario decision progress" style={stepContainerStyle}>
+          any answered decision. Semantic <ol>/<li> list with native
+          buttons; no role overrides on the button element. */}
+      <ol aria-label="Scenario decision progress" style={{ ...stepContainerStyle, listStyle: 'none', padding: 0, margin: '0 0 1.75rem' }}>
         {scenario.decisions.map((d, i) => {
           const isAnswered = !!feedbacks[d.decisionId];
           const isCurrent = i === activeStep;
@@ -366,21 +367,21 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
                 ? stepButtonAnswered
                 : stepButtonBase;
           return (
-            <button
-              key={d.decisionId}
-              type="button"
-              role="listitem"
-              aria-current={isCurrent ? 'step' : undefined}
-              aria-label={`Decision ${i + 1}${isAnswered ? ', answered' : ''}${isCurrent ? ', current' : ''}`}
-              disabled={!accessible}
-              onClick={() => accessible && setActiveStep(i)}
-              style={style}
-            >
-              {i + 1}
-            </button>
+            <li key={d.decisionId} style={{ listStyle: 'none' }}>
+              <button
+                type="button"
+                aria-current={isCurrent ? 'step' : undefined}
+                aria-label={`Decision ${i + 1}${isAnswered ? ', answered' : ''}${isCurrent ? ', current' : ''}`}
+                disabled={!accessible}
+                onClick={() => accessible && setActiveStep(i)}
+                style={style}
+              >
+                {i + 1}
+              </button>
+            </li>
           );
         })}
-      </div>
+      </ol>
 
       {/* Active decision card — one at a time. */}
       <div style={decisionBoxStyle}>
