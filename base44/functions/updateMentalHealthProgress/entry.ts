@@ -12,6 +12,9 @@ import {
   isModule4SelfAttestedKey,
   getModule4CompletionField,
   deriveModule4CompletedKeys,
+  isModule5SelfAttestedKey,
+  getModule5CompletionField,
+  deriveModule5CompletedKeys,
   isSectionAllowed,
   MENTAL_HEALTH_COURSE_SLUG,
 } from '../../shared/mental-health-curriculum.js';
@@ -176,6 +179,16 @@ function isAllowedActionShape(raw) {
         moduleRoute: raw.moduleRoute,
         payload: { requirementKey: raw.requirementKey },
       };
+    case 'acknowledge_module5_requirement':
+      if (typeof raw.requirementKey !== 'string' || raw.requirementKey.length === 0 || raw.requirementKey.length > 64) {
+        return null;
+      }
+      return {
+        action: raw.action,
+        courseSlug: raw.courseSlug,
+        moduleRoute: raw.moduleRoute,
+        payload: { requirementKey: raw.requirementKey },
+      };
     default:
       return null;
   }
@@ -251,6 +264,21 @@ export default async function(req: Request): Promise<Response> {
       ]);
       for (const k of Object.keys(body)) {
         if (!m4AllowedBodyKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+    }
+
+    // Module 5 request boundary: same allowlist pattern as Module 4.
+    if (body && typeof body === 'object' && body.action === 'acknowledge_module5_requirement') {
+      const m5AllowedBodyKeys = new Set([
+        'courseSlug',
+        'moduleRoute',
+        'action',
+        'requirementKey',
+      ]);
+      for (const k of Object.keys(body)) {
+        if (!m5AllowedBodyKeys.has(k)) {
           return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
         }
       }
@@ -516,6 +544,81 @@ export default async function(req: Request): Promise<Response> {
       );
       return Response.json({
         completedKeys: deriveModule4CompletedKeys(m4Updated),
+        action: msg.action,
+      });
+    }
+
+    // Module 5 progress acknowledgment.
+    // Isolated branch: only for module-5, only the three self-attestable
+    // keys, refuses during unpublished preview for ALL users (including
+    // admins). Request body allowlist is enforced above.
+    if (msg.action === 'acknowledge_module5_requirement') {
+      if (msg.moduleRoute !== 'module-5') {
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
+      }
+      if (!isModule5SelfAttestedKey(msg.payload.requirementKey)) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      if (!isModulePublished(msg.courseSlug, msg.moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m5Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        status: 'active',
+      });
+      if (!m5Enrollment || m5Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (!isAdmin) {
+        const m5Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
+        if (m5Prereq) {
+          const m5PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: msg.courseSlug,
+            module_slug: m5Prereq,
+            status: 'completed',
+          });
+          if (!m5PrereqRows || m5PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+      }
+      const m5Field = getModule5CompletionField(msg.payload.requirementKey);
+      if (!m5Field) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      const m5Now = new Date().toISOString();
+      const m5Existing = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        module_slug: msg.moduleRoute,
+      });
+      const m5ExistingRow = m5Existing && m5Existing.length > 0 ? m5Existing[0] : null;
+      if (!m5ExistingRow) {
+        const m5Created = await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: msg.moduleRoute,
+          status: 'in_progress',
+          [m5Field]: m5Now,
+          updated_at: m5Now,
+        });
+        return Response.json({
+          completedKeys: deriveModule5CompletedKeys(m5Created),
+          action: msg.action,
+        });
+      }
+      const m5Patch: Record<string, string> = { updated_at: m5Now };
+      if (!m5ExistingRow[m5Field]) {
+        m5Patch[m5Field] = m5Now;
+      }
+      const m5Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+        m5ExistingRow.id,
+        m5Patch,
+      );
+      return Response.json({
+        completedKeys: deriveModule5CompletedKeys(m5Updated),
         action: msg.action,
       });
     }

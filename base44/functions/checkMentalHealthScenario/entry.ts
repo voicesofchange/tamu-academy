@@ -76,9 +76,11 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    // --- Module 4 branch (Tumaini Youth Wellness 5-decision scenario) ---
-    // The Module 4 scenario has five sequential decisions, each with
-    // three options. The function supports two modes:
+    // --- Module 4 / Module 5 branch (multi-decision scenarios) ---
+    // Module 4 (Tumaini Youth Wellness) has five sequential decisions
+    // (three options each). Module 5 (Mwangaza Care Partnership) has six
+    // sequential decisions (four options each). The function supports
+    // two modes for both:
     //   1. Per-decision feedback: { courseSlug, moduleSlug, scenarioId,
     //      decisionId, selectedIndex } -> { feedback, progressSaved }
     //   2. Scenario completion: { courseSlug, moduleSlug, scenarioId,
@@ -87,8 +89,10 @@ export default async function(req: Request): Promise<Response> {
     // The server validates all decisions but never stores or logs the
     // selections. interactive_scenario_completed_at is set only when
     // eligible (published + enrolled) and only after a complete set of
-    // five valid decision responses.
-    if (body && typeof body === 'object' && body.moduleSlug === 'module-4') {
+    // valid decision responses. The decisionsCount is read from the
+    // protected answer key, so the same branch handles both modules.
+    if (body && typeof body === 'object' && (body.moduleSlug === 'module-4' || body.moduleSlug === 'module-5')) {
+      const mSlug = body.moduleSlug;
       const m4AllowedKeys = new Set([
         'courseSlug', 'moduleSlug', 'scenarioId',
         'decisionId', 'selectedIndex',
@@ -107,14 +111,14 @@ export default async function(req: Request): Promise<Response> {
       if (!m4ScenarioId) {
         return Response.json({ error: 'Invalid scenario identifier' }, { status: 400 });
       }
-      if (!isScenarioSupported(m4CourseSlug, 'module-4', m4ScenarioId)) {
+      if (!isScenarioSupported(m4CourseSlug, mSlug, m4ScenarioId)) {
         return Response.json({ error: 'Not found' }, { status: 404 });
       }
 
       // Access control (same pattern as Module 3).
       let m4CanRecord = false;
       if (isAdmin) {
-        const m4Published = isModulePublished(m4CourseSlug, 'module-4');
+        const m4Published = isModulePublished(m4CourseSlug, mSlug);
         const m4Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
           learner_id: user.id, course_slug: m4CourseSlug, status: 'active',
         });
@@ -126,10 +130,10 @@ export default async function(req: Request): Promise<Response> {
         if (!m4Enrollment || m4Enrollment.length === 0) {
           return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
-        if (!isModulePublished(m4CourseSlug, 'module-4')) {
+        if (!isModulePublished(m4CourseSlug, mSlug)) {
           return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
-        const m4Prereq = getModulePrerequisite(m4CourseSlug, 'module-4');
+        const m4Prereq = getModulePrerequisite(m4CourseSlug, mSlug);
         if (m4Prereq) {
           const m4PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
             learner_id: user.id, course_slug: m4CourseSlug, module_slug: m4Prereq, status: 'completed',
@@ -141,7 +145,7 @@ export default async function(req: Request): Promise<Response> {
         m4CanRecord = true;
       }
 
-      const m4Answer = getScenarioAnswer(m4CourseSlug, 'module-4', m4ScenarioId);
+      const m4Answer = getScenarioAnswer(m4CourseSlug, mSlug, m4ScenarioId);
       if (!m4Answer) {
         return Response.json({ error: 'Not found' }, { status: 404 });
       }
@@ -184,12 +188,12 @@ export default async function(req: Request): Promise<Response> {
         if (m4CanRecord) {
           const m4Now = new Date().toISOString();
           const m4Rows = await base44.asServiceRole.entities.ModuleProgress.filter({
-            learner_id: user.id, course_slug: m4CourseSlug, module_slug: 'module-4',
+            learner_id: user.id, course_slug: m4CourseSlug, module_slug: mSlug,
           });
           const m4Row = m4Rows && m4Rows.length > 0 ? m4Rows[0] : null;
           if (!m4Row) {
             await base44.asServiceRole.entities.ModuleProgress.create({
-              learner_id: user.id, course_slug: m4CourseSlug, module_slug: 'module-4',
+              learner_id: user.id, course_slug: m4CourseSlug, module_slug: mSlug,
               status: 'in_progress', interactive_scenario_completed_at: m4Now, updated_at: m4Now,
             });
           } else if (!m4Row.interactive_scenario_completed_at) {

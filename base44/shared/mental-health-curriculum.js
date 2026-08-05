@@ -1722,6 +1722,12 @@ export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
       scenarioId,
     );
   }
+  if (moduleRoute === 'module-5') {
+    return Object.prototype.hasOwnProperty.call(
+      MENTAL_HEALTH_MODULE_5_SCENARIO_ANSWERS,
+      scenarioId,
+    );
+  }
   return false;
 }
 
@@ -1739,6 +1745,9 @@ export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
   }
   if (moduleRoute === 'module-4') {
     return MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS[scenarioId];
+  }
+  if (moduleRoute === 'module-5') {
+    return MENTAL_HEALTH_MODULE_5_SCENARIO_ANSWERS[scenarioId];
   }
   return null;
 }
@@ -1934,6 +1943,34 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     // MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS and are released only by
     // checkMentalHealthScenario after a valid submission.
     const lesson = MENTAL_HEALTH_MODULE_4_LESSON;
+    const sanitizedLesson = { ...lesson };
+    if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
+      sanitizedLesson.knowledgeCheck = {
+        heading: lesson.knowledgeCheck.heading,
+        subtitle: lesson.knowledgeCheck.subtitle,
+        learnerInstruction: lesson.knowledgeCheck.learnerInstruction,
+        privacyNotice: lesson.knowledgeCheck.privacyNotice,
+        passingScore: lesson.knowledgeCheck.passingScore,
+        questions: lesson.knowledgeCheck.questions.map((q) => ({
+          id: q.id,
+          prompt: q.prompt,
+          options: q.options,
+        })),
+      };
+    }
+    return { ...baseShell, lesson: sanitizedLesson };
+  }
+  if (m.route === 'module-5') {
+    // Module 5: same sanitization pattern as Module 4. The knowledge
+    // check carries the protected answer key (correctAnswerIndex +
+    // feedback) inline as the server-side source of truth. Before the
+    // lesson is returned to the browser, the answer-key fields are
+    // stripped from each question. The interactive scenario (Mwangaza
+    // Care Partnership) carries only the public-facing decision prompts
+    // and options; the feedbackByOption arrays stay exclusively in
+    // MENTAL_HEALTH_MODULE_5_SCENARIO_ANSWERS and are released only by
+    // checkMentalHealthScenario after a valid submission.
+    const lesson = MENTAL_HEALTH_MODULE_5_LESSON;
     const sanitizedLesson = { ...lesson };
     if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
       sanitizedLesson.knowledgeCheck = {

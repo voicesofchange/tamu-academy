@@ -3,6 +3,7 @@ import {
   MENTAL_HEALTH_MODULE_2_LESSON,
   MENTAL_HEALTH_MODULE_3_LESSON,
   MENTAL_HEALTH_MODULE_4_LESSON,
+  MENTAL_HEALTH_MODULE_5_LESSON,
   courseExists,
   getModulePrerequisite,
   isModulePublished,
@@ -118,7 +119,7 @@ export default async function(req: Request): Promise<Response> {
 
     // This grader supports Module 2 and Module 3. Module 1 uses the
     // recording submitMentalHealthQuiz grader.
-    if (!courseExists(courseSlug) || (moduleSlug !== 'module-2' && moduleSlug !== 'module-3' && moduleSlug !== 'module-4')) {
+    if (!courseExists(courseSlug) || (moduleSlug !== 'module-2' && moduleSlug !== 'module-3' && moduleSlug !== 'module-4' && moduleSlug !== 'module-5')) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
@@ -170,6 +171,8 @@ export default async function(req: Request): Promise<Response> {
       ? MENTAL_HEALTH_MODULE_3_LESSON.knowledgeCheck
       : moduleSlug === 'module-4'
       ? MENTAL_HEALTH_MODULE_4_LESSON.knowledgeCheck
+      : moduleSlug === 'module-5'
+      ? MENTAL_HEALTH_MODULE_5_LESSON.knowledgeCheck
       : MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
     if (!knowledgeCheck || !Array.isArray(knowledgeCheck.questions)) {
       // Defensive — no knowledge check configured.
