@@ -6,6 +6,7 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleCard from '@/components/courses/ModuleCard';
+import EconomicsCourseProgress from '@/components/courses/EconomicsCourseProgress';
 import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
 
@@ -155,20 +156,12 @@ export default function CoursePageTemplate({ course }) {
         </div>
       </PageSection>
 
+      <PageSection eyebrow="Your Progress" heading="Learner Progress">
+        <EconomicsCourseProgress courseSlug={course.slug} />
+      </PageSection>
+
       <PageSection eyebrow="Access" heading="Begin Learning">
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          This course is coming soon. While materials are being prepared, you can explore freely available Tamu Academy videos and articles, or return to the full course catalogue.
-        </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}>
-          <span
-            aria-disabled="true"
-            role="img"
-            aria-label={`Access: ${course.access} (course in development)`}
-            className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(245,239,224,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem', cursor: 'not-allowed' }}
-          >
-            {course.access}
-          </span>
           <Link
             to="/courses"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
