@@ -234,12 +234,19 @@ export default async function(req: Request): Promise<Response> {
       }
       const isCorrect = selectedIndex === question.correctAnswerIndex;
       if (isCorrect) score += 1;
-      gradedFeedback.push({
+      const gradedEntry: { questionId: string; isCorrect: boolean; feedback: string; correctAnswerText?: string } = {
         questionId,
         isCorrect,
         feedback: question.feedback,
-        correctAnswerText: question.options[question.correctAnswerIndex],
-      });
+      };
+      // Module 5 only: release the correct answer text (not the index)
+      // after a complete valid submission. Modules 2 through 4 retain
+      // their previous response behavior (questionId, isCorrect,
+      // feedback only) — no correctAnswerText is sent to those clients.
+      if (moduleSlug === 'module-5') {
+        gradedEntry.correctAnswerText = question.options[question.correctAnswerIndex];
+      }
+      gradedFeedback.push(gradedEntry);
     }
 
     // Final defensive check: every approved question must have been

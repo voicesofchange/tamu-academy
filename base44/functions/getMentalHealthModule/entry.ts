@@ -63,6 +63,19 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       body = {};
     }
+
+    // Strict request field allowlist. Reject any top-level field other
+    // than courseSlug and moduleRoute — including protected fields such
+    // as correctAnswerIndex, score, learnerId, or any attempt to inject
+    // unexpected data. The response never includes protected material
+    // in a rejected response.
+    const allowedTopKeys = new Set(['courseSlug', 'moduleRoute']);
+    for (const k of Object.keys(body)) {
+      if (!allowedTopKeys.has(k)) {
+        return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+      }
+    }
+
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
     if (!courseSlug || !moduleRoute) {

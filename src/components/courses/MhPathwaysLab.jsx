@@ -223,6 +223,11 @@ export default function MhPathwaysLab({ lab }) {
       <div style={{ marginTop: '1rem' }}>
         <Field id="pw-safety-evidence" label={lab.sectionS.evidenceStatementLabel} prompt={lab.sectionS.evidenceStatementPrompt} value={fields.safety_evidence || ''} onChange={(v) => setField('safety_evidence', v)} rows={3} />
       </div>
+      {lab.sectionS.sustainabilityDecisionLabel && (
+        <div style={{ marginTop: '1rem' }}>
+          <Field id="pw-sustainability" label={lab.sectionS.sustainabilityDecisionLabel} prompt={lab.sectionS.sustainabilityDecisionPrompt} value={fields.sustainability || ''} onChange={(v) => setField('sustainability', v)} rows={3} />
+        </div>
+      )}
 
       {/* Red Team Tests */}
       <h3 className="font-heading" style={partHeading}>{lab.redTeamTests.heading}</h3>
@@ -233,13 +238,33 @@ export default function MhPathwaysLab({ lab }) {
         ))}
       </div>
 
+      {/* Red Team Summary Fields */}
+      {lab.redTeamTests.summaryFields && lab.redTeamTests.summaryFields.length > 0 && (
+        <>
+          <h3 className="font-heading" style={partHeading}>{lab.redTeamTests.summaryHeading}</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+            {lab.redTeamTests.summaryFields.map((f) => (
+              <Field key={f.id} id={`pw-${f.id}`} label={f.label} prompt={f.prompt} value={fields[f.id] || ''} onChange={(v) => setField(f.id, v)} rows={3} />
+            ))}
+          </div>
+        </>
+      )}
+
       {/* Ninety Day Preparation Plan */}
       <h3 className="font-heading" style={partHeading}>{lab.ninetyDayPlan.heading}</h3>
-      <Field id="pw-90day" label="Ninety day preparation plan" prompt={lab.ninetyDayPlan.prompt} value={fields.day90 || ''} onChange={(v) => setField('day90', v)} rows={4} />
+      <Field id="pw-90day" label={lab.ninetyDayPlan.day90DecisionLabel || 'Ninety day preparation plan'} prompt={lab.ninetyDayPlan.prompt} value={fields.day90 || ''} onChange={(v) => setField('day90', v)} rows={4} />
 
       {/* One Page Partnership Charter */}
       <h3 className="font-heading" style={partHeading}>{lab.partnershipCharter.heading}</h3>
-      <Field id="pw-charter" label="One page partnership charter" prompt={lab.partnershipCharter.prompt} value={fields.charter || ''} onChange={(v) => setField('charter', v)} rows={5} />
+      {lab.partnershipCharter.fields && lab.partnershipCharter.fields.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+          {lab.partnershipCharter.fields.map((f) => (
+            <Field key={f.id} id={`pw-${f.id}`} label={f.label} prompt={f.prompt} value={fields[f.id] || ''} onChange={(v) => setField(f.id, v)} rows={3} />
+          ))}
+        </div>
+      ) : (
+        <Field id="pw-charter" label="One page partnership charter" prompt={lab.partnershipCharter.prompt} value={fields.charter || ''} onChange={(v) => setField('charter', v)} rows={5} />
+      )}
 
       {/* Completion Checklist */}
       <h3 className="font-heading" style={subHeading}>{lab.completionChecklist.heading}</h3>
