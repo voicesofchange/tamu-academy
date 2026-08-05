@@ -675,7 +675,7 @@ export const MENTAL_HEALTH_MODULE_4_LESSON = {
   knowledgeCheck: {
     heading: 'MODULE 4 KNOWLEDGE CHECK',
     subtitle: 'Community Healing in Practice',
-    learnerInstruction: 'Five multiple choice questions. Answer at least four of the five questions correctly to pass. Feedback appears only after submission. Learners may review feedback and retry.',
+    learnerInstruction: 'Answer every question. Select one answer per question. Answer at least four of the five questions correctly to pass. This learner copy does not include answers.',
     privacyNotice: 'This assessment checks understanding of course concepts. It does not ask for personal mental health information and does not evaluate anyone\'s health or diagnosis.',
     passingScore: 4,
     questions: [
