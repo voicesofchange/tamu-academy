@@ -242,6 +242,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
   const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
+  const nextModule = moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
 
   const [reflectionSentence, setReflectionSentence] = useState('');
   const [reflectionSupportPathway, setReflectionSupportPathway] = useState('');
@@ -559,6 +560,15 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
           ) : (
             <span aria-disabled="true" title="This is the first module" style={navDisabledStyle}>
               &larr; Start of course
+            </span>
+          )}
+          {nextModule ? (
+            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>
+              {nextModule.number} &rarr;
+            </Link>
+          ) : (
+            <span aria-disabled="true" title="This is the final module" style={navDisabledStyle}>
+              End of course &rarr;
             </span>
           )}
         </div>

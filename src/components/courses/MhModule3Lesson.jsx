@@ -152,6 +152,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
   const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
+  const nextModule = moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
 
   const [reflectionSentence, setReflectionSentence] = useState('');
   const [reflectionValue, setReflectionValue] = useState('');
@@ -620,6 +621,15 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
           ) : (
             <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>
               &larr; Start of course
+            </span>
+          )}
+          {nextModule ? (
+            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>
+              {nextModule.number} &rarr;
+            </Link>
+          ) : (
+            <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>
+              End of course &rarr;
             </span>
           )}
         </div>
