@@ -1,5 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
-import { getMentalHealthModuleContent } from '../../shared/mental-health-curriculum.js';
+import {
+  getMentalHealthModuleContent,
+  isModulePublished,
+  getModulePrerequisite,
+} from '../../shared/mental-health-curriculum.js';
 
 /**
  * Role-gated endpoint that returns the Mental Health pillar module
@@ -53,9 +57,10 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       user = null;
     }
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const isAdmin = user.role === 'admin';
 
     let body = {};
     try {
@@ -85,6 +90,37 @@ export default async function(req: Request): Promise<Response> {
     const moduleContent = getMentalHealthModuleContent(courseSlug, moduleRoute);
     if (!moduleContent) {
       return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Non-admin learners must be enrolled, the module must be published,
+    // and any prerequisite module must be completed before content is
+    // released. Admins bypass these checks to preview in-development
+    // modules.
+    if (!isAdmin) {
+      const isPublished = isModulePublished(courseSlug, moduleRoute);
+      if (!isPublished) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        status: 'active',
+      });
+      if (!enrollmentRows || enrollmentRows.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const prereqRoute = getModulePrerequisite(courseSlug, moduleRoute);
+      if (prereqRoute) {
+        const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: prereqRoute,
+          status: 'completed',
+        });
+        if (!prereqRows || prereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      }
     }
 
     return Response.json({ module: moduleContent });

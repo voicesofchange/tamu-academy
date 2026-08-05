@@ -149,6 +149,7 @@ export default async function(req: Request): Promise<Response> {
 
     return Response.json({
       courseSlug,
+      hasEnrollment,
       modules: moduleStatuses,
       completedCount,
       totalModules,
