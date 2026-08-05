@@ -76,6 +76,148 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
+    // --- Module 4 branch (Tumaini Youth Wellness 5-decision scenario) ---
+    // The Module 4 scenario has five sequential decisions, each with
+    // three options. The function supports two modes:
+    //   1. Per-decision feedback: { courseSlug, moduleSlug, scenarioId,
+    //      decisionId, selectedIndex } -> { feedback, progressSaved }
+    //   2. Scenario completion: { courseSlug, moduleSlug, scenarioId,
+    //      completeScenario: true, decisions: [{ decisionId, selectedIndex }, ...] }
+    //      -> { completed, progressSaved }
+    // The server validates all decisions but never stores or logs the
+    // selections. interactive_scenario_completed_at is set only when
+    // eligible (published + enrolled) and only after a complete set of
+    // five valid decision responses.
+    if (body && typeof body === 'object' && body.moduleSlug === 'module-4') {
+      const m4AllowedKeys = new Set([
+        'courseSlug', 'moduleSlug', 'scenarioId',
+        'decisionId', 'selectedIndex',
+        'completeScenario', 'decisions',
+      ]);
+      for (const k of Object.keys(body)) {
+        if (!m4AllowedKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+      const m4CourseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
+      const m4ScenarioId = typeof body.scenarioId === 'string' ? body.scenarioId : '';
+      if (!m4CourseSlug) {
+        return Response.json({ error: 'Invalid course slug' }, { status: 400 });
+      }
+      if (!m4ScenarioId) {
+        return Response.json({ error: 'Invalid scenario identifier' }, { status: 400 });
+      }
+      if (!isScenarioSupported(m4CourseSlug, 'module-4', m4ScenarioId)) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+
+      // Access control (same pattern as Module 3).
+      let m4CanRecord = false;
+      if (isAdmin) {
+        const m4Published = isModulePublished(m4CourseSlug, 'module-4');
+        const m4Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id, course_slug: m4CourseSlug, status: 'active',
+        });
+        m4CanRecord = m4Published && !!(m4Enrollment && m4Enrollment.length > 0);
+      } else {
+        const m4Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id, course_slug: m4CourseSlug, status: 'active',
+        });
+        if (!m4Enrollment || m4Enrollment.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        if (!isModulePublished(m4CourseSlug, 'module-4')) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        const m4Prereq = getModulePrerequisite(m4CourseSlug, 'module-4');
+        if (m4Prereq) {
+          const m4PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id, course_slug: m4CourseSlug, module_slug: m4Prereq, status: 'completed',
+          });
+          if (!m4PrereqRows || m4PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+        m4CanRecord = true;
+      }
+
+      const m4Answer = getScenarioAnswer(m4CourseSlug, 'module-4', m4ScenarioId);
+      if (!m4Answer) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+
+      // Mode: completion vs per-decision feedback.
+      if (body.completeScenario === true) {
+        const m4Decisions = body.decisions;
+        if (!Array.isArray(m4Decisions) || m4Decisions.length !== m4Answer.decisionsCount) {
+          return Response.json({ error: 'Invalid decisions' }, { status: 400 });
+        }
+        const m4SeenIds = new Set();
+        for (const entry of m4Decisions) {
+          if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+            return Response.json({ error: 'Invalid decision entry' }, { status: 400 });
+          }
+          const m4EntryKeys = new Set(['decisionId', 'selectedIndex']);
+          for (const k of Object.keys(entry)) {
+            if (!m4EntryKeys.has(k)) {
+              return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+            }
+          }
+          const entryDecisionId = typeof entry.decisionId === 'string' ? entry.decisionId : '';
+          const entryIndex = entry.selectedIndex;
+          if (!entryDecisionId) {
+            return Response.json({ error: 'Invalid decision identifier' }, { status: 400 });
+          }
+          const decision = m4Answer.decisions.find((d) => d.decisionId === entryDecisionId);
+          if (!decision) {
+            return Response.json({ error: 'Unknown decision' }, { status: 400 });
+          }
+          if (m4SeenIds.has(entryDecisionId)) {
+            return Response.json({ error: 'Duplicate decision' }, { status: 400 });
+          }
+          m4SeenIds.add(entryDecisionId);
+          if (typeof entryIndex !== 'number' || !Number.isInteger(entryIndex) || entryIndex < 0 || entryIndex >= decision.optionsCount) {
+            return Response.json({ error: 'Invalid selection' }, { status: 400 });
+          }
+        }
+        // All decisions validated. Mark completion if eligible.
+        if (m4CanRecord) {
+          const m4Now = new Date().toISOString();
+          const m4Rows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id, course_slug: m4CourseSlug, module_slug: 'module-4',
+          });
+          const m4Row = m4Rows && m4Rows.length > 0 ? m4Rows[0] : null;
+          if (!m4Row) {
+            await base44.asServiceRole.entities.ModuleProgress.create({
+              learner_id: user.id, course_slug: m4CourseSlug, module_slug: 'module-4',
+              status: 'in_progress', interactive_scenario_completed_at: m4Now, updated_at: m4Now,
+            });
+          } else if (!m4Row.interactive_scenario_completed_at) {
+            await base44.asServiceRole.entities.ModuleProgress.update(m4Row.id, {
+              interactive_scenario_completed_at: m4Now, updated_at: m4Now,
+            });
+          }
+        }
+        return Response.json({ completed: true, progressSaved: m4CanRecord });
+      }
+
+      // Per-decision feedback mode.
+      const m4DecisionId = typeof body.decisionId === 'string' ? body.decisionId : '';
+      const m4RawIndex = body.selectedIndex;
+      if (!m4DecisionId) {
+        return Response.json({ error: 'Invalid decision identifier' }, { status: 400 });
+      }
+      const m4Decision = m4Answer.decisions.find((d) => d.decisionId === m4DecisionId);
+      if (!m4Decision) {
+        return Response.json({ error: 'Unknown decision' }, { status: 404 });
+      }
+      if (typeof m4RawIndex !== 'number' || !Number.isInteger(m4RawIndex) || m4RawIndex < 0 || m4RawIndex >= m4Decision.optionsCount) {
+        return Response.json({ error: 'Invalid selection' }, { status: 400 });
+      }
+      const m4Feedback = m4Decision.feedbackByOption[m4RawIndex] || '';
+      return Response.json({ feedback: m4Feedback, progressSaved: m4CanRecord });
+    }
+
     // Reject any browser-supplied protected / unexpected field.
     const allowedKeys = new Set([
       'courseSlug',

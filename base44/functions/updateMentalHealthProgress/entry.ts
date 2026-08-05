@@ -9,6 +9,9 @@ import {
   isModule3SelfAttestedKey,
   getModule3CompletionField,
   deriveModule3CompletedKeys,
+  isModule4SelfAttestedKey,
+  getModule4CompletionField,
+  deriveModule4CompletedKeys,
   isSectionAllowed,
   MENTAL_HEALTH_COURSE_SLUG,
 } from '../../shared/mental-health-curriculum.js';
@@ -163,6 +166,16 @@ function isAllowedActionShape(raw) {
         moduleRoute: raw.moduleRoute,
         payload: { requirementKey: raw.requirementKey },
       };
+    case 'acknowledge_module4_requirement':
+      if (typeof raw.requirementKey !== 'string' || raw.requirementKey.length === 0 || raw.requirementKey.length > 64) {
+        return null;
+      }
+      return {
+        action: raw.action,
+        courseSlug: raw.courseSlug,
+        moduleRoute: raw.moduleRoute,
+        payload: { requirementKey: raw.requirementKey },
+      };
     default:
       return null;
   }
@@ -223,6 +236,21 @@ export default async function(req: Request): Promise<Response> {
       ]);
       for (const k of Object.keys(body)) {
         if (!m3AllowedBodyKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+    }
+
+    // Module 4 request boundary: same allowlist pattern as Module 3.
+    if (body && typeof body === 'object' && body.action === 'acknowledge_module4_requirement') {
+      const m4AllowedBodyKeys = new Set([
+        'courseSlug',
+        'moduleRoute',
+        'action',
+        'requirementKey',
+      ]);
+      for (const k of Object.keys(body)) {
+        if (!m4AllowedBodyKeys.has(k)) {
           return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
         }
       }
@@ -413,6 +441,81 @@ export default async function(req: Request): Promise<Response> {
       );
       return Response.json({
         completedKeys: deriveModule3CompletedKeys(m3Updated),
+        action: msg.action,
+      });
+    }
+
+    // Module 4 progress acknowledgment.
+    // Isolated branch: only for module-4, only the three self-attestable
+    // keys, refuses during unpublished preview for ALL users (including
+    // admins). Request body allowlist is enforced above.
+    if (msg.action === 'acknowledge_module4_requirement') {
+      if (msg.moduleRoute !== 'module-4') {
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
+      }
+      if (!isModule4SelfAttestedKey(msg.payload.requirementKey)) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      if (!isModulePublished(msg.courseSlug, msg.moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m4Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        status: 'active',
+      });
+      if (!m4Enrollment || m4Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (!isAdmin) {
+        const m4Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
+        if (m4Prereq) {
+          const m4PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: msg.courseSlug,
+            module_slug: m4Prereq,
+            status: 'completed',
+          });
+          if (!m4PrereqRows || m4PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+      }
+      const m4Field = getModule4CompletionField(msg.payload.requirementKey);
+      if (!m4Field) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      const m4Now = new Date().toISOString();
+      const m4Existing = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        module_slug: msg.moduleRoute,
+      });
+      const m4ExistingRow = m4Existing && m4Existing.length > 0 ? m4Existing[0] : null;
+      if (!m4ExistingRow) {
+        const m4Created = await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: msg.moduleRoute,
+          status: 'in_progress',
+          [m4Field]: m4Now,
+          updated_at: m4Now,
+        });
+        return Response.json({
+          completedKeys: deriveModule4CompletedKeys(m4Created),
+          action: msg.action,
+        });
+      }
+      const m4Patch: Record<string, string> = { updated_at: m4Now };
+      if (!m4ExistingRow[m4Field]) {
+        m4Patch[m4Field] = m4Now;
+      }
+      const m4Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+        m4ExistingRow.id,
+        m4Patch,
+      );
+      return Response.json({
+        completedKeys: deriveModule4CompletedKeys(m4Updated),
         action: msg.action,
       });
     }

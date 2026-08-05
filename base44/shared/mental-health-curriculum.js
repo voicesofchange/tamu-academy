@@ -80,6 +80,17 @@ import {
   deriveModule3CompletedKeys,
 } from './mental-health-module-3-content.js';
 
+import {
+  MENTAL_HEALTH_MODULE_4_LESSON,
+  MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_4_SELF_ATTESTED_KEYS,
+  isModule4CompletionKey,
+  isModule4SelfAttestedKey,
+  getModule4CompletionField,
+  deriveModule4CompletedKeys,
+} from './mental-health-module-4-content.js';
+
 // Re-export Module 3 content so backend functions can import from
 // this single entry point (same pattern as Module 2).
 export {
@@ -91,6 +102,19 @@ export {
   isModule3SelfAttestedKey,
   getModule3CompletionField,
   deriveModule3CompletedKeys,
+};
+
+// Re-export Module 4 content so backend functions can import from
+// this single entry point (same pattern as Module 3).
+export {
+  MENTAL_HEALTH_MODULE_4_LESSON,
+  MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_4_SELF_ATTESTED_KEYS,
+  isModule4CompletionKey,
+  isModule4SelfAttestedKey,
+  getModule4CompletionField,
+  deriveModule4CompletedKeys,
 };
 
 export const MENTAL_HEALTH_COURSE_SLUG = 'mental-health-community-and-culture';
@@ -220,10 +244,27 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       route: 'module-4',
       number: 'Module 4',
       title: 'Community Healing in Practice: Friendship Bench, StrongMinds, and Brother Be Well',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: 'module-3',
-      sections: [],
+      sections: [
+        'module-overview',
+        'learning-objectives',
+        'core-media',
+        'questions-to-consider',
+        'tamu-introduction',
+        'explanation',
+        'key-concepts',
+        'comparative-program-summaries',
+        'interactive-scenario',
+        'care-design-lab',
+        'private-reflection',
+        'knowledge-check',
+        'completion-requirements',
+        'optional-extended-assignment',
+        'closing-section',
+        'sources-further-learning',
+      ],
     },
     {
       route: 'module-5',
@@ -1636,6 +1677,12 @@ export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
       scenarioId,
     );
   }
+  if (moduleRoute === 'module-4') {
+    return Object.prototype.hasOwnProperty.call(
+      MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS,
+      scenarioId,
+    );
+  }
   return false;
 }
 
@@ -1650,6 +1697,9 @@ export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
   }
   if (moduleRoute === 'module-3') {
     return MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS[scenarioId];
+  }
+  if (moduleRoute === 'module-4') {
+    return MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS[scenarioId];
   }
   return null;
 }
@@ -1817,6 +1867,34 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     // only in the separate checkMentalHealthKnowledgeCheck backend
     // function, after a valid submission.
     const lesson = MENTAL_HEALTH_MODULE_3_LESSON;
+    const sanitizedLesson = { ...lesson };
+    if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
+      sanitizedLesson.knowledgeCheck = {
+        heading: lesson.knowledgeCheck.heading,
+        subtitle: lesson.knowledgeCheck.subtitle,
+        learnerInstruction: lesson.knowledgeCheck.learnerInstruction,
+        privacyNotice: lesson.knowledgeCheck.privacyNotice,
+        passingScore: lesson.knowledgeCheck.passingScore,
+        questions: lesson.knowledgeCheck.questions.map((q) => ({
+          id: q.id,
+          prompt: q.prompt,
+          options: q.options,
+        })),
+      };
+    }
+    return { ...baseShell, lesson: sanitizedLesson };
+  }
+  if (m.route === 'module-4') {
+    // Module 4: same sanitization pattern as Module 3. The knowledge
+    // check carries the protected answer key (correctAnswerIndex +
+    // feedback) inline as the server-side source of truth. Before the
+    // lesson is returned to the browser, the answer-key fields are
+    // stripped from each question. The interactive scenario carries
+    // only the public-facing decision prompts and options; the
+    // feedbackByOption arrays stay exclusively in
+    // MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS and are released only by
+    // checkMentalHealthScenario after a valid submission.
+    const lesson = MENTAL_HEALTH_MODULE_4_LESSON;
     const sanitizedLesson = { ...lesson };
     if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
       sanitizedLesson.knowledgeCheck = {
