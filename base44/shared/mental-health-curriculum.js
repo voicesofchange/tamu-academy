@@ -91,6 +91,17 @@ import {
   deriveModule4CompletedKeys,
 } from './mental-health-module-4-content.js';
 
+import {
+  MENTAL_HEALTH_MODULE_5_LESSON,
+  MENTAL_HEALTH_MODULE_5_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_5_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_5_SELF_ATTESTED_KEYS,
+  isModule5CompletionKey,
+  isModule5SelfAttestedKey,
+  getModule5CompletionField,
+  deriveModule5CompletedKeys,
+} from './mental-health-module-5-content.js';
+
 // Re-export Module 3 content so backend functions can import from
 // this single entry point (same pattern as Module 2).
 export {
@@ -115,6 +126,19 @@ export {
   isModule4SelfAttestedKey,
   getModule4CompletionField,
   deriveModule4CompletedKeys,
+};
+
+// Re-export Module 5 content so backend functions can import from
+// this single entry point (same pattern as Module 4).
+export {
+  MENTAL_HEALTH_MODULE_5_LESSON,
+  MENTAL_HEALTH_MODULE_5_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_5_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_5_SELF_ATTESTED_KEYS,
+  isModule5CompletionKey,
+  isModule5SelfAttestedKey,
+  getModule5CompletionField,
+  deriveModule5CompletedKeys,
 };
 
 export const MENTAL_HEALTH_COURSE_SLUG = 'mental-health-community-and-culture';
@@ -270,10 +294,25 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       route: 'module-5',
       number: 'Module 5',
       title: 'Faith, Tradition, and Professional Care: Bridging Spiritual Supports and Clinical Pathways',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: 'module-4',
-      sections: [],
+      sections: [
+        'module-overview',
+        'learning-objectives',
+        'core-media',
+        'questions-to-consider',
+        'tamu-introduction',
+        'explanation',
+        'interactive-scenario',
+        'pathways-lab',
+        'private-reflection',
+        'knowledge-check',
+        'completion-requirements',
+        'optional-extended-assignment',
+        'closing-section',
+        'sources-further-learning',
+      ],
     },
     {
       route: 'module-6',
