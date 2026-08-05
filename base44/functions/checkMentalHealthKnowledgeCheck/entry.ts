@@ -67,8 +67,12 @@ import {
  *     totalQuestions: <integer>,
  *     passingScore: <integer>,
  *     passed: <boolean>,
- *     feedback: [{ questionId: string, isCorrect: boolean, feedback: string }]
+ *     feedback: [{ questionId: string, isCorrect: boolean, feedback: string, correctAnswerText: string }]
  *   }
+ *
+ *   correctAnswerText is the text of the correct option (not its index),
+ *   released only after a complete valid submission. The underlying
+ *   correctAnswerIndex and complete answer map never leave the server.
  */
 export default async function(req: Request): Promise<Response> {
   try {
@@ -234,6 +238,7 @@ export default async function(req: Request): Promise<Response> {
         questionId,
         isCorrect,
         feedback: question.feedback,
+        correctAnswerText: question.options[question.correctAnswerIndex],
       });
     }
 

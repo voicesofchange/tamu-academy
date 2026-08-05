@@ -169,7 +169,7 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
         </React.Fragment>
       ))}
 
-      {/* 10. Mwangaza Care Partnership scenario */}
+      {/* 10. Interactive scenario */}
       <PageSection id="interactive-scenario" eyebrow="Interactive Scenario" heading={lesson.interactiveScenario.title}>
         {safetyNoteBox('Content and safety note before interactive scenario')}
         <MhMwangazaScenario courseSlug={course.slug} moduleSlug={mod.route} scenario={lesson.interactiveScenario} />

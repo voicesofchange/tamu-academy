@@ -111,6 +111,12 @@ export default function MhModule5KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               {qResult && (
                 <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${qResult.isCorrect ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
                   <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', color: qResult.isCorrect ? '#D4A12A' : '#e8955c', fontWeight: 500 }}>{qResult.isCorrect ? 'Correct' : 'Reconsider'}</p>
+                  {typeof selections[q.id] === 'number' && (
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: 'rgba(245,239,224,0.6)', fontWeight: 500 }}>Your answer:</span> <span style={{ color: '#F5EFE0' }}>{q.options[selections[q.id]]}</span></p>
+                  )}
+                  {qResult.correctAnswerText && (
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: '#D4A12A', fontWeight: 500 }}>Correct answer:</span> <span style={{ color: '#F5EFE0' }}>{qResult.correctAnswerText}</span></p>
+                  )}
                   <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(245,239,224,0.7)', fontSize: '0.88rem' }}>{qResult.feedback}</p>
                 </div>
               )}
