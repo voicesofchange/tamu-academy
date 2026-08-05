@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/lib/AuthContext';
 
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
@@ -16,6 +17,10 @@ export default function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef(null);
+  const { isAuthenticated } = useAuth();
+  const navLinks = isAuthenticated
+    ? [...NAV_LINKS.slice(0, 3), { label: 'My Courses', to: '/my-courses' }, ...NAV_LINKS.slice(3)]
+    : NAV_LINKS;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -89,7 +94,7 @@ export default function TopNav() {
 
         {/* Desktop nav */}
         <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.65rem, 1.8vw, 1.5rem)' }} className="tamu-desktop-nav">
-          {NAV_LINKS.map(({ label, to }) => {
+          {navLinks.map(({ label, to }) => {
             const active = location.pathname === to;
             return (
               <Link
@@ -168,7 +173,7 @@ export default function TopNav() {
           gap: '0',
         }}
       >
-        {NAV_LINKS.map(({ label, to }) => {
+        {navLinks.map(({ label, to }) => {
           const active = location.pathname === to;
           return (
             <Link

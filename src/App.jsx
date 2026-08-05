@@ -48,6 +48,7 @@ import MhCertificate from './pages/MhCertificate';
 import MhInsights from './pages/MhInsights';
 import EconomicsCourseCompletion from './pages/EconomicsCourseCompletion';
 import EconomicsCertificate from './pages/EconomicsCertificate';
+import MyCourses from './pages/MyCourses';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -79,6 +80,7 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
+      <Route path="/my-courses" element={<MyCourses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
