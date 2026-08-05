@@ -80,9 +80,9 @@ const AuthenticatedApp = () => {
       <Route element={<SoftLaunchGate />}>
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
-      <Route path="/courses" element={<Courses />} />
       {/* Protected Routes — login required for all curriculum access */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+        <Route path="/courses" element={<Courses />} />
         <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
