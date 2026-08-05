@@ -128,7 +128,7 @@ export default function Register() {
     <AuthLayout
       icon={UserPlus}
       title="Create your account"
-      subtitle="Sign up to get started"
+      subtitle="Join Tamu Academy and get immediate access to our courses."
       footer={
         <>
           Already have an account?{" "}
