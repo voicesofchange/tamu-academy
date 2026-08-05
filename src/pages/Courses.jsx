@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
+import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
@@ -19,6 +20,7 @@ const COURSE_AREAS = [
     courses: [
       {
         title: 'Mental Health, Community and Culture',
+        slug: 'mental-health-community-and-culture',
         status: 'In Development',
         description:
           'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
@@ -33,6 +35,7 @@ const COURSE_AREAS = [
     courses: [
       {
         title: 'Understanding African Economies and the Global System',
+        slug: 'understanding-african-economies-and-the-global-system',
         status: 'In Development',
         description:
           'A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa\'s position within the global economy.',
@@ -113,6 +116,30 @@ const COURSE_COMPONENTS = [
 ];
 
 export default function Courses() {
+  const [pubStatus, setPubStatus] = useState({});
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await base44.functions.invoke('getPublicationStatus', {});
+        if (!cancelled && res && res.data && res.data.courses) {
+          setPubStatus(res.data.courses);
+        }
+      } catch (err) {
+        // Publication status unavailable — fall back to default labels.
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  function statusFor(course) {
+    if (!course.slug) return course.status;
+    const ps = pubStatus[course.slug];
+    if (ps && ps.isLive) return 'Now Available';
+    return course.status;
+  }
+
   return (
     <PageLayout>
       <PageMeta
@@ -141,7 +168,9 @@ export default function Courses() {
             </p>
           )}
 
-          {area.courses.map((course) => (
+          {area.courses.map((course) => {
+            const coursePath = course.slug ? `/courses/${course.slug}` : null;
+            return (
             <motion.div
               key={course.title}
               initial={{ opacity: 0, y: 16 }}
@@ -151,27 +180,40 @@ export default function Courses() {
               style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '1.25rem' }}
             >
               <div style={{ marginBottom: '0.85rem' }}>
-                <StatusBadge label={course.status} />
+                <StatusBadge label={statusFor(course)} />
               </div>
               <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.85rem' }}>
                 {course.title}
               </h3>
-              <p className="font-body" style={{ ...bodyText, margin: 0 }}>
+              <p className="font-body" style={{ ...bodyText, margin: coursePath ? '0 0 1.25rem' : 0 }}>
                 {course.description}
               </p>
+              {coursePath && (
+                <Link
+                  to={coursePath}
+                  style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
+                >
+                  Explore the Course &rarr;
+                </Link>
+              )}
             </motion.div>
-          ))}
+            );
+          })}
 
           {area.id === 'economics-and-development' && (
             <>
               <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginTop: '1.75rem', marginBottom: '1rem' }}>
                 Competency-Based Learning Tracks
               </span>
-              {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => (
+              {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => {
+                const econPs = pubStatus['understanding-african-economies-and-the-global-system'];
+                const trackStatus = econPs && econPs.isLive ? 'Now Available' : track.status;
+                return (
                 <div key={track.slug} style={{ marginBottom: '1.25rem' }}>
-                  <TrackCard track={track} />
+                  <TrackCard track={{ ...track, status: trackStatus }} />
                 </div>
-              ))}
+                );
+              })}
             </>
           )}
 
