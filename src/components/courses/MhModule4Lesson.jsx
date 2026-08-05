@@ -147,7 +147,12 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
         {renderParagraphs(lesson.tamuIntroduction.paragraphs)}
       </PageSection>
 
-      {lesson.explanation.map((section) => renderExplanation(section))}
+      {lesson.explanation.map((section) => (
+        <React.Fragment key={section.sectionId}>
+          {section.sectionId === 'friendship-bench-case' && safetyNoteBox('Content and safety note before case studies')}
+          {renderExplanation(section)}
+        </React.Fragment>
+      ))}
 
       <PageSection id="key-concepts" eyebrow="Concepts" heading="Key Concepts and Definitions">
         {renderConcepts(lesson.keyConcepts)}
@@ -221,7 +226,6 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
 
       <PageSection id="closing-section" eyebrow="Closing" heading={lesson.closing.heading}>
         {renderParagraphs(lesson.closing.paragraphs)}
-        <p className="font-body" style={{ ...bodyText, marginTop: '1.25rem', marginBottom: '1.25rem' }}>{lesson.closing.transition}</p>
         <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Educational disclaimer</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.closing.finalDisclaimer}</p>
@@ -262,6 +266,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
           )}
         </div>
         <Link to={coursePath} className="font-body" style={navLinkStyle}>&larr; Return to Course</Link>
+        <p className="font-body" style={{ ...bodyText, marginTop: '1.5rem', marginBottom: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>{lesson.closing.transition}</p>
       </nav>
     </PageLayout>
   );

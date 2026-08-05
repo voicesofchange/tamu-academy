@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 
 const bodyText = {
@@ -80,18 +80,48 @@ function optionLabel(i) {
  * live only in React component state (in-memory) — they are NOT piped
  * to any entity, browser storage, cookie, log, analytics, or URL.
  *
- * After all five decisions have valid selections, a summary appears
- * with the five required headings and the final design message.
+ * COMPLETION BEHAVIOR:
+ *   1. Each decision requests only its associated protected feedback.
+ *   2. Changing a selection clears the previous feedback before
+ *      requesting updated feedback.
+ *   3. After all five current decisions have valid feedback, the
+ *      frontend automatically submits the complete five-decision set
+ *      to the existing server completion path.
+ *   4. The final summary does not appear until the server returns
+ *      completed: true.
+ *   5. A single decision response always returns progressSaved: false.
+ *   6. The complete administrator preview response returns
+ *      completed: true, progressSaved: false.
+ *   7. Duplicate completion requests for the same completed set are
+ *      prevented via a ref guard.
+ *   8. Changing a decision after completion clears the completion
+ *      state and causes the revised complete set to be validated.
+ *   9. Selections, feedback, errors, and completion signatures remain
+ *      in temporary component memory only.
+ *  10. No submitted values are stored or logged.
+ *  11. Only a future eligible complete scenario request may write
+ *      interactive_scenario_completed_at.
  */
 export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) {
   const [selections, setSelections] = useState({});
   const [feedbacks, setFeedbacks] = useState({});
   const [pendingDecision, setPendingDecision] = useState(null);
   const [errorText, setErrorText] = useState(null);
+  const [completed, setCompleted] = useState(false);
+  const [completionPending, setCompletionPending] = useState(false);
+  const completionRequestedRef = useRef(false);
 
   async function handleSelect(decisionId, optionIndex) {
-    setSelections((prev) => ({ ...prev, [decisionId]: optionIndex }));
+    // Clear previous feedback and completion before requesting new feedback.
+    setFeedbacks((prev) => {
+      const next = { ...prev };
+      delete next[decisionId];
+      return next;
+    });
+    setCompleted(false);
+    completionRequestedRef.current = false;
     setErrorText(null);
+    setSelections((prev) => ({ ...prev, [decisionId]: optionIndex }));
     setPendingDecision(decisionId);
     try {
       const res = await base44.functions.invoke('checkMentalHealthScenario', {
@@ -114,6 +144,50 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
   const allAnswered = scenario.decisions.every(
     (d) => typeof selections[d.decisionId] === 'number' && feedbacks[d.decisionId],
   );
+
+  // Auto-submit completion when all five decisions have valid feedback.
+  // Prevents duplicate requests via a ref guard. Re-validates when a
+  // decision changes after completion (handleSelect resets the ref).
+  useEffect(() => {
+    if (!allAnswered || completed || completionPending || completionRequestedRef.current) return;
+    if (pendingDecision) return;
+
+    completionRequestedRef.current = true;
+    setCompletionPending(true);
+
+    const decisionsPayload = scenario.decisions.map((d) => ({
+      decisionId: d.decisionId,
+      selectedIndex: selections[d.decisionId],
+    }));
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await base44.functions.invoke('checkMentalHealthScenario', {
+          courseSlug,
+          moduleSlug,
+          scenarioId: scenario.scenarioId,
+          completeScenario: true,
+          decisions: decisionsPayload,
+        });
+        if (cancelled) return;
+        const data = res && res.data ? res.data : null;
+        if (data && data.completed) {
+          setCompleted(true);
+        } else {
+          completionRequestedRef.current = false;
+        }
+      } catch (err) {
+        if (cancelled) return;
+        setErrorText('We could not complete your scenario right now. Please try again.');
+        completionRequestedRef.current = false;
+      } finally {
+        if (!cancelled) setCompletionPending(false);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [allAnswered, completed, completionPending, pendingDecision, courseSlug, moduleSlug, scenario.scenarioId, scenario.decisions, selections]);
 
   return (
     <div>
@@ -170,7 +244,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
                           name={`m4-scenario-${decision.decisionId}`}
                           value={i}
                           checked={isSelected || false}
-                          disabled={isPending}
+                          disabled={isPending || completionPending}
                           onChange={() => handleSelect(decision.decisionId, i)}
                           style={{ marginTop: '0.18rem' }}
                           aria-label={`Option ${optionLabel(i)}: ${opt}`}
@@ -212,7 +286,13 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
         </p>
       )}
 
-      {allAnswered && (
+      {completionPending && (
+        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>
+          Completing scenario…
+        </p>
+      )}
+
+      {completed && (
         <div role="status" aria-live="polite">
           <div style={summaryBoxStyle}>
             <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>

@@ -215,7 +215,7 @@ export default async function(req: Request): Promise<Response> {
         return Response.json({ error: 'Invalid selection' }, { status: 400 });
       }
       const m4Feedback = m4Decision.feedbackByOption[m4RawIndex] || '';
-      return Response.json({ feedback: m4Feedback, progressSaved: m4CanRecord });
+      return Response.json({ feedback: m4Feedback, progressSaved: false });
     }
 
     // Reject any browser-supplied protected / unexpected field.
