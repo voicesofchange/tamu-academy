@@ -5,6 +5,7 @@ import {
   MENTAL_HEALTH_MODULE_4_LESSON,
   MENTAL_HEALTH_MODULE_5_LESSON,
   MENTAL_HEALTH_MODULE_6_LESSON,
+  MENTAL_HEALTH_MODULE_7_LESSON,
   courseExists,
   getModulePrerequisite,
   isModulePublished,
@@ -124,7 +125,7 @@ export default async function(req: Request): Promise<Response> {
 
     // This grader supports Module 2 and Module 3. Module 1 uses the
     // recording submitMentalHealthQuiz grader.
-    if (!courseExists(courseSlug) || (moduleSlug !== 'module-2' && moduleSlug !== 'module-3' && moduleSlug !== 'module-4' && moduleSlug !== 'module-5' && moduleSlug !== 'module-6')) {
+    if (!courseExists(courseSlug) || (moduleSlug !== 'module-2' && moduleSlug !== 'module-3' && moduleSlug !== 'module-4' && moduleSlug !== 'module-5' && moduleSlug !== 'module-6' && moduleSlug !== 'module-7')) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
@@ -180,6 +181,8 @@ export default async function(req: Request): Promise<Response> {
       ? MENTAL_HEALTH_MODULE_5_LESSON.knowledgeCheck
       : moduleSlug === 'module-6'
       ? MENTAL_HEALTH_MODULE_6_LESSON.knowledgeCheck
+      : moduleSlug === 'module-7'
+      ? MENTAL_HEALTH_MODULE_7_LESSON.knowledgeCheck
       : MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
     if (!knowledgeCheck || !Array.isArray(knowledgeCheck.questions)) {
       // Defensive — no knowledge check configured.
@@ -246,7 +249,7 @@ export default async function(req: Request): Promise<Response> {
       // index) after a complete valid submission. Modules 2 through 4
       // retain their previous response behavior (questionId, isCorrect,
       // feedback only) — no correctAnswerText is sent to those clients.
-      if (moduleSlug === 'module-5' || moduleSlug === 'module-6') {
+      if (moduleSlug === 'module-5' || moduleSlug === 'module-6' || moduleSlug === 'module-7') {
         gradedEntry.correctAnswerText = question.options[question.correctAnswerIndex];
       }
       gradedFeedback.push(gradedEntry);

@@ -9,11 +9,13 @@ import {
   MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS,
   MENTAL_HEALTH_MODULE_5_COMPLETION_KEYS,
   MENTAL_HEALTH_MODULE_6_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS,
   deriveModule2CompletedKeys,
   deriveModule3CompletedKeys,
   deriveModule4CompletedKeys,
   deriveModule5CompletedKeys,
   deriveModule6CompletedKeys,
+  deriveModule7CompletedKeys,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -626,6 +628,112 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({
         completed: true,
         completedAt: m6Created.completed_at || m6Now,
+      });
+    }
+
+    // --- Module 7 branch ---
+    // Isolated completion path for Module 7. Same pattern as Module 6:
+    // refuses during unpublished preview for ALL users (including admins).
+    // Derives all seven completion keys from server-side ModuleProgress.
+    // Module 7 has exactly seven completion conditions.
+    if (moduleRoute === 'module-7') {
+      if (body && typeof body === 'object') {
+        for (const key of Object.keys(body)) {
+          if (PROTECTED_BODY_FIELDS.has(key)) {
+            return Response.json({ error: 'Forbidden field' }, { status: 403 });
+          }
+        }
+      }
+      const allowedM7Keys = new Set(['courseSlug', 'moduleRoute']);
+      for (const k of Object.keys(body)) {
+        if (!allowedM7Keys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+      if (!courseSlug || courseSlug !== MENTAL_HEALTH_COURSE_SLUG) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      const m7Config = getModuleConfig(courseSlug, moduleRoute);
+      if (!m7Config) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      // Administrator preview: admins may test the completion evaluation
+      // during unpublished development without persisting progress.
+      if (user.role === 'admin') {
+        return Response.json({
+          completed: false,
+          progressSaved: false,
+          missing: MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS,
+        });
+      }
+      if (!isModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m7Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        status: 'active',
+      });
+      if (!m7Enrollment || m7Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m7Prereq = getModulePrerequisite(courseSlug, moduleRoute);
+      if (m7Prereq) {
+        const m7PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: m7Prereq,
+          status: 'completed',
+        });
+        if (!m7PrereqRows || m7PrereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      }
+      const m7Rows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+      });
+      const m7Row = m7Rows && m7Rows.length > 0 ? m7Rows[0] : null;
+      const m7CompletedKeys = m7Row ? deriveModule7CompletedKeys(m7Row) : [];
+      const m7AllComplete = MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS.every(
+        (k) => m7CompletedKeys.includes(k),
+      );
+      if (!m7AllComplete) {
+        const missing = MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS.filter(
+          (k) => !m7CompletedKeys.includes(k),
+        );
+        return Response.json({ completed: false, missing });
+      }
+      if (m7Row && m7Row.status === 'completed' && m7Row.completed_at) {
+        return Response.json({
+          completed: true,
+          alreadyCompleted: true,
+          completedAt: m7Row.completed_at,
+        });
+      }
+      const m7Now = new Date().toISOString();
+      if (m7Row) {
+        const m7Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+          m7Row.id,
+          { status: 'completed', completed_at: m7Now, updated_at: m7Now },
+        );
+        return Response.json({
+          completed: true,
+          completedAt: m7Updated.completed_at || m7Now,
+        });
+      }
+      const m7Created = await base44.asServiceRole.entities.ModuleProgress.create({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+        status: 'completed',
+        completed_at: m7Now,
+        updated_at: m7Now,
+      });
+      return Response.json({
+        completed: true,
+        completedAt: m7Created.completed_at || m7Now,
       });
     }
 

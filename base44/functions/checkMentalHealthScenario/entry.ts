@@ -91,7 +91,7 @@ export default async function(req: Request): Promise<Response> {
     // eligible (published + enrolled) and only after a complete set of
     // valid decision responses. The decisionsCount is read from the
     // protected answer key, so the same branch handles both modules.
-    if (body && typeof body === 'object' && (body.moduleSlug === 'module-4' || body.moduleSlug === 'module-5' || body.moduleSlug === 'module-6')) {
+    if (body && typeof body === 'object' && (body.moduleSlug === 'module-4' || body.moduleSlug === 'module-5' || body.moduleSlug === 'module-6' || body.moduleSlug === 'module-7')) {
       const mSlug = body.moduleSlug;
       const m4AllowedKeys = new Set([
         'courseSlug', 'moduleSlug', 'scenarioId',

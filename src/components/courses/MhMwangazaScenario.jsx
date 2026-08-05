@@ -156,7 +156,7 @@ export default function MhMwangazaScenario({ courseSlug, moduleSlug, scenario })
               return (
                 <li key={i} style={{ marginBottom: '0.85rem' }}>
                   <label style={isSelected ? optionSelected : optionBase}>
-                    <input type="radio" name={`m5-scenario-${activeDecisionId}`} value={i} checked={isSelected || false} disabled={isPending}
+                    <input type="radio" name={`m7-scenario-${activeDecisionId}`} value={i} checked={isSelected || false} disabled={isPending}
                       onChange={() => handleSelect(activeDecisionId, i)} style={{ marginTop: '0.18rem' }} aria-label={`Option ${optionLabel(i)}: ${opt}`} />
                     <span style={{ flex: 1 }}><strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>{optionLabel(i)}.</strong> {opt}</span>
                   </label>
@@ -165,7 +165,7 @@ export default function MhMwangazaScenario({ courseSlug, moduleSlug, scenario })
             })}
           </ul>
         </fieldset>
-        {isPending && <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', margin: 0 }}>Loading feedback\u2026</p>}
+        {isPending && <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', margin: 0 }}>Loading feedback…</p>}
         {hasFeedback && !isPending && (
           <div role="status" aria-live="polite" style={feedbackBoxStyle}>
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Feedback</span>
@@ -181,7 +181,7 @@ export default function MhMwangazaScenario({ courseSlug, moduleSlug, scenario })
       </div>
 
       {completionPending && !completed && !completionError && (
-        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>Completing scenario\u2026</p>
+        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>Completing scenario…</p>
       )}
       {completionError && (
         <div role="alert" style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,149,28,0.4)', borderRadius: '4px', backgroundColor: 'rgba(232,149,28,0.04)', marginBottom: '1.5rem' }}>

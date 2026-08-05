@@ -6,11 +6,13 @@ import {
   MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS,
   MENTAL_HEALTH_MODULE_5_COMPLETION_KEYS,
   MENTAL_HEALTH_MODULE_6_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS,
   deriveModule2CompletedKeys,
   deriveModule3CompletedKeys,
   deriveModule4CompletedKeys,
   deriveModule5CompletedKeys,
   deriveModule6CompletedKeys,
+  deriveModule7CompletedKeys,
   isModulePublished,
 } from '../../shared/mental-health-curriculum.js';
 
@@ -81,7 +83,7 @@ export default async function(req: Request): Promise<Response> {
     if (courseSlug !== MENTAL_HEALTH_COURSE_SLUG) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
-    if (moduleRoute !== 'module-2' && moduleRoute !== 'module-3' && moduleRoute !== 'module-4' && moduleRoute !== 'module-5' && moduleRoute !== 'module-6') {
+    if (moduleRoute !== 'module-2' && moduleRoute !== 'module-3' && moduleRoute !== 'module-4' && moduleRoute !== 'module-5' && moduleRoute !== 'module-6' && moduleRoute !== 'module-7') {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
@@ -114,6 +116,7 @@ export default async function(req: Request): Promise<Response> {
     const isModule4 = moduleRoute === 'module-4';
     const isModule5 = moduleRoute === 'module-5';
     const isModule6 = moduleRoute === 'module-6';
+    const isModule7 = moduleRoute === 'module-7';
     const completionKeys = isModule3
       ? MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS
       : isModule4
@@ -122,9 +125,11 @@ export default async function(req: Request): Promise<Response> {
       ? MENTAL_HEALTH_MODULE_5_COMPLETION_KEYS
       : isModule6
       ? MENTAL_HEALTH_MODULE_6_COMPLETION_KEYS
+      : isModule7
+      ? MENTAL_HEALTH_MODULE_7_COMPLETION_KEYS
       : MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS;
     const completedKeys = row
-      ? (isModule3 ? deriveModule3CompletedKeys(row) : isModule4 ? deriveModule4CompletedKeys(row) : isModule5 ? deriveModule5CompletedKeys(row) : isModule6 ? deriveModule6CompletedKeys(row) : deriveModule2CompletedKeys(row))
+      ? (isModule3 ? deriveModule3CompletedKeys(row) : isModule4 ? deriveModule4CompletedKeys(row) : isModule5 ? deriveModule5CompletedKeys(row) : isModule6 ? deriveModule6CompletedKeys(row) : isModule7 ? deriveModule7CompletedKeys(row) : deriveModule2CompletedKeys(row))
       : [];
     const moduleCompleted = !!(row && row.status === 'completed' && row.completed_at);
     const completedAt = row && row.completed_at ? row.completed_at : null;

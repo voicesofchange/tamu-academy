@@ -18,6 +18,9 @@ import {
   isModule6SelfAttestedKey,
   getModule6CompletionField,
   deriveModule6CompletedKeys,
+  isModule7SelfAttestedKey,
+  getModule7CompletionField,
+  deriveModule7CompletedKeys,
   isSectionAllowed,
   MENTAL_HEALTH_COURSE_SLUG,
 } from '../../shared/mental-health-curriculum.js';
@@ -202,6 +205,16 @@ function isAllowedActionShape(raw) {
         moduleRoute: raw.moduleRoute,
         payload: { requirementKey: raw.requirementKey },
       };
+    case 'acknowledge_module7_requirement':
+      if (typeof raw.requirementKey !== 'string' || raw.requirementKey.length === 0 || raw.requirementKey.length > 64) {
+        return null;
+      }
+      return {
+        action: raw.action,
+        courseSlug: raw.courseSlug,
+        moduleRoute: raw.moduleRoute,
+        payload: { requirementKey: raw.requirementKey },
+      };
     default:
       return null;
   }
@@ -307,6 +320,21 @@ export default async function(req: Request): Promise<Response> {
       ]);
       for (const k of Object.keys(body)) {
         if (!m6AllowedBodyKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+    }
+
+    // Module 7 request boundary: same allowlist pattern as Module 6.
+    if (body && typeof body === 'object' && body.action === 'acknowledge_module7_requirement') {
+      const m7AllowedBodyKeys = new Set([
+        'courseSlug',
+        'moduleRoute',
+        'action',
+        'requirementKey',
+      ]);
+      for (const k of Object.keys(body)) {
+        if (!m7AllowedBodyKeys.has(k)) {
           return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
         }
       }
@@ -735,6 +763,92 @@ export default async function(req: Request): Promise<Response> {
       );
       return Response.json({
         completedKeys: deriveModule6CompletedKeys(m6Updated),
+        action: msg.action,
+      });
+    }
+
+    // Module 7 progress acknowledgment.
+    // Isolated branch: only for module-7, only the four self-attestable
+    // keys (core-media-reviewed, story-to-structure-reviewed, story-lab,
+    // course-closing-reviewed), refuses during unpublished preview for
+    // ALL users (including admins). Request body allowlist is enforced
+    // above. Module 7 has no private-reflection completion condition —
+    // the reflection is display only. The reflection_acknowledged_at
+    // field is used for the course-closing-reviewed condition.
+    if (msg.action === 'acknowledge_module7_requirement') {
+      if (msg.moduleRoute !== 'module-7') {
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
+      }
+      if (!isModule7SelfAttestedKey(msg.payload.requirementKey)) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      // Administrator preview: admins may test the acknowledgment flow
+      // during unpublished development without persisting progress.
+      if (isAdmin) {
+        return Response.json({
+          progressSaved: false,
+          completedKeys: [],
+          action: msg.action,
+        });
+      }
+      if (!isModulePublished(msg.courseSlug, msg.moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m7Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        status: 'active',
+      });
+      if (!m7Enrollment || m7Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m7Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
+      if (m7Prereq) {
+        const m7PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: m7Prereq,
+          status: 'completed',
+        });
+        if (!m7PrereqRows || m7PrereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+      }
+      const m7Field = getModule7CompletionField(msg.payload.requirementKey);
+      if (!m7Field) {
+        return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
+      }
+      const m7Now = new Date().toISOString();
+      const m7Existing = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: msg.courseSlug,
+        module_slug: msg.moduleRoute,
+      });
+      const m7ExistingRow = m7Existing && m7Existing.length > 0 ? m7Existing[0] : null;
+      if (!m7ExistingRow) {
+        const m7Created = await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: msg.moduleRoute,
+          status: 'in_progress',
+          [m7Field]: m7Now,
+          updated_at: m7Now,
+        });
+        return Response.json({
+          completedKeys: deriveModule7CompletedKeys(m7Created),
+          action: msg.action,
+        });
+      }
+      const m7Patch: Record<string, string> = { updated_at: m7Now };
+      if (!m7ExistingRow[m7Field]) {
+        m7Patch[m7Field] = m7Now;
+      }
+      const m7Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+        m7ExistingRow.id,
+        m7Patch,
+      );
+      return Response.json({
+        completedKeys: deriveModule7CompletedKeys(m7Updated),
         action: msg.action,
       });
     }
