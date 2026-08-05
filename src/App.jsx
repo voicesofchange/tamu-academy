@@ -46,6 +46,8 @@ import MhModule7 from './pages/MhModule7';
 import MhCourseCompletion from './pages/MhCourseCompletion';
 import MhCertificate from './pages/MhCertificate';
 import MhInsights from './pages/MhInsights';
+import EconomicsCourseCompletion from './pages/EconomicsCourseCompletion';
+import EconomicsCertificate from './pages/EconomicsCertificate';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -84,6 +86,8 @@ const AuthenticatedApp = () => {
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
       <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
       <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
       <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />

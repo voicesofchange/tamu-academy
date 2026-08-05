@@ -48,9 +48,27 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    const moduleContent = getSensitiveModuleContent(courseSlug, moduleRoute);
-    if (!moduleContent) {
+    const rawContent = getSensitiveModuleContent(courseSlug, moduleRoute);
+    if (!rawContent) {
       return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Strip the quiz answer key before returning to the client. The
+    // frontend grades via checkEconomicsKnowledgeCheck and must never
+    // receive correctIndex — only the public question fields (id, prompt,
+    // options, written, feedback) and quiz metadata (passingScore).
+    let moduleContent = rawContent;
+    if (moduleContent && moduleContent.quiz && Array.isArray(moduleContent.quiz.questions)) {
+      moduleContent = {
+        ...moduleContent,
+        quiz: {
+          ...moduleContent.quiz,
+          questions: moduleContent.quiz.questions.map((q) => {
+            const { correctIndex, ...rest } = q;
+            return rest;
+          }),
+        },
+      };
     }
 
     return Response.json({ module: moduleContent });

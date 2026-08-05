@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
@@ -7,6 +7,7 @@ import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleNav from '@/components/courses/module/ModuleNav';
 import KnowledgeCheck from '@/components/courses/module/KnowledgeCheck';
+import EconomicsModuleProgress from '@/components/courses/EconomicsModuleProgress';
 import DecisionMap from '@/components/courses/module/DecisionMap';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -24,6 +25,7 @@ export default function ModulePageTemplate({ course, module }) {
   const nextModule =
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
   const nextLabel = nextModule ? `Next: ${nextModule.number} — ${nextModule.title}` : 'Next: Module 4';
+  const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
 
   return (
     <PageLayout>
@@ -148,7 +150,7 @@ export default function ModulePageTemplate({ course, module }) {
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
           Five questions. Questions 1\u20134 are selectable and automatically scored. Question 5 is a required written application response and is not marked correct or incorrect. Passing requires at least {module.quiz.passingScore} of the {module.quiz.questions.filter((q) => !q.written).length} graded questions correct and a completed Question 5. Feedback appears only after you submit; you can retry Questions 1\u20134 and your Question 5 response will be kept.
         </p>
-        <KnowledgeCheck quiz={module.quiz} />
+        <KnowledgeCheck quiz={module.quiz} courseSlug={course.slug} moduleRoute={module.route} onPassed={() => setQuizPassedTrigger((t) => t + 1)} />
       </PageSection>
 
       {/* Applied activity */}
@@ -163,14 +165,7 @@ export default function ModulePageTemplate({ course, module }) {
 
       {/* Completion requirements */}
       <PageSection eyebrow="Requirements" heading="Completion Requirements">
-        <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem', listStyle: 'none' }}>
-          {module.completionRequirements.map((req, i) => (
-            <li key={i} style={{ marginBottom: '0.6rem', position: 'relative', paddingLeft: '1.4rem' }}>
-              <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'rgba(212,161,42,0.6)' }}>&#9633;</span>
-              {req}
-            </li>
-          ))}
-        </ul>
+        <EconomicsModuleProgress courseSlug={course.slug} moduleRoute={module.route} completionRequirements={module.completionRequirements} refreshTrigger={quizPassedTrigger} />
       </PageSection>
 
       {/* Closing text */}

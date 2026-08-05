@@ -102,7 +102,7 @@ function GoldDivider({ width = '120px' }) {
   );
 }
 
-export default function MhCertificateDocument({ data, isPreview }) {
+export default function MhCertificateDocument({ data, isPreview, moduleWord = 'seven', moduleCountLabel = 'Seven' }) {
   const completedDate = data.completedAt
     ? new Date(data.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     : '';
@@ -179,7 +179,7 @@ export default function MhCertificateDocument({ data, isPreview }) {
 
         {/* Has completed */}
         <p style={{ fontSize: 'clamp(0.82rem, 1.5vw, 0.95rem)', color: MUTE, margin: '0 0 1rem', lineHeight: 1.6 }}>
-          has successfully completed all seven modules of
+          has successfully completed all {moduleWord} modules of
         </p>
 
         {/* Course title */}
@@ -187,7 +187,7 @@ export default function MhCertificateDocument({ data, isPreview }) {
           {data.courseTitle}
         </p>
         <p style={{ fontSize: 'clamp(0.68rem, 1.2vw, 0.8rem)', letterSpacing: '0.14em', textTransform: 'uppercase', color: GOLD, margin: '0 0 2rem', fontWeight: 500 }}>
-          A Seven-Module Course
+          A {moduleCountLabel}-Module Course
         </p>
 
         {/* Completion date */}

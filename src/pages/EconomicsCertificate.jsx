@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
 import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
-import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
+import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 
-const COURSE_SLUG = 'mental-health-community-and-culture';
+const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -31,29 +31,23 @@ const actionButtonStyle = {
 };
 
 /**
- * MhCertificate — the certificate of completion page for the Mental
- * Health, Community and Culture course.
+ * EconomicsCertificate — the certificate of completion page for the
+ * Understanding African Economies and the Global System course.
  *
- * Calls `issueMentalHealthCertificate` (idempotent) to retrieve or
- * issue the certificate. Displays the certificate with print and
- * PDF download options. No certificate_id is accepted from URL
- * parameters — only the current authenticated user's certificate
- * is displayed.
- *
- * If the learner is not eligible (course not completed, not enrolled,
- * or course unpublished), a message is shown with a link to the
- * completion page.
+ * Calls `issueEconomicsCertificate` (idempotent) to retrieve or issue
+ * the certificate. Displays the certificate with print and PDF download
+ * options. Mirrors the Mental Health certificate page but uses the
+ * six-module language and the Economics course slug.
  */
-export default function MhCertificate() {
-  const course = MENTAL_HEALTH_COURSE;
+export default function EconomicsCertificate() {
+  const course = ECONOMICS_COURSE;
   const [state, setState] = useState({ status: 'loading', data: null, error: null, notEligible: false, needsProfile: false });
-  const certificateRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueMentalHealthCertificate', {
+        const res = await base44.functions.invoke('issueEconomicsCertificate', {
           courseSlug: COURSE_SLUG,
         });
         if (cancelled) return;
@@ -93,7 +87,7 @@ export default function MhCertificate() {
 
   const handleDownloadPDF = async () => {
     if (!state.data) return;
-    await generateCertificatePDF({ data: state.data, isPreview: state.data.preview === true, moduleWord: 'seven', moduleCountLabel: 'SEVEN' });
+    await generateCertificatePDF({ data: state.data, isPreview: state.data.preview === true, moduleWord: 'six', moduleCountLabel: 'SIX' });
   };
 
   // --- Not eligible state ---
@@ -106,7 +100,7 @@ export default function MhCertificate() {
             Certificate Not Yet Available
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
-            Your certificate of completion will be available once you have completed all seven modules of the course and enrollment is open.
+            Your certificate of completion will be available once you have completed all six modules of the course and enrollment is open.
           </p>
           <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
             View Course Progress &rarr;
@@ -136,7 +130,7 @@ export default function MhCertificate() {
     );
   }
 
-  // --- Loading / error ---
+  // --- Loading ---
   if (state.status === 'loading') {
     return (
       <PageLayout>
@@ -149,6 +143,7 @@ export default function MhCertificate() {
     );
   }
 
+  // --- Error ---
   if (state.status === 'error') {
     return (
       <PageLayout>
@@ -171,9 +166,6 @@ export default function MhCertificate() {
   // --- Certificate ready ---
   const data = state.data;
   const isPreview = data.preview === true;
-  const completedDate = data.completedAt
-    ? new Date(data.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-    : '';
 
   return (
     <PageLayout>
@@ -203,8 +195,8 @@ export default function MhCertificate() {
       )}
 
       {/* Certificate (print area) */}
-      <div ref={certificateRef}>
-        <MhCertificateDocument data={data} isPreview={isPreview} />
+      <div>
+        <MhCertificateDocument data={data} isPreview={isPreview} moduleWord="six" moduleCountLabel="Six" />
       </div>
 
       {/* Return link (hidden in print) */}

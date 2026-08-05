@@ -179,6 +179,8 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
  * Retrieve a course by its slug from the Economics and Development tracks.
  * Returns null if not found so calling pages can render a not-found state.
  */
+export const ECONOMICS_COURSE = ECONOMICS_DEVELOPMENT_TRACKS[0].courses[0];
+
 export function getEconomicsCourseBySlug(slug) {
   for (const track of ECONOMICS_DEVELOPMENT_TRACKS) {
     for (const course of track.courses) {
