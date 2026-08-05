@@ -545,6 +545,19 @@ export default async function(req: Request): Promise<Response> {
       if (!m6Config) {
         return Response.json({ error: 'Not found' }, { status: 404 });
       }
+      // Administrator preview: admins may test the completion evaluation
+      // during unpublished development without persisting progress.
+      // Returns a successful response with progressSaved: false and
+      // leaves all entity counts unchanged. Does not weaken ordinary
+      // learner authorization — the publication, enrollment, and
+      // prerequisite 403 checks below still apply to non-admin users.
+      if (user.role === 'admin') {
+        return Response.json({
+          completed: false,
+          progressSaved: false,
+          missing: MENTAL_HEALTH_MODULE_6_COMPLETION_KEYS,
+        });
+      }
       if (!isModulePublished(courseSlug, moduleRoute)) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -556,18 +569,16 @@ export default async function(req: Request): Promise<Response> {
       if (!m6Enrollment || m6Enrollment.length === 0) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-      if (user.role !== 'admin') {
-        const m6Prereq = getModulePrerequisite(courseSlug, moduleRoute);
-        if (m6Prereq) {
-          const m6PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-            learner_id: user.id,
-            course_slug: courseSlug,
-            module_slug: m6Prereq,
-            status: 'completed',
-          });
-          if (!m6PrereqRows || m6PrereqRows.length === 0) {
-            return Response.json({ error: 'Forbidden' }, { status: 403 });
-          }
+      const m6Prereq = getModulePrerequisite(courseSlug, moduleRoute);
+      if (m6Prereq) {
+        const m6PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: m6Prereq,
+          status: 'completed',
+        });
+        if (!m6PrereqRows || m6PrereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
       }
       const m6Rows = await base44.asServiceRole.entities.ModuleProgress.filter({

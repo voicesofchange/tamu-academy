@@ -664,6 +664,19 @@ export default async function(req: Request): Promise<Response> {
       if (!isModule6SelfAttestedKey(msg.payload.requirementKey)) {
         return Response.json({ error: 'Invalid requirement key' }, { status: 400 });
       }
+      // Administrator preview: admins may test the acknowledgment flow
+      // during unpublished development without persisting progress.
+      // Returns a successful response with progressSaved: false and
+      // leaves all entity counts unchanged. Does not weaken ordinary
+      // learner authorization — the publication, enrollment, and
+      // prerequisite 403 checks below still apply to non-admin users.
+      if (isAdmin) {
+        return Response.json({
+          progressSaved: false,
+          completedKeys: [],
+          action: msg.action,
+        });
+      }
       if (!isModulePublished(msg.courseSlug, msg.moduleRoute)) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -675,18 +688,16 @@ export default async function(req: Request): Promise<Response> {
       if (!m6Enrollment || m6Enrollment.length === 0) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-      if (!isAdmin) {
-        const m6Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
-        if (m6Prereq) {
-          const m6PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-            learner_id: user.id,
-            course_slug: msg.courseSlug,
-            module_slug: m6Prereq,
-            status: 'completed',
-          });
-          if (!m6PrereqRows || m6PrereqRows.length === 0) {
-            return Response.json({ error: 'Forbidden' }, { status: 403 });
-          }
+      const m6Prereq = getModulePrerequisite(msg.courseSlug, msg.moduleRoute);
+      if (m6Prereq) {
+        const m6PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+          learner_id: user.id,
+          course_slug: msg.courseSlug,
+          module_slug: m6Prereq,
+          status: 'completed',
+        });
+        if (!m6PrereqRows || m6PrereqRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
       }
       const m6Field = getModule6CompletionField(msg.payload.requirementKey);
