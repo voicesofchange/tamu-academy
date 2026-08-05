@@ -178,6 +178,28 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
+    // Module 2 request boundary: for acknowledge_module2_requirement
+    // actions, accept exactly four body fields (courseSlug, moduleRoute,
+    // action, requirementKey) and reject every other supplied field with
+    // a clear 400 before any other validation runs. This runs before the
+    // general protected-fields check so that all unsupported fields —
+    // including learner_id, completed_at, status, quiz_passed, score,
+    // passed, attempt_number — are rejected with 400 identifying the
+    // field, without changing the Module 1 request contract.
+    if (body && typeof body === 'object' && body.action === 'acknowledge_module2_requirement') {
+      const m2AllowedBodyKeys = new Set([
+        'courseSlug',
+        'moduleRoute',
+        'action',
+        'requirementKey',
+      ]);
+      for (const k of Object.keys(body)) {
+        if (!m2AllowedBodyKeys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+    }
+
     // Refuse any body that attempts to set a protected field directly,
     // regardless of action or role.
     if (body && typeof body === 'object') {
@@ -213,7 +235,9 @@ export default async function(req: Request): Promise<Response> {
     // Isolated branch: only for module-2, only the four self-attestable
     // keys, refuses during unpublished preview for ALL users (including
     // admins). Does not write activity_completion_mode or
-    // reflection_completion_mode for Module 2.
+    // reflection_completion_mode for Module 2. Request body allowlist
+    // (courseSlug, moduleRoute, action, requirementKey) is enforced
+    // above before the general protected-fields check.
     if (msg.action === 'acknowledge_module2_requirement') {
       if (msg.moduleRoute !== 'module-2') {
         return Response.json({ error: 'Invalid action' }, { status: 400 });
