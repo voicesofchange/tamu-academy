@@ -73,8 +73,8 @@ export const ECONOMICS_MODULE_META = {
 // persisting progress. Flip individual module routes into PUBLISHED_MODULES
 // and set ENROLLMENT_OPEN = true at launch.
 // ---------------------------------------------------------------------------
-const PUBLISHED_MODULES = new Set([]);
-const ENROLLMENT_OPEN = false;
+const PUBLISHED_MODULES = new Set(ECONOMICS_CERTIFICATE_MODULE_ROUTES);
+const ENROLLMENT_OPEN = true;
 
 export function economicsCourseExists(courseSlug) {
   return courseSlug === ECONOMICS_COURSE_SLUG;

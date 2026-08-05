@@ -207,14 +207,14 @@ export const MENTAL_HEALTH_COURSE_SLUG = 'mental-health-community-and-culture';
  */
 export const MENTAL_HEALTH_COURSE_CONFIG = {
   courseSlug: MENTAL_HEALTH_COURSE_SLUG,
-  enrollmentOpen: false,
+  enrollmentOpen: true,
   modules: [
     {
       route: 'module-1',
       number: 'Module 1',
       title: 'Ubuntu and Communal Wellness: African Philosophies of Mental Health',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: null,
       // The 20 implemented section identifiers for Module 1.
       // The optional extended assignment identifier is intentionally NOT
@@ -247,7 +247,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 2',
       title: 'Stress, Stigma, and Strength: Rethinking Mental Health Narratives in African and Diaspora Communities',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-1',
       // Stage 1 added the two introductory identifiers. Stage 2 adds the
       // approved core media, questions to consider, Tamu Academy
@@ -290,7 +290,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 3',
       title: 'Family Expectations and Cultural Scripts: Talking About Mental Health at Home',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-2',
       sections: [
         'module-overview',
@@ -317,7 +317,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 4',
       title: 'Community Healing in Practice: Friendship Bench, StrongMinds, and Brother Be Well',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-3',
       sections: [
         'module-overview',
@@ -343,7 +343,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 5',
       title: 'Faith, Tradition, and Professional Care: Bridging Spiritual Supports and Clinical Pathways',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-4',
       sections: [
         'module-overview',
@@ -367,7 +367,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 6',
       title: 'Building Culturally Affirming Systems: Policy, Media, and Youth Advocacy for Global Mental Health',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-5',
       sections: [
         'module-overview',
@@ -391,7 +391,7 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       number: 'Module 7',
       title: 'Roots of Resilience: Storytelling, Survival, and Collective Healing',
       status: 'In Development',
-      publicationStatus: 'unpublished',
+      publicationStatus: 'published',
       prerequisite: 'module-6',
       sections: [
         'module-overview',

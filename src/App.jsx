@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import SoftLaunchGate from '@/components/SoftLaunchGate';
+import ProtectedRoute from '@/components/ProtectedRoute';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
@@ -80,27 +81,30 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
-      <Route path="/my-courses" element={<MyCourses />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
-      <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
-      <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
-      <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-4" element={<MhModule4 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-5" element={<MhModule5 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-6" element={<MhModule6 />} />
-      <Route path="/courses/mental-health-community-and-culture/module-7" element={<MhModule7 />} />
-      <Route path="/courses/mental-health-community-and-culture/completion" element={<MhCourseCompletion />} />
-      <Route path="/courses/mental-health-community-and-culture/certificate" element={<MhCertificate />} />
-      <Route path="/courses/mental-health-community-and-culture/insights" element={<MhInsights />} />
+      {/* Protected Routes — login required for all curriculum access */}
+      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+        <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
+        <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
+        <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-4" element={<MhModule4 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-5" element={<MhModule5 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-6" element={<MhModule6 />} />
+        <Route path="/courses/mental-health-community-and-culture/module-7" element={<MhModule7 />} />
+        <Route path="/courses/mental-health-community-and-culture/completion" element={<MhCourseCompletion />} />
+        <Route path="/courses/mental-health-community-and-culture/certificate" element={<MhCertificate />} />
+        <Route path="/courses/mental-health-community-and-culture/insights" element={<MhInsights />} />
+      </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
