@@ -69,16 +69,6 @@ export const MENTAL_HEALTH_MODULE_4_LESSON = {
       roleInModule: 'Introduction to the origin, cultural adaptation, human relationships, and access logic of Friendship Bench.',
     },
     secondary: {
-      title: 'StrongMinds: Treating Depression at Scale in Africa',
-      publisher: 'StrongMinds',
-      watchUrl: 'https://www.youtube.com/watch?v=IBxWCPEoJpY',
-      embedUrl: 'https://www.youtube-nocookie.com/embed/IBxWCPEoJpY',
-      officialPageUrl: 'https://strongminds.org/strongminds-treating-depression-at-scale-in-africa/',
-      officialPageLabel: 'Open the official StrongMinds program page',
-      attributionLabel: 'StrongMinds',
-      roleInModule: 'Introduction to group based depression care, social connection, lay facilitation, and community delivery in Uganda.',
-    },
-    tertiary: {
       title: 'Brother Be Well Explainer Video',
       publisher: 'Brother Be Well / Mental Health California',
       watchUrl: 'https://www.youtube.com/watch?v=65Pbu4D6vVY',
@@ -764,7 +754,7 @@ export const MENTAL_HEALTH_MODULE_4_LESSON = {
   completionRequirements: {
     heading: 'MODULE 4 COMPLETION REQUIREMENTS',
     items: [
-      'Review all three required media items or written alternatives.',
+      'Review both required videos or written alternatives.',
       'Complete all five Tumaini Youth Wellness decisions.',
       'Complete the CARE Community Support Design Lab.',
       'Complete or privately consider the reflection.',
@@ -931,14 +921,14 @@ export const MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS = {
  * approved order. They correspond one-to-one to the six existing
  * completion requirement strings in lesson.completionRequirements.items.
  *
- *   core-media-trio            -> core_media_acknowledged_at
+ *   core-media-reviewed         -> core_media_acknowledged_at
  *   tumaini-scenario           -> interactive_scenario_completed_at
  *   care-design-lab            -> activity_acknowledged_at
  *   private-reflection         -> reflection_acknowledged_at
  *   knowledge-check-completed  -> knowledge_check_completed_at
  *   knowledge-check-passed     -> quiz_passed
  *
- * The three self-attestable keys (core-media-trio, care-design-lab,
+ * The three self-attestable keys (core-media-reviewed, care-design-lab,
  * private-reflection) may be marked through the general
  * updateMentalHealthProgress function. The three server-verified keys
  * (tumaini-scenario, knowledge-check-completed, knowledge-check-passed)
@@ -949,7 +939,7 @@ export const MENTAL_HEALTH_MODULE_4_SCENARIO_ANSWERS = {
  * separate lesson and cases completion requirement.
  */
 export const MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS = [
-  'core-media-trio',
+  'core-media-reviewed',
   'tumaini-scenario',
   'care-design-lab',
   'private-reflection',
@@ -958,13 +948,13 @@ export const MENTAL_HEALTH_MODULE_4_COMPLETION_KEYS = [
 ];
 
 export const MENTAL_HEALTH_MODULE_4_SELF_ATTESTED_KEYS = new Set([
-  'core-media-trio',
+  'core-media-reviewed',
   'care-design-lab',
   'private-reflection',
 ]);
 
 const MODULE_4_KEY_TO_FIELD = {
-  'core-media-trio': 'core_media_acknowledged_at',
+  'core-media-reviewed': 'core_media_acknowledged_at',
   'tumaini-scenario': 'interactive_scenario_completed_at',
   'care-design-lab': 'activity_acknowledged_at',
   'private-reflection': 'reflection_acknowledged_at',
@@ -987,7 +977,7 @@ export function getModule4CompletionField(key) {
 export function deriveModule4CompletedKeys(row) {
   if (!row) return [];
   const keys = [];
-  if (row.core_media_acknowledged_at) keys.push('core-media-trio');
+  if (row.core_media_acknowledged_at) keys.push('core-media-reviewed');
   if (row.interactive_scenario_completed_at) keys.push('tumaini-scenario');
   if (row.activity_acknowledged_at) keys.push('care-design-lab');
   if (row.reflection_acknowledged_at) keys.push('private-reflection');

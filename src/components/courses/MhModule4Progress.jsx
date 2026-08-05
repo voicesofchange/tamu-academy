@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300 };
 
 const SELF_ATTESTED_KEYS = new Set([
-  'core-media-trio',
+  'core-media-reviewed',
   'care-design-lab',
   'private-reflection',
 ]);

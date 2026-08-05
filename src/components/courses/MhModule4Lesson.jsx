@@ -132,10 +132,9 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
 
       <PageSection id="core-media" eyebrow="Core Media" heading="Required Videos">
         {safetyNoteBox('Content and safety note before media')}
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>Three required videos introduce the programs studied in this module.</p>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>Two required videos introduce the programs studied in this module.</p>
         {renderMediaItem(lesson.coreMedia.primary, lesson.coreMedia.attributionStatement)}
         {renderMediaItem(lesson.coreMedia.secondary, lesson.coreMedia.attributionStatement)}
-        {renderMediaItem(lesson.coreMedia.tertiary, lesson.coreMedia.attributionStatement)}
       </PageSection>
 
       <PageSection id="questions-to-consider" eyebrow="While You Watch" heading="Questions to Consider While Watching">
