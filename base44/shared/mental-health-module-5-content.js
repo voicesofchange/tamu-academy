@@ -232,7 +232,7 @@ export const MENTAL_HEALTH_MODULE_5_LESSON = {
       heading: '7. Clear roles make respect possible',
       paragraphs: [
         'Faith or spiritual leader: May offer voluntary spiritual care, belonging, practical support, education, recognition, and referral. Must not claim clinical diagnosis or treatment without the required qualification and scope.',
-        'Traditional practitioner: May provide a defined cultural or traditional practice, cultural interpretation, ritual, community trust, and referral. Must not prescribe unsafe medicines, conceal harmful practices, enforce secret medicine combinations, or delay necessary care.',
+        'Traditional practitioner: May provide a defined cultural or traditional practice, transparent product information, recognition, and referral. Must not use coercion, abuse, secret medicine combinations, or delay necessary care.',
         'Clinician: May assess, treat, review medicines, plan safety, and refer within professional scope. Must not ridicule beliefs, require cultural abandonment, or claim that professional care is culturally neutral.',
         'Youth or lived experience advisor: May guide governance, language, access, accountability, and evaluation. Must not become an unpaid substitute for clinical, safeguarding, or emergency staff.',
       ],
@@ -563,7 +563,7 @@ export const MENTAL_HEALTH_MODULE_5_LESSON = {
     warmReferralPractice: {
       heading: 'Warm Referral Practice',
       instruction: 'Use the fictional situation below. Write a short referral conversation. Do not diagnose, promise confidentiality beyond policy, debate beliefs, or practice crisis counseling.',
-      fictionalSituation: 'Imani tells a trusted community leader that sleep and concentration have worsened, they sometimes feel unsafe, and they want prayer while also considering professional care. Imani is using an herbal preparation and prescribed medicine but has not told either provider.',
+      fictionalSituation: 'Imani tells a trusted community leader that sleep and concentration have worsened, they sometimes feel unsafe, and they want prayer while also considering professional care. Imani uses an herbal preparation and prescribed medicine but has not told either provider.',
       fields: [
         { id: 'listenAffirm', label: 'LISTEN AND AFFIRM', prompt: 'How will the leader respond without blame or certainty about cause?' },
         { id: 'explainRole', label: 'EXPLAIN ROLE', prompt: 'What can the leader offer, and what is outside the role?' },
@@ -659,7 +659,7 @@ export const MENTAL_HEALTH_MODULE_5_LESSON = {
   knowledgeCheck: {
     heading: 'MODULE 5 KNOWLEDGE CHECK',
     subtitle: 'Faith, Tradition, and Professional Care',
-    learnerInstruction: 'Answer every question. Select one answer per question. Answer at least four of the five questions correctly to pass. This learner copy does not include answers.',
+    learnerInstruction: 'Five multiple choice questions. Answer at least four of the five questions correctly to pass. Feedback appears only after you submit. You can retry the knowledge check at any time.',
     privacyNotice: 'This assessment checks understanding of plural care, role boundaries, rights, referral, and medicine safety. It does not certify a learner to provide any form of care.',
     educationalNote: 'This assessment checks understanding of plural care, role boundaries, rights, referral, and medicine safety. It does not certify a learner to provide any form of care.',
     passingScore: 4,

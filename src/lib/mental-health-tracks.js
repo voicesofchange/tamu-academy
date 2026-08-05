@@ -138,7 +138,7 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Faith, Tradition, and Professional Care: Bridging Spiritual Supports and Clinical Pathways',
       description:
         'Examines how faith, tradition, and professional clinical care can work together rather than in opposition, with attention to safe referral and complementary support.',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       estimatedTime: '95 to 115 minutes',
       prerequisite: 'module-4',
