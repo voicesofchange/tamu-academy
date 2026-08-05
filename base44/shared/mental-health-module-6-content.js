@@ -565,7 +565,7 @@ export const MENTAL_HEALTH_MODULE_6_LESSON = {
       'Stress test the proposal for tokenism, broken referral, privacy, misinformation, exclusion, and unfunded promises.',
       'Finish with a one page proposal card and a ninety day preparation plan.',
     ],
-    frameworkLabel: 'AMPLIFY Framework',
+    frameworkLabel: 'AMPLIFY framework',
     frameworkSummary: 'A: Aim, assets, and audience. M: Map the system and power. P: Policy, prevention, and professional pathway. L: Language, lived experience, and local culture. I: Information, media, and digital access. F: Financing, workforce, and feasibility. Y: Youth authority, safeguarding, and evaluation.',
     step1Issue: {
       heading: 'Step 1. Choose a Fictional or Public Issue',
