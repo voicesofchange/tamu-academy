@@ -227,8 +227,8 @@ function renderExplanation(section) {
  *   backend response. No answer key, correct-answer index, scenario
  *   answer, lab response, reflection response, facilitator note, or
  *   completion logic is referenced here — none of those fields exist on
- *   the Stage 1 + Stage 2 lesson object. The media uses the
- *   official YouTube player and does not
+ *   the Stage 1 + Stage 2 lesson object. The media uses the privacy
+ *   enhanced `youtube-nocookie.com` official player and does not
  *   autoplay; the full transcript is never reproduced in-app.
  *
  * RECORDS:
