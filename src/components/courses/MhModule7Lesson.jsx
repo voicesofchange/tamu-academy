@@ -4,6 +4,7 @@ import MhMwangazaScenario from '@/components/courses/MhMwangazaScenario';
 import MhStoryLab from '@/components/courses/MhStoryLab';
 import MhModule7KnowledgeCheck from '@/components/courses/MhModule7KnowledgeCheck';
 import MhModule7Progress from '@/components/courses/MhModule7Progress';
+import MhModuleNav from '@/components/courses/MhModuleNav';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -272,6 +273,9 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           <h2 className="font-heading" style={headingStyle}>{lesson.progressTracking.heading}</h2>
           <MhModule7Progress courseSlug={courseSlug} moduleRoute={moduleSlug} completionRequirements={lesson.completionRequirements} progressTracking={lesson.progressTracking} refreshTrigger={refreshTrigger} />
         </div>
+
+        {/* Navigation */}
+        <MhModuleNav course={course} module={moduleMeta} courseSlug={courseSlug} />
       </div>
     </div>
   );

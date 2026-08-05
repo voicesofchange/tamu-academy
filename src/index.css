@@ -221,3 +221,32 @@ html {
     visibility: visible !important;
   }
 }
+
+/* Certificate-specific print styles — landscape, preserved styling */
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.5in;
+  }
+  .tamu-certificate-print {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #FCFAF5 !important;
+    color: #1A130E !important;
+    padding: 2rem !important;
+    border: 2px solid #D4A12A !important;
+    border-radius: 4px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .tamu-certificate-print * {
+    visibility: visible !important;
+  }
+  .tamu-certificate-print p,
+  .tamu-certificate-print h1,
+  .tamu-certificate-print span {
+    color: inherit !important;
+  }
+}
