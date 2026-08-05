@@ -69,6 +69,32 @@
  *   do NOT cross-import or merge the two stores.
  */
 
+import {
+  MENTAL_HEALTH_MODULE_3_LESSON,
+  MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_3_SELF_ATTESTED_KEYS,
+  isModule3CompletionKey,
+  isModule3SelfAttestedKey,
+  getModule3CompletionField,
+  getModule3ScenarioCompleteMarker,
+  deriveModule3CompletedKeys,
+} from './mental-health-module-3-content.js';
+
+// Re-export Module 3 content so backend functions can import from
+// this single entry point (same pattern as Module 2).
+export {
+  MENTAL_HEALTH_MODULE_3_LESSON,
+  MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS,
+  MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_3_SELF_ATTESTED_KEYS,
+  isModule3CompletionKey,
+  isModule3SelfAttestedKey,
+  getModule3CompletionField,
+  getModule3ScenarioCompleteMarker,
+  deriveModule3CompletedKeys,
+};
+
 export const MENTAL_HEALTH_COURSE_SLUG = 'mental-health-community-and-culture';
 
 /**
@@ -169,10 +195,28 @@ export const MENTAL_HEALTH_COURSE_CONFIG = {
       route: 'module-3',
       number: 'Module 3',
       title: 'Family Expectations and Cultural Scripts: Talking About Mental Health at Home',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       prerequisite: 'module-2',
-      sections: [],
+      sections: [
+        'module-overview',
+        'learning-objectives',
+        'core-media',
+        'questions-to-consider',
+        'optional-family-diaries',
+        'tamu-introduction',
+        'key-concepts',
+        'explanation',
+        'case-study',
+        'interactive-scenario',
+        'bridge-conversation-lab',
+        'private-reflection',
+        'knowledge-check',
+        'completion-requirements',
+        'optional-extended-assignment',
+        'closing-section',
+        'sources-further-learning',
+      ],
     },
     {
       route: 'module-4',
@@ -1588,6 +1632,12 @@ export function isScenarioSupported(courseSlug, moduleRoute, scenarioId) {
       scenarioId,
     );
   }
+  if (moduleRoute === 'module-3') {
+    return Object.prototype.hasOwnProperty.call(
+      MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS,
+      scenarioId,
+    );
+  }
   return false;
 }
 
@@ -1599,6 +1649,9 @@ export function getScenarioAnswer(courseSlug, moduleRoute, scenarioId) {
   }
   if (moduleRoute === 'module-2') {
     return MENTAL_HEALTH_MODULE_2_SCENARIO_ANSWERS[scenarioId];
+  }
+  if (moduleRoute === 'module-3') {
+    return MENTAL_HEALTH_MODULE_3_SCENARIO_ANSWERS[scenarioId];
   }
   return null;
 }
@@ -1739,6 +1792,33 @@ export function getMentalHealthModuleContent(courseSlug, moduleRoute) {
     // valid submission. All other Stage 1-6 fields are passed through
     // unchanged.
     const lesson = MENTAL_HEALTH_MODULE_2_LESSON;
+    const sanitizedLesson = { ...lesson };
+    if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
+      sanitizedLesson.knowledgeCheck = {
+        heading: lesson.knowledgeCheck.heading,
+        subtitle: lesson.knowledgeCheck.subtitle,
+        learnerInstruction: lesson.knowledgeCheck.learnerInstruction,
+        privacyNotice: lesson.knowledgeCheck.privacyNotice,
+        passingScore: lesson.knowledgeCheck.passingScore,
+        questions: lesson.knowledgeCheck.questions.map((q) => ({
+          id: q.id,
+          prompt: q.prompt,
+          options: q.options,
+        })),
+      };
+    }
+    return { ...baseShell, lesson: sanitizedLesson };
+  }
+  if (m.route === 'module-3') {
+    // Module 3: same sanitization pattern as Module 2. The knowledge
+    // check carries the protected answer key (correctAnswerIndex +
+    // feedback) inline as the server-side source of truth. Before the
+    // lesson is returned to the browser, the answer-key fields are
+    // stripped from each question so that no correct index or feedback
+    // reaches the browser bundle. Grading and feedback release happen
+    // only in the separate checkMentalHealthKnowledgeCheck backend
+    // function, after a valid submission.
+    const lesson = MENTAL_HEALTH_MODULE_3_LESSON;
     const sanitizedLesson = { ...lesson };
     if (lesson.knowledgeCheck && Array.isArray(lesson.knowledgeCheck.questions)) {
       sanitizedLesson.knowledgeCheck = {

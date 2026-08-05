@@ -2,7 +2,9 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   MENTAL_HEALTH_COURSE_SLUG,
   MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS,
   deriveModule2CompletedKeys,
+  deriveModule3CompletedKeys,
   isModulePublished,
 } from '../../shared/mental-health-curriculum.js';
 
@@ -73,7 +75,7 @@ export default async function(req: Request): Promise<Response> {
     if (courseSlug !== MENTAL_HEALTH_COURSE_SLUG) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
-    if (moduleRoute !== 'module-2') {
+    if (moduleRoute !== 'module-2' && moduleRoute !== 'module-3') {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
@@ -102,14 +104,20 @@ export default async function(req: Request): Promise<Response> {
     });
     const row = rows && rows.length > 0 ? rows[0] : null;
 
-    const completedKeys = row ? deriveModule2CompletedKeys(row) : [];
+    const isModule3 = moduleRoute === 'module-3';
+    const completionKeys = isModule3
+      ? MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS
+      : MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS;
+    const completedKeys = row
+      ? (isModule3 ? deriveModule3CompletedKeys(row) : deriveModule2CompletedKeys(row))
+      : [];
     const moduleCompleted = !!(row && row.status === 'completed' && row.completed_at);
     const completedAt = row && row.completed_at ? row.completed_at : null;
 
     return Response.json({
       courseSlug,
       moduleSlug: moduleRoute,
-      completionKeys: MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS,
+      completionKeys,
       completedKeys,
       moduleCompleted,
       eligibleToSave,

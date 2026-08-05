@@ -5,7 +5,9 @@ import {
   isModulePublished,
   MENTAL_HEALTH_COURSE_SLUG,
   MENTAL_HEALTH_MODULE_2_COMPLETION_KEYS,
+  MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS,
   deriveModule2CompletedKeys,
+  deriveModule3CompletedKeys,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -213,6 +215,104 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({
         completed: true,
         completedAt: m2Created.completed_at || m2Now,
+      });
+    }
+
+    // --- Module 3 branch ---
+    // Isolated completion path for Module 3. Same pattern as Module 2:
+    // refuses during unpublished preview for ALL users (including admins).
+    // Derives all seven completion keys from server-side ModuleProgress.
+    if (moduleRoute === 'module-3') {
+      if (body && typeof body === 'object') {
+        for (const key of Object.keys(body)) {
+          if (PROTECTED_BODY_FIELDS.has(key)) {
+            return Response.json({ error: 'Forbidden field' }, { status: 403 });
+          }
+        }
+      }
+      const allowedM3Keys = new Set(['courseSlug', 'moduleRoute']);
+      for (const k of Object.keys(body)) {
+        if (!allowedM3Keys.has(k)) {
+          return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
+        }
+      }
+      if (!courseSlug || courseSlug !== MENTAL_HEALTH_COURSE_SLUG) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      const m3Config = getModuleConfig(courseSlug, moduleRoute);
+      if (!m3Config) {
+        return Response.json({ error: 'Not found' }, { status: 404 });
+      }
+      if (!isModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      const m3Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        status: 'active',
+      });
+      if (!m3Enrollment || m3Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (user.role !== 'admin') {
+        const m3Prereq = getModulePrerequisite(courseSlug, moduleRoute);
+        if (m3Prereq) {
+          const m3PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: m3Prereq,
+            status: 'completed',
+          });
+          if (!m3PrereqRows || m3PrereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+      }
+      const m3Rows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+      });
+      const m3Row = m3Rows && m3Rows.length > 0 ? m3Rows[0] : null;
+      const m3CompletedKeys = m3Row ? deriveModule3CompletedKeys(m3Row) : [];
+      const m3AllComplete = MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS.every(
+        (k) => m3CompletedKeys.includes(k),
+      );
+      if (!m3AllComplete) {
+        const missing = MENTAL_HEALTH_MODULE_3_COMPLETION_KEYS.filter(
+          (k) => !m3CompletedKeys.includes(k),
+        );
+        return Response.json({ completed: false, missing });
+      }
+      if (m3Row && m3Row.status === 'completed' && m3Row.completed_at) {
+        return Response.json({
+          completed: true,
+          alreadyCompleted: true,
+          completedAt: m3Row.completed_at,
+        });
+      }
+      const m3Now = new Date().toISOString();
+      if (m3Row) {
+        const m3Updated = await base44.asServiceRole.entities.ModuleProgress.update(
+          m3Row.id,
+          { status: 'completed', completed_at: m3Now, updated_at: m3Now },
+        );
+        return Response.json({
+          completed: true,
+          completedAt: m3Updated.completed_at || m3Now,
+        });
+      }
+      const m3Created = await base44.asServiceRole.entities.ModuleProgress.create({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleRoute,
+        status: 'completed',
+        completed_at: m3Now,
+        updated_at: m3Now,
+      });
+      return Response.json({
+        completed: true,
+        completedAt: m3Created.completed_at || m3Now,
       });
     }
 

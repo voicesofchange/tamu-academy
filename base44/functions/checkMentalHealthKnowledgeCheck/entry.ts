@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   MENTAL_HEALTH_MODULE_2_LESSON,
+  MENTAL_HEALTH_MODULE_3_LESSON,
   courseExists,
   getModulePrerequisite,
   isModulePublished,
@@ -114,9 +115,9 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Invalid module slug' }, { status: 400 });
     }
 
-    // This grader supports Module 2 only. Module 1 uses the recording
-    // submitMentalHealthQuiz grader.
-    if (!courseExists(courseSlug) || moduleSlug !== 'module-2') {
+    // This grader supports Module 2 and Module 3. Module 1 uses the
+    // recording submitMentalHealthQuiz grader.
+    if (!courseExists(courseSlug) || (moduleSlug !== 'module-2' && moduleSlug !== 'module-3')) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
@@ -164,7 +165,9 @@ export default async function(req: Request): Promise<Response> {
       canRecordProgress = true;
     }
 
-    const knowledgeCheck = MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
+    const knowledgeCheck = moduleSlug === 'module-3'
+      ? MENTAL_HEALTH_MODULE_3_LESSON.knowledgeCheck
+      : MENTAL_HEALTH_MODULE_2_LESSON.knowledgeCheck;
     if (!knowledgeCheck || !Array.isArray(knowledgeCheck.questions)) {
       // Defensive — no knowledge check configured.
       return Response.json({ error: 'Not found' }, { status: 404 });

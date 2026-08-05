@@ -2,6 +2,9 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   isScenarioSupported,
   getScenarioAnswer,
+  isModulePublished,
+  getModulePrerequisite,
+  getModule3ScenarioCompleteMarker,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -61,9 +64,11 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       user = null;
     }
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const isAdmin = user.role === 'admin';
 
     let body = {};
     try {
@@ -115,6 +120,53 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
+    // Module-specific access control.
+    // Module 1 and Module 2: admin-only (existing behavior preserved).
+    // Module 3: admins always get preview; non-admins need enrollment +
+    //   publication + prerequisite. Progress is saved only when eligible.
+    let canRecordProgress = false;
+    if (moduleSlug === 'module-3') {
+      if (isAdmin) {
+        const isPublished = isModulePublished(courseSlug, moduleSlug);
+        const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          status: 'active',
+        });
+        canRecordProgress = isPublished && !!(enrollmentRows && enrollmentRows.length > 0);
+      } else {
+        const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          status: 'active',
+        });
+        if (!enrollmentRows || enrollmentRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        if (!isModulePublished(courseSlug, moduleSlug)) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        const prereqRoute = getModulePrerequisite(courseSlug, moduleSlug);
+        if (prereqRoute) {
+          const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: prereqRoute,
+            status: 'completed',
+          });
+          if (!prereqRows || prereqRows.length === 0) {
+            return Response.json({ error: 'Forbidden' }, { status: 403 });
+          }
+        }
+        canRecordProgress = true;
+      }
+    } else {
+      // Module 1 and Module 2: admin-only (existing behavior).
+      if (!isAdmin) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    }
+
     // Validate selectedIndex: must be a non-negative integer.
     if (
       typeof rawIndex !== 'number' ||
@@ -138,7 +190,7 @@ export default async function(req: Request): Promise<Response> {
 
     const isCorrect = rawIndex === answer.bestResponseIndex;
 
-    // Per-option feedback (Module 2) takes precedence when present;
+    // Per-option feedback (Module 2 and 3) takes precedence when present;
     // otherwise the single `feedback` field (Module 1) is returned
     // unchanged. Only the feedback for the submitted option is
     // released; feedback for the other options stays exclusively in
@@ -149,10 +201,41 @@ export default async function(req: Request): Promise<Response> {
       ? answer.feedbackByOption[rawIndex] || ''
       : answer.feedback;
 
-    return Response.json({
-      isCorrect,
-      feedback,
-    });
+    // Module 3: record scenario completion when eligible. Sets
+    // last_section_id to the scenario-complete marker. No selection,
+    // score, or feedback is stored.
+    if (moduleSlug === 'module-3' && canRecordProgress) {
+      const marker = getModule3ScenarioCompleteMarker();
+      const now = new Date().toISOString();
+      const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        module_slug: moduleSlug,
+      });
+      const progressRow = progressRows && progressRows.length > 0 ? progressRows[0] : null;
+      if (!progressRow) {
+        await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: moduleSlug,
+          status: 'in_progress',
+          last_section_id: marker,
+          updated_at: now,
+        });
+      } else if (progressRow.last_section_id !== marker) {
+        await base44.asServiceRole.entities.ModuleProgress.update(progressRow.id, {
+          last_section_id: marker,
+          updated_at: now,
+        });
+      }
+    }
+
+    const responsePayload: Record<string, unknown> = { isCorrect, feedback };
+    if (moduleSlug === 'module-3') {
+      responsePayload.progressSaved = canRecordProgress;
+    }
+
+    return Response.json(responsePayload);
   } catch (error) {
     console.error(
       '[checkMentalHealthScenario] Unexpected error:',
