@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { base44 } from '@/api/base44Client';
 import MhMwangazaScenario from '@/components/courses/MhMwangazaScenario';
 import MhStoryLab from '@/components/courses/MhStoryLab';
 import MhModule7KnowledgeCheck from '@/components/courses/MhModule7KnowledgeCheck';
@@ -11,45 +12,75 @@ const sectionStyle = { marginBottom: '2.5rem' };
 const boxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
 const linkStyle = { color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' };
 
-function renderRich(text) {
-  return { __html: text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') };
+function renderRichText(text) {
+  if (!text) return null;
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  return parts.map((part, i) => {
+    if (i % 2 === 1) return <strong key={i} style={{ fontWeight: 500 }}>{part}</strong>;
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
 }
 
 export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [mediaReviewed, setMediaReviewed] = useState({});
+  const [mediaAckPending, setMediaAckPending] = useState(false);
+  const [mediaAckError, setMediaAckError] = useState(false);
   const courseSlug = 'mental-health-community-and-culture';
   const moduleSlug = 'module-7';
 
+  function toggleMediaSession(key) {
+    setMediaReviewed((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  const allMediaReviewed = lesson.coreMedia.sessions.every((s) => mediaReviewed[s.key]);
+
+  async function handleMarkMediaReviewed() {
+    if (mediaAckPending || !allMediaReviewed) return;
+    setMediaAckPending(true); setMediaAckError(false);
+    try {
+      await base44.functions.invoke('updateMentalHealthProgress', {
+        courseSlug, moduleRoute: moduleSlug, action: 'acknowledge_module7_requirement', requirementKey: 'core-media-reviewed',
+      });
+      setRefreshTrigger((t) => t + 1);
+    } catch (err) {
+      setMediaAckError(true);
+    } finally {
+      setMediaAckPending(false);
+    }
+  }
+
   function renderExplanationSection(section) {
     return (
-      <div key={section.sectionId} style={{ marginBottom: '1.75rem' }}>
+      <div key={section.sectionId} id={section.sectionId} style={{ marginBottom: '1.75rem' }}>
         <h3 className="font-heading" style={{ ...headingStyle, fontSize: '1.15rem' }}>{section.heading}</h3>
         {section.paragraphs && section.paragraphs.map((p, i) => (
-          <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }} dangerouslySetInnerHTML={renderRich(p)} />
+          <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{renderRichText(p)}</p>
         ))}
         {section.numberedItems && (
           <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '0.85rem' }}>
-            {section.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }} dangerouslySetInnerHTML={renderRich(item)} />)}
+            {section.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{renderRichText(item)}</li>)}
           </ol>
         )}
         {section.subBlocks && section.subBlocks.map((block, bi) => (
           <div key={bi} style={{ marginTop: '0.85rem' }}>
-            {block.label && <p className="font-body" style={{ ...bodyText, fontWeight: 400, marginBottom: '0.5rem' }} dangerouslySetInnerHTML={renderRich(block.label)} />}
+            {block.label && <p className="font-body" style={{ ...bodyText, fontWeight: 400, marginBottom: '0.5rem' }}>{renderRichText(block.label)}</p>}
             {block.numberedItems && (
               <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '0.85rem' }}>
-                {block.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }} dangerouslySetInnerHTML={renderRich(item)} />)}
+                {block.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{renderRichText(item)}</li>)}
               </ol>
             )}
           </div>
         ))}
         {section.trailingParagraphs && section.trailingParagraphs.map((p, i) => (
-          <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }} dangerouslySetInnerHTML={renderRich(p)} />
+          <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{renderRichText(p)}</p>
         ))}
       </div>
     );
   }
 
-  function renderMediaSession(session) {
+  function renderMediaSession(session, idx) {
+    const isReviewed = !!mediaReviewed[session.key];
     return (
       <div key={session.key} style={{ marginBottom: '1.75rem' }}>
         <h3 className="font-heading" style={{ ...headingStyle, fontSize: '1.1rem' }}>{session.title}</h3>
@@ -63,8 +94,14 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           Direct link: <a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>Open on YouTube</a>
           {' · '}
           <a href={session.officialPageUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>{session.officialPageLabel}</a>
+          {' · '}
+          <a href={`#${session.writtenAlternativeSectionId}`} style={linkStyle}>Written alternative</a>
         </p>
-        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', fontSize: '0.82rem', margin: 0 }}>{session.contentNote}</p>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', fontSize: '0.82rem', marginBottom: '0.75rem' }}>{session.contentNote}</p>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', cursor: 'pointer', padding: '0.6rem 0.9rem', border: `1px solid ${isReviewed ? 'rgba(212,161,42,0.4)' : 'rgba(212,161,42,0.18)'}`, borderRadius: '4px', backgroundColor: isReviewed ? 'rgba(212,161,42,0.04)' : 'transparent' }}>
+          <input type="checkbox" checked={isReviewed} onChange={() => toggleMediaSession(session.key)} style={{ marginTop: '0.15rem' }} id={`media-ack-${session.key}`} />
+          <span className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>I have reviewed this session or its written alternative.</span>
+        </label>
       </div>
     );
   }
@@ -116,7 +153,16 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
         <div style={sectionStyle}>
           <h2 className="font-heading" style={headingStyle}>Anchor Media</h2>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
-          {lesson.coreMedia.sessions.map(renderMediaSession)}
+          {lesson.coreMedia.sessions.map((session, idx) => renderMediaSession(session, idx))}
+          {allMediaReviewed && (
+            <div style={{ marginTop: '1rem' }}>
+              <button type="button" disabled={mediaAckPending} onClick={handleMarkMediaReviewed} className="font-body"
+                style={{ color: '#1A130E', backgroundColor: '#D4A12A', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
+                {mediaAckPending ? 'Saving...' : 'Mark all media reviewed'}
+              </button>
+              {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>We could not save your progress. Please try again.</p>}
+            </div>
+          )}
         </div>
 
         {/* Questions to Consider */}

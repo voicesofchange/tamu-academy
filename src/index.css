@@ -213,4 +213,11 @@ html {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  .tamu-print-area .no-print,
+  .tamu-print-area .no-print * {
+    visibility: hidden !important;
+  }
+  .tamu-print-area input[type="checkbox"] {
+    visibility: visible !important;
+  }
 }

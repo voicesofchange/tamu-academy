@@ -138,7 +138,8 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
 
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1.5rem', fontSize: '0.82rem' }}>{lab.finalReminder}</p>
 
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div className="no-print" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        <button type="button" onClick={() => window.print()} style={{ ...clearButtonStyle, color: '#D4A12A', borderColor: 'rgba(212,161,42,0.4)' }}>Print worksheet</button>
         {!showClearConfirm ? (
           <button type="button" onClick={() => setShowClearConfirm(true)} style={clearButtonStyle}>Clear all</button>
         ) : (
