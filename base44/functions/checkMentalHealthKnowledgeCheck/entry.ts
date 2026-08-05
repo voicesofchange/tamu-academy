@@ -28,10 +28,13 @@ import {
  * TRUST BOUNDARY (mirrors getMentalHealthModule /
  * checkMentalHealthScenario — do not relax):
  *   - Unauthenticated public visitor → 403 Forbidden.
- *   - Non-admin authenticated user → 403 Forbidden during this
- *     development phase (admin-only access until Module 2 is
- *     published). Learner-access checks will be layered on top of
- *     the admin gate in a later launch phase.
+ *   - Non-admin authenticated user without active enrollment,
+ *     unpublished module, or unmet prerequisite → 403 Forbidden.
+ *     Non-admins with all conditions met receive the graded response
+ *     with progressSaved: true.
+ *   - Admin users always receive the graded response for preview.
+ *     Progress is saved only when the module is published and the
+ *     admin has active enrollment; otherwise progressSaved: false.
  *   - 400 for malformed/missing answers, unknown question IDs,
  *     duplicate question IDs, invalid option indices, wrong answer
  *     count, or any unexpected / protected body field.
@@ -117,20 +120,33 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    // Determine eligibility for progress recording. Admins preview
-    // without recording. Non-admins need a published module + active
-    // enrollment + completed prerequisite; otherwise 403.
+    // Determine eligibility for progress recording. Progress is saved
+    // only when Module 2 is published AND the current user has active
+    // enrollment, regardless of role. Administrator status must not
+    // bypass either saving condition. Admins always receive the
+    // educational grading response for preview; when previewing
+    // without eligibility, progressSaved is false and no ModuleProgress
+    // record is created or updated. Non-admins without eligibility
+    // receive 403.
     let canRecordProgress = false;
-    if (!isAdmin) {
-      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        status: 'active',
-      });
-      if (!enrollmentRows || enrollmentRows.length === 0) {
+    const isPublished = isModulePublished(courseSlug, moduleSlug);
+    const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+      learner_id: user.id,
+      course_slug: courseSlug,
+      status: 'active',
+    });
+    const hasEnrollment = !!(enrollmentRows && enrollmentRows.length > 0);
+
+    if (isAdmin) {
+      // Admins always get the educational response (preview). Progress
+      // is saved only when both conditions are met.
+      canRecordProgress = isPublished && hasEnrollment;
+    } else {
+      // Non-admins: 403 if no enrollment, no publication, or no prereq.
+      if (!hasEnrollment) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-      if (!isModulePublished(courseSlug, moduleSlug)) {
+      if (!isPublished) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
       const prereqRoute = getModulePrerequisite(courseSlug, moduleSlug);
@@ -228,8 +244,10 @@ export default async function(req: Request): Promise<Response> {
     // never downgraded to false by a later failed attempt. No
     // selections, answers, feedback, scores, or attempt details are
     // stored. No QuizAttempt or CourseEnrollment record is created.
-    // For admins (current preview): no ModuleProgress record is
-    // created or updated; progressSaved is false.
+    // For admins previewing without eligibility (unpublished module
+    // or no active enrollment): no ModuleProgress record is created
+    // or updated; progressSaved is false. For admins with both
+    // conditions met, progress is saved.
     if (canRecordProgress) {
       const now = new Date().toISOString();
       const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({

@@ -27,9 +27,11 @@ import {
  *   - Unknown course/module -> 404.
  *   - Module 2 only (other modules return 404 until their progress
  *     stages land).
- *   - Eligibility to save: false during unpublished administrator
- *     preview (for ALL users including admins). When published, true
- *     only for non-admins with an active enrollment.
+ *   - Eligibility to save: true only when Module 2 is published AND
+ *     the current user has active enrollment, regardless of role.
+ *     An admin without enrollment or previewing an unpublished module
+ *     is not eligible. Administrator status must not bypass either
+ *     condition.
  */
 export default async function(req: Request): Promise<Response> {
   try {
@@ -78,11 +80,12 @@ export default async function(req: Request): Promise<Response> {
     const isAdmin = user.role === 'admin';
     const isPublished = isModulePublished(courseSlug, moduleRoute);
 
-    // Determine eligibility to save progress. Admins can never save
-    // progress (administrator access alone must not create learner
-    // progress). Non-admins need a published module + active enrollment.
+    // Determine eligibility to save progress. Requires a published
+    // module AND active enrollment, regardless of role. An admin
+    // without enrollment or previewing an unpublished module is not
+    // eligible. Administrator status must not bypass either condition.
     let eligibleToSave = false;
-    if (isPublished && !isAdmin) {
+    if (isPublished) {
       const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
         learner_id: user.id,
         course_slug: courseSlug,

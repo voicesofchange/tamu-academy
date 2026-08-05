@@ -140,16 +140,19 @@ export default async function(req: Request): Promise<Response> {
       if (!isModulePublished(courseSlug, moduleRoute)) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-      // Non-admin: check enrollment + prerequisite.
+      // Require active enrollment for ALL users (including admins),
+      // regardless of role. Administrator status must not bypass
+      // either saving condition.
+      const m2Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id,
+        course_slug: courseSlug,
+        status: 'active',
+      });
+      if (!m2Enrollment || m2Enrollment.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      // Non-admin: also check prerequisite completion.
       if (user.role !== 'admin') {
-        const m2Enrollment = await base44.asServiceRole.entities.CourseEnrollment.filter({
-          learner_id: user.id,
-          course_slug: courseSlug,
-          status: 'active',
-        });
-        if (!m2Enrollment || m2Enrollment.length === 0) {
-          return Response.json({ error: 'Forbidden' }, { status: 403 });
-        }
         const m2Prereq = getModulePrerequisite(courseSlug, moduleRoute);
         if (m2Prereq) {
           const m2PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
