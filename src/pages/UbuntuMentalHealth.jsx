@@ -167,6 +167,16 @@ export default function UbuntuMentalHealth() {
 
       {/* Learner progress — shows real data when available, placeholder otherwise */}
       <PageSection eyebrow="Your Progress" heading="Learner Progress">
+        <div style={{ marginBottom: '1.5rem' }}>
+          <Link to={`/courses/${course.slug}/insights`} className="font-body" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            color: '#D4A12A', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+            fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(212,161,42,0.35)',
+            borderRadius: '2px', padding: '0.55rem 1.2rem',
+          }}>
+            View Detailed Insights &rarr;
+          </Link>
+        </div>
         {progressLoading ? (
           <div style={{ padding: '1.5rem 1.75rem', border: '1px dashed rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
             <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>

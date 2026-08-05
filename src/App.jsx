@@ -45,6 +45,7 @@ import MhModule6 from './pages/MhModule6';
 import MhModule7 from './pages/MhModule7';
 import MhCourseCompletion from './pages/MhCourseCompletion';
 import MhCertificate from './pages/MhCertificate';
+import MhInsights from './pages/MhInsights';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -93,6 +94,7 @@ const AuthenticatedApp = () => {
       <Route path="/courses/mental-health-community-and-culture/module-7" element={<MhModule7 />} />
       <Route path="/courses/mental-health-community-and-culture/completion" element={<MhCourseCompletion />} />
       <Route path="/courses/mental-health-community-and-culture/certificate" element={<MhCertificate />} />
+      <Route path="/courses/mental-health-community-and-culture/insights" element={<MhInsights />} />
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
