@@ -7,6 +7,7 @@ import MhModule3Lesson from '@/components/courses/MhModule3Lesson';
 import MhModule4Lesson from '@/components/courses/MhModule4Lesson';
 import MhModule5Lesson from '@/components/courses/MhModule5Lesson';
 import MhModule6Lesson from '@/components/courses/MhModule6Lesson';
+import MhModule7Lesson from '@/components/courses/MhModule7Lesson';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
 import PageNotFound from '@/lib/PageNotFound';
 
@@ -125,6 +126,15 @@ export default function MhModuleRoutePage({ moduleRoute }) {
     if (moduleRoute === 'module-6') {
       return (
         <MhModule6Lesson
+          course={found.course}
+          module={found.module}
+          lesson={state.module.lesson}
+        />
+      );
+    }
+    if (moduleRoute === 'module-7') {
+      return (
+        <MhModule7Lesson
           course={found.course}
           module={found.module}
           lesson={state.module.lesson}

@@ -160,7 +160,7 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Roots of Resilience: Storytelling, Survival, and Collective Healing',
       description:
         'Brings the course together through Roots of Resilience, integrating survival, storytelling, and collective healing across three linked sessions.',
-      status: 'Coming Soon',
+      status: 'In Development',
       publicationStatus: 'unpublished',
       estimatedTime: '150 to 180 minutes across three linked sessions',
       prerequisite: 'module-6',
