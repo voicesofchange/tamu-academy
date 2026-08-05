@@ -209,7 +209,7 @@ export default function MhModule6Lesson({ course, module: mod, lesson }) {
         <MhKijaniScenario courseSlug={course.slug} moduleSlug={mod.route} scenario={lesson.interactiveScenario} />
       </PageSection>
 
-      {/* 13. AMPLIFY applied activity */}
+      {/* 13. Applied activity */}
       <PageSection id="amplify-lab" eyebrow={lesson.amplifyLab.eyebrow} heading={lesson.amplifyLab.title}>
         {safetyNoteBox('Content and safety note before applied activity')}
         <div aria-label="AMPLIFY safety warning" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.35)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.07)' }}>

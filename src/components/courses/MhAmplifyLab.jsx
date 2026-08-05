@@ -69,7 +69,7 @@ export default function MhAmplifyLab({ lab }) {
       </ol>
 
       <div style={{ ...boxStyle, marginBottom: '1.75rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>AMPLIFY Framework</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{lab.frameworkLabel}</span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{lab.frameworkSummary}</p>
       </div>
 
@@ -109,7 +109,7 @@ export default function MhAmplifyLab({ lab }) {
       <h3 className="font-heading" style={partHeading}>{lab.sectionI.heading}</h3>
       {renderFields(lab.sectionI.fields, 'i')}
 
-      {/* Media Route: 90 Second Script and Storyboard */}
+      {/* Media script section */}
       <h3 className="font-heading" style={partHeading}>{lab.mediaScriptStructure.heading}</h3>
       <p className="font-body" style={promptStyle}>{lab.mediaScriptStructure.instruction}</p>
       {renderFields(lab.mediaScriptStructure.fields, 'ms')}
@@ -124,7 +124,7 @@ export default function MhAmplifyLab({ lab }) {
       <h3 className="font-heading" style={partHeading}>{lab.sectionY.heading}</h3>
       {renderFields(lab.sectionY.fields, 'y')}
 
-      {/* Evaluation Plan */}
+      {/* Evaluation section */}
       <h3 className="font-heading" style={partHeading}>{lab.evaluationPlan.heading}</h3>
       {renderFields(lab.evaluationPlan.fields, 'ev')}
 
@@ -139,15 +139,15 @@ export default function MhAmplifyLab({ lab }) {
       <h4 className="font-heading" style={{ ...subHeading, marginTop: '1.5rem' }}>{lab.redTeamTests.summaryHeading}</h4>
       {renderFields(lab.redTeamTests.summaryFields, 'rts')}
 
-      {/* Ninety Day Preparation Plan */}
+      {/* Preparation plan section */}
       <h3 className="font-heading" style={partHeading}>{lab.ninetyDayPlan.heading}</h3>
       <Field id="amplify-90day" label={lab.ninetyDayPlan.day90DecisionLabel} prompt={lab.ninetyDayPlan.prompt} value={fields.day90 || ''} onChange={(v) => setField('day90', v)} rows={4} />
 
-      {/* One Page Proposal Card */}
+      {/* Proposal card section */}
       <h3 className="font-heading" style={partHeading}>{lab.proposalCard.heading}</h3>
       {renderFields(lab.proposalCard.fields, 'pc')}
 
-      {/* Completion Checklist */}
+      {/* Checklist section */}
       <h3 className="font-heading" style={subHeading}>{lab.completionChecklist.heading}</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1.5rem' }}>
         {lab.completionChecklist.items.map((item, i) => (
