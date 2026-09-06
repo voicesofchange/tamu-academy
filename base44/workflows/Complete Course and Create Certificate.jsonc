@@ -1,0 +1,135 @@
+{
+  "name": "Complete Course and Create Certificate",
+  "description": "When a learner's ModuleProgress record transitions to completed, checks whether the completed module is the final required module for the course. If it is, verifies that every required module is complete, marks the CourseEnrollment as completed, and issues a CourseCertificate if one does not already exist. Required modules are derived from the course registry, so this workflow works for any Tamu Academy course.",
+  "trigger": {
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "ModuleProgress",
+      "events": [
+        "update"
+      ]
+    },
+    "condition": "${ .trigger.data.status == \"completed\" and .trigger.old_data.status != \"completed\" }"
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "complete_course_certificate",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "evaluate_completion": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "evaluateCourseCompletion",
+            "args": {
+              "learner_id": "${ .trigger.data.learner_id }",
+              "course_slug": "${ .trigger.data.course_slug }",
+              "module_slug": "${ .trigger.data.module_slug }"
+            }
+          },
+          "then": "check_final_module",
+          "x-base44": {
+            "title": "Evaluate course completion",
+            "description": "Determine if the completed module is the final required module and whether all modules are complete"
+          }
+        }
+      },
+      {
+        "check_final_module": {
+          "switch": [
+            {
+              "when": "${ .evaluate_completion.is_final_module == true }",
+              "then": "check_all_modules_complete"
+            },
+            {
+              "when": "${ true }",
+              "then": "end"
+            }
+          ],
+          "x-base44": {
+            "title": "Is this the final module?",
+            "description": "End the workflow if the completed module is not the final required module"
+          }
+        }
+      },
+      {
+        "check_all_modules_complete": {
+          "switch": [
+            {
+              "when": "${ .evaluate_completion.all_modules_complete == true }",
+              "then": "complete_enrollment"
+            },
+            {
+              "when": "${ true }",
+              "then": "end"
+            }
+          ],
+          "x-base44": {
+            "title": "Are all modules complete?",
+            "description": "End the workflow if any required module is still incomplete"
+          }
+        }
+      },
+      {
+        "complete_enrollment": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "completeCourseEnrollment",
+            "args": {
+              "learner_id": "${ .evaluate_completion.learner_id }",
+              "course_slug": "${ .evaluate_completion.course_slug }",
+              "final_module_slug": "${ .evaluate_completion.final_module_slug }"
+            }
+          },
+          "then": "check_certificate_exists",
+          "x-base44": {
+            "title": "Mark enrollment complete",
+            "description": "Update enrollment to completed and check for an existing certificate"
+          }
+        }
+      },
+      {
+        "check_certificate_exists": {
+          "switch": [
+            {
+              "when": "${ .complete_enrollment.certificate_exists == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "issue_certificate"
+            }
+          ],
+          "x-base44": {
+            "title": "Certificate already exists?",
+            "description": "Skip certificate creation if one already exists for this learner and course"
+          }
+        }
+      },
+      {
+        "issue_certificate": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "issueCourseCertificate",
+            "args": {
+              "learner_id": "${ .complete_enrollment.learner_id }",
+              "course_slug": "${ .complete_enrollment.course_slug }",
+              "enrollment_id": "${ .complete_enrollment.enrollment_id }",
+              "learner_name": "${ .complete_enrollment.learner_name }",
+              "course_title": "${ .complete_enrollment.course_title }",
+              "completed_at": "${ .complete_enrollment.completed_at }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Issue certificate",
+            "description": "Create a new certificate with a unique ID and verification code"
+          }
+        }
+      }
+    ]
+  }
+}

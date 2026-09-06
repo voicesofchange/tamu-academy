@@ -14,6 +14,10 @@
       "type": "string",
       "title": "Certificate Identifier"
     },
+    "verification_code": {
+      "type": "string",
+      "title": "Verification Code"
+    },
     "learner_name": {
       "type": "string",
       "title": "Learner Name"
@@ -21,6 +25,10 @@
     "course_title": {
       "type": "string",
       "title": "Course Title"
+    },
+    "course_enrollment_id": {
+      "type": "string",
+      "title": "Course Enrollment ID"
     },
     "completed_at": {
       "type": "string",
@@ -31,6 +39,15 @@
       "type": "string",
       "format": "date-time",
       "title": "Certificate Issued At"
+    },
+    "status": {
+      "type": "string",
+      "title": "Certificate Status",
+      "enum": [
+        "valid",
+        "revoked"
+      ],
+      "default": "valid"
     },
     "completion_statement": {
       "type": "string",

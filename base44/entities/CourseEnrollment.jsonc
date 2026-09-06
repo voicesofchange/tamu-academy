@@ -33,6 +33,18 @@
       "format": "date-time",
       "title": "Completed At"
     },
+    "progress_percentage": {
+      "type": "integer",
+      "title": "Progress Percentage",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "certificate_eligible": {
+      "type": "boolean",
+      "title": "Certificate Eligible",
+      "default": false
+    },
     "updated_at": {
       "type": "string",
       "format": "date-time",
