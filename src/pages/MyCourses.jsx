@@ -122,9 +122,26 @@ export default function MyCourses() {
                 <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.5rem' }}>
                   {resumeTarget.firstIncomplete.number}: {resumeTarget.firstIncomplete.title}
                 </h3>
-                <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-                  You have completed {resumeTarget.completedCount} of {resumeTarget.completion?.totalModules} modules in this course.
-                </p>
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
+                    <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+                      Progress
+                    </span>
+                    <span className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 500 }}>
+                      {resumeTarget.completedCount} of {resumeTarget.completion?.totalModules} modules
+                    </span>
+                  </div>
+                  <div
+                    role="progressbar"
+                    aria-valuenow={Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={`${resumeTarget.meta?.title} progress`}
+                    style={{ width: '100%', height: '6px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '3px', overflow: 'hidden' }}
+                  >
+                    <div style={{ width: `${Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '3px', transition: 'width 0.6s ease' }} />
+                  </div>
+                </div>
                 <Link to={`/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`} className="font-body" style={primaryButtonStyle}>
                   Continue at {resumeTarget.firstIncomplete.number} &rarr;
                 </Link>
