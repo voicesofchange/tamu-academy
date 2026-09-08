@@ -6,7 +6,7 @@ const ORGANIZATION_LD = {
   name: 'Tamu Academy',
   url: 'https://tamuacademy.org/',
   description:
-    'Tamu Academy is an African-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes.',
+    'Tamu Academy is a diaspora-rooted learning platform that helps young people understand themselves, power, and the world through accessible videos, practical learning experiences, and community-centered programmes.',
   founder: {
     '@type': 'Person',
     name: 'Tex Wambui',

@@ -14,7 +14,7 @@ const AREAS = [
   {
     n: '02',
     title: 'Economics and Development',
-    desc: 'Understand economic systems, development, inequality, trade, debt, institutions, and Africa\'s place in the global economy.',
+    desc: 'Understand economic systems, development, inequality, trade, debt, institutions, and the diaspora\'s place in the global economy.',
     anchor: 'economics-and-development',
   },
   {

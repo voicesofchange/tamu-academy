@@ -123,13 +123,13 @@ export default function About() {
         </div>
       </PageSection>
 
-      {/* African Roots */}
+      {/* Diaspora Roots */}
       <PageSection heading="Diaspora Roots and Global Perspective">
         <p className={bodyTextClass} style={bodyText}>
           Tamu Academy is rooted in a diaspora understanding of community, knowledge, responsibility, and connection. The name <em style={{ color: '#E2B652' }}>Tamu</em> — meaning sweet in Swahili — reflects a belief that learning should be nourishing, not punishing; that knowledge should serve communities, not merely credentialise individuals.
         </p>
         <p className={bodyTextClass} style={bodyText}>
-          Africa is not a single culture. It is a continent of extraordinary cultural, linguistic, geographic, and intellectual diversity — home to thousands of languages, communities, and traditions of knowledge and governance. Tamu Academy draws inspiration from that diversity while engaging with learners and issues from across the world.
+          The diaspora is not a single culture. It is a global community of extraordinary cultural, linguistic, geographic, and intellectual diversity — home to thousands of languages, communities, and traditions of knowledge and governance. Tamu Academy draws inspiration from that diversity while engaging with learners and issues from across the world.
         </p>
         <p className={bodyTextClass} style={bodyText}>
           We approach global issues through lenses that are often underrepresented in mainstream educational spaces — and we believe that doing so produces richer, more honest, and more useful learning for everyone.
