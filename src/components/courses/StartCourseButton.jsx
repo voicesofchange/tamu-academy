@@ -1,6 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
+import { base44 } from '@/api/base44Client';
 
 const primaryButtonStyle = {
   display: 'inline-flex',
@@ -46,25 +47,72 @@ const infoTextStyle = {
   maxWidth: '560px',
 };
 
+const errorTextStyle = {
+  color: '#e8955c',
+  fontSize: '0.85rem',
+  margin: '0.75rem 0 0',
+};
+
+// Maps each course slug to its enrollment backend function name. The
+// backend de-duplicates by (learner_id, course_slug), so calling this on
+// every "Start Course" click is safe — an existing enrollment is reused
+// and no duplicate row is created.
+const ENROLLMENT_FUNCTION_BY_SLUG = {
+  'mental-health-community-and-culture': 'enrollMentalHealth',
+  'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
+};
+
 /**
  * StartCourseButton — renders the correct "Start Course" action based
  * on authentication state.
  *
- * - Authenticated learner: links directly to the first module route.
- *   The module page handles enrollment server-side.
+ * - Authenticated learner: calls the server-side enrollment function
+ *   (which de-duplicates and reuses an existing enrollment), then
+ *   navigates to the first module route. This guarantees the backend
+ *   content gate (which requires an active enrollment) will pass.
  * - Logged-out visitor: shows a brief account explanation and links
  *   to /login and /register, both with returnTo set to the first
  *   module route so the learner returns to the course after auth.
  */
 export default function StartCourseButton({ courseSlug, firstModuleRoute = 'module-1' }) {
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [enrolling, setEnrolling] = useState(false);
+  const [enrollError, setEnrollError] = useState(null);
+
   const modulePath = `/courses/${courseSlug}/${firstModuleRoute}`;
+
+  async function handleStart() {
+    if (enrolling) return;
+    setEnrolling(true);
+    setEnrollError(null);
+    const functionName = ENROLLMENT_FUNCTION_BY_SLUG[courseSlug];
+    if (functionName) {
+      try {
+        await base44.functions.invoke(functionName, { courseSlug });
+      } catch (err) {
+        setEnrollError('Unable to start this course right now. Please try again.');
+        setEnrolling(false);
+        return;
+      }
+    }
+    navigate(modulePath);
+  }
 
   if (isAuthenticated) {
     return (
-      <Link to={modulePath} style={primaryButtonStyle}>
-        Start Course &rarr;
-      </Link>
+      <div>
+        <button
+          type="button"
+          onClick={handleStart}
+          disabled={enrolling}
+          className="font-body"
+          style={{ ...primaryButtonStyle, opacity: enrolling ? 0.7 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
+        >
+          {enrolling ? 'Starting...' : 'Start Course \u2192'}
+        </button>
+        {enrollError && <p className="font-body" role="alert" style={errorTextStyle}>{enrollError}</p>}
+      </div>
     );
   }
 
