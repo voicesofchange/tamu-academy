@@ -409,13 +409,13 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
           </p>
         )}
 
-        {/* Upcoming notice — extended assignment, later modules, course completion, certificates */}
-        <div style={upcomingBoxStyle} aria-label="Upcoming content">
+        {/* What's next — guides learners to continue the course */}
+        <div style={upcomingBoxStyle} aria-label="What's next">
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
-            Not yet available
+            What's next
           </span>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            The optional extended academic assignment, Modules 2 through 7, course completion, and certificates are not yet available.
+            Continue to Module 2 to explore stress, stigma, and strength narratives. Use the navigation below to move to the next module or return to the course overview.
           </p>
         </div>
       </div>

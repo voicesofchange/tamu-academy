@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
@@ -12,6 +11,7 @@ import MhCommunityCareMap from '@/components/courses/MhCommunityCareMap';
 import MhPrivateReflection from '@/components/courses/MhPrivateReflection';
 import MhKnowledgeCheck from '@/components/courses/MhKnowledgeCheck';
 import MhModuleCompletion from '@/components/courses/MhModuleCompletion';
+import MhModuleNav from '@/components/courses/MhModuleNav';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -42,27 +42,6 @@ const unavailableBoxStyle = {
   backgroundColor: 'rgba(245,239,224,0.015)',
   marginTop: '2.5rem',
   marginBottom: '2.5rem',
-};
-
-const navLinkStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.4rem',
-  color: 'rgba(212,161,42,0.7)',
-  fontSize: '0.72rem',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  fontWeight: 500,
-  border: '1px solid rgba(212,161,42,0.35)',
-  borderRadius: '2px',
-  padding: '0.65rem 1.3rem',
-};
-const navDisabledStyle = {
-  ...navLinkStyle,
-  color: 'rgba(245,239,224,0.28)',
-  cursor: 'not-allowed',
-  borderColor: 'rgba(245,239,224,0.12)',
 };
 
 function renderParagraphs(paragraphs) {
@@ -211,12 +190,6 @@ function SupportingReadingBlock({ reading }) {
 export default function MhModuleLesson({ course, module: mod, lesson }) {
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
-  const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
-  const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
-  const nextModule =
-    moduleIndex >= 0 && moduleIndex < course.modules.length - 1
-      ? course.modules[moduleIndex + 1]
-      : null;
 
   return (
     <PageLayout>
@@ -428,31 +401,7 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
 
       {/* Navigation position within the seven-module course */}
       <GoldDivider width="260px" margin="0 0 2rem" />
-      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          {prevModule ? (
-            <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>
-              &larr; {prevModule.number}
-            </Link>
-          ) : (
-            <span aria-disabled="true" title="This is the first module" style={navDisabledStyle}>
-              &larr; Start of course
-            </span>
-          )}
-          {nextModule ? (
-            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>
-              {nextModule.number} &rarr;
-            </Link>
-          ) : (
-            <span aria-disabled="true" title="This is the last module" style={navDisabledStyle}>
-              End of course &rarr;
-            </span>
-          )}
-        </div>
-        <Link to={coursePath} className="font-body" style={navLinkStyle}>
-          &larr; Return to Course
-        </Link>
-      </nav>
+      <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
     </PageLayout>
   );
 }

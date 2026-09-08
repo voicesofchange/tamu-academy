@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
@@ -12,6 +11,7 @@ import MhBridgeConversationLab from '@/components/courses/MhBridgeConversationLa
 import MhModule3KnowledgeCheck from '@/components/courses/MhModule3KnowledgeCheck';
 import MhModule3Progress from '@/components/courses/MhModule3Progress';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import MhModuleNav from '@/components/courses/MhModuleNav';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -44,21 +44,6 @@ const externalLinkStyle = {
   color: '#D4A12A',
   textDecoration: 'none',
   borderBottom: '1px dotted rgba(212,161,42,0.5)',
-};
-
-const navLinkStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.4rem',
-  color: 'rgba(212,161,42,0.7)',
-  fontSize: '0.72rem',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  fontWeight: 500,
-  border: '1px solid rgba(212,161,42,0.35)',
-  borderRadius: '2px',
-  padding: '0.65rem 1.3rem',
 };
 
 const reflectionTextareaStyle = {
@@ -151,9 +136,6 @@ function renderExplanation(section) {
 export default function MhModule3Lesson({ course, module: mod, lesson }) {
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
-  const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
-  const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
-  const nextModule = moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
 
   const [reflectionSentence, setReflectionSentence] = useState('');
   const [reflectionValue, setReflectionValue] = useState('');
@@ -616,31 +598,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
       </PageSection>
 
       <GoldDivider width="260px" margin="0 0 2rem" />
-      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          {prevModule ? (
-            <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>
-              &larr; {prevModule.number}
-            </Link>
-          ) : (
-            <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>
-              &larr; Start of course
-            </span>
-          )}
-          {nextModule ? (
-            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>
-              {nextModule.number} &rarr;
-            </Link>
-          ) : (
-            <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>
-              End of course &rarr;
-            </span>
-          )}
-        </div>
-        <Link to={coursePath} className="font-body" style={navLinkStyle}>
-          &larr; Return to Course
-        </Link>
-      </nav>
+      <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
     </PageLayout>
   );
 }

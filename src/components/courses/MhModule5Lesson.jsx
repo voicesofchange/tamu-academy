@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
@@ -12,6 +11,7 @@ import MhPathwaysLab from '@/components/courses/MhPathwaysLab';
 import MhModule5KnowledgeCheck from '@/components/courses/MhModule5KnowledgeCheck';
 import MhModule5Progress from '@/components/courses/MhModule5Progress';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import MhModuleNav from '@/components/courses/MhModuleNav';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -20,7 +20,6 @@ const competencyBoxStyle = { padding: '1.25rem 1.5rem', border: '1px solid rgba(
 const disclaimerBoxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)', marginTop: '1.5rem' };
 const boxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' };
 const externalLinkStyle = { color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' };
-const navLinkStyle = { display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(212,161,42,0.7)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.65rem 1.3rem' };
 const reflectionTextareaStyle = { width: '100%', maxWidth: '100%', boxSizing: 'border-box', padding: '0.85rem 1rem', backgroundColor: 'rgba(245,239,224,0.04)', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', color: '#F5EFE0', fontSize: '0.97rem', lineHeight: 1.6, fontFamily: 'inherit', resize: 'vertical' };
 const reflectionClearButtonStyle = { marginTop: '1.25rem', background: 'transparent', border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.2rem', color: 'rgba(212,161,42,0.85)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer' };
 
@@ -85,9 +84,6 @@ function renderOptionalMedia(item, attributionStatement) {
 export default function MhModule5Lesson({ course, module: mod, lesson }) {
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
-  const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
-  const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
-  const nextModule = moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
 
   const [reflectionText, setReflectionText] = useState('');
   const [knowledgeCheckGradedCount, setKnowledgeCheckGradedCount] = useState(0);
@@ -254,22 +250,8 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
 
       {/* 18. Previous and next module navigation */}
       <GoldDivider width="260px" margin="0 0 2rem" />
-      <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          {prevModule ? (
-            <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>&larr; {prevModule.number}</Link>
-          ) : (
-            <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>&larr; Start of course</span>
-          )}
-          {nextModule ? (
-            <Link to={`${coursePath}/${nextModule.route}`} className="font-body" style={navLinkStyle}>{nextModule.number} &rarr;</Link>
-          ) : (
-            <span style={{ ...navLinkStyle, color: 'rgba(245,239,224,0.28)', cursor: 'not-allowed', borderColor: 'rgba(245,239,224,0.12)' }}>End of course &rarr;</span>
-          )}
-        </div>
-        <Link to={coursePath} className="font-body" style={navLinkStyle}>&larr; Return to Course</Link>
-        <p className="font-body" style={{ ...bodyText, marginTop: '1.5rem', marginBottom: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>{lesson.closing.transition}</p>
-      </nav>
+      <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
+      <p className="font-body" style={{ ...bodyText, marginTop: '1.5rem', marginBottom: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>{lesson.closing.transition}</p>
     </PageLayout>
   );
 }
