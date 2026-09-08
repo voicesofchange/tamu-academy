@@ -142,7 +142,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-          Enrollment is not yet open. Once the course launches, your position in the course, completed modules, and knowledge-check results will appear here. No personal reflections or activity responses are stored in the platform.
+          Sign in or create an account to track your progress. Your position in the course, completed modules, and knowledge-check results will appear here. No personal reflections or activity responses are stored in the platform.
         </p>
       </div>
     );
@@ -230,7 +230,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
       ) : (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-            Enrollment is not yet open. Once the course launches, your progress across modules will appear here.
+            Sign in to track your progress across modules.
           </p>
         </div>
       )}
