@@ -21,7 +21,7 @@ const COURSE_AREAS = [
       {
         title: 'Mental Health, Community and Culture',
         slug: 'mental-health-community-and-culture',
-        status: 'In Development',
+        status: 'Available',
         description:
           'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
       },
@@ -36,7 +36,7 @@ const COURSE_AREAS = [
       {
         title: 'Understanding African Economies and the Global System',
         slug: 'understanding-african-economies-and-the-global-system',
-        status: 'In Development',
+        status: 'Available',
         description:
           'A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa\'s position within the global economy.',
       },

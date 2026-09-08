@@ -15,7 +15,7 @@ import { ARTICLES } from '@/lib/articles-data';
  * Read by src/pages/Landing.jsx (homepage switch) and
  * src/components/SoftLaunchGate.jsx (route guard). Change in one place only.
  */
-export const LAUNCH_MODE = true;
+export const LAUNCH_MODE = false;
 
 /**
  * Exact public paths allowed during soft-launch. Any pathname not in this

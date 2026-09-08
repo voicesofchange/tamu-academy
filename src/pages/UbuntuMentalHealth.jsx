@@ -8,6 +8,7 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleCard from '@/components/courses/ModuleCard';
 import MhCourseProgress from '@/components/courses/MhCourseProgress';
+import StartCourseButton from '@/components/courses/StartCourseButton';
 import { MENTAL_HEALTH_COURSE, MENTAL_HEALTH_LEARNING_AREA } from '@/lib/mental-health-tracks';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -57,10 +58,13 @@ export default function UbuntuMentalHealth() {
           <StatusBadge label={course.access} />
         </div>
         <p className="font-body" style={{ ...bodyText, margin: 0, maxWidth: '640px' }}>
-          This course is currently in development. Learning materials are being written, recorded, and
-          reviewed. Module pages, enrollment, progress tracking, knowledge checks, and certificates are
-          not yet active. Once Module 1 is ready, it will be released in a controlled pilot.
+          This course is available. Create an account or sign in to begin learning, save your progress,
+          and earn a certificate upon completion.
         </p>
+      </PageSection>
+
+      <PageSection eyebrow="Begin" heading="Start This Course">
+        <StartCourseButton courseSlug={course.slug} />
       </PageSection>
 
       <PageSection eyebrow="Overview" heading="Course Description">
@@ -119,7 +123,7 @@ export default function UbuntuMentalHealth() {
 
       <PageSection eyebrow="Modules" heading="Course Modules">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Seven connected modules build the framework. Module 1 is in development; Modules 2 through 7 will open in later phases once their learning materials are ready.
+          Seven connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, interactive scenarios, and knowledge checks.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((mod) => (

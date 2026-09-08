@@ -51,6 +51,10 @@ import EconomicsCourseCompletion from './pages/EconomicsCourseCompletion';
 import EconomicsCertificate from './pages/EconomicsCertificate';
 import MyCourses from './pages/MyCourses';
 import Welcome from './pages/Welcome';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -81,12 +85,19 @@ const AuthenticatedApp = () => {
       <Route element={<SoftLaunchGate />}>
       <Route path="/" element={<Landing />} />
       <Route path="/about" element={<About />} />
-      {/* Protected Routes — login required for all curriculum access */}
+      {/* Auth routes — public, no authentication required */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      {/* Public course catalog and course overview pages — no login required to read about courses */}
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
+      <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
+      {/* Protected Routes — login required for module content, progress, and certificates */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route path="/courses" element={<Courses />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/my-courses" element={<MyCourses />} />
-        <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
@@ -95,7 +106,6 @@ const AuthenticatedApp = () => {
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
-        <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
         <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
         <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
         <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />

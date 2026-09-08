@@ -9,6 +9,7 @@ const LINKS = [
   { label: 'Articles', to: '/articles' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' },
+  { label: 'Privacy', to: '/privacy' },
 ];
 
 export default function SiteFooter() {

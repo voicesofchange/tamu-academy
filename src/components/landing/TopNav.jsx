@@ -17,7 +17,7 @@ export default function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const navLinks = isAuthenticated
     ? [...NAV_LINKS.slice(0, 3), { label: 'My Courses', to: '/my-courses' }, ...NAV_LINKS.slice(3)]
     : NAV_LINKS;
@@ -53,7 +53,10 @@ export default function TopNav() {
     return () => document.removeEventListener('keydown', handleKey);
   }, [menuOpen]);
 
-  const isHome = location.pathname === '/';
+  const handleSignOut = () => {
+    setMenuOpen(false);
+    logout();
+  };
 
   return (
     <header
@@ -118,6 +121,66 @@ export default function TopNav() {
               </Link>
             );
           })}
+          {/* Auth actions */}
+          {isAuthenticated ? (
+            <button
+              onClick={handleSignOut}
+              className="tamu-nav-link"
+              style={{
+                color: 'rgba(245,239,224,0.78)',
+                fontSize: '0.68rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                paddingBottom: '2px',
+                borderBottom: '1px solid transparent',
+                fontFamily: "'DM Sans', sans-serif",
+              }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="tamu-nav-link"
+                style={{
+                  color: 'rgba(245,239,224,0.78)',
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  fontWeight: 500,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/register"
+                style={{
+                  color: '#1A130E',
+                  backgroundColor: '#D4A12A',
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  fontWeight: 500,
+                  whiteSpace: 'nowrap',
+                  border: '1px solid #D4A12A',
+                  borderRadius: '2px',
+                  padding: '0.35rem 0.85rem',
+                }}
+              >
+                Create Account
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Mobile hamburger */}
@@ -197,6 +260,70 @@ export default function TopNav() {
             </Link>
           );
         })}
+        {/* Auth actions in mobile menu */}
+        {isAuthenticated ? (
+          <button
+            onClick={handleSignOut}
+            className="tamu-nav-link"
+            style={{
+              color: 'rgba(245,239,224,0.82)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              fontWeight: 500,
+              padding: '0.85rem 0',
+              borderBottom: '1px solid rgba(212,161,42,0.07)',
+              display: 'block',
+              width: '100%',
+              textAlign: 'left',
+              background: 'none',
+              border: 'none',
+              borderBottomWidth: '1px',
+              borderBottomStyle: 'solid',
+              borderBottomColor: 'rgba(212,161,42,0.07)',
+              fontFamily: "'DM Sans', sans-serif",
+              cursor: 'pointer',
+            }}
+          >
+            Sign Out
+          </button>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className="tamu-nav-link"
+              style={{
+                color: 'rgba(245,239,224,0.82)',
+                fontSize: '0.8rem',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                fontWeight: 500,
+                padding: '0.85rem 0',
+                borderBottom: '1px solid rgba(212,161,42,0.07)',
+                display: 'block',
+              }}
+            >
+              Sign In
+            </Link>
+            <Link
+              to="/register"
+              className="tamu-nav-link"
+              style={{
+                color: '#D4A12A',
+                fontSize: '0.8rem',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                fontWeight: 500,
+                padding: '0.85rem 0',
+                display: 'block',
+              }}
+            >
+              Create Account
+            </Link>
+          </>
+        )}
       </nav>
 
       {/* Responsive style injection */}

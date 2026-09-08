@@ -7,6 +7,7 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleCard from '@/components/courses/ModuleCard';
 import EconomicsCourseProgress from '@/components/courses/EconomicsCourseProgress';
+import StartCourseButton from '@/components/courses/StartCourseButton';
 import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
 
@@ -49,9 +50,13 @@ export default function CoursePageTemplate({ course }) {
           <StatusBadge label={course.access} />
         </div>
         <p className="font-body" style={{ ...bodyText, margin: 0, maxWidth: '640px' }}>
-          This course is currently in development. Learning materials are being recorded and prepared.
-          Module pages, recordings, quizzes, progress tracking, and certificates are not yet active.
+          This course is available. Create an account or sign in to begin learning, save your progress,
+          and earn a certificate upon completion.
         </p>
+      </PageSection>
+
+      <PageSection eyebrow="Begin" heading="Start This Course">
+        <StartCourseButton courseSlug={course.slug} />
       </PageSection>
 
       <PageSection eyebrow="Overview" heading="Course Description">
@@ -121,14 +126,14 @@ export default function CoursePageTemplate({ course }) {
 
       <PageSection eyebrow="Modules" heading="Course Modules">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Six connected modules build the framework. Each module is in development and will open when its learning materials are ready.
+          Six connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, and knowledge checks.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((module) => (
             <ModuleCard
               key={module.number}
               module={module}
-              to={module.route && allowDevModules ? `/courses/${course.slug}/${module.route}` : null}
+              to={module.route ? `/courses/${course.slug}/${module.route}` : null}
             />
           ))}
         </div>
@@ -151,7 +156,7 @@ export default function CoursePageTemplate({ course }) {
             ))}
           </ul>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', marginTop: '1.5rem', marginBottom: 0 }}>
-            The submission system is planned but not yet built.
+            The applied milestone is completed as part of the final module.
           </p>
         </div>
       </PageSection>

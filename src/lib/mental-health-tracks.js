@@ -50,9 +50,9 @@ export const MENTAL_HEALTH_COURSE = {
   subtitle:
     'A seven-module course exploring relational personhood, mental health, community care, and collective healing across African and diaspora communities.',
   learningArea: 'People & Prosperity',
-  status: 'In Development',
-  access: 'Coming Soon',
-  certificate: 'Planned (not yet active)',
+  status: 'Available',
+  access: 'Open',
+  certificate: 'Available upon completion',
   modulesCount: 7,
   estimatedCompletion: 'Approximately 10–13 hours total (across seven connected modules)',
   format: 'Self-paced with private reflection',
@@ -94,8 +94,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Ubuntu and Communal Wellness: African Philosophies of Mental Health',
       description:
         'Introduces Ubuntu as a relational southern African philosophy and its significance for personhood, wellbeing, responsibility, and care.',
-      status: 'In Development',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '50 to 65 minutes',
       prerequisite: null,
     },
@@ -105,8 +105,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Stress, Stigma, and Strength: Rethinking Mental Health Narratives in African and Diaspora Communities',
       description:
         'Examines how stress, stigma, masculinity, family expectations, migration, and structural conditions such as inequality and racism shape mental health experiences.',
-      status: 'In Development',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '60 to 75 minutes',
       prerequisite: 'module-1',
     },
@@ -116,8 +116,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Family Expectations and Cultural Scripts: Talking About Mental Health at Home',
       description:
         'Examines how family expectations and cultural scripts shape conversations about mental health at home and how learners can hold respectful, culturally grounded discussions.',
-      status: 'Coming Soon',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '65 to 80 minutes',
       prerequisite: 'module-2',
     },
@@ -127,8 +127,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Community Healing in Practice: Friendship Bench, StrongMinds, and Brother Be Well',
       description:
         'Explores task-sharing and community-based models that involve lay health workers, peer supporters, and community organizations in delivering mental health care.',
-      status: 'Coming Soon',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '85 to 100 minutes',
       prerequisite: 'module-3',
     },
@@ -138,8 +138,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Faith, Tradition, and Professional Care: Bridging Spiritual Supports and Clinical Pathways',
       description:
         'Examines how faith, tradition, and professional clinical care can work together rather than in opposition, with attention to safe referral and complementary support.',
-      status: 'In Development',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '95 to 115 minutes',
       prerequisite: 'module-4',
     },
@@ -149,8 +149,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Building Culturally Affirming Systems: Policy, Media, and Youth Advocacy for Global Mental Health',
       description:
         'Examines how policy, media, and youth advocacy can build culturally affirming systems for global mental health.',
-      status: 'In Development',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '105 to 125 minutes',
       prerequisite: 'module-5',
     },
@@ -160,8 +160,8 @@ export const MENTAL_HEALTH_COURSE = {
       title: 'Roots of Resilience: Storytelling, Survival, and Collective Healing',
       description:
         'Brings the course together through Roots of Resilience, integrating survival, storytelling, and collective healing across three linked sessions.',
-      status: 'In Development',
-      publicationStatus: 'unpublished',
+      status: 'Available',
+      publicationStatus: 'published',
       estimatedTime: '150 to 180 minutes across three linked sessions',
       prerequisite: 'module-6',
     },
@@ -169,8 +169,8 @@ export const MENTAL_HEALTH_COURSE = {
   milestone: {
     title: 'Applied Mental Health Education or Community Initiative',
     description:
-      'In the eventual verified course, learners will design a small mental health education, storytelling, advocacy, or community-support initiative for a specific context. The submission system is not yet active.',
-    status: 'Planned applied milestone (not yet active)',
+      'Learners design a small mental health education, storytelling, advocacy, or community-support initiative for a specific context as the course\'s applied milestone.',
+    status: 'Included in the course',
   },
 };
 

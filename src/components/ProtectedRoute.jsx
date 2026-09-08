@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -9,8 +9,18 @@ const DefaultFallback = () => (
   </div>
 );
 
+/**
+ * ProtectedRoute — gates learner-only routes. When unauthenticated,
+ * redirects to /login with a returnTo query param preserving the
+ * intended destination so the learner returns to it after sign-in.
+ *
+ * The `unauthenticatedElement` prop is retained for backwards
+ * compatibility but should be omitted — the default behavior
+ * (redirect to login with returnTo) is preferred.
+ */
 export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthenticatedElement }) {
   const { isAuthenticated, isLoadingAuth, authChecked, authError, checkUserAuth } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     if (!authChecked && !isLoadingAuth) {
@@ -26,11 +36,13 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     }
-    return unauthenticatedElement;
+    return unauthenticatedElement || <Navigate to="/login" replace />;
   }
 
   if (!isAuthenticated) {
-    return unauthenticatedElement;
+    if (unauthenticatedElement) return unauthenticatedElement;
+    const returnTo = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
   }
 
   return <Outlet />;
