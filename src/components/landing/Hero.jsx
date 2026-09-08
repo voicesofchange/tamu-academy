@@ -121,7 +121,7 @@ export default function Hero() {
             maxWidth: '720px',
           }}
         >
-          African-rooted learning led by knowledge, experience, and community
+          Diaspora-rooted learning led by knowledge, experience, and community
         </motion.h1>
 
         {/* Supporting copy */}

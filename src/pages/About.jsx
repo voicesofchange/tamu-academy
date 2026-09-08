@@ -29,20 +29,20 @@ export default function About() {
   return (
     <PageLayout>
       <PageMeta
-        title="About Tamu Academy | African-Rooted Online Learning Platform"
-        description="Tamu Academy is an African-rooted online learning platform that develops expert-led courses with subject-matter experts and knowledge holders across mental health, economics, AI, and public policy."
+        title="About Tamu Academy | Diaspora-Rooted Online Learning Platform"
+        description="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses with subject-matter experts and knowledge holders across mental health, economics, AI, and public policy."
         path="/about"
       />
       <PageHero
         eyebrow="About Tamu Academy"
         heading="Learning Should Help Us Understand the World and One Another."
-        subheading="Tamu Academy is an African-rooted online learning platform that develops expert-led courses with subject-matter experts, educators, researchers, and knowledge holders."
+        subheading="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses with subject-matter experts, educators, researchers, and knowledge holders."
       />
 
       {/* Why Tamu Exists */}
       <PageSection heading="Why Tamu Academy Exists">
         <p className={bodyTextClass} style={bodyText}>
-          Tamu Academy is an African-rooted online learning platform. It develops courses with subject-matter experts and knowledge holders, providing instructional design, editorial review, production, accessibility, publishing, and distribution so that expert knowledge reaches learners wherever they are.
+          Tamu Academy is a diaspora-rooted online learning platform. It develops courses with subject-matter experts and knowledge holders, providing instructional design, editorial review, production, accessibility, publishing, and distribution so that expert knowledge reaches learners wherever they are.
         </p>
         <p className={bodyTextClass} style={bodyText}>
           Serious conversations about public policy, economics, governance, culture, wellbeing, and global affairs are often concentrated in universities, professional institutions, and exclusive networks. Tamu Academy works to change that — making these conversations more accessible to learners from different educational, cultural, and socioeconomic backgrounds.
@@ -124,9 +124,9 @@ export default function About() {
       </PageSection>
 
       {/* African Roots */}
-      <PageSection heading="African Roots and Global Perspective">
+      <PageSection heading="Diaspora Roots and Global Perspective">
         <p className={bodyTextClass} style={bodyText}>
-          Tamu Academy is rooted in an African understanding of community, knowledge, responsibility, and connection. The name <em style={{ color: '#E2B652' }}>Tamu</em> — meaning sweet in Swahili — reflects a belief that learning should be nourishing, not punishing; that knowledge should serve communities, not merely credentialise individuals.
+          Tamu Academy is rooted in a diaspora understanding of community, knowledge, responsibility, and connection. The name <em style={{ color: '#E2B652' }}>Tamu</em> — meaning sweet in Swahili — reflects a belief that learning should be nourishing, not punishing; that knowledge should serve communities, not merely credentialise individuals.
         </p>
         <p className={bodyTextClass} style={bodyText}>
           Africa is not a single culture. It is a continent of extraordinary cultural, linguistic, geographic, and intellectual diversity — home to thousands of languages, communities, and traditions of knowledge and governance. Tamu Academy draws inspiration from that diversity while engaging with learners and issues from across the world.

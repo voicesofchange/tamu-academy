@@ -37,8 +37,8 @@ export default function Landing() {
       }}
     >
       <PageMeta
-        title="Tamu Academy | African-Rooted Expert-Led Online Courses"
-        description="Tamu Academy is an African-rooted online learning platform that develops expert-led courses in mental health, economics, AI, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
+        title="Tamu Academy | Diaspora-Rooted Expert-Led Online Courses"
+        description="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses in mental health, economics, AI, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
         path="/"
       />
       <TopNav />

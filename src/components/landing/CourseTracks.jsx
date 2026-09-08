@@ -32,7 +32,7 @@ const AREAS = [
   {
     n: '05',
     title: 'Waiyaki wa Hinga Heritage and Leadership Collection',
-    desc: 'Explore the history, leadership, resistance, memory, and continuing significance of Waiyaki wa Hinga through research, oral history, and African-centered interpretation.',
+    desc: 'Explore the history, leadership, resistance, memory, and continuing significance of Waiyaki wa Hinga through research, oral history, and diaspora-centered interpretation.',
     anchor: 'waiyaki-wa-hinga',
   },
 ];
