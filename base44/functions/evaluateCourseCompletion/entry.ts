@@ -20,6 +20,15 @@ import {
  * can never cause the triggering ModuleProgress record to be updated
  * (preventing workflow loops).
  *
+ * SECURITY:
+ *   - Authenticated callers (direct HTTP): must be the owner of the
+ *     learner_id or an admin. Returns 403 otherwise.
+ *   - Unauthenticated callers (internal workflow): must pass a data
+ *     integrity check — the ModuleProgress record for the given
+ *     learner + course + module must exist with status "completed".
+ *     This prevents arbitrary enumeration of learner enrollment data
+ *     by unauthenticated attackers.
+ *
  * Returns:
  *   {
  *     is_final_module: boolean,
@@ -53,6 +62,37 @@ export default async function(req: Request): Promise<Response> {
     const courseConfig = getCourseConfig(courseSlug);
     if (!courseConfig) {
       return Response.json({ error: 'Unknown course' }, { status: 404 });
+    }
+
+    // --- Authentication / Authorization ---
+    // Authenticated callers must own the learner_id or be an admin.
+    // Unauthenticated callers (internal workflow) must pass a data
+    // integrity check: the ModuleProgress record must exist with
+    // status "completed" for this learner + course + module.
+    let user: { id: string; role?: string } | null = null;
+    try {
+      user = await base44.auth.me();
+    } catch (_) {
+      user = null;
+    }
+
+    if (user) {
+      // Authenticated direct call — verify ownership or admin.
+      if (user.id !== learnerId && user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } else {
+      // Unauthenticated call (internal workflow path) — verify data
+      // integrity: the ModuleProgress record must exist and be completed.
+      const triggerRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: learnerId,
+        course_slug: courseSlug,
+        module_slug: moduleSlug,
+        status: 'completed',
+      });
+      if (!triggerRows || triggerRows.length === 0) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
     }
 
     const finalModule = isFinalModule(courseSlug, moduleSlug);

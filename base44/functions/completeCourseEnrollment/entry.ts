@@ -1,5 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
-import { getCourseConfig } from '../../shared/course-registry.js';
+import {
+  getCourseConfig,
+  getRequiredModuleRoutes,
+} from '../../shared/course-registry.js';
 
 /**
  * completeCourseEnrollment — workflow-facing backend function.
@@ -17,6 +20,14 @@ import { getCourseConfig } from '../../shared/course-registry.js';
  *
  * This function does NOT touch ModuleProgress, so it cannot re-trigger
  * the workflow.
+ *
+ * SECURITY:
+ *   - Authenticated callers (direct HTTP): must be the owner of the
+ *     learner_id or an admin. Returns 403 otherwise.
+ *   - Unauthenticated callers (internal workflow): must pass a data
+ *     integrity check — EVERY required module for the course must
+ *     have a ModuleProgress row with status "completed". This prevents
+ *     unauthenticated attackers from arbitrarily completing enrollments.
  *
  * Returns:
  *   {
@@ -52,6 +63,48 @@ export default async function(req: Request): Promise<Response> {
     const courseConfig = getCourseConfig(courseSlug);
     if (!courseConfig) {
       return Response.json({ error: 'Unknown course' }, { status: 404 });
+    }
+
+    // --- Authentication / Authorization ---
+    // Authenticated callers must own the learner_id or be an admin.
+    // Unauthenticated callers (internal workflow) must pass a data
+    // integrity check: every required module must have a completed
+    // ModuleProgress record for this learner.
+    let user: { id: string; role?: string } | null = null;
+    try {
+      user = await base44.auth.me();
+    } catch (_) {
+      user = null;
+    }
+
+    if (user) {
+      // Authenticated direct call — verify ownership or admin.
+      if (user.id !== learnerId && user.role !== 'admin') {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } else {
+      // Unauthenticated call (internal workflow path) — verify ALL
+      // required modules are genuinely completed before marking the
+      // enrollment as completed.
+      const requiredRoutes = getRequiredModuleRoutes(courseSlug);
+      const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+        learner_id: learnerId,
+        course_slug: courseSlug,
+      });
+      const completedRoutes = new Set<string>();
+      if (Array.isArray(progressRows)) {
+        for (const row of progressRows) {
+          if (row && row.module_slug && row.status === 'completed') {
+            completedRoutes.add(row.module_slug);
+          }
+        }
+      }
+      const allModulesComplete = requiredRoutes.every(
+        (route) => completedRoutes.has(route),
+      );
+      if (!allModulesComplete) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
     }
 
     // Find the enrollment record.
