@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { key: 'nav.videos', to: '/videos' },
   { key: 'nav.articles', to: '/articles' },
   { key: 'nav.resources', to: '/resources' },
+  { key: 'nav.stories', to: '/stories' },
   { key: 'nav.contact', to: '/contact' },
 ];
 

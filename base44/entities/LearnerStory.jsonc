@@ -1,0 +1,95 @@
+{
+  "name": "LearnerStory",
+  "type": "object",
+  "properties": {
+    "author_name": {
+      "type": "string",
+      "title": "Author Name"
+    },
+    "author_location": {
+      "type": "string",
+      "title": "Author Location"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug",
+      "enum": [
+        "understanding-african-economies-and-the-global-system",
+        "mental-health-community-and-culture"
+      ]
+    },
+    "story_type": {
+      "type": "string",
+      "title": "Story Type",
+      "enum": [
+        "story",
+        "review"
+      ],
+      "default": "story"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "content": {
+      "type": "string",
+      "title": "Content",
+      "format": "textarea"
+    },
+    "rating": {
+      "type": "integer",
+      "title": "Rating",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "approved",
+        "featured"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "author_name",
+    "story_type",
+    "title",
+    "content",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.status": {
+            "$in": [
+              "approved",
+              "featured"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

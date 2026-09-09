@@ -24,6 +24,7 @@ import Module5Economics from './pages/Module5Economics';
 import Module6Economics from './pages/Module6Economics';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
+import LearnerStories from './pages/LearnerStories';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
 import Articles from './pages/Articles';
@@ -122,6 +123,7 @@ const AuthenticatedApp = () => {
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
+      <Route path="/stories" element={<LearnerStories />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<Privacy />} />
