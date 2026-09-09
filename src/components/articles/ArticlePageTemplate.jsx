@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const BASE_URL = 'https://tamuacademy.org';
 
@@ -67,7 +68,8 @@ function ClosingNote({ text }) {
 }
 
 export default function ArticlePageTemplate({ article }) {
-  const lastSection = article.sections?.[article.sections.length - 1];
+  const { content: a } = useTranslatedContent(`article-${article.slug}`, article);
+  const lastSection = a.sections?.[a.sections.length - 1];
 
   return (
     <PageLayout>
@@ -89,7 +91,7 @@ export default function ArticlePageTemplate({ article }) {
           className="font-body"
           style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}
         >
-          {article.category}
+          {a.category}
         </motion.span>
 
         <motion.h1
@@ -99,10 +101,10 @@ export default function ArticlePageTemplate({ article }) {
           className="font-heading"
           style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
         >
-          {article.title}
+          {a.title}
         </motion.h1>
 
-        {article.subtitle && (
+        {a.subtitle && (
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,7 +112,7 @@ export default function ArticlePageTemplate({ article }) {
             className="font-heading"
             style={{ color: 'rgba(212,161,42,0.85)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1.25rem' }}
           >
-            {article.subtitle}
+            {a.subtitle}
           </motion.p>
         )}
 
@@ -131,12 +133,12 @@ export default function ArticlePageTemplate({ article }) {
           className="font-body"
           style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1.25rem', color: 'rgba(245,239,224,0.45)', fontSize: '0.75rem', letterSpacing: '0.06em' }}
         >
-          {article.author && <span>{article.author}</span>}
-          {article.publisher && article.publisher !== article.author && <span>{article.publisher}</span>}
-          {article.publicationDate && <span>Published {article.publicationDate}</span>}
-          {article.updatedDate && <span>Updated {article.updatedDate}</span>}
-          {article.readingTime && <span>{article.readingTime} min read</span>}
-          {article.status === 'in-development' && (
+          {a.author && <span>{a.author}</span>}
+          {a.publisher && a.publisher !== a.author && <span>{a.publisher}</span>}
+          {a.publicationDate && <span>Published {a.publicationDate}</span>}
+          {a.updatedDate && <span>Updated {a.updatedDate}</span>}
+          {a.readingTime && <span>{a.readingTime} min read</span>}
+          {a.status === 'in-development' && (
             <span style={{ color: 'rgba(212,161,42,0.5)', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
               In Development
             </span>
@@ -145,7 +147,7 @@ export default function ArticlePageTemplate({ article }) {
       </header>
 
       {/* ── Safety / introductory note ──────────────────────────────────── */}
-      {article.safetyNote && (
+      {a.safetyNote && (
         <motion.aside
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -155,12 +157,12 @@ export default function ArticlePageTemplate({ article }) {
           style={{ marginBottom: '2.5rem', padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.25)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', color: 'rgba(245,239,224,0.75)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300 }}
         >
           <strong style={{ fontWeight: 500, color: '#F5EFE0' }}>A note before we begin: </strong>
-          {article.safetyNote}
+          {a.safetyNote}
         </motion.aside>
       )}
 
       {/* ── Introductory summary ────────────────────────────────────────── */}
-      {article.summary && (
+      {a.summary && (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -169,12 +171,12 @@ export default function ArticlePageTemplate({ article }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.72)', fontSize: '1.02rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '3rem', borderLeft: '2px solid rgba(212,161,42,0.3)', paddingLeft: '1.25rem' }}
         >
-          {article.summary}
+          {a.summary}
         </motion.p>
       )}
 
       {/* ── Related episode embed ────────────────────────────────────────── */}
-      {article.videoId && (
+      {a.videoId && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -188,8 +190,8 @@ export default function ArticlePageTemplate({ article }) {
           </p>
           <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
             <iframe
-              src={`https://www.youtube.com/embed/${article.videoId}`}
-              title={`Tamu Academy — ${article.videoTitle}`}
+              src={`https://www.youtube.com/embed/${a.videoId}`}
+              title={`Tamu Academy — ${a.videoTitle}`}
               referrerPolicy="strict-origin-when-cross-origin"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -197,7 +199,7 @@ export default function ArticlePageTemplate({ article }) {
             />
           </div>
           <a
-            href={`https://www.youtube.com/watch?v=${article.videoId}`}
+            href={`https://www.youtube.com/watch?v=${a.videoId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="font-body"
@@ -212,10 +214,10 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Article body sections ────────────────────────────────────────── */}
-      {article.sections?.length > 0 && (
+      {a.sections?.length > 0 && (
         <article style={{ marginBottom: '3rem' }}>
-          {article.sections.map((section, i) => {
-            const isLast = i === article.sections.length - 1;
+          {a.sections.map((section, i) => {
+            const isLast = i === a.sections.length - 1;
             return (
               <motion.section
                 key={i}
@@ -263,7 +265,7 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Key takeaways ────────────────────────────────────────────────── */}
-      {article.keyTakeaways?.length > 0 && (
+      {a.keyTakeaways?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -276,7 +278,7 @@ export default function ArticlePageTemplate({ article }) {
             Key Takeaways
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            {article.keyTakeaways.map((item, i) => (
+            {a.keyTakeaways.map((item, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 }}>
                 {item}
               </li>
@@ -286,7 +288,7 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Reflection questions ─────────────────────────────────────────── */}
-      {article.reflectionQuestions?.length > 0 && (
+      {a.reflectionQuestions?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -299,7 +301,7 @@ export default function ArticlePageTemplate({ article }) {
             Reflect and Apply
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {article.reflectionQuestions.map((q, i) => (
+            {a.reflectionQuestions.map((q, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300 }}>
                 {q}
               </li>
@@ -309,7 +311,7 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Related resources ────────────────────────────────────────────── */}
-      {article.relatedResources?.length > 0 && (
+      {a.relatedResources?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -322,7 +324,7 @@ export default function ArticlePageTemplate({ article }) {
             Related Resources
           </h2>
           <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {article.relatedResources.map((r, i) => (
+            {a.relatedResources.map((r, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>
                 {r.url ? (
                   <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.8)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
@@ -336,7 +338,7 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Sources ──────────────────────────────────────────────────────── */}
-      {article.sources?.length > 0 && (
+      {a.sources?.length > 0 && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -349,7 +351,7 @@ export default function ArticlePageTemplate({ article }) {
             Sources
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {article.sources.map((s, i) => (
+            {a.sources.map((s, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.8rem', lineHeight: 1.65, fontWeight: 300 }}>
                 {s.url ? (
                   <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.55)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
@@ -363,7 +365,7 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Support resources ────────────────────────────────────────────── */}
-      {article.supportResources && (
+      {a.supportResources && (
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -376,10 +378,10 @@ export default function ArticlePageTemplate({ article }) {
             If You Are Struggling
           </h2>
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
-            {article.supportResources.intro}
+            {a.supportResources.intro}
           </p>
           <ul style={{ margin: '0 0 1.25rem', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {article.supportResources.resources.map((r, i) => (
+            {a.supportResources.resources.map((r, i) => (
               <li key={i} className="font-body" style={{ borderLeft: '2px solid rgba(212,161,42,0.25)', paddingLeft: '1rem' }}>
                 <span style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>{r.region}</span>
                 <a
@@ -399,13 +401,13 @@ export default function ArticlePageTemplate({ article }) {
             ))}
           </ul>
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
-            {article.supportResources.emergencyNote}
+            {a.supportResources.emergencyNote}
           </p>
         </motion.section>
       )}
 
       {/* ── Editorial + educational notes ────────────────────────────────── */}
-      {(article.editorialNote || article.educationalNote) && (
+      {(a.editorialNote || a.educationalNote) && (
         <motion.aside
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -414,15 +416,15 @@ export default function ArticlePageTemplate({ article }) {
           aria-label="Editorial and educational notes"
           style={{ marginBottom: '3rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(245,239,224,0.08)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
         >
-          {article.editorialNote && (
+          {a.editorialNote && (
             <p className="font-body" style={dimStyle}>
               <strong style={{ fontWeight: 500, color: 'rgba(245,239,224,0.5)' }}>Editorial note: </strong>
-              {article.editorialNote}
+              {a.editorialNote}
             </p>
           )}
-          {article.educationalNote && (
+          {a.educationalNote && (
             <p className="font-body" style={dimStyle}>
-              {article.educationalNote}
+              {a.educationalNote}
             </p>
           )}
         </motion.aside>
@@ -430,9 +432,9 @@ export default function ArticlePageTemplate({ article }) {
 
       {/* ── Prev / Next navigation ───────────────────────────────────────── */}
       <nav aria-label="Article navigation" style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(212,161,42,0.12)', flexWrap: 'wrap' }}>
-        {article.previousArticle ? (
+        {a.previousArticle ? (
           <Link
-            to={`/articles/${article.previousArticle}`}
+            to={`/articles/${a.previousArticle}`}
             className="font-body"
             style={{ color: 'rgba(212,161,42,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
             onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
@@ -441,9 +443,9 @@ export default function ArticlePageTemplate({ article }) {
             ← Previous Article
           </Link>
         ) : <span />}
-        {article.nextArticle ? (
+        {a.nextArticle ? (
           <Link
-            to={`/articles/${article.nextArticle}`}
+            to={`/articles/${a.nextArticle}`}
             className="font-body"
             style={{ color: 'rgba(212,161,42,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
             onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}

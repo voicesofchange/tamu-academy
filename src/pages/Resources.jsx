@@ -6,11 +6,26 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import ResourceCard from '@/components/resources/ResourceCard';
 import { RESOURCE_AREAS, getResourcesByArea, getActiveResourceCount } from '@/lib/resources-data';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const CONTENT = {
+  heroEyebrow: 'Resources',
+  heroHeading: 'Learning Resources',
+  heroSubheading: "A developing collection of educational materials connected to Tamu Academy's six learning areas, freely accessible and thoughtfully curated.",
+  introP1: "As Tamu Academy's programmes develop, this space will grow into a public learning resource that is curated, connected to real conversations, and accessible to learners from different backgrounds and contexts.",
+  introP2: 'Resources include open courses, articles, discussion materials, policy explainers, data tools, practical guides, and curated reading recommendations. Original Tamu Academy materials will be added as they become available.',
+  areasHeading: 'Resource Areas',
+  videoSeriesHeading: 'Tamu Academy Video Series',
+  videoSeriesP: 'Tamu Academy is developing an original video series exploring public policy, global affairs, intercultural leadership, and the ideas shaping our world — in accessible and engaging formats for young people and curious learners.',
+  videosComingSoon: 'Videos Coming Soon',
+  externalNotice: "External resources are selected for their educational value and connection to Tamu Academy's learning areas. They are created and maintained by their respective organizations. Availability, content, and access requirements may change.",
+};
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Resources() {
   const activeCount = getActiveResourceCount();
+  const { content: c } = useTranslatedContent('resources', CONTENT);
 
   return (
     <PageLayout>
@@ -20,23 +35,19 @@ export default function Resources() {
         path="/resources"
       />
       <PageHero
-        eyebrow="Resources"
-        heading="Learning Resources"
-        subheading="A developing collection of educational materials connected to Tamu Academy's six learning areas, freely accessible and thoughtfully curated."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
       {/* Introductory content */}
       <PageSection>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-          As Tamu Academy's programmes develop, this space will grow into a public learning resource that is curated, connected to real conversations, and accessible to learners from different backgrounds and contexts.
-        </p>
-        <p className="font-body" style={bodyText}>
-          Resources include open courses, articles, discussion materials, policy explainers, data tools, practical guides, and curated reading recommendations. Original Tamu Academy materials will be added as they become available.
-        </p>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>{c.introP1}</p>
+        <p className="font-body" style={bodyText}>{c.introP2}</p>
       </PageSection>
 
       {/* Anchor navigation to resource areas */}
-      <PageSection heading="Resource Areas">
+      <PageSection heading={c.areasHeading}>
         <nav aria-label="Jump to resource area" style={{ marginBottom: '3.5rem' }}>
           <ul
             style={{
@@ -142,7 +153,7 @@ export default function Resources() {
       </PageSection>
 
       {/* Tamu Video Series — prepared slot for original content */}
-      <PageSection heading="Tamu Academy Video Series">
+      <PageSection heading={c.videoSeriesHeading}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -151,10 +162,10 @@ export default function Resources() {
           style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)' }}
         >
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
-            Tamu Academy is developing an original video series exploring public policy, global affairs, intercultural leadership, and the ideas shaping our world — in accessible and engaging formats for young people and curious learners.
+            {c.videoSeriesP}
           </p>
           <span className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Videos Coming Soon
+            {c.videosComingSoon}
           </span>
         </motion.div>
       </PageSection>
@@ -168,7 +179,7 @@ export default function Resources() {
         style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(212,161,42,0.28)', backgroundColor: 'rgba(212,161,42,0.02)', marginBottom: '3rem' }}
       >
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.62)', fontSize: '0.85rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
-          External resources are selected for their educational value and connection to Tamu Academy's learning areas. They are created and maintained by their respective organizations. Availability, content, and access requirements may change.
+          {c.externalNotice}
         </p>
       </motion.div>
 

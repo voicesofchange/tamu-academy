@@ -6,6 +6,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageMeta from '@/components/seo/PageMeta';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -119,9 +120,40 @@ const LESSONS = [
 
 const CATEGORIES = ['All', 'Welcome', 'Mental Health', 'Policy', 'Global Affairs'];
 
+// ── Translatable text content ─────────────────────────────────────────────────
+
+const CONTENT = {
+  heroEyebrow: 'Tamu Academy First Lessons',
+  heroHeading: 'Learning Across Cultures',
+  heroSubheading: 'Sweet learning for a better world.',
+  introP1: 'This introductory collection welcomes learners to Tamu Academy and presents the first lessons currently available through the platform. These videos introduce the ideas, questions, and perspectives that will shape future Tamu Academy learning.',
+  introP2: "Tamu Academy's First Lessons introduce questions about wellbeing, institutions, policy, economics, and global systems. Future learning pathways will connect these videos with guided discussions, practical activities, and community-centered projects.",
+  collectionEyebrow: 'First Lesson Collection',
+  allVideosLabel: 'All Videos',
+  topicsEyebrow: 'Browse by Topic',
+  topicsHeading: 'Topics in This Collection',
+  topicsIntro: 'Future Tamu Academy collections may cover additional learning areas. These are the topics currently available.',
+  noLessonsText: 'No lessons in this topic yet. Check back as the series develops.',
+  ctaHeading: 'Keep learning beyond the video.',
+  ctaBody: 'Explore related resources, programmes, and learning areas across Tamu Academy.',
+  ctaResources: 'Explore Resources →',
+  ctaCourses: 'Explore Courses →',
+  reflectionQuestions: 'Reflection Questions',
+  watchOnYouTube: 'Watch on YouTube',
+  lessons: LESSONS.map((l) => ({
+    id: l.id,
+    title: l.title,
+    description: l.description,
+    category: l.category,
+    label: l.label,
+    discussionQuestions: l.discussionQuestions,
+  })),
+  categories: CATEGORIES,
+};
+
 // ── Inline Video Player ────────────────────────────────────────────────────────
 
-function VideoPlayer({ lesson }) {
+function VideoPlayer({ lesson, c }) {
   return (
     <div style={{ width: '100%' }}>
       {/* 16:9 responsive iframe wrapper */}
@@ -157,7 +189,7 @@ function VideoPlayer({ lesson }) {
         {lesson.discussionQuestions?.length > 0 && (
           <div style={{ marginTop: '0.5rem' }}>
             <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
-              Reflection Questions
+              {c.reflectionQuestions}
             </p>
             <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
               {lesson.discussionQuestions.map((q, i) => (
@@ -179,7 +211,7 @@ function VideoPlayer({ lesson }) {
           onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.45)'}
         >
           <ExternalLink size={12} />
-          Watch on YouTube
+          {c.watchOnYouTube}
         </a>
       </div>
     </div>
@@ -243,12 +275,22 @@ function LessonCard({ lesson, isActive, onSelect }) {
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function Videos() {
-  const [activeLesson, setActiveLesson] = useState(LESSONS[0]);
+  const [activeLessonIdx, setActiveLessonIdx] = useState(0);
   const [activeCategory, setActiveCategory] = useState('All');
+  const { content: c } = useTranslatedContent('videos', CONTENT);
+
+  // Merge translated text back with non-translatable video data
+  const translatedLessons = LESSONS.map((lesson, i) => ({
+    ...lesson,
+    ...(c.lessons?.[i] || {}),
+  }));
+
+  const activeLesson = translatedLessons[activeLessonIdx];
+  const categories = c.categories || CATEGORIES;
 
   const filteredLessons = activeCategory === 'All'
-    ? LESSONS
-    : LESSONS.filter((l) => l.category === activeCategory);
+    ? translatedLessons
+    : translatedLessons.filter((l) => l.category === activeCategory);
 
   return (
     <PageLayout>
@@ -260,9 +302,9 @@ export default function Videos() {
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <PageHero
-        eyebrow="Tamu Academy First Lessons"
-        heading="Learning Across Cultures"
-        subheading="Sweet learning for a better world."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
       {/* Collection description */}
@@ -273,7 +315,7 @@ export default function Videos() {
         className="font-body"
         style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '1.25rem' }}
       >
-        This introductory collection welcomes learners to Tamu Academy and presents the first lessons currently available through the platform. These videos introduce the ideas, questions, and perspectives that will shape future Tamu Academy learning.
+        {c.introP1}
       </motion.p>
 
       <motion.p
@@ -283,11 +325,11 @@ export default function Videos() {
         className="font-body"
         style={{ color: 'rgba(245,239,224,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem', fontStyle: 'italic' }}
       >
-        Tamu Academy's First Lessons introduce questions about wellbeing, institutions, policy, economics, and global systems. Future learning pathways will connect these videos with guided discussions, practical activities, and community-centered projects.
+        {c.introP2}
       </motion.p>
 
       {/* ── Primary Player + Lesson Selector ──────────────────────────────── */}
-      <PageSection eyebrow="First Lesson Collection">
+      <PageSection eyebrow={c.collectionEyebrow}>
         <div
           style={{
             display: 'grid',
@@ -302,7 +344,7 @@ export default function Videos() {
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <VideoPlayer lesson={activeLesson} />
+            <VideoPlayer lesson={activeLesson} c={c} />
           </motion.div>
 
           {/* Lesson selector */}
@@ -313,15 +355,15 @@ export default function Videos() {
             transition={{ duration: 0.55, ease: 'easeOut', delay: 0.1 }}
           >
             <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-              All Videos
+              {c.allVideosLabel}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }} role="list" aria-label="Lesson selector">
-              {LESSONS.map((lesson) => (
+              {translatedLessons.map((lesson, i) => (
                 <div key={lesson.id} role="listitem">
                   <LessonCard
                     lesson={lesson}
-                    isActive={activeLesson.id === lesson.id}
-                    onSelect={setActiveLesson}
+                    isActive={i === activeLessonIdx}
+                    onSelect={() => setActiveLessonIdx(i)}
                   />
                 </div>
               ))}
@@ -331,9 +373,9 @@ export default function Videos() {
       </PageSection>
 
       {/* ── Browse by Topic ───────────────────────────────────────────────── */}
-      <PageSection id="topics" eyebrow="Browse by Topic" heading="Topics in This Collection">
+      <PageSection id="topics" eyebrow={c.topicsEyebrow} heading={c.topicsHeading}>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '1.75rem' }}>
-          Future Tamu Academy collections may cover additional learning areas. These are the topics currently available.
+          {c.topicsIntro}
         </p>
 
         {/* Category filter */}
@@ -342,7 +384,7 @@ export default function Videos() {
           aria-label="Filter by topic"
           style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.75rem' }}
         >
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               role="tab"
@@ -369,14 +411,14 @@ export default function Videos() {
 
         {filteredLessons.length === 0 ? (
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.4)', fontSize: '0.9rem', fontWeight: 300, fontStyle: 'italic' }}>
-            No lessons in this topic yet. Check back as the series develops.
+            {c.noLessonsText}
           </p>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1rem' }}>
-            {filteredLessons.map((lesson) => (
+            {filteredLessons.map((lesson, i) => (
               <button
                 key={lesson.id}
-                onClick={() => { setActiveLesson(lesson); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                onClick={() => { setActiveLessonIdx(translatedLessons.findIndex(l => l.id === lesson.id)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 aria-pressed={activeLesson.id === lesson.id}
                 className="tamu-card"
                 style={{
@@ -427,10 +469,10 @@ export default function Videos() {
         }}
       >
         <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
-          Keep learning beyond the video.
+          {c.ctaHeading}
         </h2>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '520px', margin: '0 auto 1.75rem' }}>
-          Explore related resources, programmes, and learning areas across Tamu Academy.
+          {c.ctaBody}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
           <Link
@@ -438,14 +480,14 @@ export default function Videos() {
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Explore Resources →
+            {c.ctaResources}
           </Link>
           <Link
             to="/courses"
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Explore Courses →
+            {c.ctaCourses}
           </Link>
         </div>
       </motion.div>

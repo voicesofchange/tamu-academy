@@ -8,14 +8,47 @@ import PageSection from '@/components/page/PageSection';
 import PageMeta from '@/components/seo/PageMeta';
 import ArticleCard from '@/components/articles/ArticleCard';
 import { ARTICLES } from '@/lib/articles-data';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const CONTENT = {
+  heroEyebrow: 'Tamu Academy Articles',
+  heroHeading: 'Ideas beyond the episode',
+  heroSubheading: "Explore written learning companions that expand on Tamu Academy's videos through deeper analysis, practical examples, reflection questions, and resources for continued learning.",
+  browseArticles: 'Browse Articles',
+  watchEpisodes: 'Watch the Episodes →',
+  startHereEyebrow: 'Start Here',
+  welcomeEpisodeLabel: 'Welcome Episode',
+  welcomeHeading: 'Welcome to Tamu Academy: Learning Across Cultures',
+  welcomeP: 'Begin with the welcome episode to learn how Tamu Academy connects questions about the mind, power, culture, policy, economics, and the wider world.',
+  watchWelcomeEpisode: 'Watch the Welcome Episode →',
+  articlesEyebrow: 'Articles',
+  articlesHeading: 'Written Learning Companions',
+  articlesIntro: "Each article is a written companion to a published episode. Articles expand on the episode's ideas through analysis, definitions, examples, reflection questions, and further reading.",
+  progressionNote: 'Watch the episode. Read more deeply. Reflect and apply.',
+  exploreResources: 'Explore Resources →',
+  articles: ARTICLES.map((a) => ({
+    slug: a.slug,
+    title: a.title,
+    description: a.description,
+    category: a.category,
+    status: a.status,
+  })),
+};
 
 export default function Articles() {
   const collectionRef = useRef(null);
+  const { content: c } = useTranslatedContent('articles', CONTENT);
 
   const handleBrowse = (e) => {
     e.preventDefault();
     collectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Merge translated article text with original article data
+  const translatedArticles = ARTICLES.map((article, i) => ({
+    ...article,
+    ...(c.articles?.[i] || {}),
+  }));
 
   return (
     <PageLayout>
@@ -27,9 +60,9 @@ export default function Articles() {
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <PageHero
-        eyebrow="Tamu Academy Articles"
-        heading="Ideas beyond the episode"
-        subheading="Explore written learning companions that expand on Tamu Academy's videos through deeper analysis, practical examples, reflection questions, and resources for continued learning."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
       {/* ── Hero CTAs ─────────────────────────────────────────────────────── */}
@@ -45,19 +78,19 @@ export default function Articles() {
           className="font-body"
           style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
-          Browse Articles
+          {c.browseArticles}
         </a>
         <Link
           to="/videos"
           className="font-body"
           style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
-          Watch the Episodes →
+          {c.watchEpisodes}
         </Link>
       </motion.div>
 
       {/* ── Welcome Episode Feature ───────────────────────────────────────── */}
-      <PageSection eyebrow="Start Here">
+      <PageSection eyebrow={c.startHereEyebrow}>
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -74,33 +107,33 @@ export default function Articles() {
           }}
         >
           <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Welcome Episode
+            {c.welcomeEpisodeLabel}
           </span>
           <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.4vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
-            Welcome to Tamu Academy: Learning Across Cultures
+            {c.welcomeHeading}
           </h2>
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0, maxWidth: '600px' }}>
-            Begin with the welcome episode to learn how Tamu Academy connects questions about the mind, power, culture, policy, economics, and the wider world.
+            {c.welcomeP}
           </p>
           <Link
             to="/videos"
             className="font-body"
             style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginTop: '0.25rem' }}
           >
-            Watch the Welcome Episode →
+            {c.watchWelcomeEpisode}
           </Link>
         </motion.div>
       </PageSection>
 
       {/* ── Article Collection ────────────────────────────────────────────── */}
       <div id="article-collection" ref={collectionRef} style={{ scrollMarginTop: '90px' }}>
-        <PageSection eyebrow="Articles" heading="Written Learning Companions">
+        <PageSection eyebrow={c.articlesEyebrow} heading={c.articlesHeading}>
           <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '2rem' }}>
-            Each article is a written companion to a published episode. Articles expand on the episode's ideas through analysis, definitions, examples, reflection questions, and further reading.
+            {c.articlesIntro}
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {ARTICLES.map((article, i) => (
+            {translatedArticles.map((article, i) => (
               <motion.div
                 key={article.slug}
                 initial={{ opacity: 0, y: 12 }}
@@ -124,7 +157,7 @@ export default function Articles() {
         style={{ marginBottom: '2rem', padding: '2rem 2.5rem', border: '1px solid rgba(212,161,42,0.15)', borderRadius: '4px', textAlign: 'center' }}
       >
         <p className="font-heading" style={{ color: 'rgba(245,239,224,0.55)', fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
-          Watch the episode. Read more deeply. Reflect and apply.
+          {c.progressionNote}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
           <Link
@@ -132,14 +165,14 @@ export default function Articles() {
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Watch the Episodes →
+            {c.watchEpisodes}
           </Link>
           <Link
             to="/resources"
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(245,239,224,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Explore Resources →
+            {c.exploreResources}
           </Link>
         </div>
       </motion.div>

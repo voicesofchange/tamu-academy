@@ -5,50 +5,61 @@ import LearningAreas from '@/components/academy/LearningAreas';
 import ProgramHighlights from '@/components/academy/ProgramHighlights';
 import ModuleJourney from '@/components/academy/ModuleJourney';
 import { getEconomicsCourseBySlug } from '@/lib/economics-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
-const LEARNING_INCLUDES = [
-  'Recorded lessons',
-  'Written learning companions',
-  'Transcripts and captions',
-  'Reflection questions',
-  'Knowledge checks',
-  'Applied activities',
-  'Workbooks and assignments',
-  'Facilitator materials',
-];
-
-const ARTICLES = [
-  {
-    area: 'Mind and Wellbeing',
-    title: 'The Real Cost of Always Achieving',
-    description:
-      'An exploration of how constant pressure to perform can affect identity, wellbeing, relationships, and the way success is understood.',
-    status: 'Published',
-    href: '/articles/the-real-cost-of-always-achieving',
-  },
-  {
-    area: 'Power and Policy',
-    title: 'Can Policy Make Us Happier?',
-    description:
-      'An examination of how public decisions influence security, belonging, opportunity, connection, and quality of life.',
-    status: 'In Development',
-    href: '/articles/can-policy-make-us-happier',
-  },
-  {
-    area: 'Economics and Global Systems',
-    title: 'Who Controls the Global Economy?',
-    description:
-      'An introduction to the institutions, governments, creditors, currencies, and financial rules that influence how resources and economic power move.',
-    status: 'In Development',
-    href: '/articles/who-controls-the-global-economy',
-  },
-];
+const CONTENT = {
+  navAttr: 'A Waiyaki House learning venture',
+  navExplore: 'Explore the Academy',
+  navJoin: 'Join Early Access',
+  heroEyebrow: 'Explore Tamu Academy',
+  heroHeading: 'Learning built for understanding and application.',
+  heroSupport: 'Tamu Academy develops culturally grounded courses, applied programs, and learning resources across economics, wellbeing, technology, governance, history, and global affairs.',
+  ctaJoin: 'Join Early Access',
+  ctaPartner: 'Discuss a Partnership',
+  heroAttr: 'A Waiyaki House learning venture',
+  pathwayEyebrow: 'Featured Learning Pathway',
+  pathwaySupport: "A six-module pathway for understanding economic systems, institutions, global relationships, inequality, and Africa's economic futures.",
+  pathwayStatus: 'In Development',
+  pathwayFormat: 'Recorded lessons, written learning companions, reflection, knowledge checks, applied activities, and a final analytical milestone.',
+  milestoneEyebrow: 'Applied Milestone',
+  milestoneHeading: 'African Economic Systems Analysis',
+  milestoneSupport: 'Learners apply concepts from all six modules to examine a real economic system, identify stakeholders and trade-offs, and recommend practical action.',
+  milestoneStatus: 'Planned',
+  howEyebrow: 'How Learning Works',
+  howHeading: 'Complete course packages may include',
+  howItems: [
+    'Recorded lessons',
+    'Written learning companions',
+    'Transcripts and captions',
+    'Reflection questions',
+    'Knowledge checks',
+    'Applied activities',
+    'Workbooks and assignments',
+    'Facilitator materials',
+  ],
+  ideasEyebrow: 'Ideas Beyond the Lesson',
+  ideasHeading: 'Written learning companions',
+  ideasSupport: "Written learning companions extend Tamu Academy's videos through deeper analysis, practical examples, reflection, and further reading.",
+  articles: [
+    { area: 'Mind and Wellbeing', title: 'The Real Cost of Always Achieving', description: 'An exploration of how constant pressure to perform can affect identity, wellbeing, relationships, and the way success is understood.', status: 'Published', href: '/articles/the-real-cost-of-always-achieving' },
+    { area: 'Power and Policy', title: 'Can Policy Make Us Happier?', description: 'An examination of how public decisions influence security, belonging, opportunity, connection, and quality of life.', status: 'In Development', href: '/articles/can-policy-make-us-happier' },
+    { area: 'Economics and Global Systems', title: 'Who Controls the Global Economy?', description: 'An introduction to the institutions, governments, creditors, currencies, and financial rules that influence how resources and economic power move.', status: 'In Development', href: '/articles/who-controls-the-global-economy' },
+  ],
+  readArticle: 'Read the Article',
+  browseArticles: 'Browse Articles',
+  watchEpisodes: 'Watch the Episodes',
+  finalCtaHeading: 'Interested in learning, piloting, or partnering with Tamu Academy?',
+  footerAttr: 'A Waiyaki House learning venture',
+  footerCopy: '© 2026 Waiyaki House LLC. All rights reserved.',
+  privacyPolicy: 'Privacy Policy',
+};
 
 export default function Academy() {
   const found = getEconomicsCourseBySlug(COURSE_SLUG);
   const course = found?.course;
+  const { content: c } = useTranslatedContent('academy', CONTENT);
 
   return (
     <div className="academy-root">
@@ -67,7 +78,7 @@ export default function Academy() {
         >
           Tamu <span className="academy-topnav-accent">Academy</span>
           <span className="academy-topnav-attr font-body">
-            A Waiyaki House learning venture
+            {c.navAttr}
           </span>
         </Link>
         <nav aria-label="Primary" className="academy-nav">
@@ -76,10 +87,10 @@ export default function Academy() {
             aria-current="page"
             className="academy-nav-link font-body"
           >
-            Explore the Academy
+            {c.navExplore}
           </Link>
           <a href="/#early-access" className="academy-nav-join font-body">
-            Join Early Access
+            {c.navJoin}
           </a>
         </nav>
       </header>
@@ -87,23 +98,23 @@ export default function Academy() {
       <main id="academy-main" tabIndex={-1} className="academy-main">
         {/* Hero */}
         <section aria-labelledby="academy-hero-heading" className="academy-hero">
-          <p className="academy-eyebrow academy-eyebrow-large">Explore Tamu Academy</p>
+          <p className="academy-eyebrow academy-eyebrow-large">{c.heroEyebrow}</p>
           <h1 id="academy-hero-heading" className="academy-hero-h1 font-heading">
-            Learning built for understanding and application.
+            {c.heroHeading}
           </h1>
           <p className="academy-hero-support font-body">
-            Tamu Academy develops culturally grounded courses, applied programs, and learning resources across economics, wellbeing, technology, governance, history, and global affairs.
+            {c.heroSupport}
           </p>
           <div className="academy-cta-row academy-hero-cta">
             <a href="/#early-access" className="academy-cta-primary font-body">
-              Join Early Access
+              {c.ctaJoin}
             </a>
             <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
-              Discuss a Partnership
+              {c.ctaPartner}
             </Link>
           </div>
           <p className="academy-attribution font-body">
-            A Waiyaki House learning venture
+            {c.heroAttr}
           </p>
         </section>
 
@@ -113,20 +124,20 @@ export default function Academy() {
         {/* Featured Learning Pathway */}
         <section aria-labelledby="pathway-heading" className="academy-pathway">
           <header className="academy-section-head">
-            <p className="academy-eyebrow">Featured Learning Pathway</p>
+            <p className="academy-eyebrow">{c.pathwayEyebrow}</p>
             <h2 id="pathway-heading" className="academy-h2 font-heading">
               {course?.title ?? 'Understanding African Economies and the Global System'}
             </h2>
             <p className="academy-section-support">
-              A six-module pathway for understanding economic systems, institutions, global relationships, inequality, and Africa's economic futures.
+              {c.pathwaySupport}
             </p>
             <p className="academy-status academy-status-line academy-status-center">
               <span className="academy-status-dot" aria-hidden="true" />
-              In Development
+              {c.pathwayStatus}
             </p>
           </header>
           <p className="academy-pathway-format font-body">
-            Recorded lessons, written learning companions, reflection, knowledge checks, applied activities, and a final analytical milestone.
+            {c.pathwayFormat}
           </p>
         </section>
 
@@ -136,16 +147,16 @@ export default function Academy() {
         {/* Applied Milestone */}
         <section aria-labelledby="milestone-heading" className="academy-milestone">
           <header className="academy-section-head">
-            <p className="academy-eyebrow">Applied Milestone</p>
+            <p className="academy-eyebrow">{c.milestoneEyebrow}</p>
             <h2 id="milestone-heading" className="academy-h2 font-heading">
-              African Economic Systems Analysis
+              {c.milestoneHeading}
             </h2>
             <p className="academy-section-support">
-              Learners apply concepts from all six modules to examine a real economic system, identify stakeholders and trade-offs, and recommend practical action.
+              {c.milestoneSupport}
             </p>
             <p className="academy-status academy-status-line academy-status-center">
               <span className="academy-status-dot" aria-hidden="true" />
-              Planned
+              {c.milestoneStatus}
             </p>
           </header>
         </section>
@@ -156,13 +167,13 @@ export default function Academy() {
         {/* How Learning Works */}
         <section aria-labelledby="how-heading" className="academy-how">
           <header className="academy-section-head">
-            <p className="academy-eyebrow">How Learning Works</p>
+            <p className="academy-eyebrow">{c.howEyebrow}</p>
             <h2 id="how-heading" className="academy-h2 font-heading">
-              Complete course packages may include
+              {c.howHeading}
             </h2>
           </header>
           <ul className="academy-how-list font-body">
-            {LEARNING_INCLUDES.map((item) => (
+            {c.howItems.map((item) => (
               <li key={item} className="academy-how-item">
                 <span className="academy-how-marker" aria-hidden="true" />
                 {item}
@@ -174,17 +185,17 @@ export default function Academy() {
         {/* Ideas Beyond the Lesson — Articles + Videos */}
         <section aria-labelledby="ideas-heading" className="academy-ideas">
           <header className="academy-section-head">
-            <p className="academy-eyebrow">Ideas Beyond the Lesson</p>
+            <p className="academy-eyebrow">{c.ideasEyebrow}</p>
             <h2 id="ideas-heading" className="academy-h2 font-heading">
-              Written learning companions
+              {c.ideasHeading}
             </h2>
             <p className="academy-section-support">
-              Written learning companions extend Tamu Academy's videos through deeper analysis, practical examples, reflection, and further reading.
+              {c.ideasSupport}
             </p>
           </header>
 
           <ul className="academy-ideas-list">
-            {ARTICLES.map((a) => (
+            {c.articles.map((a) => (
               <li key={a.title} className="academy-idea-row">
                 <p className="academy-eyebrow academy-eyebrow-mute">{a.area}</p>
                 <h3 className="academy-idea-title font-heading">{a.title}</h3>
@@ -196,7 +207,7 @@ export default function Academy() {
                 {a.status === 'Published' && a.href ? (
                   <p className="academy-idea-link">
                     <Link to={a.href} className="academy-cta-secondary academy-cta-inline font-body">
-                      Read the Article
+                      {c.readArticle}
                     </Link>
                   </p>
                 ) : null}
@@ -206,10 +217,10 @@ export default function Academy() {
 
           <div className="academy-ideas-actions">
             <Link to="/articles" className="academy-cta-secondary font-body">
-              Browse Articles
+              {c.browseArticles}
             </Link>
             <Link to="/videos" className="academy-cta-secondary font-body">
-              Watch the Episodes
+              {c.watchEpisodes}
             </Link>
           </div>
         </section>
@@ -217,14 +228,14 @@ export default function Academy() {
         {/* Final CTA */}
         <section aria-labelledby="final-cta-heading" className="academy-final-cta">
           <h2 id="final-cta-heading" className="academy-h2 font-heading">
-            Interested in learning, piloting, or partnering with Tamu Academy?
+            {c.finalCtaHeading}
           </h2>
           <div className="academy-cta-row">
             <a href="/#early-access" className="academy-cta-primary font-body">
-              Join Early Access
+              {c.ctaJoin}
             </a>
             <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
-              Discuss a Partnership
+              {c.ctaPartner}
             </Link>
           </div>
         </section>
@@ -236,14 +247,14 @@ export default function Academy() {
           Tamu <span className="academy-topnav-accent">Academy</span>
         </p>
         <p className="academy-footer-attr font-body">
-          A Waiyaki House learning venture
+          {c.footerAttr}
         </p>
         <p className="academy-footer-copy font-body">
-          © 2026 Waiyaki House LLC. All rights reserved.
+          {c.footerCopy}
         </p>
         <p className="academy-footer-links">
           <Link to="/privacy" className="font-body">
-            Privacy Policy
+            {c.privacyPolicy}
           </Link>
         </p>
       </footer>

@@ -2,22 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * PartnershipInquiry — dedicated, minimal public route for partnership
- * discussions. Reuses the existing ContactInquiryForm component (no
- * duplicate submission logic). The "Partnership Inquiry" context is
- * captured through source_page (the existing backend stores source_page
- * verbatim), without altering the ContactInquiry schema or asking the
- * submitter to add anything to their message body intentionally.
- *
- * The accepted backend inquiry_type enum does not include
- * "Partnership Inquiry", so visitors pick the closest accepted value from
- * the existing dropdown (e.g. University or Institutional Partnership,
- * Funder or Supporter, Youth or Community Organization). This preserves
- * existing Contact submissions and the backend allowlist.
- */
+const CONTENT = {
+  backToAcademy: '← Back to Academy',
+  eyebrow: 'Tamu Academy',
+  attribution: 'A Waiyaki House learning venture',
+  heading: 'Discuss a Partnership',
+  support: 'Tell us about your organization, proposed collaboration, pilot opportunity, funding interest, or institutional partnership.',
+  footerAttr: 'A Waiyaki House learning venture',
+  footerCopy: '© 2026 Waiyaki House LLC. All rights reserved.',
+  privacyPolicy: 'Privacy Policy',
+};
+
 export default function PartnershipInquiry() {
+  const { content: c } = useTranslatedContent('partnership', CONTENT);
+
   return (
     <div className="pi-root">
       <PageMeta
@@ -35,22 +35,22 @@ export default function PartnershipInquiry() {
         >
           Tamu <span className="pi-accent">Academy</span>
           <span className="pi-topnav-attr font-body">
-            A Waiyaki House learning venture
+            {c.attribution}
           </span>
         </Link>
         <Link to="/academy" className="pi-back font-body">
-          ← Back to Academy
+          {c.backToAcademy}
         </Link>
       </header>
 
       <main id="pi-main" tabIndex={-1} className="pi-main">
         <div className="pi-inner">
-          <p className="pi-eyebrow font-body">Tamu Academy</p>
-          <p className="pi-attribution font-body">A Waiyaki House learning venture</p>
+          <p className="pi-eyebrow font-body">{c.eyebrow}</p>
+          <p className="pi-attribution font-body">{c.attribution}</p>
 
-          <h1 className="pi-h1 font-heading">Discuss a Partnership</h1>
+          <h1 className="pi-h1 font-heading">{c.heading}</h1>
           <p className="pi-support font-body">
-            Tell us about your organization, proposed collaboration, pilot opportunity, funding interest, or institutional partnership.
+            {c.support}
           </p>
 
           <section
@@ -67,10 +67,10 @@ export default function PartnershipInquiry() {
         <p className="pi-footer-brand font-heading">
           Tamu <span className="pi-accent">Academy</span>
         </p>
-        <p className="pi-footer-attr font-body">A Waiyaki House learning venture</p>
-        <p className="pi-footer-copy font-body">© 2026 Waiyaki House LLC. All rights reserved.</p>
+        <p className="pi-footer-attr font-body">{c.footerAttr}</p>
+        <p className="pi-footer-copy font-body">{c.footerCopy}</p>
         <p className="pi-footer-links">
-          <Link to="/privacy" className="font-body">Privacy Policy</Link>
+          <Link to="/privacy" className="font-body">{c.privacyPolicy}</Link>
         </p>
       </footer>
 

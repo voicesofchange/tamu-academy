@@ -31,6 +31,71 @@ function stripCodeFences(text) {
 }
 
 /**
+ * Translate a flat or nested object of text strings to the target language.
+ * Used by the translatePageContent backend function for static page content.
+ * Returns the original texts if language is 'en', unknown, or on error.
+ *
+ * @param {Object} base44 - The Base44 client (with asServiceRole)
+ * @param {Object} texts - Object whose string values should be translated
+ * @param {string} language - The target language code ('en', 'sw', 'es', ...)
+ * @returns {Promise<Object>} The translated texts object
+ */
+export async function translateTextBatch(base44, texts, language) {
+  if (!language || language === 'en') return texts;
+  const languageName = LANGUAGE_NAMES[language];
+  if (!languageName) return texts;
+  if (!texts || typeof texts !== 'object' || Object.keys(texts).length === 0) return texts;
+
+  try {
+    const prompt = [
+      `You are a professional translator for an educational platform.`,
+      `Translate the following JSON object from English to ${languageName}.`,
+      `Rules:`,
+      `1. Preserve ALL JSON keys and structure exactly — only translate the string values.`,
+      `2. Keep any HTML tags intact — only translate the text inside them.`,
+      `3. Do NOT translate URLs, email addresses, or code snippets.`,
+      `4. Return ONLY a valid JSON object with the same keys and structure. No markdown, no code fence, no explanation.`,
+      ``,
+      JSON.stringify(texts),
+    ].join('\n');
+
+    const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
+      prompt,
+    });
+
+    let translatedObj = null;
+    if (typeof result === 'string') {
+      try {
+        const jsonStr = stripCodeFences(result);
+        translatedObj = JSON.parse(jsonStr);
+      } catch (parseErr) {
+        console.error('[translateTextBatch] JSON parse failed:', parseErr && parseErr.message);
+      }
+    } else if (result && typeof result === 'object') {
+      translatedObj = result;
+    }
+
+    if (
+      translatedObj &&
+      typeof translatedObj === 'object' &&
+      !translatedObj.error &&
+      Object.keys(translatedObj).length > 0
+    ) {
+      const originalKeys = Object.keys(texts);
+      const translatedKeys = Object.keys(translatedObj);
+      const matchingKeys = translatedKeys.filter((k) => originalKeys.includes(k));
+      if (matchingKeys.length > 0) {
+        return { ...texts, ...translatedObj };
+      }
+    }
+    return texts;
+  } catch (err) {
+    console.error('[translateTextBatch] Translation failed:', err && err.message);
+    return texts;
+  }
+}
+
+/**
  * Translate a module content object to the target language.
  * Returns the original content if language is 'en', unknown, or on error.
  *
