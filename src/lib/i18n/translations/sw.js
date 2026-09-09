@@ -1,0 +1,86 @@
+/**
+ * Swahili (Kiswahili) UI string dictionary.
+ * Mirrors the key structure of en.js. Falls back to English for any
+ * missing keys via the useTranslation hook.
+ */
+export default {
+  nav: {
+    home: 'Nyumbani',
+    about: 'Kuhusu',
+    courses: 'Kozi',
+    videos: 'Video',
+    articles: 'Makala',
+    resources: 'Rasilimali',
+    contact: 'Wasiliana',
+    myCourses: 'Kozi Zangu',
+    privacy: 'Faragha',
+    signIn: 'Ingia',
+    signOut: 'Toka',
+    createAccount: 'Fungua Akaunti',
+    openMenu: 'Fungua menyu ya urambazaji',
+    closeMenu: 'Funga menyu ya urambazaji',
+  },
+  hero: {
+    eyebrow: 'Kujifunza Tamu kwa Ulimwengu Bora',
+    heading: 'Elimu inayotokana na diaspora inayoongozwa na maarifa, uzoefu, na jamii',
+    description:
+      'Tamu Academy hutoa kozi mtandaoni zinazoongozwa na wataalam zinazochunguza afya ya akili, uchumi, akili bandia, sera za umma, utamaduni, historia, na ulimwengu mpana.',
+    ctaExplore: 'Chunguza Kozi',
+    ctaOpenLearning: 'Anza na Kujifunza Wazi',
+    explore: 'Chunguza',
+    scrollLabel: 'Skrini chini kuchunguza',
+  },
+  footer: {
+    brand: 'Chapa ya Waiyaki House LLC',
+  },
+  common: {
+    loading: 'Inapakia…',
+    backToCourses: 'Rudi kwa Kozi',
+    returnToCourse: 'Rudi kwa Kozi',
+    startCourse: 'Anza Kozi Hii',
+    beginLearning: 'Anza Kujifunza',
+    courseStatus: 'Hali ya Kozi',
+    available: 'Inapatikana',
+    open: 'Wazi',
+    enrollPrompt:
+      'Kozi hii inapatikana. Fungua akaunti au ingia kuanza kujifunza, kuhifadhi maendeleo yako, na kupata cheti baada ya kumaliza.',
+    moduleEnrollPrompt:
+      'Ili kupata moduli hii, tafadhali jiandikishe katika kozi kutoka kwenye ukurasa wa muhtasari wa kozi. Kama tayari umejiandikisha, kamilisha moduli iliyotangulia kufungua hii.',
+    moduleEnrollHint: 'Rudi kwenye kozi kuanza kujifunza au kuendelea na maendeleo yako.',
+    language: 'Lugha',
+    estimatedTime: 'Muda uliopangwa',
+    startOfCourse: 'Mwanzo wa kozi',
+    endOfCourse: 'Mwisho wa kozi',
+    enrollToTrack: 'Jiandikishe katika kozi kufuata maendeleo yako katika kila moduli.',
+  },
+  course: {
+    status: 'Hali',
+    begin: 'Anza',
+    overview: 'Muhtasari',
+    description: 'Maelezo ya Kozi',
+    audience: 'Hadhira',
+    whoFor: 'Kozi Hii Ni Kwa Nani',
+    outcomes: 'Matokeo ya Kujifunza',
+    competencies: 'Ujuzi Utakaopata',
+    path: 'Njia ya Kujifunza',
+    pathIntro: 'Kozi hufuata mfuatilio wazi, ukiendelea kutoka dhana za msingi hadi hatua ya matumizi.',
+    modules: 'Moduli',
+    modulesIntro:
+      'Moduli sita zinazohusiana zinajenga muundo. Kila moduli ina masomo yaliyorekodiwa, maelezo ya maandishi, maswali ya tafakari, na ukaguzi wa maarifa.',
+    milestone: 'Hatua ya Matumizi',
+    progress: 'Maendeleo ya Mwanafunzi',
+    certificate: 'Cheti',
+    access: 'Ufikiaji',
+    level: 'Kiwango',
+    format: 'Muundo',
+    modulesCount: 'Moduli',
+    estimatedCompletion: 'Muda wa kukamilisha',
+    finalAnalysis: 'Uchambuzi wa mwisho utatambua',
+    milestoneNote: 'Hatua ya matumizi inakamilishwa kama sehemu ya moduli ya mwisho.',
+    pathHeading: 'Njia Kupitia Kozi Hii',
+    modulesHeading: 'Moduli za Kozi',
+    yourProgress: 'Maendeleo Yako',
+    pillar: 'Nguzo',
+    track: 'Njia',
+  },
+};

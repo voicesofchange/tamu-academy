@@ -1,0 +1,86 @@
+/**
+ * Spanish (Español) UI string dictionary.
+ * Mirrors the key structure of en.js. Falls back to English for any
+ * missing keys via the useTranslation hook.
+ */
+export default {
+  nav: {
+    home: 'Inicio',
+    about: 'Acerca de',
+    courses: 'Cursos',
+    videos: 'Videos',
+    articles: 'Artículos',
+    resources: 'Recursos',
+    contact: 'Contacto',
+    myCourses: 'Mis Cursos',
+    privacy: 'Privacidad',
+    signIn: 'Iniciar Sesión',
+    signOut: 'Cerrar Sesión',
+    createAccount: 'Crear Cuenta',
+    openMenu: 'Abrir menú de navegación',
+    closeMenu: 'Cerrar menú de navegación',
+  },
+  hero: {
+    eyebrow: 'Aprendizaje Dulce para un Mundo Mejor',
+    heading: 'Aprendizaje con raíces en la diáspora, guiado por el conocimiento, la experiencia y la comunidad',
+    description:
+      'Tamu Academy desarrolla cursos en línea dirigidos por expertos que exploran la salud mental, la economía, la inteligencia artificial, las políticas públicas, la cultura, la historia y el mundo en general.',
+    ctaExplore: 'Explorar Cursos',
+    ctaOpenLearning: 'Empezar con Aprendizaje Abierto',
+    explore: 'Explorar',
+    scrollLabel: 'Desplázate hacia abajo para explorar',
+  },
+  footer: {
+    brand: 'Una marca de Waiyaki House LLC',
+  },
+  common: {
+    loading: 'Cargando…',
+    backToCourses: 'Volver a Cursos',
+    returnToCourse: 'Volver al Curso',
+    startCourse: 'Comenzar Este Curso',
+    beginLearning: 'Comenzar a Aprender',
+    courseStatus: 'Estado del Curso',
+    available: 'Disponible',
+    open: 'Abierto',
+    enrollPrompt:
+      'Este curso está disponible. Crea una cuenta o inicia sesión para comenzar a aprender, guardar tu progreso y obtener un certificado al completarlo.',
+    moduleEnrollPrompt:
+      'Para acceder a este módulo, inscríbete en el curso desde la página de resumen del curso. Si ya te has inscrito, completa el módulo anterior para desbloquear este.',
+    moduleEnrollHint: 'Vuelve al curso para comenzar a aprender o continuar tu progreso.',
+    language: 'Idioma',
+    estimatedTime: 'Tiempo estimado',
+    startOfCourse: 'Inicio del curso',
+    endOfCourse: 'Fin del curso',
+    enrollToTrack: 'Inscríbete en el curso para seguir tu progreso en cada módulo.',
+  },
+  course: {
+    status: 'Estado',
+    begin: 'Comenzar',
+    overview: 'Resumen',
+    description: 'Descripción del Curso',
+    audience: 'Audiencia',
+    whoFor: 'Para Quién Es Este Curso',
+    outcomes: 'Resultados de Aprendizaje',
+    competencies: 'Competencias Que Desarrollarás',
+    path: 'Ruta de Aprendizaje',
+    pathIntro: 'El curso sigue una secuencia lineal clara, avanzando desde conceptos fundamentales hacia un hito aplicado.',
+    modules: 'Módulos',
+    modulesIntro:
+      'Seis módulos conectados construyen el marco. Cada módulo incluye lecciones grabadas, compañeros escritos, preguntas de reflexión y verificaciones de conocimiento.',
+    milestone: 'Hito Aplicado',
+    progress: 'Progreso del Estudiante',
+    certificate: 'Certificado',
+    access: 'Acceso',
+    level: 'Nivel',
+    format: 'Formato',
+    modulesCount: 'Módulos',
+    estimatedCompletion: 'Tiempo estimado',
+    finalAnalysis: 'El análisis final identificará',
+    milestoneNote: 'El hito aplicado se completa como parte del módulo final.',
+    pathHeading: 'La Ruta a Través de Este Curso',
+    modulesHeading: 'Módulos del Curso',
+    yourProgress: 'Tu Progreso',
+    pillar: 'Pilar',
+    track: 'Ruta',
+  },
+};

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
+import { useTranslation } from '@/lib/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const NAV_LINKS = [
-  { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
-  { label: 'Courses', to: '/courses' },
-  { label: 'Videos', to: '/videos' },
-  { label: 'Articles', to: '/articles' },
-  { label: 'Resources', to: '/resources' },
-  { label: 'Contact', to: '/contact' },
+  { key: 'nav.home', to: '/' },
+  { key: 'nav.about', to: '/about' },
+  { key: 'nav.courses', to: '/courses' },
+  { key: 'nav.videos', to: '/videos' },
+  { key: 'nav.articles', to: '/articles' },
+  { key: 'nav.resources', to: '/resources' },
+  { key: 'nav.contact', to: '/contact' },
 ];
 
 export default function TopNav() {
@@ -18,8 +20,9 @@ export default function TopNav() {
   const location = useLocation();
   const menuRef = useRef(null);
   const { isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
   const navLinks = isAuthenticated
-    ? [...NAV_LINKS.slice(0, 3), { label: 'My Courses', to: '/my-courses' }, ...NAV_LINKS.slice(3)]
+    ? [...NAV_LINKS.slice(0, 3), { key: 'nav.myCourses', to: '/my-courses' }, ...NAV_LINKS.slice(3)]
     : NAV_LINKS;
 
   useEffect(() => {
@@ -97,11 +100,11 @@ export default function TopNav() {
 
         {/* Desktop nav */}
         <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.65rem, 1.8vw, 1.5rem)' }} className="tamu-desktop-nav">
-          {navLinks.map(({ label, to }) => {
+          {navLinks.map(({ key, to }) => {
             const active = location.pathname === to;
             return (
               <Link
-                key={label}
+                key={key}
                 to={to}
                 className="tamu-nav-link"
                 aria-current={active ? 'page' : undefined}
@@ -117,7 +120,7 @@ export default function TopNav() {
                   paddingBottom: '2px',
                 }}
               >
-                {label}
+                {t(key)}
               </Link>
             );
           })}
@@ -142,7 +145,7 @@ export default function TopNav() {
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
-              Sign Out
+              {t('nav.signOut')}
             </button>
           ) : (
             <>
@@ -159,7 +162,7 @@ export default function TopNav() {
                   whiteSpace: 'nowrap',
                 }}
               >
-                Sign In
+                {t('nav.signIn')}
               </Link>
               <Link
                 to="/register"
@@ -177,10 +180,11 @@ export default function TopNav() {
                   padding: '0.35rem 0.85rem',
                 }}
               >
-                Create Account
+                {t('nav.createAccount')}
               </Link>
             </>
           )}
+          <LanguageSwitcher />
         </nav>
 
         {/* Mobile hamburger */}
@@ -236,11 +240,11 @@ export default function TopNav() {
           gap: '0',
         }}
       >
-        {navLinks.map(({ label, to }) => {
+        {navLinks.map(({ key, to }) => {
           const active = location.pathname === to;
           return (
             <Link
-              key={label}
+              key={key}
               to={to}
               className="tamu-nav-link"
               aria-current={active ? 'page' : undefined}
@@ -256,7 +260,7 @@ export default function TopNav() {
                 display: 'block',
               }}
             >
-              {label}
+              {t(key)}
             </Link>
           );
         })}
@@ -285,7 +289,7 @@ export default function TopNav() {
               cursor: 'pointer',
             }}
           >
-            Sign Out
+            {t('nav.signOut')}
           </button>
         ) : (
           <>
@@ -304,7 +308,7 @@ export default function TopNav() {
                 display: 'block',
               }}
             >
-              Sign In
+              {t('nav.signIn')}
             </Link>
             <Link
               to="/register"
@@ -320,10 +324,11 @@ export default function TopNav() {
                 display: 'block',
               }}
             >
-              Create Account
+              {t('nav.createAccount')}
             </Link>
           </>
         )}
+        <LanguageSwitcher variant="mobile" />
       </nav>
 
       {/* Responsive style injection */}

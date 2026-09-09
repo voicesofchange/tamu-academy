@@ -9,6 +9,7 @@ import MhModule5Lesson from '@/components/courses/MhModule5Lesson';
 import MhModule6Lesson from '@/components/courses/MhModule6Lesson';
 import MhModule7Lesson from '@/components/courses/MhModule7Lesson';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
+import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
 
 const COURSE_SLUG = 'mental-health-community-and-culture';
@@ -47,6 +48,7 @@ const COURSE_SLUG = 'mental-health-community-and-culture';
  *     reads lesson content only through the backend function response.
  */
 export default function MhModuleRoutePage({ moduleRoute }) {
+  const { language } = useTranslation();
   const found = getMentalHealthModule(COURSE_SLUG, moduleRoute);
   const [state, setState] = useState({ status: 'loading', module: null });
 
@@ -57,6 +59,7 @@ export default function MhModuleRoutePage({ moduleRoute }) {
         const res = await base44.functions.invoke('getMentalHealthModule', {
           courseSlug: COURSE_SLUG,
           moduleRoute,
+          language,
         });
         if (cancelled) return;
         const mod = res && res.data && res.data.module;
@@ -78,7 +81,7 @@ export default function MhModuleRoutePage({ moduleRoute }) {
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute]);
+  }, [moduleRoute, language]);
 
   if (!found) return <PageNotFound />;
 

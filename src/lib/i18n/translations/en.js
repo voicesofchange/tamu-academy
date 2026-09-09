@@ -1,0 +1,86 @@
+/**
+ * English UI string dictionary — the source language.
+ * Keys are organized by section (nav, hero, footer, common, course).
+ * Add new keys here first; other language dictionaries mirror this structure.
+ */
+export default {
+  nav: {
+    home: 'Home',
+    about: 'About',
+    courses: 'Courses',
+    videos: 'Videos',
+    articles: 'Articles',
+    resources: 'Resources',
+    contact: 'Contact',
+    myCourses: 'My Courses',
+    privacy: 'Privacy',
+    signIn: 'Sign In',
+    signOut: 'Sign Out',
+    createAccount: 'Create Account',
+    openMenu: 'Open navigation menu',
+    closeMenu: 'Close navigation menu',
+  },
+  hero: {
+    eyebrow: 'Sweet Learning for a Better World',
+    heading: 'Diaspora-rooted learning led by knowledge, experience, and community',
+    description:
+      'Tamu Academy develops expert-led online courses exploring mental health, economics, artificial intelligence, public policy, culture, history, and the wider world.',
+    ctaExplore: 'Explore Courses',
+    ctaOpenLearning: 'Start with Open Learning',
+    explore: 'Explore',
+    scrollLabel: 'Scroll down to explore',
+  },
+  footer: {
+    brand: 'A Waiyaki House LLC brand',
+  },
+  common: {
+    loading: 'Loading…',
+    backToCourses: 'Back to Courses',
+    returnToCourse: 'Return to Course',
+    startCourse: 'Start This Course',
+    beginLearning: 'Begin Learning',
+    courseStatus: 'Course Status',
+    available: 'Available',
+    open: 'Open',
+    enrollPrompt:
+      'This course is available. Create an account or sign in to begin learning, save your progress, and earn a certificate upon completion.',
+    moduleEnrollPrompt:
+      'To access this module, please enroll in the course from the course overview page. If you have already enrolled, complete the previous module to unlock this one.',
+    moduleEnrollHint: 'Return to the course to start learning or continue your progress.',
+    language: 'Language',
+    estimatedTime: 'Estimated time',
+    startOfCourse: 'Start of course',
+    endOfCourse: 'End of course',
+    enrollToTrack: 'Enroll in the course to track your progress through each module.',
+  },
+  course: {
+    status: 'Status',
+    begin: 'Begin',
+    overview: 'Overview',
+    description: 'Course Description',
+    audience: 'Audience',
+    whoFor: 'Who This Course Is For',
+    outcomes: 'Learning Outcomes',
+    competencies: 'Competencies You Will Develop',
+    path: 'Learning Path',
+    pathIntro: 'The course follows a clear linear sequence, building from foundational concepts toward an applied milestone.',
+    modules: 'Modules',
+    modulesIntro:
+      'Six connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, and knowledge checks.',
+    milestone: 'Applied Milestone',
+    progress: 'Learner Progress',
+    certificate: 'Certificate',
+    access: 'Access',
+    level: 'Level',
+    format: 'Format',
+    modulesCount: 'Modules',
+    estimatedCompletion: 'Estimated completion',
+    finalAnalysis: 'The final analysis will identify',
+    milestoneNote: 'The applied milestone is completed as part of the final module.',
+    pathHeading: 'The Path Through This Course',
+    modulesHeading: 'Course Modules',
+    yourProgress: 'Your Progress',
+    pillar: 'Pillar',
+    track: 'Track',
+  },
+};

@@ -4,6 +4,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import StatusBadge from '@/components/page/StatusBadge';
+import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -14,6 +15,7 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  * — never the full learning content.
  */
 export default function ModuleDevelopmentState({ course, module }) {
+  const { t } = useTranslation();
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${module.route}`;
 
@@ -46,10 +48,10 @@ export default function ModuleDevelopmentState({ course, module }) {
 
       <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-          To access this module, please enroll in the course from the course overview page. If you have already enrolled, complete the previous module to unlock this one.
+          {t('common.moduleEnrollPrompt')}
         </p>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>
-          Return to the course to start learning or continue your progress.
+          {t('common.moduleEnrollHint')}
         </p>
       </div>
 
@@ -59,7 +61,7 @@ export default function ModuleDevelopmentState({ course, module }) {
           className="font-body"
           style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
-          &larr; Return to Course
+          &larr; {t('common.returnToCourse')}
         </Link>
       </div>
     </PageLayout>

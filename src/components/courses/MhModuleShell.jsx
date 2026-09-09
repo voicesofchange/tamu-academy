@@ -5,6 +5,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -26,16 +27,10 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  * 1 and will add enrollment + publication + prerequisite checks once
  * they are implemented.
  */
-const unavailableMessageByStatus = {
-  Available:
-    'To access this module, please enroll in the course from the course overview page. If you have already enrolled, complete the previous module to unlock this one.',
-  'In Development':
-    'This module is in development. Full learning materials will appear here once the module is ready.',
-  'Coming Soon':
-    'This module is coming soon. Full learning materials will be released once they have been prepared and reviewed.',
-};
+// Message resolved inside the component via useTranslation (see below).
 
 export default function MhModuleShell({ course, module: mod }) {
+  const { t } = useTranslation();
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
@@ -44,8 +39,7 @@ export default function MhModuleShell({ course, module: mod }) {
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1
       ? course.modules[moduleIndex + 1]
       : null;
-  const message =
-    unavailableMessageByStatus[mod.status] || unavailableMessageByStatus['Coming Soon'];
+  const message = t('common.moduleEnrollPrompt');
 
   const navLinkStyle = {
     display: 'inline-flex',
@@ -100,7 +94,7 @@ export default function MhModuleShell({ course, module: mod }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}
         >
-          Estimated time: {mod.estimatedTime}
+          {t('common.estimatedTime')}: {mod.estimatedTime}
         </p>
         <motion.div
           initial={{ opacity: 0, scaleX: 0.4 }}
@@ -118,7 +112,7 @@ export default function MhModuleShell({ course, module: mod }) {
       <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', marginBottom: '2.5rem' }}>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>{message}</p>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>
-          Return to the course to start learning or continue your progress.
+          {t('common.moduleEnrollHint')}
         </p>
       </div>
 
@@ -126,10 +120,10 @@ export default function MhModuleShell({ course, module: mod }) {
           Shows no PII and no Care Map content. */}
       <div style={{ padding: '1.5rem 1.75rem', border: '1px dashed rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '2.5rem' }}>
         <span className="font-body" style={{ display: 'block', color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.5rem' }}>
-          Learner Progress
+          {t('course.progress')}
         </span>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-          Enroll in the course to track your progress through each module.
+          {t('common.enrollToTrack')}
         </p>
       </div>
 
@@ -142,7 +136,7 @@ export default function MhModuleShell({ course, module: mod }) {
             </Link>
           ) : (
             <span aria-disabled="true" title="This is the first module" style={navDisabledStyle}>
-              &larr; Start of course
+              &larr; {t('common.startOfCourse')}
             </span>
           )}
           {nextModule ? (
@@ -151,12 +145,12 @@ export default function MhModuleShell({ course, module: mod }) {
             </Link>
           ) : (
             <span aria-disabled="true" title="This is the last module" style={navDisabledStyle}>
-              End of course &rarr;
+              {t('common.endOfCourse')} &rarr;
             </span>
           )}
         </div>
         <Link to={coursePath} className="font-body" style={navLinkStyle}>
-          &larr; Return to Course
+          &larr; {t('common.returnToCourse')}
         </Link>
       </nav>
     </PageLayout>

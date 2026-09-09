@@ -4,6 +4,7 @@ import ModulePageTemplate from '@/components/courses/ModulePageTemplate';
 import ModuleExpandedTemplate from '@/components/courses/module/ModuleExpandedTemplate';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
 import { getEconomicsModule } from '@/lib/economics-tracks';
+import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
 
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
@@ -31,6 +32,7 @@ const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
  * leak the unreleased quizzes, answers, or activities to a public visitor.
  */
 export default function ModuleRoutePage({ moduleRoute }) {
+  const { language } = useTranslation();
   const found = getEconomicsModule(COURSE_SLUG, moduleRoute);
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'denied'
@@ -42,6 +44,7 @@ export default function ModuleRoutePage({ moduleRoute }) {
         const res = await base44.functions.invoke('getModuleContent', {
           courseSlug: COURSE_SLUG,
           moduleRoute,
+          language,
         });
         if (cancelled) return;
         const data = res && res.data ? res.data : null;
@@ -58,7 +61,7 @@ export default function ModuleRoutePage({ moduleRoute }) {
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute]);
+  }, [moduleRoute, language]);
 
   if (!found) return <PageNotFound />;
 

@@ -4,6 +4,7 @@ import {
   isModulePublished,
   getModulePrerequisite,
 } from '../../shared/mental-health-curriculum.js';
+import { translateModuleContent } from '../../shared/translate-content.js';
 
 /**
  * Role-gated endpoint that returns the Mental Health pillar module
@@ -74,7 +75,7 @@ export default async function(req: Request): Promise<Response> {
     // as correctAnswerIndex, score, learnerId, or any attempt to inject
     // unexpected data. The response never includes protected material
     // in a rejected response.
-    const allowedTopKeys = new Set(['courseSlug', 'moduleRoute']);
+    const allowedTopKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
     for (const k of Object.keys(body)) {
       if (!allowedTopKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
@@ -83,6 +84,7 @@ export default async function(req: Request): Promise<Response> {
 
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
+    const language = typeof body.language === 'string' ? body.language : 'en';
     if (!courseSlug || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -123,7 +125,8 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
-    return Response.json({ module: moduleContent });
+    const translatedContent = await translateModuleContent(base44, moduleContent, language);
+    return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getMentalHealthModule] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

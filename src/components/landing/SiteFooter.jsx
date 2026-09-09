@@ -1,18 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '@/lib/i18n';
 
 const LINKS = [
-  { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
-  { label: 'Courses', to: '/courses' },
-  { label: 'Videos', to: '/videos' },
-  { label: 'Articles', to: '/articles' },
-  { label: 'Resources', to: '/resources' },
-  { label: 'Contact', to: '/contact' },
-  { label: 'Privacy', to: '/privacy' },
+  { key: 'nav.home', to: '/' },
+  { key: 'nav.about', to: '/about' },
+  { key: 'nav.courses', to: '/courses' },
+  { key: 'nav.videos', to: '/videos' },
+  { key: 'nav.articles', to: '/articles' },
+  { key: 'nav.resources', to: '/resources' },
+  { key: 'nav.contact', to: '/contact' },
+  { key: 'nav.privacy', to: '/privacy' },
 ];
 
 export default function SiteFooter() {
+  const { t } = useTranslation();
   return (
     <footer
       style={{
@@ -27,9 +29,9 @@ export default function SiteFooter() {
       }}
     >
       <nav aria-label="Footer navigation" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25rem 1.5rem' }}>
-        {LINKS.map(({ label, to }) => (
+        {LINKS.map(({ key, to }) => (
           <Link
-            key={label}
+            key={key}
             to={to}
             className="font-body tamu-nav-link"
             style={{
@@ -42,7 +44,7 @@ export default function SiteFooter() {
               padding: '0.3rem 0',
             }}
           >
-            {label}
+            {t(key)}
           </Link>
         ))}
       </nav>
@@ -58,7 +60,7 @@ export default function SiteFooter() {
           fontWeight: 500,
         }}
       >
-        A Waiyaki House LLC brand
+        {t('footer.brand')}
       </span>
     </footer>
   );

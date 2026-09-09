@@ -10,6 +10,7 @@ import EconomicsCourseProgress from '@/components/courses/EconomicsCourseProgres
 import StartCourseButton from '@/components/courses/StartCourseButton';
 import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
+import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -19,19 +20,20 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  * and renders it through the existing Tamu Academy layout system.
  */
 export default function CoursePageTemplate({ course }) {
+  const { t } = useTranslation();
   const metaDescription = course.description;
   const { isAuthenticated, user } = useAuth();
   const allowDevModules = canViewInDevelopment({ isAuthenticated, role: user?.role });
 
   const courseFacts = [
-    ['Pillar', course.pillar],
-    ['Track', course.track],
-    ['Level', course.level],
-    ['Format', course.format],
-    ['Modules', String(course.modulesCount)],
-    ['Estimated completion', course.estimatedCompletion],
-    ['Certificate', course.certificate],
-    ['Access', course.access],
+    [t('course.pillar'), course.pillar],
+    [t('course.track'), course.track],
+    [t('course.level'), course.level],
+    [t('course.format'), course.format],
+    [t('course.modulesCount'), String(course.modulesCount)],
+    [t('course.estimatedCompletion'), course.estimatedCompletion],
+    [t('course.certificate'), course.certificate],
+    [t('course.access'), course.access],
   ];
 
   return (
@@ -44,22 +46,21 @@ export default function CoursePageTemplate({ course }) {
         subheading={course.subtitle}
       />
 
-      <PageSection eyebrow="Status" heading="Course Status">
+      <PageSection eyebrow={t('course.status')} heading={t('common.courseStatus')}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '1.25rem' }}>
           <StatusBadge label={course.status} />
           <StatusBadge label={course.access} />
         </div>
         <p className="font-body" style={{ ...bodyText, margin: 0, maxWidth: '640px' }}>
-          This course is available. Create an account or sign in to begin learning, save your progress,
-          and earn a certificate upon completion.
+          {t('common.enrollPrompt')}
         </p>
       </PageSection>
 
-      <PageSection eyebrow="Begin" heading="Start This Course">
+      <PageSection eyebrow={t('course.begin')} heading={t('common.startCourse')}>
         <StartCourseButton courseSlug={course.slug} />
       </PageSection>
 
-      <PageSection eyebrow="Overview" heading="Course Description">
+      <PageSection eyebrow={t('course.overview')} heading={t('course.description')}>
         {course.descriptionLong.map((para, i) => (
           <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
             {para}
@@ -76,7 +77,7 @@ export default function CoursePageTemplate({ course }) {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Audience" heading="Who This Course Is For">
+      <PageSection eyebrow={t('course.audience')} heading={t('course.whoFor')}>
         {course.whoThisCourseIsFor.split('\n\n').map((para, i) => (
           <p key={i} className="font-body" style={{ ...bodyText, margin: i === 0 ? 0 : '1rem 0 0' }}>
             {para}
@@ -84,7 +85,7 @@ export default function CoursePageTemplate({ course }) {
         ))}
       </PageSection>
 
-      <PageSection eyebrow="Learning Outcomes" heading="Competencies You Will Develop">
+      <PageSection eyebrow={t('course.outcomes')} heading={t('course.competencies')}>
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem', counterReset: 'outcome' }}>
           {course.learningOutcomes.map((outcome, i) => (
             <li key={i} style={{ marginBottom: '0.85rem' }}>
@@ -94,9 +95,9 @@ export default function CoursePageTemplate({ course }) {
         </ol>
       </PageSection>
 
-      <PageSection eyebrow="Learning Path" heading="The Path Through This Course">
+      <PageSection eyebrow={t('course.path')} heading={t('course.pathHeading')}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          The course follows a clear linear sequence, building from foundational concepts toward an applied milestone.
+          {t('course.pathIntro')}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem 0.5rem' }}>
           {course.learningPath.map((stage, i) => (
@@ -124,9 +125,9 @@ export default function CoursePageTemplate({ course }) {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Modules" heading="Course Modules">
+      <PageSection eyebrow={t('course.modules')} heading={t('course.modulesHeading')}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Six connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, and knowledge checks.
+          {t('course.modulesIntro')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((module) => (
@@ -139,7 +140,7 @@ export default function CoursePageTemplate({ course }) {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Applied Milestone" heading={course.milestone.title}>
+      <PageSection eyebrow={t('course.milestone')} heading={course.milestone.title}>
         <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
           <div style={{ marginBottom: '0.85rem' }}>
             <StatusBadge label={course.milestone.status} />
@@ -148,7 +149,7 @@ export default function CoursePageTemplate({ course }) {
             {course.milestone.description}
           </p>
           <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.85rem' }}>
-            The final analysis will identify
+            {t('course.finalAnalysis')}
           </span>
           <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
             {course.milestone.analysisPoints.map((point) => (
@@ -156,22 +157,22 @@ export default function CoursePageTemplate({ course }) {
             ))}
           </ul>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', marginTop: '1.5rem', marginBottom: 0 }}>
-            The applied milestone is completed as part of the final module.
+            {t('course.milestoneNote')}
           </p>
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Your Progress" heading="Learner Progress">
+      <PageSection eyebrow={t('course.yourProgress')} heading={t('course.progress')}>
         <EconomicsCourseProgress courseSlug={course.slug} />
       </PageSection>
 
-      <PageSection eyebrow="Access" heading="Begin Learning">
+      <PageSection eyebrow={t('course.access')} heading={t('common.beginLearning')}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}>
           <Link
             to="/courses"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Back to Courses &rarr;
+            {t('common.backToCourses')} &rarr;
           </Link>
         </div>
       </PageSection>

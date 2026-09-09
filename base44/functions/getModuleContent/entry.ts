@@ -4,6 +4,7 @@ import {
   isEconomicsModulePublished,
   getEconomicsModulePrerequisite,
 } from '../../shared/economics-course-config.js';
+import { translateModuleContent } from '../../shared/translate-content.js';
 
 /**
  * Role-gated endpoint that returns the full, in-development module content
@@ -49,6 +50,7 @@ Deno.serve(async (req) => {
     }
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
+    const language = typeof body.language === 'string' ? body.language : 'en';
     if (!courseSlug || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -107,7 +109,8 @@ Deno.serve(async (req) => {
       };
     }
 
-    return Response.json({ module: moduleContent });
+    const translatedContent = await translateModuleContent(base44, moduleContent, language);
+    return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getModuleContent] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

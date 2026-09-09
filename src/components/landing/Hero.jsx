@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from '@/lib/i18n';
 
 const LOGO_URL = "https://media.base44.com/images/public/user_68796cfeca8e624b09c5f04b/8de477990_TamuAcademyFinalLogo.png";
 
 export default function Hero() {
+  const { t } = useTranslation();
   return (
     <section
       id="top"
@@ -103,7 +105,7 @@ export default function Hero() {
             margin: '0 0 1.25rem',
           }}
         >
-          Sweet Learning for a Better World
+          {t('hero.eyebrow')}
         </motion.p>
 
         {/* H1 */}
@@ -121,7 +123,7 @@ export default function Hero() {
             maxWidth: '720px',
           }}
         >
-          Diaspora-rooted learning led by knowledge, experience, and community
+          {t('hero.heading')}
         </motion.h1>
 
         {/* Supporting copy */}
@@ -139,7 +141,7 @@ export default function Hero() {
             margin: '0 auto 2.5rem',
           }}
         >
-          Tamu Academy develops expert-led online courses exploring mental health, economics, artificial intelligence, public policy, culture, history, and the wider world.
+          {t('hero.description')}
         </motion.p>
 
         {/* CTAs */}
@@ -161,7 +163,7 @@ export default function Hero() {
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
-            Explore Courses
+            {t('hero.ctaExplore')}
           </Link>
           <Link
             to="/videos"
@@ -175,7 +177,7 @@ export default function Hero() {
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
-            Start with Open Learning
+            {t('hero.ctaOpenLearning')}
           </Link>
         </motion.div>
 
@@ -193,7 +195,7 @@ export default function Hero() {
           }}
           aria-label="Scroll down to explore"
         >
-          Explore
+          {t('hero.explore')}
           <span aria-hidden="true" style={{ display: 'inline-block', animation: 'tamuBob 2s ease-in-out infinite' }}>↓</span>
         </motion.a>
       </div>
