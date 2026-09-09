@@ -31,19 +31,19 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
 
   const baseStyle = {
     color: 'rgba(245,239,224,0.78)',
-    fontSize: variant === 'mobile' ? '0.8rem' : '0.68rem',
-    letterSpacing: '0.15em',
-    textTransform: 'uppercase',
+    fontSize: variant === 'mobile' ? '0.8rem' : variant === 'icon' ? '0.72rem' : '0.68rem',
+    letterSpacing: variant === 'icon' ? '0.04em' : '0.15em',
+    textTransform: variant === 'icon' ? 'none' : 'uppercase',
     fontWeight: 500,
     whiteSpace: 'nowrap',
     background: 'none',
-    border: variant === 'mobile' ? 'none' : '1px solid rgba(212,161,42,0.3)',
+    border: variant === 'mobile' ? 'none' : variant === 'icon' ? '1px solid rgba(212,161,42,0.25)' : '1px solid rgba(212,161,42,0.3)',
     borderRadius: '2px',
-    padding: variant === 'mobile' ? '0.85rem 0' : '0.3rem 0.6rem',
+    padding: variant === 'mobile' ? '0.85rem 0' : variant === 'icon' ? '0.3rem 0.5rem' : '0.3rem 0.6rem',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.35rem',
+    gap: '0.3rem',
     fontFamily: "'DM Sans', sans-serif",
     borderBottom: variant === 'mobile' ? '1px solid rgba(212,161,42,0.07)' : 'none',
     width: variant === 'mobile' ? '100%' : 'auto',
@@ -60,7 +60,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
         style={baseStyle}
       >
         <span style={{ fontSize: '0.9em' }} aria-hidden="true">🌐</span>
-        {current.nativeLabel}
+        {variant === 'icon' ? current.code.toUpperCase() : current.nativeLabel}
         <span aria-hidden="true" style={{ fontSize: '0.8em', opacity: 0.6 }}>{open ? '▲' : '▼'}</span>
       </button>
 

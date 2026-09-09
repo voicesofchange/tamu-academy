@@ -187,6 +187,11 @@ export default function TopNav() {
           <LanguageSwitcher />
         </nav>
 
+        {/* Compact language switcher — mobile header bar */}
+        <div className="tamu-mobile-lang" style={{ display: 'none' }}>
+          <LanguageSwitcher variant="icon" />
+        </div>
+
         {/* Mobile hamburger */}
         <button
           aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
@@ -328,7 +333,6 @@ export default function TopNav() {
             </Link>
           </>
         )}
-        <LanguageSwitcher variant="mobile" />
       </nav>
 
       {/* Responsive style injection */}
@@ -336,6 +340,7 @@ export default function TopNav() {
         @media (max-width: 860px) {
           .tamu-desktop-nav { display: none !important; }
           .tamu-mobile-menu-btn { display: flex !important; }
+          .tamu-mobile-lang { display: inline-flex !important; }
         }
         @media (min-width: 861px) {
           #tamu-mobile-menu { display: none !important; }
