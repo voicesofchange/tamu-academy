@@ -233,7 +233,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
   };
 
   const handleKnowledgeCheckGraded = () => {
-    setKnowledgeCheckGradedCount((c) => c + 1);
+    setKnowledgeCheckGradedCount((prev) => prev + 1);
   };
 
   return (

@@ -90,7 +90,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
   const [knowledgeCheckGradedCount, setKnowledgeCheckGradedCount] = useState(0);
 
   const clearReflection = () => setReflectionText('');
-  const handleKnowledgeCheckGraded = () => setKnowledgeCheckGradedCount((c) => c + 1);
+  const handleKnowledgeCheckGraded = () => setKnowledgeCheckGradedCount((prev) => prev + 1);
 
   const safetyNoteBox = (ariaLabel) => (
     <div aria-label={ariaLabel} style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
@@ -134,7 +134,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
 
       <PageSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.requiredVideosHeading}>
         {safetyNoteBox('Content and safety note before media')}
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>Two required videos introduce the programs studied in this module.</p>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>{c.twoRequiredVideosPrograms}</p>
         {renderMediaItem(lesson.coreMedia.primary, lesson.coreMedia.attributionStatement, c)}
         {renderMediaItem(lesson.coreMedia.secondary, lesson.coreMedia.attributionStatement, c)}
       </PageSection>
@@ -160,7 +160,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
         {renderConcepts(lesson.keyConcepts)}
       </PageSection>
 
-      <PageSection id="comparative-program-summaries" eyebrow="Comparison" heading={lesson.comparativeProgramSummaries.heading}>
+      <PageSection id="comparative-program-summaries" eyebrow={c.comparisonEyebrow} heading={lesson.comparativeProgramSummaries.heading}>
         {lesson.comparativeProgramSummaries.programs.map((program) => (
           <div key={program.name} style={{ ...boxStyle, marginBottom: '1.75rem' }}>
             <h3 className="font-heading" style={{ ...termHeading, fontSize: 'clamp(1.15rem, 2.5vw, 1.4rem)' }}>{program.name}</h3>
@@ -191,7 +191,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
       </PageSection>
 
       <PageSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
-        <div aria-label="{c.fictionalSituation} reminder" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
+        <div aria-label={`${c.fictionalSituation} reminder`} style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.fictionalSituation}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.fictionalSituationReminder}</p>
         </div>
@@ -220,7 +220,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.optionalExtendedAssignment.requirements.map((item, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>)}
         </ol>
-        <div style={disclaimerBoxStyle} aria-label="{c.personalDisclosure} notice">
+        <div style={disclaimerBoxStyle} aria-label={`${c.personalDisclosure} notice`}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.personalDisclosure}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
         </div>

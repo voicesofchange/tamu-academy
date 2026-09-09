@@ -59,4 +59,5 @@ export const MH_MODULE_CONTENT = {
   twoRequiredVideosPrograms: 'Two required videos introduce the programs studied in this module.',
   twoRequiredVideosThemes: 'Two required videos introduce the themes studied in this module.',
   threeRequiredVideosIntro: 'Three required videos introduce the themes studied in this module. Each video has a written learning alternative drawn from the corresponding lesson section. You may review either the video or its written alternative.',
+  comparisonEyebrow: 'Comparison',
 };
