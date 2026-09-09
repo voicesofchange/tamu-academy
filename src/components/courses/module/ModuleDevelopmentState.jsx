@@ -21,7 +21,7 @@ export default function ModuleDevelopmentState({ course, module }) {
     <PageLayout>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
-        description={`${module.title} is currently in development.`}
+        description={`${module.title} — enroll in the course to access this module.`}
         path={modulePath}
         noindex
       />
@@ -46,10 +46,10 @@ export default function ModuleDevelopmentState({ course, module }) {
 
       <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-          This module is in development. The recorded lesson, key concepts, knowledge check, and applied activity will be available here once the module is ready.
+          To access this module, please enroll in the course from the course overview page. If you have already enrolled, complete the previous module to unlock this one.
         </p>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>
-          Please return to the course to explore resources that are available now.
+          Return to the course to start learning or continue your progress.
         </p>
       </div>
 

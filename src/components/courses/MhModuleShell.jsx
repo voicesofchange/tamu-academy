@@ -27,8 +27,10 @@ const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHei
  * they are implemented.
  */
 const unavailableMessageByStatus = {
+  Available:
+    'To access this module, please enroll in the course from the course overview page. If you have already enrolled, complete the previous module to unlock this one.',
   'In Development':
-    'Module 1 is in development. The recorded lesson, written explanation, case study, Community of Care Map activity, knowledge check, and reflection prompt will appear here once the module is ready. Please return later.',
+    'This module is in development. Full learning materials will appear here once the module is ready.',
   'Coming Soon':
     'This module is coming soon. Full learning materials will be released once they have been prepared and reviewed.',
 };
@@ -116,7 +118,7 @@ export default function MhModuleShell({ course, module: mod }) {
       <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', marginBottom: '2.5rem' }}>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>{message}</p>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>
-          This course is in development. Module content, knowledge checks, and applied activities will be added here once they are ready.
+          Return to the course to start learning or continue your progress.
         </p>
       </div>
 
@@ -127,7 +129,7 @@ export default function MhModuleShell({ course, module: mod }) {
           Learner Progress
         </span>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-          Progress tracking is being prepared. Once enrollment opens, your position in the course will be shown here.
+          Enroll in the course to track your progress through each module.
         </p>
       </div>
 

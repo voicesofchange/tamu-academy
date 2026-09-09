@@ -36,7 +36,7 @@ export default function CoursePageTemplate({ course }) {
 
   return (
     <PageLayout>
-      <PageMeta title={`${course.title} | Tamu Academy`} description={metaDescription} path={`/courses/${course.slug}`} noindex />
+      <PageMeta title={`${course.title} | Tamu Academy`} description={metaDescription} path={`/courses/${course.slug}`} />
 
       <PageHero
         eyebrow="Course"
