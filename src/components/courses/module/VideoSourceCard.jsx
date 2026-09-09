@@ -1,29 +1,28 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * Standard "About this source" attribution card for any outside video used
- * in a Tamu Academy lesson. Required items (per editorial standard):
- *   1. Video title (heading)
- *   2. Speaker or organization, when confirmed
- *   3. Original publisher
- *   4. Direct YouTube link
- *   5. Why this resource was selected
- *   6. The Tamu Academy disclaimer statement
- */
-const DISCLAIMER =
-  'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.';
+const CONTENT = {
+  aboutSource: 'About this source',
+  speakerLabel: 'Speaker or organization',
+  publisherLabel: 'Original publisher',
+  watchLabel: 'Watch on YouTube',
+  whySelectedLabel: 'Why this resource was selected',
+  disclaimer: 'This independently produced video is included as a learning resource. Its speaker, producer, and publisher are not Tamu Academy instructors, employees, or partners.',
+};
 
 export default function VideoSourceCard({ source, attributionLabel }) {
+  const { content: c } = useTranslatedContent('video-source-card', CONTENT);
+
   if (!source) return null;
   const speaker = source.speakerOrOrganization || source.speaker;
   const publisher = source.publisher;
   const watchUrl = source.watchUrl;
   const why = source.whySelected;
-  const disclaimer = source.disclaimer || DISCLAIMER;
+  const disclaimer = source.disclaimer || c.disclaimer;
 
   return (
     <div
-      aria-label={attributionLabel ? `${attributionLabel} attribution card` : 'About this source attribution'}
+      aria-label={attributionLabel ? `${c.aboutSource} · ${attributionLabel}` : c.aboutSource}
       style={{
         marginTop: '1.25rem',
         padding: '1.25rem 1.4rem',
@@ -45,7 +44,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
             fontWeight: 500,
           }}
         >
-          About this source · {attributionLabel}
+          {c.aboutSource} · {attributionLabel}
         </span>
       )}
       <h3
@@ -65,7 +64,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>Speaker or organization: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.speakerLabel}: </strong>
           {speaker}
         </p>
       )}
@@ -74,7 +73,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>Original publisher: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.publisherLabel}: </strong>
           {publisher}
         </p>
       )}
@@ -83,7 +82,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>Watch on YouTube: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.watchLabel}: </strong>
           <a
             href={watchUrl}
             target="_blank"
@@ -99,7 +98,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.85rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>Why this resource was selected: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.whySelectedLabel}: </strong>
           {why}
         </p>
       )}

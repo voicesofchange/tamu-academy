@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * ArticleCard — displayed on the /articles landing page.
- * When status is 'in-development', the article link is disabled and
- * a "Coming Soon" label is shown instead. The episode video link remains active.
- */
+const CONTENT = {
+  inDevelopment: 'Article in Development',
+  comingSoon: 'Coming Soon',
+  previewArticle: 'Preview Article',
+  readArticle: 'Read Article',
+  watchEpisode: 'Watch Episode',
+};
+
 export default function ArticleCard({ article }) {
+  const { content: c } = useTranslatedContent('article-card', CONTENT);
   const isDev = article.status === 'in-development';
 
   return (
@@ -22,38 +27,33 @@ export default function ArticleCard({ article }) {
         gap: '0.65rem',
       }}
     >
-      {/* Category + status row */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem' }}>
         <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.28)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
           {article.category}
         </span>
         {isDev && (
           <span className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(245,239,224,0.12)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
-            Article in Development
+            {c.inDevelopment}
           </span>
         )}
       </div>
 
-      {/* Title */}
       <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.05rem, 2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
         {article.title}
       </h3>
 
-      {/* Summary */}
       <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
         {article.cardSummary || article.summary}
       </p>
 
-      {/* Actions */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.85rem', marginTop: '0.25rem' }}>
-        {/* Article link */}
         {isDev && article.sections?.length === 0 ? (
           <span
             className="font-body"
             aria-disabled="true"
             style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.25)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(245,239,224,0.1)', borderRadius: '2px', padding: '0.5rem 1rem', cursor: 'default', userSelect: 'none' }}
           >
-            Coming Soon
+            {c.comingSoon}
           </span>
         ) : isDev ? (
           <Link
@@ -61,7 +61,7 @@ export default function ArticleCard({ article }) {
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(245,239,224,0.22)', borderRadius: '2px', padding: '0.5rem 1rem' }}
           >
-            Preview Article →
+            {c.previewArticle} →
           </Link>
         ) : (
           <Link
@@ -69,11 +69,10 @@ export default function ArticleCard({ article }) {
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.5rem 1rem' }}
           >
-            Read Article →
+            {c.readArticle} →
           </Link>
         )}
 
-        {/* Watch episode — always active */}
         <a
           href={`https://www.youtube.com/watch?v=${article.videoId}`}
           target="_blank"
@@ -84,7 +83,7 @@ export default function ArticleCard({ article }) {
           onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(212,161,42,0.7)'}
         >
           <ExternalLink size={11} aria-hidden="true" />
-          Watch Episode
+          {c.watchEpisode}
         </a>
       </div>
     </article>

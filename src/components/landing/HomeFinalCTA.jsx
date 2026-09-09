@@ -1,14 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const PATHS = [
-  { label: 'Explore Courses', to: '/courses', primary: true },
-  { label: 'Explore Resources', to: '/resources', primary: false },
-  { label: 'Get in Touch', to: '/contact', primary: false },
-];
+const CONTENT = {
+  heading: 'Learn, Contribute, or Build With Us.',
+  paths: [
+    { label: 'Explore Courses', to: '/courses', primary: true },
+    { label: 'Explore Resources', to: '/resources', primary: false },
+    { label: 'Get in Touch', to: '/contact', primary: false },
+  ],
+};
 
 export default function HomeFinalCTA() {
+  const { content: c } = useTranslatedContent('home-final-cta', CONTENT);
+
   return (
     <section
       style={{
@@ -24,11 +30,11 @@ export default function HomeFinalCTA() {
         style={{ maxWidth: '640px', margin: '0 auto' }}
       >
         <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.75rem' }}>
-          Learn, Contribute, or Build With Us.
+          {c.heading}
         </h2>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-          {PATHS.map(({ label, to, primary }) => (
+          {c.paths.map(({ label, to, primary }) => (
             <Link
               key={label}
               to={to}

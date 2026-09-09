@@ -12,6 +12,8 @@ import MhModule4KnowledgeCheck from '@/components/courses/MhModule4KnowledgeChec
 import MhModule4Progress from '@/components/courses/MhModule4Progress';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -39,9 +41,9 @@ function renderConcepts(concepts) {
   ))}</div>;
 }
 
-function renderExplanation(section) {
+function renderExplanation(section, c) {
   return (
-    <PageSection key={section.sectionId} id={section.sectionId} eyebrow="Explanation" heading={section.heading}>
+    <PageSection key={section.sectionId} id={section.sectionId} eyebrow={c.explanationEyebrow} heading={section.heading}>
       {section.paragraphs && renderParagraphs(section.paragraphs)}
       {section.numberedItems && renderNumberedItems(section.numberedItems)}
       {section.subsections && section.subsections.map((sub, i) => (
@@ -64,7 +66,7 @@ function renderExplanation(section) {
   );
 }
 
-function renderMediaItem(item, attributionStatement) {
+function renderMediaItem(item, attributionStatement, c) {
   return (
     <div style={{ marginBottom: '2.5rem' }}>
       <LessonVideo video={{
@@ -73,13 +75,14 @@ function renderMediaItem(item, attributionStatement) {
       }} />
       <p className="font-body" style={{ ...bodyText, marginTop: '0.5rem', marginBottom: 0 }}>
         <a href={item.officialPageUrl} target="_blank" rel="noopener noreferrer" aria-label={`${item.officialPageLabel} (opens in a new tab)`} style={externalLinkStyle}>{item.officialPageLabel}</a>
-        <span style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.78rem', marginLeft: '0.45rem' }}>(opens in a new tab)</span>
+        <span style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.78rem', marginLeft: '0.45rem' }}>{c.opensInNewTab}</span>
       </p>
     </div>
   );
 }
 
 export default function MhModule4Lesson({ course, module: mod, lesson }) {
+  const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
 
@@ -91,7 +94,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
 
   const safetyNoteBox = (ariaLabel) => (
     <div aria-label={ariaLabel} style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
-      <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Content and safety note</span>
+      <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.contentSafetyNote}</span>
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.contentSafetyNote}</p>
     </div>
   );
@@ -108,52 +111,52 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
           <StatusBadge label={mod.status} />
         </div>
         <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>{mod.title}</h1>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Learning area: {course.learningArea}</p>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>Estimated time: {mod.estimatedTime}</p>
+        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>{c.learningArea}: {course.learningArea}</p>
+        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>{c.estimatedTime}: {mod.estimatedTime}</p>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }} aria-hidden="true"><GoldDivider width="220px" /></motion.div>
       </header>
 
-      <PageSection id="module-overview" eyebrow="Overview" heading="Public Module Overview">
+      <PageSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
         {renderParagraphs(lesson.moduleOverview.paragraphs)}
         <div style={competencyBoxStyle}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Module Competency</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.moduleCompetency}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.moduleOverview.competency}</p>
         </div>
       </PageSection>
 
-      <PageSection id="learning-objectives" eyebrow="Objectives" heading="Learning Objectives">
+      <PageSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
         <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Educational disclaimer</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.learningObjectives.earlyDisclaimer}</p>
         </div>
       </PageSection>
 
-      <PageSection id="core-media" eyebrow="Core Media" heading="Required Videos">
+      <PageSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.requiredVideosHeading}>
         {safetyNoteBox('Content and safety note before media')}
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>Two required videos introduce the programs studied in this module.</p>
-        {renderMediaItem(lesson.coreMedia.primary, lesson.coreMedia.attributionStatement)}
-        {renderMediaItem(lesson.coreMedia.secondary, lesson.coreMedia.attributionStatement)}
+        {renderMediaItem(lesson.coreMedia.primary, lesson.coreMedia.attributionStatement, c)}
+        {renderMediaItem(lesson.coreMedia.secondary, lesson.coreMedia.attributionStatement, c)}
       </PageSection>
 
-      <PageSection id="questions-to-consider" eyebrow="While You Watch" heading="Questions to Consider While Watching">
+      <PageSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading={c.watchHeading}>
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.questionsToConsider.map((q, i) => <li key={i} style={{ marginBottom: '0.85rem' }}>{q}</li>)}
         </ol>
       </PageSection>
 
-      <PageSection id="tamu-introduction" eyebrow="Introduction" heading="Original Tamu Academy Introduction">
+      <PageSection id="tamu-introduction" eyebrow={c.introEyebrow} heading={c.introHeading}>
         {renderParagraphs(lesson.tamuIntroduction.paragraphs)}
       </PageSection>
 
       {lesson.explanation.map((section) => (
         <React.Fragment key={section.sectionId}>
           {section.sectionId === 'friendship-bench-case' && safetyNoteBox('Content and safety note before case studies')}
-          {renderExplanation(section)}
+          {renderExplanation(section, c)}
         </React.Fragment>
       ))}
 
-      <PageSection id="key-concepts" eyebrow="Concepts" heading="Key Concepts and Definitions">
+      <PageSection id="key-concepts" eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
         {renderConcepts(lesson.keyConcepts)}
       </PageSection>
 
@@ -173,7 +176,7 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
         ))}
       </PageSection>
 
-      <PageSection id="interactive-scenario" eyebrow="Interactive Scenario" heading={lesson.interactiveScenario.title}>
+      <PageSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={lesson.interactiveScenario.title}>
         {safetyNoteBox('Content and safety note before interactive scenario')}
         <MhTumainiScenario courseSlug={course.slug} moduleSlug={mod.route} scenario={lesson.interactiveScenario} />
       </PageSection>
@@ -181,31 +184,31 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
       <PageSection id="care-design-lab" eyebrow={lesson.careDesignLab.eyebrow} heading={lesson.careDesignLab.title}>
         {safetyNoteBox('Content and safety note before applied activity')}
         <div aria-label="Design lab safety warning" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.35)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.07)' }}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Design lab safety warning</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.designLabSafetyWarning}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.designLabSafetyWarning}</p>
         </div>
         <MhCareDesignLab lab={lesson.careDesignLab} />
       </PageSection>
 
-      <PageSection id="private-reflection" eyebrow="Reflection" heading={lesson.privateReflection.heading}>
-        <div aria-label="Fictional or composite situation reminder" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Fictional or composite situation</span>
+      <PageSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
+        <div aria-label="{c.fictionalSituation} reminder" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' }}>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.fictionalSituation}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.fictionalSituationReminder}</p>
         </div>
         <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{lesson.privateReflection.prompt}</p>
         <textarea id="m4-refl-input" aria-label={lesson.privateReflection.prompt} className="font-body" style={reflectionTextareaStyle} value={reflectionText} onChange={(e) => setReflectionText(e.target.value)} rows={4} />
         <div aria-label="Privacy notice" style={{ ...disclaimerBoxStyle, marginTop: '1.6rem' }}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Privacy</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.privacy}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.privateReflection.privacyNotice}</p>
         </div>
-        <button type="button" onClick={clearReflection} className="font-body" style={reflectionClearButtonStyle}>Clear reflection</button>
+        <button type="button" onClick={clearReflection} className="font-body" style={reflectionClearButtonStyle}>{c.clearReflection}</button>
       </PageSection>
 
-      <PageSection id="knowledge-check" eyebrow="Knowledge Check" heading={lesson.knowledgeCheck.heading}>
+      <PageSection id="knowledge-check" eyebrow={c.knowledgeCheckEyebrow} heading={lesson.knowledgeCheck.heading}>
         <MhModule4KnowledgeCheck courseSlug={course.slug} moduleSlug={mod.route} quiz={lesson.knowledgeCheck} onGraded={handleKnowledgeCheckGraded} />
       </PageSection>
 
-      <PageSection id="completion-requirements" eyebrow="Requirements" heading={lesson.completionRequirements.heading}>
+      <PageSection id="completion-requirements" eyebrow={c.requirementsEyebrow} heading={lesson.completionRequirements.heading}>
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.completionRequirements.items.map((item, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>)}
         </ol>
@@ -217,21 +220,21 @@ export default function MhModule4Lesson({ course, module: mod, lesson }) {
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.optionalExtendedAssignment.requirements.map((item, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>)}
         </ol>
-        <div style={disclaimerBoxStyle} aria-label="Personal disclosure notice">
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Personal disclosure</span>
+        <div style={disclaimerBoxStyle} aria-label="{c.personalDisclosure} notice">
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.personalDisclosure}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
         </div>
       </PageSection>
 
-      <PageSection id="closing-section" eyebrow="Closing" heading={lesson.closing.heading}>
+      <PageSection id="closing-section" eyebrow={c.closingEyebrow} heading={lesson.closing.heading}>
         {renderParagraphs(lesson.closing.paragraphs)}
         <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Educational disclaimer</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.closing.finalDisclaimer}</p>
         </div>
       </PageSection>
 
-      <PageSection id="sources-further-learning" eyebrow="Sources" heading={lesson.sourcesFurtherLearning.heading}>
+      <PageSection id="sources-further-learning" eyebrow={c.sourcesEyebrow} heading={lesson.sourcesFurtherLearning.heading}>
         {lesson.sourcesFurtherLearning.groups.map((group) => (
           <div key={group.heading} style={{ marginBottom: '1.75rem' }}>
             <h3 className="font-heading" style={termHeading}>{group.heading}</h3>

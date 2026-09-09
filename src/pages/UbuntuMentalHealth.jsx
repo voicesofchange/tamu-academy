@@ -9,36 +9,60 @@ import StatusBadge from '@/components/page/StatusBadge';
 import ModuleCard from '@/components/courses/ModuleCard';
 import MhCourseProgress from '@/components/courses/MhCourseProgress';
 import StartCourseButton from '@/components/courses/StartCourseButton';
-import { MENTAL_HEALTH_COURSE, MENTAL_HEALTH_LEARNING_AREA } from '@/lib/mental-health-tracks';
+import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
-/**
- * Course overview page for the Mental Health pillar course, "Mental Health, Community
- * and Culture." Reuses the
- * existing Tamu Academy design system (PageLayout, PageHero, PageSection,
- * StatusBadge, ModuleCard, fonts, colors). Separate from the economics
- * course overview (UnderstandingAfricanEconomies) — uses its own metadata
- * store, MessageBuilder shell, and progress placeholder; does not import
- * from or modify the existing economics templates.
- *
- * Phase 1: course shell only. No lesson content, no enrollment button, no
- * quiz, no applied activity forms. Module cards link to their module
- * routes, which currently show an "In Development" (Module 1) or "Coming
- * Soon" (Modules 2–7) shell state.
- */
+const CONTENT = {
+  courseEyebrow: 'Course',
+  statusEyebrow: 'Status',
+  statusHeading: 'Course Status',
+  statusBody: 'This course is available. Create an account or sign in to begin learning, save your progress, and earn a certificate upon completion.',
+  beginEyebrow: 'Begin',
+  beginHeading: 'Start This Course',
+  overviewEyebrow: 'Overview',
+  overviewHeading: 'Course Description',
+  outcomesEyebrow: 'Learning Outcomes',
+  outcomesHeading: 'Competencies You Will Develop',
+  pathEyebrow: 'Learning Path',
+  pathHeading: 'The Path Through This Course',
+  pathBody: 'The course follows a seven-module linear sequence, building from relational foundations through structural analysis, comparative approaches, program evaluation, and a final applied initiative.',
+  modulesEyebrow: 'Modules',
+  modulesHeading: 'Course Modules',
+  modulesBody: 'Seven connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, interactive scenarios, and knowledge checks.',
+  milestoneEyebrow: 'Applied Milestone',
+  progressEyebrow: 'Your Progress',
+  progressHeading: 'Learner Progress',
+  viewInsights: 'View Detailed Insights',
+  safetyEyebrow: 'Safety',
+  safetyHeading: 'Educational Disclaimer',
+  safetyBody: 'This course is an educational resource, not clinical care, counseling, or a crisis intervention. It does not provide diagnosis or treatment. If you or someone you know is in distress, contact a qualified professional or emergency service in your country or institution. Personal reflections and the Community of Care Map remain private; learners may complete them privately, offline, or through the fictional alternative provided.',
+  factLabels: {
+    learningArea: 'Learning area',
+    level: 'Level',
+    format: 'Format',
+    modules: 'Modules',
+    estimatedCompletion: 'Estimated completion',
+    certificate: 'Certificate',
+    access: 'Access',
+    status: 'Status',
+  },
+};
+
 export default function UbuntuMentalHealth() {
+  const { content: c } = useTranslatedContent('mh-course-overview', CONTENT);
   const course = MENTAL_HEALTH_COURSE;
 
   const courseFacts = [
-    ['Learning area', course.learningArea],
-    ['Level', course.level],
-    ['Format', course.format],
-    ['Modules', String(course.modulesCount)],
-    ['Estimated completion', course.estimatedCompletion],
-    ['Certificate', course.certificate],
-    ['Access', course.access],
-    ['Status', course.status],
+    [c.factLabels.learningArea, course.learningArea],
+    [c.factLabels.level, course.level],
+    [c.factLabels.format, course.format],
+    [c.factLabels.modules, String(course.modulesCount)],
+    [c.factLabels.estimatedCompletion, course.estimatedCompletion],
+    [c.factLabels.certificate, course.certificate],
+    [c.factLabels.access, course.access],
+    [c.factLabels.status, course.status],
   ];
 
   return (
@@ -50,24 +74,23 @@ export default function UbuntuMentalHealth() {
         noindex
       />
 
-      <PageHero eyebrow="Course" heading={course.title} subheading={course.subtitle} />
+      <PageHero eyebrow={c.courseEyebrow} heading={course.title} subheading={course.subtitle} />
 
-      <PageSection eyebrow="Status" heading="Course Status">
+      <PageSection eyebrow={c.statusEyebrow} heading={c.statusHeading}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '1.25rem' }}>
           <StatusBadge label={course.status} />
           <StatusBadge label={course.access} />
         </div>
         <p className="font-body" style={{ ...bodyText, margin: 0, maxWidth: '640px' }}>
-          This course is available. Create an account or sign in to begin learning, save your progress,
-          and earn a certificate upon completion.
+          {c.statusBody}
         </p>
       </PageSection>
 
-      <PageSection eyebrow="Begin" heading="Start This Course">
+      <PageSection eyebrow={c.beginEyebrow} heading={c.beginHeading}>
         <StartCourseButton courseSlug={course.slug} />
       </PageSection>
 
-      <PageSection eyebrow="Overview" heading="Course Description">
+      <PageSection eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
         {course.descriptionLong.map((para, i) => (
           <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
             {para}
@@ -83,7 +106,7 @@ export default function UbuntuMentalHealth() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Learning Outcomes" heading="Competencies You Will Develop">
+      <PageSection eyebrow={c.outcomesEyebrow} heading={c.outcomesHeading}>
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
           {course.learningOutcomes.map((outcome, i) => (
             <li key={i} style={{ marginBottom: '0.85rem' }}>{outcome}</li>
@@ -91,9 +114,9 @@ export default function UbuntuMentalHealth() {
         </ol>
       </PageSection>
 
-      <PageSection eyebrow="Learning Path" heading="The Path Through This Course">
+      <PageSection eyebrow={c.pathEyebrow} heading={c.pathHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          The course follows a seven-module linear sequence, building from relational foundations through structural analysis, comparative approaches, program evaluation, and a final applied initiative.
+          {c.pathBody}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem 0.5rem' }}>
           {course.learningPath.map((stage, i) => (
@@ -121,9 +144,9 @@ export default function UbuntuMentalHealth() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Modules" heading="Course Modules">
+      <PageSection eyebrow={c.modulesEyebrow} heading={c.modulesHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Seven connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, interactive scenarios, and knowledge checks.
+          {c.modulesBody}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((mod) => (
@@ -136,7 +159,7 @@ export default function UbuntuMentalHealth() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Applied Milestone" heading={course.milestone.title}>
+      <PageSection eyebrow={c.milestoneEyebrow} heading={course.milestone.title}>
         <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
           <div style={{ marginBottom: '0.85rem' }}>
             <StatusBadge label={course.milestone.status} />
@@ -147,8 +170,7 @@ export default function UbuntuMentalHealth() {
         </div>
       </PageSection>
 
-      {/* Learner progress — shows real data when available, placeholder otherwise */}
-      <PageSection eyebrow="Your Progress" heading="Learner Progress">
+      <PageSection eyebrow={c.progressEyebrow} heading={c.progressHeading}>
         <div style={{ marginBottom: '1.5rem' }}>
           <Link to={`/courses/${course.slug}/insights`} className="font-body" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
@@ -156,17 +178,16 @@ export default function UbuntuMentalHealth() {
             fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(212,161,42,0.35)',
             borderRadius: '2px', padding: '0.55rem 1.2rem',
           }}>
-            View Detailed Insights &rarr;
+            {c.viewInsights} &rarr;
           </Link>
         </div>
         <MhCourseProgress courseSlug={course.slug} />
       </PageSection>
 
-      {/* Concise educational disclaimer (per requirement #2) */}
-      <PageSection eyebrow="Safety" heading="Educational Disclaimer">
+      <PageSection eyebrow={c.safetyEyebrow} heading={c.safetyHeading}>
         <div style={{ padding: '1.75rem 2rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic' }}>
-            This course is an educational resource, not clinical care, counseling, or a crisis intervention. It does not provide diagnosis or treatment. If you or someone you know is in distress, contact a qualified professional or emergency service in your country or institution. Personal reflections and the Community of Care Map remain private; learners may complete them privately, offline, or through the fictional alternative provided.
+            {c.safetyBody}
           </p>
         </div>
       </PageSection>

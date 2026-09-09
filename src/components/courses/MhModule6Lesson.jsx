@@ -12,6 +12,8 @@ import MhModule6KnowledgeCheck from '@/components/courses/MhModule6KnowledgeChec
 import MhModule6Progress from '@/components/courses/MhModule6Progress';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -35,9 +37,9 @@ function renderNumberedItems(items) {
   return <ol className="font-body" style={{ ...bodyText, margin: '0 0 1.15rem 1.4rem' }}>{items.map((it, i) => <li key={i} style={{ marginBottom: '0.6rem' }}>{it}</li>)}</ol>;
 }
 
-function renderExplanation(section) {
+function renderExplanation(section, c) {
   return (
-    <PageSection key={section.sectionId} id={section.sectionId} eyebrow="Explanation" heading={section.heading}>
+    <PageSection key={section.sectionId} id={section.sectionId} eyebrow={c.explanationEyebrow} heading={section.heading}>
       {section.paragraphs && renderParagraphs(section.paragraphs)}
       {section.numberedItems && renderNumberedItems(section.numberedItems)}
       {section.subBlocks && section.subBlocks.map((block, bi) => (
@@ -117,6 +119,7 @@ function renderOptionalMedia(item, attributionStatement) {
 }
 
 export default function MhModule6Lesson({ course, module: mod, lesson }) {
+  const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
 

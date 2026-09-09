@@ -13,9 +13,9 @@ import MhKnowledgeCheck from '@/components/courses/MhKnowledgeCheck';
 import MhModuleCompletion from '@/components/courses/MhModuleCompletion';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-
 const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
 const termHeading = { color: '#F5EFE0', fontSize: 'clamp(1.05rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.55rem' };
 
@@ -35,13 +35,40 @@ const competencyBoxStyle = {
   marginTop: '1.5rem',
 };
 
-const unavailableBoxStyle = {
-  padding: '1.75rem 2rem',
-  border: '1px dashed rgba(212,161,42,0.28)',
-  borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
-  marginTop: '2.5rem',
-  marginBottom: '2.5rem',
+const CONTENT = {
+  learningArea: 'Learning area',
+  estimatedTime: 'Estimated time',
+  overviewEyebrow: 'Overview',
+  overviewHeading: 'Public Module Overview',
+  moduleCompetency: 'Module Competency',
+  objectivesEyebrow: 'Objectives',
+  objectivesHeading: 'Learning Objectives',
+  disclaimerLabel: 'Educational disclaimer',
+  coreMediaEyebrow: 'Core Media',
+  coreMediaHeading: 'Primary Video',
+  watchEyebrow: 'While You Watch',
+  watchHeading: 'Questions to Consider While Watching',
+  watchIntro: 'Keep these questions in mind as you watch the recorded lesson.',
+  introEyebrow: 'Introduction',
+  introHeading: 'Original Tamu Academy Introduction',
+  conceptsEyebrow: 'Concepts',
+  conceptsHeading: 'Key Concepts and Definitions',
+  explanationEyebrow: 'Explanation',
+  takeawayEyebrow: 'Takeaway',
+  takeawayHeading: 'Central Takeaway',
+  caseStudyEyebrow: 'Case Study',
+  applyEyebrow: 'Apply',
+  applyHeading: 'Interactive Scenario: Care Without Control',
+  activityEyebrow: 'Applied Activity',
+  reflectEyebrow: 'Reflect',
+  assessEyebrow: 'Assess',
+  sourcesEyebrow: 'Sources',
+  sourcesHeading: 'Sources and Further Learning',
+  supportingReadingLabel: 'Core supporting reading',
+  publisherPrefix: 'Publisher',
+  openReading: 'Open reading',
+  openSource: 'Open source',
+  evidenceLabelPrefix: 'Evidence label',
 };
 
 function renderParagraphs(paragraphs) {
@@ -66,10 +93,10 @@ function renderObjectives(items) {
 function renderConcepts(concepts) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-      {concepts.map((c) => (
-        <div key={c.term}>
-          <h3 className="font-heading" style={termHeading}>{c.term}</h3>
-          <p className="font-body" style={{ ...bodyText, margin: 0 }}>{c.definition}</p>
+      {concepts.map((concept) => (
+        <div key={concept.term}>
+          <h3 className="font-heading" style={termHeading}>{concept.term}</h3>
+          <p className="font-body" style={{ ...bodyText, margin: 0 }}>{concept.definition}</p>
         </div>
       ))}
     </div>
@@ -89,7 +116,7 @@ function renderLabeledItems(items) {
   );
 }
 
-function renderSources(sources) {
+function renderSources(sources, c) {
   return (
     <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
       {sources.map((s, i) => (
@@ -102,7 +129,7 @@ function renderSources(sources) {
               rel="noopener noreferrer"
               style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
             >
-              Open source
+              {c.openSource}
             </a>
           </p>
           {s.note && (
@@ -116,10 +143,10 @@ function renderSources(sources) {
   );
 }
 
-function SupportingReadingBlock({ reading }) {
+function SupportingReadingBlock({ reading, c }) {
   return (
     <div
-      aria-label={`Supporting reading: ${reading.title}`}
+      aria-label={`${c.supportingReadingLabel}: ${reading.title}`}
       style={{
         marginTop: '2rem',
         padding: '1.4rem 1.6rem',
@@ -129,13 +156,13 @@ function SupportingReadingBlock({ reading }) {
       }}
     >
       <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
-        Core supporting reading
+        {c.supportingReadingLabel}
       </span>
       <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.35rem' }}>
         <strong style={{ fontWeight: 500, color: '#F5EFE0' }}>{reading.title}</strong>
       </p>
       <p className="font-body" style={{ ...bodyText, margin: '0 0 0.5rem', fontSize: '0.9rem' }}>
-        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>Publisher: </strong>
+        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.publisherPrefix}: </strong>
         {reading.publisher}
       </p>
       <p className="font-body" style={{ ...bodyText, margin: '0 0 0.5rem', fontSize: '0.9rem' }}>
@@ -145,49 +172,18 @@ function SupportingReadingBlock({ reading }) {
           rel="noopener noreferrer"
           style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
         >
-          Open reading
+          {c.openReading}
         </a>
       </p>
       <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)', margin: 0 }}>
-        Evidence label: {reading.evidenceLabel}
+        {c.evidenceLabelPrefix}: {reading.evidenceLabel}
       </p>
     </div>
   );
 }
 
-/**
- * MhModuleLesson — Phase 1 Module 1 content stage renderer.
- *
- * Receives the structured Module 1 lesson object returned by
- * `getMentalHealthModule` (admin-only) and renders it through the
- * existing Tamu Academy design system. Section identifiers are applied
- * as DOM `id` attributes on each PageSection so anchor links and the
- * server-side section allow-list can stay coherent.
- *
- * SCOPE:
- *   This renderer displays ONLY the educational lesson material
- *   described above — module overview + competency, learning
- *   objectives + early disclaimer, primary video + attribution + UP
- *   supporting reading + evidence label, questions to consider, Tamu
- *   Academy introduction, six key concepts, five explanation sections,
- *   central takeaway + final disclaimer, "Care Without Control" case
- *   study, and sources.
- *
- * NOT RENDERED (deferred to later stages): the interactive scenario,
- * Community of Care Map activity, private reflection, knowledge check,
- * quiz grading, completion requirements, closing text, and the
- * optional extended academic assignment. Instead, a single clear
- * unavailable notice is placed between the case study and the sources
- * section listing the components that are being prepared.
- *
- * PRIVACY: This component contains no form, no localStorage access,
- * no analytics capture, and no `updateMentalHealthProgress` call. It
- * does not write any learner record. Opening this page does not imply
- * the learner watched the video, completed the lesson, or made any
- * acknowledgement. The instructor role is unchanged and remains
- * admin-only through the getMentalHealthModule role gate.
- */
 export default function MhModuleLesson({ course, module: mod, lesson }) {
+  const { content: c } = useTranslatedContent('mh-module-lesson', CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
 
@@ -208,24 +204,20 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         moduleLabel={mod.number}
       />
 
-      {/* Module number, title, learning area, status, and estimated time */}
       <header style={{ marginBottom: '3rem' }}>
         <ModuleEmblem />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
           <StatusBadge label={mod.number} />
           <StatusBadge label={mod.status} />
         </div>
-        <h1
-          className="font-heading"
-          style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
-        >
+        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
           {mod.title}
         </h1>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
-          Learning area: {course.learningArea}
+          {c.learningArea}: {course.learningArea}
         </p>
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
-          Estimated time: {mod.estimatedTime}
+          {c.estimatedTime}: {mod.estimatedTime}
         </p>
         <motion.div
           initial={{ opacity: 0 }}
@@ -237,12 +229,11 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         </motion.div>
       </header>
 
-      {/* 1. module-overview (public module overview + competency) */}
-      <PageSection id="module-overview" eyebrow="Overview" heading="Public Module Overview">
+      <PageSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
         {renderParagraphs(lesson.moduleOverview.paragraphs)}
         <div style={competencyBoxStyle}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-            Module Competency
+            {c.moduleCompetency}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {lesson.moduleOverview.competency}
@@ -250,12 +241,11 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         </div>
       </PageSection>
 
-      {/* 2. learning-objectives (five learning objectives + early disclaimer) */}
-      <PageSection id="learning-objectives" eyebrow="Objectives" heading="Learning Objectives">
+      <PageSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
-        <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label="Required educational disclaimer">
+        <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label={c.disclaimerLabel}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-            Educational disclaimer
+            {c.disclaimerLabel}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {lesson.learningObjectives.earlyDisclaimer}
@@ -263,8 +253,7 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         </div>
       </PageSection>
 
-      {/* 3. core-media (primary video + attribution + fallback link + UP supporting reading + evidence label) */}
-      <PageSection id="core-media" eyebrow="Core Media" heading="Primary Video">
+      <PageSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.coreMediaHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>
           {lesson.coreMedia.primary.roleInModule}
         </p>
@@ -283,35 +272,30 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
           }}
         />
         {lesson.coreMedia.supportingReadings.map((reading) => (
-          <SupportingReadingBlock key={reading.url} reading={reading} />
+          <SupportingReadingBlock key={reading.url} reading={reading} c={c} />
         ))}
       </PageSection>
 
-      {/* 4. questions-to-consider */}
-      <PageSection id="questions-to-consider" eyebrow="While You Watch" heading="Questions to Consider While Watching">
+      <PageSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading={c.watchHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)' }}>
-          Keep these questions in mind as you watch the recorded lesson.
+          {c.watchIntro}
         </p>
         {renderObjectives(lesson.questionsToConsider)}
       </PageSection>
 
-      {/* 5. tamu-introduction */}
-      <PageSection id="tamu-introduction" eyebrow="Introduction" heading="Original Tamu Academy Introduction">
+      <PageSection id="tamu-introduction" eyebrow={c.introEyebrow} heading={c.introHeading}>
         {renderParagraphs(lesson.tamuIntroduction.paragraphs)}
       </PageSection>
 
-      {/* 6. key-concepts */}
-      <PageSection id="key-concepts" eyebrow="Concepts" heading="Key Concepts and Definitions">
+      <PageSection id="key-concepts" eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
         {renderConcepts(lesson.keyConcepts)}
       </PageSection>
 
-      {/* 7. relational-personhood */}
-      <PageSection id="relational-personhood" eyebrow="Explanation" heading={lesson.explanation.relationalPersonhood.heading}>
+      <PageSection id="relational-personhood" eyebrow={c.explanationEyebrow} heading={lesson.explanation.relationalPersonhood.heading}>
         {renderParagraphs(lesson.explanation.relationalPersonhood.paragraphs)}
       </PageSection>
 
-      {/* 8. ubuntu-and-mental-health */}
-      <PageSection id="ubuntu-and-mental-health" eyebrow="Explanation" heading={lesson.explanation.ubuntuAndMentalHealth.heading}>
+      <PageSection id="ubuntu-and-mental-health" eyebrow={c.explanationEyebrow} heading={lesson.explanation.ubuntuAndMentalHealth.heading}>
         {renderParagraphs(lesson.explanation.ubuntuAndMentalHealth.paragraphs)}
         <ol className="font-body" style={{ ...bodyText, margin: '0 0 1.15rem 1.4rem' }}>
           {lesson.explanation.ubuntuAndMentalHealth.numberedItems.map((q, i) => (
@@ -321,27 +305,23 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         {renderParagraphs(lesson.explanation.ubuntuAndMentalHealth.trailingParagraphs)}
       </PageSection>
 
-      {/* 9. different-emphases */}
-      <PageSection id="different-emphases" eyebrow="Explanation" heading={lesson.explanation.differentEmphases.heading}>
+      <PageSection id="different-emphases" eyebrow={c.explanationEyebrow} heading={lesson.explanation.differentEmphases.heading}>
         {renderParagraphs(lesson.explanation.differentEmphases.paragraphs)}
       </PageSection>
 
-      {/* 10. community-protection */}
-      <PageSection id="community-protection" eyebrow="Explanation" heading={lesson.explanation.communityProtection.heading}>
+      <PageSection id="community-protection" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityProtection.heading}>
         {renderLabeledItems(lesson.explanation.communityProtection.items)}
       </PageSection>
 
-      {/* 11. community-strain */}
-      <PageSection id="community-strain" eyebrow="Explanation" heading={lesson.explanation.communityStrain.heading}>
+      <PageSection id="community-strain" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityStrain.heading}>
         {renderLabeledItems(lesson.explanation.communityStrain.items)}
       </PageSection>
 
-      {/* 12. central-takeaway (paragraph + final educational disclaimer) */}
-      <PageSection id="central-takeaway" eyebrow="Takeaway" heading="Central Takeaway">
+      <PageSection id="central-takeaway" eyebrow={c.takeawayEyebrow} heading={c.takeawayHeading}>
         {renderParagraphs(lesson.centralTakeaway.paragraphs)}
-        <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label="Required educational disclaimer">
+        <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label={c.disclaimerLabel}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-            Educational disclaimer
+            {c.disclaimerLabel}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {lesson.centralTakeaway.finalDisclaimer}
@@ -349,13 +329,11 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         </div>
       </PageSection>
 
-      {/* 13. case-study */}
-      <PageSection id="case-study" eyebrow="Case Study" heading={lesson.caseStudy.heading}>
+      <PageSection id="case-study" eyebrow={c.caseStudyEyebrow} heading={lesson.caseStudy.heading}>
         {renderParagraphs(lesson.caseStudy.paragraphs)}
       </PageSection>
 
-      {/* 14. interactive-scenario (stage 2) */}
-      <PageSection id="interactive-scenario" eyebrow="Apply" heading="Interactive Scenario: Care Without Control">
+      <PageSection id="interactive-scenario" eyebrow={c.applyEyebrow} heading={c.applyHeading}>
         <MhInteractiveScenario
           courseSlug="mental-health-community-and-culture"
           moduleSlug="module-1"
@@ -363,22 +341,15 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         />
       </PageSection>
 
-      {/* 15. community-of-care-map (stage 2 — fully browser-local) */}
-      <PageSection id="community-of-care-map" eyebrow="Applied Activity" heading={lesson.communityOfCareMap.heading}>
+      <PageSection id="community-of-care-map" eyebrow={c.activityEyebrow} heading={lesson.communityOfCareMap.heading}>
         <MhCommunityCareMap config={lesson.communityOfCareMap} />
       </PageSection>
 
-      {/* 16. private-reflection (stage 2 — display only, no input fields) */}
-      <PageSection id="private-reflection" eyebrow="Reflect" heading={lesson.privateReflection.heading}>
+      <PageSection id="private-reflection" eyebrow={c.reflectEyebrow} heading={lesson.privateReflection.heading}>
         <MhPrivateReflection config={lesson.privateReflection} />
       </PageSection>
 
-      {/* 17. knowledge-check (this stage — protected server-side
-          grading via submitMentalHealthQuiz; exactly one QuizAttempt
-          is created per valid submission, learner_id is set on the
-          server from base44.auth.me(), and no course/module completion
-          fields are written during this stage) */}
-      <PageSection id="knowledge-check" eyebrow="Assess" heading={lesson.knowledgeCheck.heading}>
+      <PageSection id="knowledge-check" eyebrow={c.assessEyebrow} heading={lesson.knowledgeCheck.heading}>
         <MhKnowledgeCheck
           courseSlug="mental-health-community-and-culture"
           moduleSlug="module-1"
@@ -386,7 +357,6 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         />
       </PageSection>
 
-      {/* 18. closing-section + completion-requirements (MhModuleCompletion renders both sections) */}
       <PageSection id="closing-section">
         <MhModuleCompletion
           courseSlug="mental-health-community-and-culture"
@@ -394,12 +364,10 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         />
       </PageSection>
 
-      {/* 14. sources */}
-      <PageSection id="sources" eyebrow="Sources" heading="Sources and Further Learning">
-        {renderSources(lesson.sources)}
+      <PageSection id="sources" eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
+        {renderSources(lesson.sources, c)}
       </PageSection>
 
-      {/* Navigation position within the seven-module course */}
       <GoldDivider width="260px" margin="0 0 2rem" />
       <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
     </PageLayout>

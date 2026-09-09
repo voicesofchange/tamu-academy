@@ -1,19 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * ResourceCard — renders a single curated external learning resource.
- *
- * Accessibility:
- *   - External link uses target="_blank" and rel="noopener noreferrer"
- *   - Link text is descriptive ("Explore the resource: [Title]")
- *   - Visually hidden text announces the link opens in a new tab
- *   - External link icon provides a visual indicator
- *   - Card supports keyboard navigation (link is focusable)
- *   - Visible focus ring on the link
- */
+const CONTENT = {
+  exploreResource: 'Explore the resource',
+  opensInNewTab: '(opens in a new tab)',
+};
+
 export default function ResourceCard({ resource, index = 0 }) {
+  const { content: c } = useTranslatedContent('resource-card', CONTENT);
   const { title, organization, description, type, access, url } = resource;
 
   return (
@@ -32,7 +28,6 @@ export default function ResourceCard({ resource, index = 0 }) {
       }}
       className="tamu-card"
     >
-      {/* Title */}
       <h4
         className="font-heading"
         style={{
@@ -46,7 +41,6 @@ export default function ResourceCard({ resource, index = 0 }) {
         {title}
       </h4>
 
-      {/* Organization */}
       <span
         className="font-body"
         style={{
@@ -62,7 +56,6 @@ export default function ResourceCard({ resource, index = 0 }) {
         {organization}
       </span>
 
-      {/* Description */}
       <p
         className="font-body"
         style={{
@@ -77,7 +70,6 @@ export default function ResourceCard({ resource, index = 0 }) {
         {description}
       </p>
 
-      {/* Meta: type + access */}
       <div
         style={{
           display: 'flex',
@@ -112,12 +104,11 @@ export default function ResourceCard({ resource, index = 0 }) {
         </span>
       </div>
 
-      {/* External link */}
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Explore the resource: ${title} by ${organization} (opens in a new tab)`}
+        aria-label={`${c.exploreResource}: ${title} by ${organization} ${c.opensInNewTab}`}
         className="font-body tamu-resource-link"
         style={{
           display: 'inline-flex',
@@ -134,10 +125,10 @@ export default function ResourceCard({ resource, index = 0 }) {
           width: 'fit-content',
         }}
       >
-        Explore the resource
+        {c.exploreResource}
         <ExternalLink size={13} strokeWidth={1.5} aria-hidden="true" />
         <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
-          (opens in a new tab)
+          {c.opensInNewTab}
         </span>
       </a>
 

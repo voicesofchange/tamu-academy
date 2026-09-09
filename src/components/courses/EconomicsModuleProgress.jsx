@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
   color: 'rgba(245,239,224,0.78)',
@@ -24,13 +25,13 @@ const ACTION_BY_KEY = {
 
 const MODE_OPTIONS_BY_KEY = {
   reflection_acknowledged: [
-    { value: 'private', label: 'Private' },
-    { value: 'fictional', label: 'Fictional alternative' },
+    { value: 'private' },
+    { value: 'fictional' },
   ],
   activity_acknowledged: [
-    { value: 'browser_private', label: 'In-browser (private)' },
-    { value: 'offline', label: 'Offline' },
-    { value: 'fictional', label: 'Fictional alternative' },
+    { value: 'browser_private' },
+    { value: 'offline' },
+    { value: 'fictional' },
   ],
 };
 
@@ -79,35 +80,35 @@ const modeSelectStyle = {
   fontFamily: 'inherit',
 };
 
-/**
- * EconomicsModuleProgress — progress tracking UI for an Economics module.
- *
- * Mirrors the Mental Health module progress components but uses the
- * Economics uniform five-key completion model.
- *
- * BEHAVIOR:
- *   - On mount (and when refreshTrigger changes), calls getEconomicsProgress.
- *   - When eligibleToSave is true: shows the five requirements with
- *     completion status, mark-complete controls for the four
- *     self-attestable requirements, and a final module completion button
- *     disabled until all five are complete.
- *   - The knowledge_check_passed key is server-verified — it is updated
- *     only by checkEconomicsKnowledgeCheck, triggered via the
- *     refreshTrigger prop after the knowledge check is passed.
- *   - When eligibleToSave is false (admin preview / unpublished): shows
- *     only the unavailable message. No mutation is called.
- *
- * PRIVACY:
- *   - No reflection writing, activity responses, or knowledge check
- *     selections are sent to the backend. Only acknowledgment actions.
- *   - No local storage, session storage, cookies, or analytics.
- */
+const CONTENT = {
+  privacyNote: 'No personal reflections or activity responses are stored in the platform. Mark each requirement complete as you finish it; the knowledge check is verified by the server.',
+  loading: 'Loading...',
+  saving: 'Saving…',
+  markComplete: 'Mark complete',
+  completed: 'Completed',
+  verifiedByKnowledgeCheck: 'Verified by knowledge check',
+  passed: 'Passed',
+  completeModule: 'Complete module',
+  moduleCompleteMsg: 'Module complete. Your progress has been saved.',
+  errSave: 'We could not save your progress right now. Please try again.',
+  errMissing: 'Some requirements are not yet complete.',
+  errComplete: 'We could not complete this module right now. Please try again.',
+  trackingUnavailable: 'Progress tracking is not yet available for this module. Once the module is published and you are enrolled, your completion status will appear here.',
+  modeLabels: {
+    private: 'Private',
+    fictional: 'Fictional alternative',
+    browser_private: 'In-browser (private)',
+    offline: 'Offline',
+  },
+};
+
 export default function EconomicsModuleProgress({
   courseSlug,
   moduleRoute,
   completionRequirements,
   refreshTrigger = 0,
 }) {
+  const { content: c } = useTranslatedContent('econ-module-progress', CONTENT);
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [savingKey, setSavingKey] = useState(null);
@@ -160,7 +161,7 @@ export default function EconomicsModuleProgress({
         );
       }
     } catch (err) {
-      setStatusMessage({ type: 'error', text: 'We could not save your progress right now. Please try again.' });
+      setStatusMessage({ type: 'error', text: c.errSave });
     } finally {
       setSavingKey(null);
     }
@@ -181,12 +182,12 @@ export default function EconomicsModuleProgress({
         setProgress((prev) =>
           prev ? { ...prev, moduleCompleted: true, completedAt: data.completedAt } : prev,
         );
-        setStatusMessage({ type: 'success', text: 'Module complete. Your progress has been saved.' });
+        setStatusMessage({ type: 'success', text: c.moduleCompleteMsg });
       } else if (data && data.missing) {
-        setStatusMessage({ type: 'error', text: 'Some requirements are not yet complete.' });
+        setStatusMessage({ type: 'error', text: c.errMissing });
       }
     } catch (err) {
-      setStatusMessage({ type: 'error', text: 'We could not complete this module right now. Please try again.' });
+      setStatusMessage({ type: 'error', text: c.errComplete });
     } finally {
       setCompletionPending(false);
     }
@@ -204,12 +205,12 @@ export default function EconomicsModuleProgress({
           marginBottom: '1.25rem',
         }}
       >
-        No personal reflections or activity responses are stored in the platform. Mark each requirement complete as you finish it; the knowledge check is verified by the server.
+        {c.privacyNote}
       </p>
 
       {loading ? (
         <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)' }}>
-          Loading...
+          {c.loading}
         </p>
       ) : progress && progress.eligibleToSave ? (
         <>
@@ -252,10 +253,10 @@ export default function EconomicsModuleProgress({
                         onChange={(e) => setModes((prev) => ({ ...prev, [key]: e.target.value }))}
                         disabled={savingKey === key}
                         style={modeSelectStyle}
-                        aria-label={`Completion mode for: ${item}`}
+                        aria-label={`${c.markComplete}: ${item}`}
                       >
                         {modeOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                          <option key={opt.value} value={opt.value}>{c.modeLabels[opt.value] || opt.value}</option>
                         ))}
                       </select>
                       <button
@@ -269,7 +270,7 @@ export default function EconomicsModuleProgress({
                           opacity: savingKey === key ? 0.6 : 1,
                         }}
                       >
-                        {savingKey === key ? 'Saving…' : 'Mark complete'}
+                        {savingKey === key ? c.saving : c.markComplete}
                       </button>
                     </div>
                   )}
@@ -285,7 +286,7 @@ export default function EconomicsModuleProgress({
                         opacity: savingKey === key ? 0.6 : 1,
                       }}
                     >
-                      {savingKey === key ? 'Saving…' : 'Mark complete'}
+                      {savingKey === key ? c.saving : c.markComplete}
                     </button>
                   )}
                   {isSelfAttested && isCompleted && (
@@ -300,7 +301,7 @@ export default function EconomicsModuleProgress({
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      Completed
+                      {c.completed}
                     </span>
                   )}
                   {isKnowledgeCheck && !isCompleted && (
@@ -313,7 +314,7 @@ export default function EconomicsModuleProgress({
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      Verified by knowledge check
+                      {c.verifiedByKnowledgeCheck}
                     </span>
                   )}
                   {isKnowledgeCheck && isCompleted && (
@@ -328,7 +329,7 @@ export default function EconomicsModuleProgress({
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      Passed
+                      {c.passed}
                     </span>
                   )}
                 </div>
@@ -358,7 +359,7 @@ export default function EconomicsModuleProgress({
                     : 'not-allowed',
               }}
             >
-              {completionPending ? 'Saving…' : 'Complete module'}
+              {completionPending ? c.saving : c.completeModule}
             </button>
           </div>
 
@@ -388,7 +389,7 @@ export default function EconomicsModuleProgress({
                 fontStyle: 'italic',
               }}
             >
-              Module complete. Your progress has been saved.
+              {c.moduleCompleteMsg}
             </p>
           )}
         </>
@@ -411,7 +412,7 @@ export default function EconomicsModuleProgress({
               fontSize: '0.88rem',
             }}
           >
-            Progress tracking is not yet available for this module. Once the module is published and you are enrolled, your completion status will appear here.
+            {c.trackingUnavailable}
           </p>
         </div>
       )}

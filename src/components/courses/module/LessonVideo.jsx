@@ -1,14 +1,17 @@
 import React from 'react';
 import VideoSourceCard from '@/components/courses/module/VideoSourceCard';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * A single recorded lesson video block for the Tamu Academy expanded lesson
- * format: responsive 16:9 YouTube embed via the official YouTube player,
- * a direct YouTube link placed beneath the player, and the standardized
- * "About this source" attribution card. Uses the official YouTube player
- * only — no downloading, editing, copying, or reuploading.
- */
+const CONTENT = {
+  comingSoon: 'Recorded lesson coming soon.',
+  lessonVideo: 'Lesson video',
+  directLink: 'Direct link',
+  openOnYouTube: 'Open on YouTube',
+};
+
 export default function LessonVideo({ video, fallbackText }) {
+  const { content: c } = useTranslatedContent('lesson-video', CONTENT);
+
   if (!video) {
     return (
       <div
@@ -20,13 +23,13 @@ export default function LessonVideo({ video, fallbackText }) {
         }}
       >
         <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', margin: 0 }}>
-          {fallbackText || 'Recorded lesson coming soon.'}
+          {fallbackText || c.comingSoon}
         </p>
       </div>
     );
   }
 
-  const title = (video.source && video.source.title) || 'Lesson video';
+  const title = (video.source && video.source.title) || c.lessonVideo;
 
   return (
     <div style={{ marginBottom: '2rem' }}>
@@ -60,14 +63,14 @@ export default function LessonVideo({ video, fallbackText }) {
           marginBottom: 0,
         }}
       >
-        Direct link:{' '}
+        {c.directLink}:{' '}
         <a
           href={video.watchUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
         >
-          Open on YouTube
+          {c.openOnYouTube}
         </a>
       </p>
       <VideoSourceCard source={video.source} attributionLabel={video.attributionLabel} />

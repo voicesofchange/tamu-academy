@@ -1,16 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const CONNECTIONS = [
-  { subject: 'Technology', effect: 'affects culture and human relationships.' },
-  { subject: 'Economics', effect: 'affects opportunity.' },
-  { subject: 'Public policy', effect: 'affects daily life.' },
-  { subject: 'Climate change', effect: 'affects health, food, migration, and livelihoods.' },
-  { subject: 'Communication', effect: 'affects whether differences produce cooperation or division.' },
-];
+const CONTENT = {
+  purposeEyebrow: 'Why Tamu Academy Exists',
+  purposeHeading: 'Serious Learning Should Be More Accessible.',
+  purposeBody: 'Important conversations about artificial intelligence, public policy, economics, climate change, culture, communication, and global affairs are often concentrated within universities, professional institutions, and exclusive networks. Tamu Academy is being developed to make thoughtful interdisciplinary learning more accessible to young people and emerging leaders from different backgrounds.',
+  purposeLink: 'Read Why Tamu Academy Exists',
+  interEyebrow: 'Interdisciplinary Learning',
+  interHeading: 'The Questions Shaping Our Future Do Not Belong to One Subject.',
+  connections: [
+    { subject: 'Technology', effect: 'affects culture and human relationships.' },
+    { subject: 'Economics', effect: 'affects opportunity.' },
+    { subject: 'Public policy', effect: 'affects daily life.' },
+    { subject: 'Climate change', effect: 'affects health, food, migration, and livelihoods.' },
+    { subject: 'Communication', effect: 'affects whether differences produce cooperation or division.' },
+  ],
+  interClosing: 'Tamu Academy helps learners examine these connections rather than treating each issue in isolation.',
+};
 
 export default function HomePurpose() {
+  const { content: c } = useTranslatedContent('home-purpose', CONTENT);
+
   return (
     <>
       {/* PURPOSE */}
@@ -30,10 +42,10 @@ export default function HomePurpose() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
           <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
-            Why Tamu Academy Exists
+            {c.purposeEyebrow}
           </p>
           <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.5rem', maxWidth: '700px' }}>
-            Serious Learning Should Be More Accessible.
+            {c.purposeHeading}
           </h2>
         </motion.div>
 
@@ -45,7 +57,7 @@ export default function HomePurpose() {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.78)', fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.85, fontWeight: 300, maxWidth: '700px', marginBottom: '2rem' }}
         >
-          Important conversations about artificial intelligence, public policy, economics, climate change, culture, communication, and global affairs are often concentrated within universities, professional institutions, and exclusive networks. Tamu Academy is being developed to make thoughtful interdisciplinary learning more accessible to young people and emerging leaders from different backgrounds.
+          {c.purposeBody}
         </motion.p>
 
         <motion.div
@@ -59,7 +71,7 @@ export default function HomePurpose() {
             className="font-body"
             style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}
           >
-            Read Why Tamu Academy Exists →
+            {c.purposeLink} →
           </Link>
         </motion.div>
       </section>
@@ -81,15 +93,15 @@ export default function HomePurpose() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
           >
             <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
-              Interdisciplinary Learning
+              {c.interEyebrow}
             </p>
             <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 2.5rem', maxWidth: '700px' }}>
-              The Questions Shaping Our Future Do Not Belong to One Subject.
+              {c.interHeading}
             </h2>
           </motion.div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem', maxWidth: '680px' }}>
-            {CONNECTIONS.map(({ subject, effect }, i) => (
+            {c.connections.map(({ subject, effect }, i) => (
               <motion.div
                 key={subject}
                 initial={{ opacity: 0, x: -12 }}
@@ -112,7 +124,7 @@ export default function HomePurpose() {
             className="font-body"
             style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '600px', fontStyle: 'italic' }}
           >
-            Tamu Academy helps learners examine these connections rather than treating each issue in isolation.
+            {c.interClosing}
           </motion.p>
         </div>
       </section>
