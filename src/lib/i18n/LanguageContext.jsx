@@ -17,6 +17,37 @@ const DICTIONARIES = { en, sw, es };
 const STORAGE_KEY = 'tamu_language';
 const DEFAULT_LANGUAGE = 'en';
 
+/**
+ * Detect the user's preferred language from browser settings.
+ * Checks navigator.languages and navigator.language, matching against
+ * our supported language codes (en, sw, es). Returns null if no match.
+ */
+function detectBrowserLanguage() {
+  try {
+    const candidates = [];
+    if (Array.isArray(navigator.languages)) {
+      candidates.push(...navigator.languages);
+    }
+    if (navigator.language) {
+      candidates.push(navigator.language);
+    }
+    for (const lang of candidates) {
+      if (!lang) continue;
+      const lower = lang.toLowerCase();
+      // Exact match (e.g. 'sw', 'es', 'en')
+      const primary = lower.split('-')[0];
+      if (DICTIONARIES[primary]) return primary;
+      // Swahili regional variants: sw-KE, sw-TZ
+      if (primary === 'sw') return 'sw';
+      // Spanish regional variants: es-ES, es-MX, es-AR, etc.
+      if (primary === 'es') return 'es';
+    }
+  } catch {
+    // navigator may be unavailable in some environments
+  }
+  return null;
+}
+
 export const LanguageContext = createContext({
   language: DEFAULT_LANGUAGE,
   setLanguage: () => {},
@@ -35,15 +66,26 @@ function resolveKey(dict, key) {
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(DEFAULT_LANGUAGE);
 
-  // Load persisted language on mount
+  // Load persisted language on mount, or detect from browser on first visit
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved && DICTIONARIES[saved]) {
         setLanguageState(saved);
+        return;
       }
     } catch {
-      // localStorage may be unavailable (private mode) — keep default
+      // localStorage may be unavailable (private mode) — fall through to detection
+    }
+    // No saved preference — detect from browser settings
+    const detected = detectBrowserLanguage();
+    if (detected && detected !== DEFAULT_LANGUAGE) {
+      setLanguageState(detected);
+      try {
+        localStorage.setItem(STORAGE_KEY, detected);
+      } catch {
+        // Ignore storage errors
+      }
     }
   }, []);
 
