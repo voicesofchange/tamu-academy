@@ -1,30 +1,6 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
-
-/**
- * MhModuleCompletion — Module 1 closing section and completion requirements.
- *
- * CLOSING TEXT (verbatim from the Module 1 Base44 Content Pack):
- *   "Ubuntu changes the starting point of mental health education…"
- *
- * COMPLETION REQUIREMENTS (verbatim from the Module 1 Base44 Content Pack):
- *   1. Open or acknowledge the core media.
- *   2. Review the Tamu Academy explanation and case study.
- *   3. Complete the Community of Care Map or its offline version.
- *   4. Answer all five knowledge-check questions.
- *   5. Score at least 4 out of 5.
- *   6. Complete the private reflection or select the fictional alternative.
- *
- * PRIVACY:
- *   - No private content (worksheet entries, reflection text, scenario
- *     selections) is collected, transmitted, or displayed here.
- *   - This component shows only requirement status (met/unmet) derived
- *     from server-side records; it never infers completion from page-load,
- *     scrolling, or navigation.
- *   - No CourseEnrollment record is created or modified.
- *   - No course-level completion is written; Module 1 only.
- *   - No certificate or certificate eligibility is created.
- */
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
   color: 'rgba(245,239,224,0.78)',
@@ -136,36 +112,46 @@ const upcomingBoxStyle = {
   marginTop: '2.5rem',
 };
 
-// Human-readable labels for each requirement, matching the content-pack wording.
-const REQUIREMENT_LABELS = [
-  {
-    key: 'core_media_acknowledged',
-    label: 'Open or acknowledge the core media.',
-    note: 'Full-watch verification is not claimed; acknowledgment is recorded after a deliberate action.',
-  },
-  {
-    key: 'lesson_and_case_reviewed',
-    label: 'Review the Tamu Academy explanation and case study.',
-  },
-  {
-    key: 'activity_acknowledged',
-    label: 'Complete the Community of Care Map or its offline version.',
-    note: 'Offline and browser-local completion are permitted. No worksheet content is stored.',
-  },
-  {
-    key: 'knowledge_check_answered',
-    label: 'Answer all five knowledge-check questions.',
-  },
-  {
-    key: 'knowledge_check_passed',
-    label: 'Score at least 4 out of 5 on the knowledge check.',
-  },
-  {
-    key: 'reflection_acknowledged',
-    label: 'Complete the private reflection or select the fictional alternative.',
-    note: 'No reflection content is stored. Only the acknowledgment timestamp is recorded.',
-  },
-];
+const CONTENT = {
+  closingEyebrow: 'Closing',
+  closingHeading: 'Module 1 Closing',
+  closingP1: 'Ubuntu changes the starting point of mental health education. Instead of asking only what is happening inside a person, it asks what is happening between people and around them.',
+  closingP2: 'The strongest version of communal care does not demand silence or sacrifice without limits. It builds relationships in which people can be seen, supported, respected, and connected to appropriate help.',
+  closingP3: 'In Module 2, learners examine stress, stigma, and strength narratives, including the ways expectations of toughness can protect identity while also making it harder to name pain or seek support.',
+  disclaimerLabel: 'Educational disclaimer',
+  disclaimerText: 'This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services.',
+  completeEyebrow: 'Complete',
+  completeHeading: 'Module 1 Completion Requirements',
+  completeIntro: 'Module 1 is complete when every requirement below is satisfied. Completion of Module 1 does not signify completion of the full course.',
+  requirements: [
+    { key: 'core_media_acknowledged', label: 'Open or acknowledge the core media.', note: 'Full-watch verification is not claimed; acknowledgment is recorded after a deliberate action.' },
+    { key: 'lesson_and_case_reviewed', label: 'Review the Tamu Academy explanation and case study.' },
+    { key: 'activity_acknowledged', label: 'Complete the Community of Care Map or its offline version.', note: 'Offline and browser-local completion are permitted. No worksheet content is stored.' },
+    { key: 'knowledge_check_answered', label: 'Answer all five knowledge-check questions.' },
+    { key: 'knowledge_check_passed', label: 'Score at least 4 out of 5 on the knowledge check.' },
+    { key: 'reflection_acknowledged', label: 'Complete the private reflection or select the fictional alternative.', note: 'No reflection content is stored. Only the acknowledgment timestamp is recorded.' },
+  ],
+  moduleCompleteLabel: 'Module 1 complete',
+  alreadyCompleteMsg: 'Module 1 was already recorded as complete.',
+  newlyCompleteMsg: 'Module 1 has been marked complete.',
+  notFullCourseNote: 'This does not signify completion of the full course or eligibility for a certificate.',
+  errCheckReq: 'Unable to retrieve requirement status. Please try again.',
+  errCheckReq2: 'Could not check requirements. Please try again.',
+  errNotAllMet: 'Not all requirements are satisfied. Please review and try again.',
+  errRecord: 'Could not record completion. Please try again.',
+  checking: 'Checking…',
+  checkReq: 'Check requirements',
+  recording: 'Recording…',
+  markComplete: 'Mark Module 1 complete',
+  pendingReqsNote: 'Complete all pending requirements above, then select "Check requirements" again before marking this module done.',
+  whatsNext: "What's next",
+  nextModuleText: 'Continue to Module 2 to explore stress, stigma, and strength narratives. Use the navigation below to move to the next module or return to the course overview.',
+  done: 'Done',
+  pending: 'Pending',
+  completeAria: 'Complete',
+  incompleteAria: 'Incomplete',
+  markCompleteDisabledTitle: 'Complete all requirements before marking this module done',
+};
 
 function CheckIcon({ met }) {
   return (
@@ -179,7 +165,7 @@ function CheckIcon({ met }) {
   );
 }
 
-function RequirementRow({ reqKey, label, note, status }) {
+function RequirementRow({ reqKey, label, note, status, doneLabel, pendingLabel }) {
   const met = status && status[reqKey] === true;
   return (
     <div style={requirementRowStyle}>
@@ -206,15 +192,16 @@ function RequirementRow({ reqKey, label, note, status }) {
           color: met ? 'rgba(95,172,115,0.75)' : 'rgba(245,239,224,0.35)',
           paddingTop: '2px',
         }}
-        aria-label={met ? 'Complete' : 'Incomplete'}
+        aria-label={met ? doneLabel : pendingLabel}
       >
-        {met ? 'Done' : 'Pending'}
+        {met ? doneLabel : pendingLabel}
       </span>
     </div>
   );
 }
 
 export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
+  const { content: c } = useTranslatedContent('mh-module-completion', CONTENT);
   const [loadingCheck, setLoadingCheck] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [requirements, setRequirements] = useState(null);
@@ -224,7 +211,7 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
 
   const allMet =
     requirements &&
-    REQUIREMENT_LABELS.every((r) => requirements[r.key] === true);
+    c.requirements.every((r) => requirements[r.key] === true);
 
   async function handleCheck() {
     if (loadingCheck || loadingComplete) return;
@@ -240,17 +227,17 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         setCompletedAt(data.completedAt);
         setAlreadyCompleted(!!data.alreadyCompleted);
         setRequirements(
-          REQUIREMENT_LABELS.reduce((acc, r) => ({ ...acc, [r.key]: true }), {})
+          c.requirements.reduce((acc, r) => ({ ...acc, [r.key]: true }), {})
         );
       } else if (data.requirements) {
         setRequirements(data.requirements);
         setCompletedAt(null);
         setAlreadyCompleted(false);
       } else {
-        setError('Unable to retrieve requirement status. Please try again.');
+        setError(c.errCheckReq);
       }
     } catch (err) {
-      setError('Could not check requirements. Please try again.');
+      setError(c.errCheckReq2);
     } finally {
       setLoadingCheck(false);
     }
@@ -271,12 +258,11 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         setAlreadyCompleted(!!data.alreadyCompleted);
         if (data.requirements) setRequirements(data.requirements);
       } else {
-        // Requirements changed between check and submit — refresh status.
         if (data.requirements) setRequirements(data.requirements);
-        setError('Not all requirements are satisfied. Please review and try again.');
+        setError(c.errNotAllMet);
       }
     } catch (err) {
-      setError('Could not record completion. Please try again.');
+      setError(c.errRecord);
     } finally {
       setLoadingComplete(false);
     }
@@ -287,30 +273,28 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
       {/* ── Closing section ── */}
       <div id="closing-section" style={{ marginBottom: '3rem' }}>
         <div style={{ marginBottom: '0.5rem' }}>
-          <span className="font-body" style={eyebrowStyle}>Closing</span>
+          <span className="font-body" style={eyebrowStyle}>{c.closingEyebrow}</span>
         </div>
         <h2 className="font-heading" style={sectionHeadingStyle}>
-          Module 1 Closing
+          {c.closingHeading}
         </h2>
 
-        {/* Closing text — verbatim from the Module 1 Base44 Content Pack */}
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
-          Ubuntu changes the starting point of mental health education. Instead of asking only what is happening inside a person, it asks what is happening between people and around them.
+          {c.closingP1}
         </p>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
-          The strongest version of communal care does not demand silence or sacrifice without limits. It builds relationships in which people can be seen, supported, respected, and connected to appropriate help.
+          {c.closingP2}
         </p>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>
-          In Module 2, learners examine stress, stigma, and strength narratives, including the ways expectations of toughness can protect identity while also making it harder to name pain or seek support.
+          {c.closingP3}
         </p>
 
-        {/* Final educational disclaimer — required at the end of the module */}
-        <div style={disclaimerBoxStyle} aria-label="Educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={c.disclaimerLabel}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-            Educational disclaimer
+            {c.disclaimerLabel}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
-            This course provides general educational information. It does not provide diagnosis, therapy, medical treatment, or emergency support. Learners seeking personal mental health assistance should contact an appropriately qualified professional or relevant local service. If someone is in immediate danger, contact local emergency services.
+            {c.disclaimerText}
           </p>
         </div>
       </div>
@@ -320,29 +304,30 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
       {/* ── Completion requirements ── */}
       <div id="completion-requirements">
         <div style={{ marginBottom: '0.5rem' }}>
-          <span className="font-body" style={eyebrowStyle}>Complete</span>
+          <span className="font-body" style={eyebrowStyle}>{c.completeEyebrow}</span>
         </div>
         <h2 className="font-heading" style={sectionHeadingStyle}>
-          Module 1 Completion Requirements
+          {c.completeHeading}
         </h2>
 
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          Module 1 is complete when every requirement below is satisfied. Completion of Module 1 does not signify completion of the full course.
+          {c.completeIntro}
         </p>
 
-        {/* Requirement list */}
         <div
           role="list"
-          aria-label="Module 1 completion requirements"
+          aria-label={c.completeHeading}
           style={{ borderTop: '1px solid rgba(245,239,224,0.07)', marginBottom: '1.75rem' }}
         >
-          {REQUIREMENT_LABELS.map((r) => (
+          {c.requirements.map((r) => (
             <RequirementRow
               key={r.key}
               reqKey={r.key}
               label={r.label}
               note={r.note}
               status={requirements}
+              doneLabel={c.done}
+              pendingLabel={c.pending}
             />
           ))}
         </div>
@@ -351,13 +336,11 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         {completedAt && (
           <div style={completedBoxStyle} role="status" aria-live="polite">
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem', color: 'rgba(95,172,115,0.7)' }}>
-              Module 1 complete
+              {c.moduleCompleteLabel}
             </span>
             <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-              {alreadyCompleted
-                ? 'Module 1 was already recorded as complete.'
-                : 'Module 1 has been marked complete.'}{' '}
-              This does not signify completion of the full course or eligibility for a certificate.
+              {alreadyCompleted ? c.alreadyCompleteMsg : c.newlyCompleteMsg}{' '}
+              {c.notFullCourseNote}
             </p>
           </div>
         )}
@@ -374,7 +357,6 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         {/* Controls */}
         {!completedAt && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem' }}>
-            {/* Check requirements */}
             <button
               type="button"
               onClick={handleCheck}
@@ -382,10 +364,9 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
               aria-busy={loadingCheck}
               style={loadingCheck || loadingComplete ? disabledButtonStyle : completeButtonStyle}
             >
-              {loadingCheck ? 'Checking…' : 'Check requirements'}
+              {loadingCheck ? c.checking : c.checkReq}
             </button>
 
-            {/* Mark complete — only enabled when all requirements are met */}
             {requirements && (
               <button
                 type="button"
@@ -393,29 +374,29 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
                 disabled={!allMet || loadingCheck || loadingComplete}
                 aria-busy={loadingComplete}
                 aria-disabled={!allMet}
-                title={!allMet ? 'Complete all requirements before marking this module done' : undefined}
+                title={!allMet ? c.markCompleteDisabledTitle : undefined}
                 style={!allMet || loadingCheck || loadingComplete ? disabledButtonStyle : completeButtonStyle}
               >
-                {loadingComplete ? 'Recording…' : 'Mark Module 1 complete'}
+                {loadingComplete ? c.recording : c.markComplete}
               </button>
             )}
           </div>
         )}
 
-        {/* Instruction for unmet requirements — shown only after a check */}
+        {/* Instruction for unmet requirements */}
         {requirements && !allMet && !completedAt && (
           <p className="font-body" style={{ ...bodyText, marginTop: '1rem', fontSize: '0.88rem', color: 'rgba(245,239,224,0.52)' }}>
-            Complete all pending requirements above, then select "Check requirements" again before marking this module done.
+            {c.pendingReqsNote}
           </p>
         )}
 
-        {/* What's next — guides learners to continue the course */}
-        <div style={upcomingBoxStyle} aria-label="What's next">
+        {/* What's next */}
+        <div style={upcomingBoxStyle} aria-label={c.whatsNext}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
-            What's next
+            {c.whatsNext}
           </span>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            Continue to Module 2 to explore stress, stigma, and strength narratives. Use the navigation below to move to the next module or return to the course overview.
+            {c.nextModuleText}
           </p>
         </div>
       </div>

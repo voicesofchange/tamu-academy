@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const navLinkStyle = {
   display: 'inline-flex',
@@ -26,18 +27,20 @@ const disabledStyle = {
   cursor: 'not-allowed',
 };
 
-/**
- * Previous / Next / Return-to-course navigation.
- * prevModule and nextModule come from the course module order. A control is
- * enabled only when that adjacent module has been built (has a route); modules
- * without a route render disabled. This component only renders inside the
- * preview/allowed module page, so in public production (where the "Module in
- * development" state is shown) no module-to-module links appear at all.
- */
+const CONTENT = {
+  previous: 'Previous',
+  previousModule: 'Previous Module',
+  firstModuleTitle: 'This is the first module',
+  nextUnavailable: 'is not yet available',
+  nextModuleUnavailable: 'Next module is not yet available',
+  returnToCourse: 'Return to Course',
+};
+
 export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel, endOfCourse }) {
+  const { content: c } = useTranslatedContent('module-nav', CONTENT);
   const prevPath = prevModule && prevModule.route ? `/courses/${courseSlug}/${prevModule.route}` : null;
   const nextPath = nextModule && nextModule.route ? `/courses/${courseSlug}/${nextModule.route}` : null;
-  const nextTitle = nextModule ? `${nextModule.number} is not yet available` : 'Next module is not yet available';
+  const nextTitle = nextModule ? `${nextModule.number} ${c.nextUnavailable}` : c.nextModuleUnavailable;
 
   return (
     <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
@@ -45,12 +48,12 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
         {prevPath ? (
           <Link to={prevPath} className="font-body" style={navLinkStyle}>
             <ChevronLeft size={14} aria-hidden="true" />
-            Previous: {prevModule.number} — {prevModule.title}
+            {c.previous}: {prevModule.number} — {prevModule.title}
           </Link>
         ) : (
-          <span aria-disabled="true" style={disabledStyle} title="This is the first module">
+          <span aria-disabled="true" style={disabledStyle} title={c.firstModuleTitle}>
             <ChevronLeft size={14} aria-hidden="true" />
-            Previous Module
+            {c.previousModule}
           </span>
         )}
         {nextPath ? (
@@ -76,7 +79,7 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
       </div>
       <Link to={coursePath} className="font-body" style={navLinkStyle}>
         <ChevronLeft size={14} aria-hidden="true" />
-        Return to Course
+        {c.returnToCourse}
       </Link>
     </nav>
   );

@@ -2,31 +2,44 @@ import React, { useState, useEffect, useRef } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-/**
- * LaunchLanding — temporary public front door for Tamu Academy.
- *
- * While the academy and its first learning pathway remain in development,
- * this focused, editorial, coming-soon surface serves only:
- *   - wordmark + Waiyaki House LLC attribution
- *   - mission-first headline
- *   - positioning statement
- *   - supporting copy
- *   - Early Access email signup (reuses submitContactInquiry backend)
- *   - minimal footer
- *
- * It does NOT render the full TopNav, course cards, lesson videos, articles,
- * or any unfinished module content. The full homepage lives on in
- * src/pages/Landing.jsx behind a LAUNCH_MODE flag and can be restored by
- * flipping that flag to false. Existing routes, gating, and components
- * are untouched.
- */
+const CONTENT = {
+  navAttr: 'A Waiyaki House learning venture',
+  exploreAcademy: 'Explore the Academy',
+  joinEarlyAccess: 'Join Early Access',
+  headline1: 'Learn the systems shaping Africa.',
+  headline2: 'Build what comes next.',
+  supportingCopy: 'Culturally grounded learning in economics, governance, technology, wellbeing, history, and global affairs.',
+  formHeading: 'Join Early Access',
+  formDescription: 'Receive course-launch updates and early-access information.',
+  noticeLabel: 'Notice at Collection:',
+  noticeText: 'We collect your email and consent to send requested Tamu Academy updates. We do not sell or share your information for behavioral advertising. We retain it while you remain subscribed and as needed to honor your preferences. Read our',
+  privacyPolicy: 'Privacy Policy',
+  successMessage: "Thank you for joining the Tamu Academy early-access list. We'll share launch updates as the academy becomes available.",
+  substackInvitation: 'In the meantime, you can also follow Tamu Academy on Substack for educational insights, academy updates, and developing ideas.',
+  followSubstack: 'Follow Tamu Academy on Substack',
+  substackDisclaimer: 'Following Tamu Academy on Substack is optional and requires a separate action through Substack. Joining the Early Access list does not automatically subscribe you to Substack.',
+  errorMessage: 'We could not complete your signup. Please check your email address and try again.',
+  emailLabel: 'Email Address',
+  emailPlaceholder: 'you@example.com',
+  submitting: 'Submitting…',
+  consentText: 'I agree to receive Tamu Academy updates and understand that I can unsubscribe at any time.',
+  tryAgain: 'Try again',
+  footerTagline: 'Learning across cultures. Leading through change.',
+  footerText: 'Tamu Academy is a learning venture of Waiyaki House.',
+  copyright: '© 2026 Waiyaki House LLC. All rights reserved.',
+  errEmailRequired: 'Email address is required.',
+  errEmailInvalid: 'Please enter a valid email address.',
+  errConsent: 'Please accept the consent statement to join early access.',
+};
+
 export default function LaunchLanding() {
+  const { content: c } = useTranslatedContent('launch', CONTENT);
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState({});
-  // idle | submitting | success | error
   const [status, setStatus] = useState('idle');
   const successRef = useRef(null);
   const lastSubmit = useRef(0);
@@ -39,20 +52,16 @@ export default function LaunchLanding() {
 
   const validate = () => {
     const e = {};
-    if (!email.trim()) e.email = 'Email address is required.';
+    if (!email.trim()) e.email = c.errEmailRequired;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      e.email = 'Please enter a valid email address.';
-    if (!consent) e.consent = 'Please accept the consent statement to join early access.';
+      e.email = c.errEmailInvalid;
+    if (!consent) e.consent = c.errConsent;
     return e;
   };
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-
-    // Honeypot — silently ignore bots
     if (honeypot) return;
-
-    // Reasonable duplicate-submit protection (8s cooldown)
     const now = Date.now();
     if (now - lastSubmit.current < 8000) return;
 
@@ -71,10 +80,6 @@ export default function LaunchLanding() {
 
     try {
       const res = await base44.functions.invoke('submitContactInquiry', {
-        // Internal placeholders — never shown to the visitor. The existing
-        // backend requires a name, country, and a 50+ character message;
-        // since the launch form collects only email + consent, we pass
-        // safe internal values for the required-but-uncollected fields.
         full_name: 'Early Access Subscriber',
         email: email.trim().toLowerCase().slice(0, 200),
         country: 'Not provided',
@@ -99,7 +104,6 @@ export default function LaunchLanding() {
 
   const resetForRetry = () => {
     setStatus('idle');
-    // Preserve the entered email so visitors do not retype it after an error.
   };
 
   return (
@@ -161,7 +165,7 @@ export default function LaunchLanding() {
               fontWeight: 400,
             }}
           >
-            A Waiyaki House learning venture
+            {c.navAttr}
           </span>
         </Link>
         <nav
@@ -185,7 +189,7 @@ export default function LaunchLanding() {
               textDecoration: 'none',
             }}
           >
-            Explore the Academy
+            {c.exploreAcademy}
           </Link>
           <a
             href="#early-access"
@@ -205,7 +209,7 @@ export default function LaunchLanding() {
               whiteSpace: 'nowrap',
             }}
           >
-            Join Early Access
+            {c.joinEarlyAccess}
           </a>
         </nav>
       </header>
@@ -233,7 +237,7 @@ export default function LaunchLanding() {
             textAlign: 'center',
           }}
         >
-          {/* Primary headline — single semantic h1 */}
+          {/* Primary headline */}
           <h1
             className="font-heading"
             style={{
@@ -245,9 +249,9 @@ export default function LaunchLanding() {
               margin: '0 0 1.5rem',
             }}
           >
-            Learn the systems shaping Africa.
+            {c.headline1}
             <br />
-            Build what comes next.
+            {c.headline2}
           </h1>
 
           {/* Supporting copy */}
@@ -262,7 +266,7 @@ export default function LaunchLanding() {
               maxWidth: '560px',
             }}
           >
-            Culturally grounded learning in economics, governance, technology, wellbeing, history, and global affairs.
+            {c.supportingCopy}
           </p>
 
           {/* Primary actions */}
@@ -296,7 +300,7 @@ export default function LaunchLanding() {
                 transition: 'background-color 0.25s ease',
               }}
             >
-              Join Early Access
+              {c.joinEarlyAccess}
             </a>
             <Link
               to="/academy"
@@ -318,7 +322,7 @@ export default function LaunchLanding() {
                 transition: 'border-color 0.25s ease, color 0.25s ease',
               }}
             >
-              Explore the Academy
+              {c.exploreAcademy}
             </Link>
           </div>
 
@@ -344,7 +348,7 @@ export default function LaunchLanding() {
                 textAlign: 'left',
               }}
             >
-              Join Early Access
+              {c.formHeading}
             </h2>
 
             <p
@@ -358,10 +362,10 @@ export default function LaunchLanding() {
                 textAlign: 'left',
               }}
             >
-              Receive course-launch updates and early-access information.
+              {c.formDescription}
             </p>
 
-            {/* Notice at Collection — visible before submission */}
+            {/* Notice at Collection */}
             <p
               className="font-body"
               style={{
@@ -373,12 +377,10 @@ export default function LaunchLanding() {
                 textAlign: 'left',
               }}
             >
-              <span style={{ color: 'rgba(245,239,224,0.78)', fontWeight: 500 }}>Notice at Collection:</span>{' '}
-              We collect your email and consent to send requested Tamu Academy updates. We do not sell or share your
-              information for behavioral advertising. We retain it while you remain subscribed and as needed to honor
-              your preferences. Read our{' '}
+              <span style={{ color: 'rgba(245,239,224,0.78)', fontWeight: 500 }}>{c.noticeLabel}</span>{' '}
+              {c.noticeText}{' '}
               <Link to="/privacy" className="font-body" style={{ color: '#D4A12A', textDecoration: 'underline' }}>
-                Privacy Policy
+                {c.privacyPolicy}
               </Link>
               .
             </p>
@@ -408,10 +410,10 @@ export default function LaunchLanding() {
                     margin: 0,
                   }}
                 >
-                  Thank you for joining the Tamu Academy early-access list. We&rsquo;ll share launch updates as the academy becomes available.
+                  {c.successMessage}
                 </p>
 
-                {/* Voluntary Substack invitation — shown only on confirmed success */}
+                {/* Voluntary Substack invitation */}
                 <div
                   role="group"
                   aria-labelledby="launch-success-substack-heading"
@@ -432,7 +434,7 @@ export default function LaunchLanding() {
                       margin: '0 0 1rem',
                     }}
                   >
-                    In the meantime, you can also follow Tamu Academy on Substack for educational insights, academy updates, and developing ideas.
+                    {c.substackInvitation}
                   </p>
 
                   <a
@@ -457,7 +459,7 @@ export default function LaunchLanding() {
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    Follow Tamu Academy on Substack
+                    {c.followSubstack}
                   </a>
 
                   <p
@@ -470,7 +472,7 @@ export default function LaunchLanding() {
                       margin: '0.85rem 0 0',
                     }}
                   >
-                    Following Tamu Academy on Substack is optional and requires a separate action through Substack. Joining the Early Access list does not automatically subscribe you to Substack.
+                    {c.substackDisclaimer}
                   </p>
                 </div>
               </div>
@@ -481,7 +483,7 @@ export default function LaunchLanding() {
                 aria-label="Early access signup form"
                 style={{ textAlign: 'left' }}
               >
-                {/* Honeypot — hidden from real users */}
+                {/* Honeypot */}
                 <div
                   style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}
                   aria-hidden="true"
@@ -515,7 +517,7 @@ export default function LaunchLanding() {
                       className="font-body"
                       style={{ color: 'rgba(220,130,110,0.95)', fontSize: '0.85rem', margin: 0, fontWeight: 400 }}
                     >
-                      We could not complete your signup. Please check your email address and try again.
+                      {c.errorMessage}
                     </p>
                   </div>
                 )}
@@ -534,7 +536,7 @@ export default function LaunchLanding() {
                       marginBottom: '0.5rem',
                     }}
                   >
-                    Email Address <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
+                    {c.emailLabel} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
                     <span className="launch-sr-only"> (required)</span>
                   </label>
                   <div className="launch-email-row" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -551,7 +553,7 @@ export default function LaunchLanding() {
                       aria-required="true"
                       aria-describedby={errors.email ? 'launch-err-email' : undefined}
                       aria-invalid={!!errors.email}
-                      placeholder="you@example.com"
+                      placeholder={c.emailPlaceholder}
                       className="launch-input"
                       style={{
                         width: '100%',
@@ -591,7 +593,7 @@ export default function LaunchLanding() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {status === 'submitting' ? 'Submitting…' : 'Join Early Access'}
+                      {status === 'submitting' ? c.submitting : c.joinEarlyAccess}
                     </button>
                   </div>
                   {errors.email && (
@@ -611,7 +613,7 @@ export default function LaunchLanding() {
                   )}
                 </div>
 
-                {/* Consent checkbox — required */}
+                {/* Consent checkbox */}
                 <div style={{ marginBottom: '1.25rem' }}>
                   <label
                     htmlFor="launch-consent"
@@ -652,7 +654,7 @@ export default function LaunchLanding() {
                         fontWeight: 300,
                       }}
                     >
-                      I agree to receive Tamu Academy updates and understand that I can unsubscribe at any time.
+                      {c.consentText}
                       <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
                       <span className="launch-sr-only"> (required)</span>
                     </span>
@@ -688,7 +690,7 @@ export default function LaunchLanding() {
                         paddingBottom: '0.15rem',
                       }}
                     >
-                      Privacy Policy
+                      {c.privacyPolicy}
                     </Link>
                   </p>
                 </div>
@@ -711,7 +713,7 @@ export default function LaunchLanding() {
                       marginTop: '0.5rem',
                     }}
                   >
-                    Try again
+                    {c.tryAgain}
                   </button>
                 )}
               </form>
@@ -756,7 +758,7 @@ export default function LaunchLanding() {
             margin: 0,
           }}
         >
-          A Waiyaki House learning venture
+          {c.navAttr}
         </p>
         <p
           className="font-body"
@@ -769,7 +771,7 @@ export default function LaunchLanding() {
             margin: '0.85rem 0 0',
           }}
         >
-          Learning across cultures. Leading through change.
+          {c.footerTagline}
         </p>
         <p
           className="font-body"
@@ -782,7 +784,7 @@ export default function LaunchLanding() {
             maxWidth: '460px',
           }}
         >
-          Tamu Academy is a learning venture of Waiyaki House.
+          {c.footerText}
         </p>
         <p
           className="font-body"
@@ -793,7 +795,7 @@ export default function LaunchLanding() {
             margin: '0.3rem 0 0',
           }}
         >
-          &copy; 2026 Waiyaki House LLC. All rights reserved.
+          {c.copyright}
         </p>
         <p style={{ margin: '0.85rem 0 0' }}>
           <Link
@@ -808,7 +810,7 @@ export default function LaunchLanding() {
               fontWeight: 500,
             }}
           >
-            Privacy Policy
+            {c.privacyPolicy}
           </Link>
         </p>
       </footer>

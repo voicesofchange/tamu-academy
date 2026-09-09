@@ -9,6 +9,7 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -31,13 +32,32 @@ const linkButtonStyle = {
   borderRadius: '2px', padding: '0.65rem 1.3rem',
 };
 
-/**
- * MyCourses — a learner dashboard showing enrolled courses, overall
- * progress, a "continue where you left off" entry point, and certificate
- * access. Reuses the course-completion endpoints (already server-verified)
- * and the publication-status endpoint for accurate badges.
- */
+const CONTENT = {
+  heroEyebrow: 'My Courses',
+  heroHeading: 'Your Learning Journey',
+  heroSubheading: 'Continue where you left off, track your progress across courses, and access your certificates of completion.',
+  emptyEyebrow: 'Get Started',
+  emptyHeading: "You haven't enrolled in a course yet",
+  emptyBody: 'Browse available courses and enroll to start tracking your progress here. Your enrolled courses, module progress, and certificates will all appear on this page.',
+  browseCourses: 'Browse Courses',
+  resumeEyebrow: 'Continue Learning',
+  resumeHeading: 'Pick up where you left off',
+  progress: 'Progress',
+  of: 'of',
+  modules: 'modules',
+  continueAt: 'Continue at',
+  enrolledEyebrow: 'Your Courses',
+  enrolledHeading: 'Enrolled Courses',
+  resumeAt: 'Resume at',
+  reviewCompletion: 'Review Course Completion',
+  courseOverview: 'Course Overview',
+  viewCertificate: 'View Certificate',
+  nowAvailable: 'Now Available',
+  inDevelopment: 'In Development',
+};
+
 export default function MyCourses() {
+  const { content: c } = useTranslatedContent('my-courses', CONTENT);
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [pubStatus, setPubStatus] = useState({});
@@ -66,8 +86,6 @@ export default function MyCourses() {
     return () => { cancelled = true; };
   }, []);
 
-  // "Continue where you left off" — the enrolled course with the most
-  // progress that still has an incomplete module.
   const resumeTarget = courses
     .map((c) => ({
       ...c,
@@ -86,9 +104,9 @@ export default function MyCourses() {
         path="/my-courses"
       />
       <PageHero
-        eyebrow="My Courses"
-        heading="Your Learning Journey"
-        subheading="Continue where you left off, track your progress across courses, and access your certificates of completion."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
       {loading ? (
@@ -97,18 +115,18 @@ export default function MyCourses() {
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       ) : courses.length === 0 ? (
-        <PageSection eyebrow="Get Started" heading="You haven't enrolled in a course yet">
+        <PageSection eyebrow={c.emptyEyebrow} heading={c.emptyHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            Browse available courses and enroll to start tracking your progress here. Your enrolled courses, module progress, and certificates will all appear on this page.
+            {c.emptyBody}
           </p>
           <Link to="/courses" className="font-body" style={primaryButtonStyle}>
-            Browse Courses &rarr;
+            {c.browseCourses} &rarr;
           </Link>
         </PageSection>
       ) : (
         <>
           {resumeTarget && (
-            <PageSection eyebrow="Continue Learning" heading="Pick up where you left off">
+            <PageSection eyebrow={c.resumeEyebrow} heading={c.resumeHeading}>
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -125,10 +143,10 @@ export default function MyCourses() {
                 <div style={{ marginBottom: '1.25rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
                     <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-                      Progress
+                      {c.progress}
                     </span>
                     <span className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 500 }}>
-                      {resumeTarget.completedCount} of {resumeTarget.completion?.totalModules} modules
+                      {resumeTarget.completedCount} {c.of} {resumeTarget.completion?.totalModules} {c.modules}
                     </span>
                   </div>
                   <div
@@ -143,27 +161,27 @@ export default function MyCourses() {
                   </div>
                 </div>
                 <Link to={`/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`} className="font-body" style={primaryButtonStyle}>
-                  Continue at {resumeTarget.firstIncomplete.number} &rarr;
+                  {c.continueAt} {resumeTarget.firstIncomplete.number} &rarr;
                 </Link>
               </motion.div>
             </PageSection>
           )}
 
-          <PageSection eyebrow="Your Courses" heading="Enrolled Courses">
-            {courses.map((c) => {
-              const meta = COURSE_META[c.slug];
-              const completedCount = c.completion?.completedCount || 0;
-              const totalModules = c.completion?.totalModules || 0;
+          <PageSection eyebrow={c.enrolledEyebrow} heading={c.enrolledHeading}>
+            {courses.map((enr) => {
+              const meta = COURSE_META[enr.slug];
+              const completedCount = enr.completion?.completedCount || 0;
+              const totalModules = enr.completion?.totalModules || 0;
               const progressPct = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
-              const firstIncomplete = c.completion?.incompleteModules?.[0] || null;
+              const firstIncomplete = enr.completion?.incompleteModules?.[0] || null;
               const resumePath = firstIncomplete
-                ? `/courses/${c.slug}/${firstIncomplete.route}`
-                : `/courses/${c.slug}/completion`;
-              const resumeLabel = firstIncomplete ? `Resume at ${firstIncomplete.number}` : 'Review Course Completion';
-              const statusLabel = pubStatus[c.slug]?.isLive ? 'Now Available' : 'In Development';
+                ? `/courses/${enr.slug}/${firstIncomplete.route}`
+                : `/courses/${enr.slug}/completion`;
+              const resumeLabel = firstIncomplete ? `${c.resumeAt} ${firstIncomplete.number}` : c.reviewCompletion;
+              const statusLabel = pubStatus[enr.slug]?.isLive ? c.nowAvailable : c.inDevelopment;
               return (
                 <motion.div
-                  key={c.slug}
+                  key={enr.slug}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
@@ -179,10 +197,10 @@ export default function MyCourses() {
                   <div style={{ marginBottom: '1.25rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
                       <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-                        Progress
+                        {c.progress}
                       </span>
                       <span className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 500 }}>
-                        {completedCount} of {totalModules} modules
+                        {completedCount} {c.of} {totalModules} {c.modules}
                       </span>
                     </div>
                     <div
@@ -200,12 +218,12 @@ export default function MyCourses() {
                     <Link to={resumePath} className="font-body" style={primaryButtonStyle}>
                       {resumeLabel} &rarr;
                     </Link>
-                    <Link to={`/courses/${c.slug}`} className="font-body" style={linkButtonStyle}>
-                      Course Overview &rarr;
+                    <Link to={`/courses/${enr.slug}`} className="font-body" style={linkButtonStyle}>
+                      {c.courseOverview} &rarr;
                     </Link>
-                    {c.completion?.certificateEligible && (
-                      <Link to={`/courses/${c.slug}/certificate`} className="font-body" style={linkButtonStyle}>
-                        View Certificate &rarr;
+                    {enr.completion?.certificateEligible && (
+                      <Link to={`/courses/${enr.slug}/certificate`} className="font-body" style={linkButtonStyle}>
+                        {c.viewCertificate} &rarr;
                       </Link>
                     )}
                   </div>

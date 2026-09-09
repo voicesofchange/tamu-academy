@@ -1,8 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const CONTENT = {
+  brand: 'Tamu Academy',
+  title: 'Page Not Found',
+  message: 'The page you are looking for could not be found. It may have moved, or the address may be incorrect.',
+  returnHome: 'Return to Homepage',
+  exploreCourses: 'Explore Courses',
+};
 
 export default function PageNotFound() {
+  const { content: c } = useTranslatedContent('404', CONTENT);
+
   return (
     <div style={{ backgroundColor: '#1A130E', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', fontFamily: "'DM Sans', sans-serif" }}>
       <PageMeta
@@ -16,7 +27,7 @@ export default function PageNotFound() {
           className="font-body"
           style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1.5rem' }}
         >
-          Tamu Academy
+          {c.brand}
         </span>
 
         <p
@@ -31,7 +42,7 @@ export default function PageNotFound() {
           className="font-heading"
           style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}
         >
-          Page Not Found
+          {c.title}
         </h1>
 
         <div
@@ -43,7 +54,7 @@ export default function PageNotFound() {
           className="font-body"
           style={{ color: 'rgba(245,239,224,0.62)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 2rem' }}
         >
-          The page you are looking for could not be found. It may have moved, or the address may be incorrect.
+          {c.message}
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', justifyContent: 'center' }}>
@@ -51,13 +62,13 @@ export default function PageNotFound() {
             to="/"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
           >
-            Return to Homepage
+            {c.returnHome}
           </Link>
           <Link
-            to="/programmes"
+            to="/courses"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
           >
-            Explore Programmes
+            {c.exploreCourses}
           </Link>
         </div>
       </div>

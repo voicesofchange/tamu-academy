@@ -6,6 +6,7 @@ import PageLayout from '@/components/page/PageLayout';
 import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
 import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const COURSE_SLUG = 'mental-health-community-and-culture';
 
@@ -30,21 +31,24 @@ const actionButtonStyle = {
   transition: 'color 0.25s ease, borderColor 0.25s ease',
 };
 
-/**
- * MhCertificate — the certificate of completion page for the Mental
- * Health, Community and Culture course.
- *
- * Calls `issueMentalHealthCertificate` (idempotent) to retrieve or
- * issue the certificate. Displays the certificate with print and
- * PDF download options. No certificate_id is accepted from URL
- * parameters — only the current authenticated user's certificate
- * is displayed.
- *
- * If the learner is not eligible (course not completed, not enrolled,
- * or course unpublished), a message is shown with a link to the
- * completion page.
- */
+const CONTENT = {
+  notYetAvailable: 'Certificate Not Yet Available',
+  notYetAvailableMsg: 'Your certificate of completion will be available once you have completed all seven modules of the course and enrollment is open.',
+  viewCourseProgress: 'View Course Progress',
+  profileNameRequired: 'Profile Name Required',
+  profileNameMsg: 'Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.',
+  backToProgress: 'Back to Course Progress',
+  loading: 'Loading your certificate...',
+  unavailable: 'Certificate Unavailable',
+  unavailableMsg: 'We could not load your certificate at this time. Please try again later.',
+  print: 'Print Certificate',
+  downloadPdf: 'Download PDF',
+  adminPreview: 'Administrator Preview — No certificate record created',
+  returnToCourse: 'Return to Course',
+};
+
 export default function MhCertificate() {
+  const { content: c } = useTranslatedContent('mh-certificate', CONTENT);
   const course = MENTAL_HEALTH_COURSE;
   const [state, setState] = useState({ status: 'loading', data: null, error: null, notEligible: false, needsProfile: false });
   const certificateRef = useRef(null);
@@ -87,63 +91,58 @@ export default function MhCertificate() {
   const coursePath = `/courses/${COURSE_SLUG}`;
   const completionPath = `${coursePath}/completion`;
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => { window.print(); };
 
   const handleDownloadPDF = async () => {
     if (!state.data) return;
     await generateCertificatePDF({ data: state.data, isPreview: state.data.preview === true, moduleWord: 'seven', moduleCountLabel: 'SEVEN' });
   };
 
-  // --- Not eligible state ---
   if (state.notEligible) {
     return (
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
           <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
-            Certificate Not Yet Available
+            {c.notYetAvailable}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
-            Your certificate of completion will be available once you have completed all seven modules of the course and enrollment is open.
+            {c.notYetAvailableMsg}
           </p>
           <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
-            View Course Progress &rarr;
+            {c.viewCourseProgress} &rarr;
           </Link>
         </div>
       </PageLayout>
     );
   }
 
-  // --- Needs profile name ---
   if (state.needsProfile) {
     return (
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
           <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
-            Profile Name Required
+            {c.profileNameRequired}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
-            Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.
+            {c.profileNameMsg}
           </p>
           <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
-            &larr; Back to Course Progress
+            &larr; {c.backToProgress}
           </Link>
         </div>
       </PageLayout>
     );
   }
 
-  // --- Loading / error ---
   if (state.status === 'loading') {
     return (
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
           <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(212,161,42,0.2)', borderTopColor: '#D4A12A', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>Loading your certificate...</p>
+          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{c.loading}</p>
         </div>
       </PageLayout>
     );
@@ -155,41 +154,36 @@ export default function MhCertificate() {
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
           <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
-            Certificate Unavailable
+            {c.unavailable}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
-            We could not load your certificate at this time. Please try again later.
+            {c.unavailableMsg}
           </p>
           <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
-            &larr; Back to Course Progress
+            &larr; {c.backToProgress}
           </Link>
         </div>
       </PageLayout>
     );
   }
 
-  // --- Certificate ready ---
   const data = state.data;
   const isPreview = data.preview === true;
-  const completedDate = data.completedAt
-    ? new Date(data.completedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-    : '';
 
   return (
     <PageLayout>
       <PageMeta title="Certificate of Completion | Tamu Academy" path={`${coursePath}/certificate`} noindex />
 
-      {/* Action bar (hidden in print) */}
       <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
         <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
-          &larr; Back to Course Progress
+          &larr; {c.backToProgress}
         </Link>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button onClick={handlePrint} style={actionButtonStyle}>
-            Print Certificate
+            {c.print}
           </button>
           <button onClick={handleDownloadPDF} style={actionButtonStyle}>
-            Download PDF
+            {c.downloadPdf}
           </button>
         </div>
       </div>
@@ -197,20 +191,18 @@ export default function MhCertificate() {
       {isPreview && (
         <div className="no-print" style={{ padding: '0.75rem 1.25rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.06)', marginBottom: '1.5rem', textAlign: 'center' }}>
           <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Administrator Preview — No certificate record created
+            {c.adminPreview}
           </span>
         </div>
       )}
 
-      {/* Certificate (print area) */}
       <div ref={certificateRef}>
         <MhCertificateDocument data={data} isPreview={isPreview} />
       </div>
 
-      {/* Return link (hidden in print) */}
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <Link to={coursePath} className="font-body tamu-nav-link" style={{ ...actionButtonStyle, textDecoration: 'none' }}>
-          &larr; Return to Course
+          &larr; {c.returnToCourse}
         </Link>
       </div>
     </PageLayout>

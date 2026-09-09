@@ -9,113 +9,137 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import TrackCard from '@/components/courses/TrackCard';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
-const COURSE_AREAS = [
-  {
-    id: 'mind-and-wellbeing',
-    number: '01',
-    area: 'Mind and Wellbeing',
-    courses: [
-      {
-        title: 'Mental Health, Community and Culture',
-        slug: 'mental-health-community-and-culture',
-        status: 'Available',
-        description:
-          'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
-      },
-    ],
-    extra: null,
-  },
-  {
-    id: 'economics-and-development',
-    number: '02',
-    area: 'Economics and Development',
-    courses: [
-      {
-        title: 'Understanding African Economies and the Global System',
-        slug: 'understanding-african-economies-and-the-global-system',
-        status: 'Available',
-        description:
-          'A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa\'s position within the global economy.',
-      },
-    ],
-    extra: null,
-  },
-  {
-    id: 'ai-technology-and-digital-futures',
-    number: '03',
-    area: 'AI, Technology and Digital Futures',
-    courses: [
-      {
-        title: 'AI Literacy for African and Diaspora Leaders',
-        status: 'In Development',
-        description:
-          'A practical and critical introduction to generative AI, responsible use, bias, digital citizenship, work, governance, and technological change.',
-      },
-    ],
-    extra: null,
-  },
-  {
-    id: 'public-policy-and-governance',
-    number: '04',
-    area: 'Public Policy and Governance',
-    courses: [
-      {
-        title: 'Power, Policy and the Public Good',
-        status: 'In Development',
-        description:
-          'A course exploring public policy, institutions, implementation, accountability, community participation, policy analysis, and writing for public decision-making.',
-      },
-    ],
-    extra: {
-      eyebrow: 'Proposed First Pilot',
-      title: 'Ubuntu and the Public Good',
-      badge: 'Proposed Pilot Programme',
-      content:
-        'A four-week applied learning experience examining how values, institutions, economics, and community knowledge shape public decisions. Participants develop a one-page community-centered policy memo as their final project.',
-      details: [
-        ['Intended audience', 'Young adults ages 18–30'],
-        ['Proposed format', 'Four weekly facilitated sessions'],
-        ['Proposed delivery', 'Online or partner-hosted'],
-        ['Final learner product', 'One-page policy memo'],
-        ['Current status', 'Under development — available for partnership discussion'],
+const CONTENT = {
+  heroEyebrow: 'Courses',
+  heroHeading: 'Courses Designed for Learning, Reflection and Application',
+  heroSubheading: 'Tamu Academy is developing expert-led online courses with subject-matter experts, educators, researchers, and knowledge holders. Each course is designed to combine recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning.',
+  heritageLabel: 'Heritage and Leadership Collection',
+  learningAreaLabel: 'Learning Area',
+  heritageNote: 'A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.',
+  exploreCourse: 'Explore the Course',
+  competencyTracks: 'Competency-Based Learning Tracks',
+  nowAvailable: 'Now Available',
+  courseDesignEyebrow: 'Course Design',
+  courseDesignHeading: 'What a Complete Tamu Academy Course May Include',
+  courseDesignIntro: 'Complete Tamu Academy courses are still under development. Final course packages may include:',
+  openLearningEyebrow: 'Open Learning',
+  openLearningHeading: 'Begin with Free Open Learning',
+  openLearningBody: 'Begin with freely available Tamu Academy videos and articles exploring wellbeing, public policy, economics, institutions, culture, and global systems.',
+  watchVideos: 'Watch Videos',
+  readArticles: 'Read Articles',
+  institutionsEyebrow: 'Institutions',
+  institutionsHeading: 'Learning for Institutions',
+  institutionsBody: 'Tamu Academy is developing course packages for universities, youth organizations, nonprofits, public institutions, and community programmes.',
+  discussPartnership: 'Discuss a Partnership',
+  courseAreas: [
+    {
+      id: 'mind-and-wellbeing',
+      number: '01',
+      area: 'Mind and Wellbeing',
+      courses: [
+        {
+          title: 'Mental Health, Community and Culture',
+          slug: 'mental-health-community-and-culture',
+          status: 'Available',
+          description:
+            'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
+        },
       ],
-      ctaLabel: 'Discuss a Pilot Partnership →',
-      ctaTo: '/contact?type=partnership&programme=ubuntu-and-the-public-good',
+      extra: null,
     },
-  },
-  {
-    id: 'waiyaki-wa-hinga',
-    number: '05',
-    area: 'Waiyaki wa Hinga Heritage and Leadership Collection',
-    heritage: true,
-    courses: [
-      {
-        title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
-        status: 'In Development',
-        description:
-          'A research- and memory-based course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
+    {
+      id: 'economics-and-development',
+      number: '02',
+      area: 'Economics and Development',
+      courses: [
+        {
+          title: 'Understanding African Economies and the Global System',
+          slug: 'understanding-african-economies-and-the-global-system',
+          status: 'Available',
+          description:
+            "A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa's position within the global economy.",
+        },
+      ],
+      extra: null,
+    },
+    {
+      id: 'ai-technology-and-digital-futures',
+      number: '03',
+      area: 'AI, Technology and Digital Futures',
+      courses: [
+        {
+          title: 'AI Literacy for African and Diaspora Leaders',
+          status: 'In Development',
+          description:
+            'A practical and critical introduction to generative AI, responsible use, bias, digital citizenship, work, governance, and technological change.',
+        },
+      ],
+      extra: null,
+    },
+    {
+      id: 'public-policy-and-governance',
+      number: '04',
+      area: 'Public Policy and Governance',
+      courses: [
+        {
+          title: 'Power, Policy and the Public Good',
+          status: 'In Development',
+          description:
+            'A course exploring public policy, institutions, implementation, accountability, community participation, policy analysis, and writing for public decision-making.',
+        },
+      ],
+      extra: {
+        eyebrow: 'Proposed First Pilot',
+        title: 'Ubuntu and the Public Good',
+        badge: 'Proposed Pilot Programme',
+        content:
+          'A four-week applied learning experience examining how values, institutions, economics, and community knowledge shape public decisions. Participants develop a one-page community-centered policy memo as their final project.',
+        details: [
+          ['Intended audience', 'Young adults ages 18–30'],
+          ['Proposed format', 'Four weekly facilitated sessions'],
+          ['Proposed delivery', 'Online or partner-hosted'],
+          ['Final learner product', 'One-page policy memo'],
+          ['Current status', 'Under development — available for partnership discussion'],
+        ],
+        ctaLabel: 'Discuss a Pilot Partnership',
+        ctaTo: '/contact?type=partnership&programme=ubuntu-and-the-public-good',
       },
-    ],
-    extra: null,
-  },
-];
-
-const COURSE_COMPONENTS = [
-  'Recorded expert-led lessons',
-  'Written lesson companions',
-  'Transcripts and captions',
-  'Reflection questions',
-  'Knowledge checks',
-  'Downloadable activities',
-  'Course workbooks',
-  'Practical assignments',
-  'Facilitator materials for institutions',
-];
+    },
+    {
+      id: 'waiyaki-wa-hinga',
+      number: '05',
+      area: 'Waiyaki wa Hinga Heritage and Leadership Collection',
+      heritage: true,
+      courses: [
+        {
+          title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
+          status: 'In Development',
+          description:
+            'A research- and memory-based course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
+        },
+      ],
+      extra: null,
+    },
+  ],
+  courseComponents: [
+    'Recorded expert-led lessons',
+    'Written lesson companions',
+    'Transcripts and captions',
+    'Reflection questions',
+    'Knowledge checks',
+    'Downloadable activities',
+    'Course workbooks',
+    'Practical assignments',
+    'Facilitator materials for institutions',
+  ],
+};
 
 export default function Courses() {
+  const { content: c } = useTranslatedContent('courses', CONTENT);
   const [pubStatus, setPubStatus] = useState({});
 
   useEffect(() => {
@@ -136,7 +160,7 @@ export default function Courses() {
   function statusFor(course) {
     if (!course.slug) return course.status;
     const ps = pubStatus[course.slug];
-    if (ps && ps.isLive) return 'Now Available';
+    if (ps && ps.isLive) return c.nowAvailable;
     return course.status;
   }
 
@@ -149,22 +173,22 @@ export default function Courses() {
       />
       <div id="learning-areas" style={{ scrollMarginTop: '90px' }} aria-hidden="true" />
       <PageHero
-        eyebrow="Courses"
-        heading="Courses Designed for Learning, Reflection and Application"
-        subheading="Tamu Academy is developing expert-led online courses with subject-matter experts, educators, researchers, and knowledge holders. Each course is designed to combine recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
       {/* Course Areas */}
-      {COURSE_AREAS.map((area, ai) => (
+      {c.courseAreas.map((area, ai) => (
         <PageSection
           key={area.id}
           id={area.id}
-          eyebrow={area.heritage ? 'Heritage and Leadership Collection' : `Learning Area ${area.number}`}
+          eyebrow={area.heritage ? c.heritageLabel : `${c.learningAreaLabel} ${area.number}`}
           heading={area.area}
         >
           {area.heritage && (
             <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', marginBottom: '1.5rem', fontStyle: 'italic', color: 'rgba(212,161,42,0.8)' }}>
-              A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.
+              {c.heritageNote}
             </p>
           )}
 
@@ -193,7 +217,7 @@ export default function Courses() {
                   to={coursePath}
                   style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
                 >
-                  Explore the Course &rarr;
+                  {c.exploreCourse} &rarr;
                 </Link>
               )}
             </motion.div>
@@ -203,11 +227,11 @@ export default function Courses() {
           {area.id === 'economics-and-development' && (
             <>
               <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginTop: '1.75rem', marginBottom: '1rem' }}>
-                Competency-Based Learning Tracks
+                {c.competencyTracks}
               </span>
               {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => {
                 const econPs = pubStatus['understanding-african-economies-and-the-global-system'];
-                const trackStatus = econPs && econPs.isLive ? 'Now Available' : track.status;
+                const trackStatus = econPs && econPs.isLive ? c.nowAvailable : track.status;
                 return (
                 <div key={track.slug} style={{ marginBottom: '1.25rem' }}>
                   <TrackCard track={{ ...track, status: trackStatus }} />
@@ -238,8 +262,8 @@ export default function Courses() {
                 {area.extra.content}
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.65rem', marginBottom: '1.5rem' }}>
-                {area.extra.details.map(([label, value]) => (
-                  <div key={label} style={{ padding: '0.9rem 1.1rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
+                {area.extra.details.map(([label, value], di) => (
+                  <div key={di} style={{ padding: '0.9rem 1.1rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
                     <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
                     <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>{value}</span>
                   </div>
@@ -249,7 +273,7 @@ export default function Courses() {
                 to={area.extra.ctaTo}
                 style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
               >
-                {area.extra.ctaLabel}
+                {area.extra.ctaLabel} &rarr;
               </Link>
             </motion.div>
           )}
@@ -257,48 +281,48 @@ export default function Courses() {
       ))}
 
       {/* Course Product Model */}
-      <PageSection eyebrow="Course Design" heading="What a Complete Tamu Academy Course May Include">
+      <PageSection eyebrow={c.courseDesignEyebrow} heading={c.courseDesignHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          Complete Tamu Academy courses are still under development. Final course packages may include:
+          {c.courseDesignIntro}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '1.5rem' }}>
-          {COURSE_COMPONENTS.map((c) => (
-            <span key={c} className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.83rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>{c}</span>
+          {c.courseComponents.map((comp, ci) => (
+            <span key={ci} className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.83rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>{comp}</span>
           ))}
         </div>
       </PageSection>
 
       {/* Open Learning */}
-      <PageSection eyebrow="Open Learning" heading="Begin with Free Open Learning">
+      <PageSection eyebrow={c.openLearningEyebrow} heading={c.openLearningHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Begin with freely available Tamu Academy videos and articles exploring wellbeing, public policy, economics, institutions, culture, and global systems.
+          {c.openLearningBody}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link
             to="/videos"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Watch Videos →
+            {c.watchVideos} →
           </Link>
           <Link
             to="/articles"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
-            Read Articles →
+            {c.readArticles} →
           </Link>
         </div>
       </PageSection>
 
       {/* Institutional */}
-      <PageSection eyebrow="Institutions" heading="Learning for Institutions">
+      <PageSection eyebrow={c.institutionsEyebrow} heading={c.institutionsHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          Tamu Academy is developing course packages for universities, youth organizations, nonprofits, public institutions, and community programmes.
+          {c.institutionsBody}
         </p>
         <Link
           to="/contact?inquiry=university-or-institutional-partnership"
           style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
-          Discuss a Partnership →
+          {c.discussPartnership} →
         </Link>
       </PageSection>
     </PageLayout>

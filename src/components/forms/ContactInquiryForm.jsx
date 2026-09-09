@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const INQUIRY_TYPES = [
   'Prospective Learner or Programme Interest',
@@ -32,7 +33,6 @@ const REFERRAL_OPTIONS = [
   'Other',
 ];
 
-// Map URL param values to display inquiry types
 const TYPE_PARAM_MAP = {
   'programme-interest': 'Prospective Learner or Programme Interest',
   'facilitator': 'Educator or Facilitator',
@@ -45,6 +45,54 @@ const PROGRAMME_PARAM_MAP = {
   'intercultural-ai-leadership-lab': 'Tamu Intercultural AI Leadership Lab (Proposed Initiative)',
   'ubuntu-and-the-public-good': 'Ubuntu and the Public Good (Proposed Pilot)',
   'power-policy-public-good': 'Power, Policy and the Public Good (Pathway Under Development)',
+};
+
+const tpl = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+const CONTENT = {
+  fullName: 'Full Name',
+  emailAddress: 'Email Address',
+  country: 'Country',
+  cityOrCommunity: 'City or Community',
+  optional: '(optional)',
+  organization: 'Organization or Institution',
+  role: 'Role or Connection',
+  inquiryType: 'Inquiry Type',
+  programmeInterest: 'Programme of Interest',
+  message: 'Message',
+  messageHint: '50–2,000 characters',
+  referralSource: 'How Did You Hear About Tamu Academy?',
+  selectInquiryType: 'Select an inquiry type…',
+  selectProgramme: 'Select a programme…',
+  selectOption: 'Select an option…',
+  inquiryTypes: [...INQUIRY_TYPES],
+  programmeOptions: [...PROGRAMME_OPTIONS],
+  referralOptions: [...REFERRAL_OPTIONS],
+  updatesConsent: 'I would like to receive occasional updates about Tamu Academy programmes and resources.',
+  privacyAck: 'I understand that the information I provide will be used to review and respond to my inquiry.',
+  privacyNotice: 'Tamu Academy will use the information submitted through this form to understand and respond to your inquiry. Please do not include sensitive personal, financial, medical, immigration, or identification information.',
+  submitting: 'Submitting…',
+  submit: 'Submit Inquiry',
+  errorBanner: 'We could not submit your inquiry. Please review the form and try again.',
+  errFullName: 'Full name is required.',
+  errFullNameLength: 'Name must be 120 characters or fewer.',
+  errEmail: 'Email address is required.',
+  errEmailInvalid: 'Please enter a valid email address.',
+  errCountry: 'Country is required.',
+  errCountryLength: 'Please enter a valid country name.',
+  errInquiryType: 'Please select an inquiry type.',
+  errMessage: 'A message is required.',
+  errMessageLength: 'Message must be at least 50 characters. Currently {count}.',
+  errMessageMaxLength: 'Message must not exceed 2,000 characters. Currently {count}.',
+  errPrivacy: 'Please acknowledge the privacy statement to continue.',
+  received: 'Received',
+  successHeading: 'Thank You for Connecting With Tamu Academy.',
+  successMessage: 'Your inquiry has been received. Tamu Academy will review the information you provided as capacity allows.',
+  successHeadingPartnership: 'Thank you for reaching out.',
+  successMessagePartnership: 'Your partnership inquiry has been received. The Tamu Academy team will review the information and follow up using the contact details you provided.',
+  returnToAcademy: 'Return to the Academy',
+  returnToHomepage: 'Return to the Homepage',
+  exploreProgrammes: 'Explore Programmes',
 };
 
 const inputStyle = {
@@ -92,6 +140,7 @@ function FieldError({ id, message }) {
 }
 
 export default function ContactInquiryForm({ presetType, presetProgramme, sourcePage, successVariant }) {
+  const { content: c } = useTranslatedContent('contact-form', CONTENT);
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
   const paramProgramme = urlParams.get('programme');
@@ -113,15 +162,14 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
     referral_source: '',
     updates_consent: false,
     privacy_acknowledgment: false,
-    honeypot: '', // hidden field
+    honeypot: '',
   });
 
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+  const [status, setStatus] = useState('idle');
   const successRef = useRef(null);
   const lastSubmitTime = useRef(0);
 
-  // Move focus to success message when it appears
   useEffect(() => {
     if (status === 'success' && successRef.current) {
       successRef.current.focus();
@@ -136,40 +184,35 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
   const validate = () => {
     const e = {};
-    if (!form.full_name.trim()) e.full_name = 'Full name is required.';
-    else if (form.full_name.trim().length > 120) e.full_name = 'Name must be 120 characters or fewer.';
+    if (!form.full_name.trim()) e.full_name = c.errFullName;
+    else if (form.full_name.trim().length > 120) e.full_name = c.errFullNameLength;
 
-    if (!form.email.trim()) e.email = 'Email address is required.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = 'Please enter a valid email address.';
+    if (!form.email.trim()) e.email = c.errEmail;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = c.errEmailInvalid;
 
-    if (!form.country.trim()) e.country = 'Country is required.';
-    else if (form.country.trim().length > 80) e.country = 'Please enter a valid country name.';
+    if (!form.country.trim()) e.country = c.errCountry;
+    else if (form.country.trim().length > 80) e.country = c.errCountryLength;
 
-    if (!form.inquiry_type) e.inquiry_type = 'Please select an inquiry type.';
+    if (!form.inquiry_type) e.inquiry_type = c.errInquiryType;
 
-    if (!form.message.trim()) e.message = 'A message is required.';
-    else if (form.message.trim().length < 50) e.message = `Message must be at least 50 characters. Currently ${form.message.trim().length}.`;
-    else if (form.message.trim().length > 2000) e.message = `Message must not exceed 2,000 characters. Currently ${form.message.trim().length}.`;
+    if (!form.message.trim()) e.message = c.errMessage;
+    else if (form.message.trim().length < 50) e.message = tpl(c.errMessageLength, { count: form.message.trim().length });
+    else if (form.message.trim().length > 2000) e.message = tpl(c.errMessageMaxLength, { count: form.message.trim().length });
 
-    if (!form.privacy_acknowledgment) e.privacy_acknowledgment = 'Please acknowledge the privacy statement to continue.';
+    if (!form.privacy_acknowledgment) e.privacy_acknowledgment = c.errPrivacy;
 
     return e;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Honeypot check — if filled, silently do nothing
     if (form.honeypot) return;
-
-    // Basic rate limiting: prevent double-submit within 10s
     const now = Date.now();
     if (now - lastSubmitTime.current < 10000) return;
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      // Move focus to first error field
       const firstKey = Object.keys(validationErrors)[0];
       const el = document.getElementById(`field-${firstKey}`);
       if (el) el.focus();
@@ -207,12 +250,8 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
   if (status === 'success') {
     const isPartnership = successVariant === 'partnership';
-    const heading = isPartnership
-      ? 'Thank you for reaching out.'
-      : 'Thank You for Connecting With Tamu Academy.';
-    const message = isPartnership
-      ? 'Your partnership inquiry has been received. The Tamu Academy team will review the information and follow up using the contact details you provided.'
-      : 'Your inquiry has been received. Tamu Academy will review the information you provided as capacity allows.';
+    const heading = isPartnership ? c.successHeadingPartnership : c.successHeading;
+    const message = isPartnership ? c.successMessagePartnership : c.successMessage;
     return (
       <div
         ref={successRef}
@@ -222,7 +261,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         style={{ padding: '2.5rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', outline: 'none' }}
       >
         <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-          Received
+          {c.received}
         </p>
         <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
           {heading}
@@ -237,13 +276,13 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
                 to="/academy"
                 style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
-                Return to the Academy
+                {c.returnToAcademy}
               </Link>
               <Link
                 to="/"
                 style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
-                Return to the Homepage
+                {c.returnToHomepage}
               </Link>
             </>
           ) : (
@@ -252,13 +291,13 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
                 to="/"
                 style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
-                Return to the Homepage
+                {c.returnToHomepage}
               </Link>
               <Link
-                to="/programmes"
+                to="/courses"
                 style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
-                Explore Programmes
+                {c.exploreProgrammes}
               </Link>
             </>
           )}
@@ -270,7 +309,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
   return (
     <form onSubmit={handleSubmit} noValidate aria-label="Contact inquiry form">
 
-      {/* Honeypot — hidden from real users */}
+      {/* Honeypot */}
       <div style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }} aria-hidden="true">
         <label htmlFor="tamu-hp">Leave this field empty</label>
         <input id="tamu-hp" name="tamu-hp" type="text" tabIndex={-1} autoComplete="off" value={form.honeypot} onChange={set('honeypot')} />
@@ -280,15 +319,15 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {status === 'error' && (
         <div role="alert" style={{ marginBottom: '1.5rem', padding: '1rem 1.25rem', border: '1px solid rgba(220,80,60,0.35)', borderRadius: '3px', backgroundColor: 'rgba(220,80,60,0.06)' }}>
           <p className="font-body" style={{ color: 'rgba(220,130,110,0.95)', fontSize: '0.88rem', margin: 0, fontWeight: 400 }}>
-            We could not submit your inquiry. Please review the form and try again.
+            {c.errorBanner}
           </p>
         </div>
       )}
 
-      {/* Two-column row: name + email */}
+      {/* Name + Email */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-full_name" style={labelStyle}>Full Name <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-full_name" style={labelStyle}>{c.fullName} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-full_name"
             type="text"
@@ -304,7 +343,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-full_name" message={errors.full_name} />
         </div>
         <div>
-          <label htmlFor="field-email" style={labelStyle}>Email Address <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-email" style={labelStyle}>{c.emailAddress} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-email"
             type="email"
@@ -321,10 +360,10 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         </div>
       </div>
 
-      {/* Two-column: country + city */}
+      {/* Country + City */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-country" style={labelStyle}>Country <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-country" style={labelStyle}>{c.country} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-country"
             type="text"
@@ -340,7 +379,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-country" message={errors.country} />
         </div>
         <div style={fieldWrap}>
-          <label htmlFor="field-city" style={labelStyle}>City or Community <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-city" style={labelStyle}>{c.cityOrCommunity} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input
             id="field-city"
             type="text"
@@ -352,21 +391,21 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         </div>
       </div>
 
-      {/* Two-column: org + role */}
+      {/* Org + Role */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-org" style={labelStyle}>Organization or Institution <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-org" style={labelStyle}>{c.organization} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input id="field-org" type="text" maxLength={200} value={form.organization} onChange={set('organization')} style={inputStyle} />
         </div>
         <div>
-          <label htmlFor="field-role" style={labelStyle}>Role or Connection <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
+          <label htmlFor="field-role" style={labelStyle}>{c.role} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input id="field-role" type="text" maxLength={120} value={form.role} onChange={set('role')} style={inputStyle} />
         </div>
       </div>
 
       {/* Inquiry type */}
       <div style={fieldWrap}>
-        <label htmlFor="field-inquiry_type" style={labelStyle}>Inquiry Type <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+        <label htmlFor="field-inquiry_type" style={labelStyle}>{c.inquiryType} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
         <select
           id="field-inquiry_type"
           value={form.inquiry_type}
@@ -376,31 +415,31 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           aria-invalid={!!errors.inquiry_type}
           style={{ ...( errors.inquiry_type ? inputErrorStyle : inputStyle), cursor: 'pointer' }}
         >
-          <option value="">Select an inquiry type…</option>
-          {INQUIRY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+          <option value="">{c.selectInquiryType}</option>
+          {INQUIRY_TYPES.map((t, i) => <option key={t} value={t}>{c.inquiryTypes[i]}</option>)}
         </select>
         <FieldError id="err-inquiry_type" message={errors.inquiry_type} />
       </div>
 
       {/* Programme of interest */}
       <div style={fieldWrap}>
-        <label htmlFor="field-programme" style={labelStyle}>Programme of Interest <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
+        <label htmlFor="field-programme" style={labelStyle}>{c.programmeInterest} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
         <select
           id="field-programme"
           value={form.programme_interest}
           onChange={set('programme_interest')}
           style={{ ...inputStyle, cursor: 'pointer' }}
         >
-          <option value="">Select a programme…</option>
-          {PROGRAMME_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
+          <option value="">{c.selectProgramme}</option>
+          {PROGRAMME_OPTIONS.map((p, i) => <option key={p} value={p}>{c.programmeOptions[i]}</option>)}
         </select>
       </div>
 
       {/* Message */}
       <div style={fieldWrap}>
         <label htmlFor="field-message" style={labelStyle}>
-          Message <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
-          <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>50–2,000 characters</span>
+          {c.message} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
+          <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>{c.messageHint}</span>
         </label>
         <textarea
           id="field-message"
@@ -423,15 +462,15 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Referral source */}
       <div style={fieldWrap}>
-        <label htmlFor="field-referral" style={labelStyle}>How Did You Hear About Tamu Academy? <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>(optional)</span></label>
+        <label htmlFor="field-referral" style={labelStyle}>{c.referralSource} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
         <select
           id="field-referral"
           value={form.referral_source}
           onChange={set('referral_source')}
           style={{ ...inputStyle, cursor: 'pointer' }}
         >
-          <option value="">Select an option…</option>
-          {REFERRAL_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+          <option value="">{c.selectOption}</option>
+          {REFERRAL_OPTIONS.map((r, i) => <option key={r} value={r}>{c.referralOptions[i]}</option>)}
         </select>
       </div>
 
@@ -445,7 +484,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             style={{ marginTop: '0.2rem', accentColor: '#D4A12A', width: '16px', height: '16px', flexShrink: 0 }}
           />
           <span className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
-            I would like to receive occasional updates about Tamu Academy programmes and resources.
+            {c.updatesConsent}
           </span>
         </label>
       </div>
@@ -463,7 +502,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             style={{ marginTop: '0.2rem', accentColor: '#D4A12A', width: '16px', height: '16px', flexShrink: 0 }}
           />
           <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
-            I understand that the information I provide will be used to review and respond to my inquiry. <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
+            {c.privacyAck} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
           </span>
         </label>
         <FieldError id="err-privacy" message={errors.privacy_acknowledgment} />
@@ -471,7 +510,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Privacy notice */}
       <p className="font-body" style={{ color: 'rgba(245,239,224,0.58)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
-        Tamu Academy will use the information submitted through this form to understand and respond to your inquiry. Please do not include sensitive personal, financial, medical, immigration, or identification information.
+        {c.privacyNotice}
       </p>
 
       <button
@@ -488,7 +527,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         }}
         aria-busy={status === 'submitting'}
       >
-        {status === 'submitting' ? 'Submitting…' : 'Submit Inquiry'}
+        {status === 'submitting' ? c.submitting : c.submit}
       </button>
 
       <style>{`

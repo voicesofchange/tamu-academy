@@ -6,6 +6,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -37,34 +38,36 @@ const iconWrapStyle = {
   marginBottom: '1rem',
 };
 
-const steps = [
-  {
-    icon: LayoutDashboard,
-    eyebrow: 'Step 1',
-    title: 'Open My Courses',
-    body: 'Your personal dashboard shows every course you are enrolled in, your progress through each module, and a quick way to pick up exactly where you left off.',
-  },
-  {
-    icon: BookOpen,
-    eyebrow: 'Step 2',
-    title: 'Browse and enroll',
-    body: 'Visit the Courses page to explore what is available. When you open a course, you will see its full module map and learning outcomes before you begin.',
-  },
-  {
-    icon: PlayCircle,
-    eyebrow: 'Step 3',
-    title: 'Start your first lesson',
-    body: 'Each module begins with a core video or reading, followed by a short lesson, an applied activity, a private reflection, and a knowledge check. Work through each section in order.',
-  },
-  {
-    icon: Award,
-    eyebrow: 'Step 4',
-    title: 'Track progress and earn certificates',
-    body: 'Your progress saves automatically as you complete each section. Finish every module in a course to become eligible for a certificate of completion.',
-  },
-];
+const CONTENT = {
+  heroEyebrow: 'Welcome',
+  heroHeading: "You're ready to begin",
+  heroSubheading: 'Here is a quick guide to finding your way around Tamu Academy and starting your first lesson.',
+  gettingStartedEyebrow: 'Getting Started',
+  gettingStartedHeading: 'How Tamu Academy works',
+  gettingStartedBody: 'Everything you need is built around four simple steps. Take a moment to read through them, then head to your dashboard to begin.',
+  readyEyebrow: 'Ready When You Are',
+  readyHeading: 'Start your learning journey',
+  readyBody: 'You can head straight to your dashboard to see your enrolled courses, or browse the full catalogue to find your first one.',
+  goToMyCourses: 'Go to My Courses',
+  browseCourses: 'Browse Courses',
+  steps: [
+    { iconKey: 'dashboard', eyebrow: 'Step 1', title: 'Open My Courses', body: 'Your personal dashboard shows every course you are enrolled in, your progress through each module, and a quick way to pick up exactly where you left off.' },
+    { iconKey: 'book', eyebrow: 'Step 2', title: 'Browse and enroll', body: 'Visit the Courses page to explore what is available. When you open a course, you will see its full module map and learning outcomes before you begin.' },
+    { iconKey: 'play', eyebrow: 'Step 3', title: 'Start your first lesson', body: 'Each module begins with a core video or reading, followed by a short lesson, an applied activity, a private reflection, and a knowledge check. Work through each section in order.' },
+    { iconKey: 'award', eyebrow: 'Step 4', title: 'Track progress and earn certificates', body: 'Your progress saves automatically as you complete each section. Finish every module in a course to become eligible for a certificate of completion.' },
+  ],
+};
+
+const ICON_MAP = {
+  dashboard: LayoutDashboard,
+  book: BookOpen,
+  play: PlayCircle,
+  award: Award,
+};
 
 export default function Welcome() {
+  const { content: c } = useTranslatedContent('welcome', CONTENT);
+
   return (
     <PageLayout>
       <PageMeta
@@ -73,21 +76,21 @@ export default function Welcome() {
         path="/welcome"
       />
       <PageHero
-        eyebrow="Welcome"
-        heading="You're ready to begin"
-        subheading="Here is a quick guide to finding your way around Tamu Academy and starting your first lesson."
+        eyebrow={c.heroEyebrow}
+        heading={c.heroHeading}
+        subheading={c.heroSubheading}
       />
 
-      <PageSection eyebrow="Getting Started" heading="How Tamu Academy works">
+      <PageSection eyebrow={c.gettingStartedEyebrow} heading={c.gettingStartedHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>
-          Everything you need is built around four simple steps. Take a moment to read through them, then head to your dashboard to begin.
+          {c.gettingStartedBody}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
-          {steps.map((step, i) => {
-            const Icon = step.icon;
+          {c.steps.map((step, i) => {
+            const Icon = ICON_MAP[step.iconKey] || LayoutDashboard;
             return (
               <motion.div
-                key={step.title}
+                key={i}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
@@ -112,16 +115,16 @@ export default function Welcome() {
         </div>
       </PageSection>
 
-      <PageSection eyebrow="Ready When You Are" heading="Start your learning journey">
+      <PageSection eyebrow={c.readyEyebrow} heading={c.readyHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          You can head straight to your dashboard to see your enrolled courses, or browse the full catalogue to find your first one.
+          {c.readyBody}
         </p>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link to="/my-courses" className="font-body" style={primaryButtonStyle}>
-            Go to My Courses &rarr;
+            {c.goToMyCourses} &rarr;
           </Link>
           <Link to="/courses" className="font-body" style={linkButtonStyle}>
-            Browse Courses &rarr;
+            {c.browseCourses} &rarr;
           </Link>
         </div>
       </PageSection>

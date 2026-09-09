@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
   color: 'rgba(245,239,224,0.78)',
@@ -47,21 +48,28 @@ const dashedBox = {
   backgroundColor: 'rgba(245,239,224,0.015)',
 };
 
-/**
- * EconomicsCourseProgress — learner progress + enrollment section for
- * the Understanding African Economies and the Global System course
- * overview. Mirrors the Mental Health overview's progress section.
- *
- * - Fetches getEconomicsCourseCompletion on mount.
- * - When the learner is not enrolled (hasEnrollment false), shows an
- *   enroll button that calls enrollEconomicsCourse, then refreshes.
- * - When enrolled, shows the overall progress bar, a resume link to the
- *   first incomplete module (or the completion page), a certificate
- *   link when eligible, and the list of incomplete modules.
- * - No personal reflections or activity responses are stored in the
- *   platform; the privacy note is shown to make that clear.
- */
+const tpl = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+const CONTENT = {
+  loadingProgress: 'Loading your progress...',
+  enrollPrompt: 'Enroll to begin tracking your progress across the six modules.',
+  enrolling: 'Enrolling...',
+  enrollButton: 'Enroll in this course',
+  enrollError: 'Enrollment is not yet open for this course.',
+  privacyNote: 'No personal reflections or activity responses are stored in the platform.',
+  signInPrompt: 'Sign in or create an account to track your progress. Your position in the course, completed modules, and knowledge-check results will appear here. No personal reflections or activity responses are stored in the platform.',
+  overallProgress: 'Overall progress',
+  modulesCount: '{count} of {total} modules',
+  resumeAt: 'Resume at {number}',
+  reviewCompletion: 'Review Course Completion',
+  viewCertificate: 'View Certificate',
+  completedAll: 'You have completed all six modules. Your certificate of completion is available.',
+  completeAll: 'Complete all six modules to earn your certificate of completion.',
+  signInToTrack: 'Sign in to track your progress across modules.',
+};
+
 export default function EconomicsCourseProgress({ courseSlug }) {
+  const { content: c } = useTranslatedContent('econ-course-progress', CONTENT);
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -91,7 +99,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
       await base44.functions.invoke('enrollEconomicsCourse', { courseSlug });
       await fetchProgress();
     } catch (err) {
-      setEnrollError('Enrollment is not yet open for this course.');
+      setEnrollError(c.enrollError);
     } finally {
       setEnrolling(false);
     }
@@ -101,19 +109,18 @@ export default function EconomicsCourseProgress({ courseSlug }) {
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-          Loading your progress...
+          {c.loadingProgress}
         </p>
       </div>
     );
   }
 
-  // Not enrolled — show the enroll prompt.
   if (progress && !progress.hasEnrollment) {
     return (
       <div aria-live="polite" role="status">
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-            Enroll to begin tracking your progress across the six modules.
+            {c.enrollPrompt}
           </p>
           <button
             type="button"
@@ -122,7 +129,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
             className="font-body"
             style={{ ...primaryButtonStyle, opacity: enrolling ? 0.6 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
           >
-            {enrolling ? 'Enrolling...' : 'Enroll in this course'}
+            {enrolling ? c.enrolling : c.enrollButton}
           </button>
           {enrollError && (
             <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>
@@ -130,25 +137,23 @@ export default function EconomicsCourseProgress({ courseSlug }) {
             </p>
           )}
           <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', margin: '1rem 0 0' }}>
-            No personal reflections or activity responses are stored in the platform.
+            {c.privacyNote}
           </p>
         </div>
       </div>
     );
   }
 
-  // No progress data (not authenticated or error).
   if (!progress) {
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-          Sign in or create an account to track your progress. Your position in the course, completed modules, and knowledge-check results will appear here. No personal reflections or activity responses are stored in the platform.
+          {c.signInPrompt}
         </p>
       </div>
     );
   }
 
-  // Enrolled — show progress.
   const completedCount = progress.completedCount || 0;
   const totalModules = progress.totalModules || 6;
   const progressPct = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
@@ -159,17 +164,17 @@ export default function EconomicsCourseProgress({ courseSlug }) {
   const resumeTarget = firstIncomplete
     ? `/courses/${courseSlug}/${firstIncomplete.route}`
     : `/courses/${courseSlug}/completion`;
-  const resumeLabel = firstIncomplete ? `Resume at ${firstIncomplete.number}` : 'Review Course Completion';
+  const resumeLabel = firstIncomplete ? tpl(c.resumeAt, { number: firstIncomplete.number }) : c.reviewCompletion;
 
   return (
     <div aria-live="polite" role="status">
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
           <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Overall progress
+            {c.overallProgress}
           </span>
           <span className="font-body" style={{ color: '#F5EFE0', fontSize: '1rem', fontWeight: 500 }}>
-            {completedCount} of {totalModules} modules
+            {tpl(c.modulesCount, { count: completedCount, total: totalModules })}
           </span>
         </div>
         <div
@@ -190,7 +195,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
         </Link>
         {progress.certificateEligible && (
           <Link to={`/courses/${courseSlug}/certificate`} className="font-body" style={linkButtonStyle}>
-            View Certificate &rarr;
+            {c.viewCertificate} &rarr;
           </Link>
         )}
       </div>
@@ -198,13 +203,13 @@ export default function EconomicsCourseProgress({ courseSlug }) {
       {progress.certificateEligible ? (
         <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.04)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            You have completed all six modules. Your certificate of completion is available.
+            {c.completedAll}
           </p>
         </div>
       ) : progress.incompleteModules && progress.incompleteModules.length > 0 ? (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem', fontSize: '0.88rem' }}>
-            Complete all six modules to earn your certificate of completion.
+            {c.completeAll}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {progress.incompleteModules.map((m) => (
@@ -230,12 +235,12 @@ export default function EconomicsCourseProgress({ courseSlug }) {
       ) : (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
-            Sign in to track your progress across modules.
+            {c.signInToTrack}
           </p>
         </div>
       )}
       <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', margin: '0.75rem 0 0' }}>
-        No personal reflections or activity responses are stored in the platform.
+        {c.privacyNote}
       </p>
     </div>
   );

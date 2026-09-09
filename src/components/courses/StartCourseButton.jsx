@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const primaryButtonStyle = {
   display: 'inline-flex',
@@ -53,28 +54,22 @@ const errorTextStyle = {
   margin: '0.75rem 0 0',
 };
 
-// Maps each course slug to its enrollment backend function name. The
-// backend de-duplicates by (learner_id, course_slug), so calling this on
-// every "Start Course" click is safe — an existing enrollment is reused
-// and no duplicate row is created.
+const CONTENT = {
+  starting: 'Starting...',
+  startCourse: 'Start Course',
+  enrollError: 'Unable to start this course right now. Please try again.',
+  infoText: 'Create an account or sign in to begin this course, save your progress, and return whenever you are ready.',
+  signInToStart: 'Sign In to Start',
+  createAccount: 'Create Account',
+};
+
 const ENROLLMENT_FUNCTION_BY_SLUG = {
   'mental-health-community-and-culture': 'enrollMentalHealth',
   'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
 };
 
-/**
- * StartCourseButton — renders the correct "Start Course" action based
- * on authentication state.
- *
- * - Authenticated learner: calls the server-side enrollment function
- *   (which de-duplicates and reuses an existing enrollment), then
- *   navigates to the first module route. This guarantees the backend
- *   content gate (which requires an active enrollment) will pass.
- * - Logged-out visitor: shows a brief account explanation and links
- *   to /login and /register, both with returnTo set to the first
- *   module route so the learner returns to the course after auth.
- */
 export default function StartCourseButton({ courseSlug, firstModuleRoute = 'module-1' }) {
+  const { content: c } = useTranslatedContent('start-course-btn', CONTENT);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [enrolling, setEnrolling] = useState(false);
@@ -91,7 +86,7 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
       try {
         await base44.functions.invoke(functionName, { courseSlug });
       } catch (err) {
-        setEnrollError('Unable to start this course right now. Please try again.');
+        setEnrollError(c.enrollError);
         setEnrolling(false);
         return;
       }
@@ -109,7 +104,7 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
           className="font-body"
           style={{ ...primaryButtonStyle, opacity: enrolling ? 0.7 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
         >
-          {enrolling ? 'Starting...' : 'Start Course \u2192'}
+          {enrolling ? c.starting : `${c.startCourse} \u2192`}
         </button>
         {enrollError && <p className="font-body" role="alert" style={errorTextStyle}>{enrollError}</p>}
       </div>
@@ -121,14 +116,14 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
   return (
     <div>
       <p className="font-body" style={infoTextStyle}>
-        Create an account or sign in to begin this course, save your progress, and return whenever you are ready.
+        {c.infoText}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
         <Link to={`/login?returnTo=${encodedReturnTo}`} style={primaryButtonStyle}>
-          Sign In to Start &rarr;
+          {c.signInToStart} &rarr;
         </Link>
         <Link to={`/register?returnTo=${encodedReturnTo}`} style={secondaryButtonStyle}>
-          Create Account &rarr;
+          {c.createAccount} &rarr;
         </Link>
       </div>
     </div>

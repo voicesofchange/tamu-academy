@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import StatusBadge from '@/components/page/StatusBadge';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -17,27 +18,30 @@ const optionBase = {
 
 const letter = (i) => String.fromCharCode(65 + i);
 
-/**
- * Learner-facing knowledge check for Economics modules.
- *
- * TRUST MODEL:
- *   - The answer key (correctIndex) is NEVER read from the quiz object.
- *     Grading happens entirely on the server via
- *     checkEconomicsKnowledgeCheck, which grades against the protected
- *     curriculum in base44/shared/economics-curriculum.js.
- *   - The client sends only { courseSlug, moduleSlug, answers } where
- *     each answer is { questionId, selectedIndex } or
- *     { questionId, writtenResponse }.
- *   - The server returns { score, totalQuestions, passingScore, passed,
- *     feedback: [{ questionId, isCorrect, feedback, correctAnswerText? }],
- *     progressSaved }. The correct answer TEXT (not index) is released
- *     only after a complete valid submission.
- *   - Selections and the written response live in component state only
- *     and are not persisted or sent anywhere except the grading call.
- *   - On a pass, onPassed() is called so the parent progress tracker can
- *     refresh its server-verified knowledge_check_passed key.
- */
+const tpl = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+const CONTENT = {
+  validationError: 'Please answer all {total} questions before submitting. {missing} still unanswered.',
+  correct: 'Correct',
+  reconsider: 'Reconsider',
+  correctAnswer: 'Correct answer: {answer}',
+  grading: 'Grading…',
+  submit: 'Submit Knowledge Check',
+  scoreCorrect: '{score} of {total} correct',
+  scoreGraded: '{score} of {total} graded correct',
+  question5Completed: 'Question 5 completed',
+  passing: 'Passing',
+  belowPassing: 'Below passing threshold',
+  passMsg: 'You met the completion requirement: at least {passingScore} of the {mcTotal} questions correct. Review the feedback below.',
+  passWrittenMsg: 'You met the completion requirement: at least {passingScore} of {mcTotal} graded questions correct and a completed written response. Review the feedback below.',
+  failMsg: 'You answered {score} of {mcTotal} questions correctly. Answer at least four of the five questions correctly to pass. You can retry.',
+  failWrittenMsg: 'You answered {score} of {mcTotal} graded questions correctly. Answer at least four of the five questions correctly to pass. You can retry; your written response will be kept.',
+  tryAgain: 'Try Again',
+  serverError: 'We could not grade your responses right now. Please try again.',
+};
+
 export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed }) {
+  const { content: c } = useTranslatedContent('knowledge-check', CONTENT);
   const [answers, setAnswers] = useState(() => quiz.questions.map((q) => (q.written ? '' : null)));
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState(null);
@@ -84,7 +88,7 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
     );
     if (missing.length > 0) {
       setValidationError(
-        `Please answer all ${quiz.questions.length} questions before submitting. ${missing.length} question${missing.length > 1 ? 's are' : ' is'} still unanswered.`
+        tpl(c.validationError, { total: quiz.questions.length, missing: missing.length })
       );
       return;
     }
@@ -106,7 +110,7 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
       setResult(data);
       if (data.passed && typeof onPassed === 'function') onPassed();
     } catch (err) {
-      setServerError('We could not grade your responses right now. Please try again.');
+      setServerError(c.serverError);
     } finally {
       setPending(false);
     }
@@ -191,14 +195,14 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
             {result && fb && !q.written && (
               <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${fb.isCorrect ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
                 <p className="font-body" style={{ ...bodyText, margin: '0 0 0.4rem', color: fb.isCorrect ? '#D4A12A' : '#e8955c', fontWeight: 500 }}>
-                  {fb.isCorrect ? 'Correct' : 'Reconsider'}
+                  {fb.isCorrect ? c.correct : c.reconsider}
                 </p>
                 <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: '0 0 0.35rem', color: 'rgba(245,239,224,0.7)', fontSize: '0.88rem' }}>
                   {fb.feedback}
                 </p>
                 {!fb.isCorrect && fb.correctAnswerText && (
                   <p className="font-body" style={{ ...bodyText, margin: 0, color: 'rgba(212,161,42,0.8)', fontSize: '0.86rem' }}>
-                    Correct answer: {fb.correctAnswerText}
+                    {tpl(c.correctAnswer, { answer: fb.correctAnswerText })}
                   </p>
                 )}
               </div>
@@ -226,32 +230,32 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
             opacity: pending ? 0.7 : 1,
           }}
         >
-          {pending ? 'Grading…' : 'Submit Knowledge Check'}
+          {pending ? c.grading : c.submit}
         </button>
       ) : (
         <div role="status" aria-live="polite" style={{ marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-            <StatusBadge label={hasWritten ? `${result.score} of ${mcTotal} graded correct` : `${result.score} of ${mcTotal} correct`} />
+            <StatusBadge label={tpl(hasWritten ? c.scoreGraded : c.scoreCorrect, { score: result.score, total: mcTotal })} />
             {hasWritten && (
-              <StatusBadge label="Question 5 completed" />
+              <StatusBadge label={c.question5Completed} />
             )}
-            <StatusBadge label={result.passed ? 'Passing' : 'Below passing threshold'} />
+            <StatusBadge label={result.passed ? c.passing : c.belowPassing} />
           </div>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
             {result.passed
               ? (hasWritten
-                ? `You met the completion requirement: at least ${passingScore} of ${mcTotal} graded questions correct and a completed written response. Review the feedback below.`
-                : `You met the completion requirement: at least ${passingScore} of the ${mcTotal} questions correct. Review the feedback below.`)
+                ? tpl(c.passWrittenMsg, { passingScore, mcTotal })
+                : tpl(c.passMsg, { passingScore, mcTotal }))
               : (hasWritten
-                ? `You answered ${result.score} of ${mcTotal} graded questions correctly. Answer at least four of the five questions correctly to pass. You can retry; your written response will be kept.`
-                : `You answered ${result.score} of ${mcTotal} questions correctly. Answer at least four of the five questions correctly to pass. You can retry.`)}
+                ? tpl(c.failWrittenMsg, { score: result.score, mcTotal })
+                : tpl(c.failMsg, { score: result.score, mcTotal }))}
           </p>
           <button
             type="button"
             onClick={handleRetry}
             style={{ padding: '0.7rem 1.6rem', border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', background: 'transparent', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
           >
-            Try Again
+            {c.tryAgain}
           </button>
         </div>
       )}
