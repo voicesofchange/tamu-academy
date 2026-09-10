@@ -16,7 +16,10 @@
  * Server-side only. Imported ONLY by Base44 backend functions.
  */
 
-export const LINKEDIN_TARGET_ORG_URNS = [];
+export const LINKEDIN_TARGET_ORG_URNS = [
+  'urn:li:organization:105855939',
+  'urn:li:organization:109662818',
+];
 
 export const SITE_URL = 'https://tamu-learn-global.base44.app';
 

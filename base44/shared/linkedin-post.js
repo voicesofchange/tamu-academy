@@ -14,7 +14,7 @@
  * Server-side only. Imported ONLY by Base44 backend functions.
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.48';
-import { LINKEDIN_TARGET_ORG_URNS, LINKEDIN_VERSION } from './linkedin-posting-config.js';
+import { LINKEDIN_TARGET_ORG_URNS } from './linkedin-posting-config.js';
 
 export async function postToLinkedInOrgs(base44, { message, event_type, ref_id }) {
   if (!message || !event_type || !ref_id) {
@@ -42,30 +42,32 @@ export async function postToLinkedInOrgs(base44, { message, event_type, ref_id }
   const results = [];
   for (const orgUrn of LINKEDIN_TARGET_ORG_URNS) {
     try {
-      const res = await fetch('https://api.linkedin.com/rest/posts', {
+      const res = await fetch('https://api.linkedin.com/v2/ugcPosts', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
-          'LinkedIn-Version': LINKEDIN_VERSION,
           'X-Restli-Protocol-Version': '2.0.0',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           author: orgUrn,
           lifecycleState: 'PUBLISHED',
-          commentary: message,
-          visibility: 'PUBLIC',
-          distribution: {
-            feedDistribution: 'MAIN_FEED',
-            targetEntities: [],
-            thirdPartyDistributionChannels: [],
+          specificContent: {
+            'com.linkedin.ugc.ShareContent': {
+              shareCommentary: { text: message },
+              shareMediaCategory: 'NONE',
+            },
           },
+          visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
         }),
       });
 
-      const postId = res.headers.get('x-restli-id') || null;
+      let postId = null;
       let errorText = null;
-      if (!res.ok) {
+      if (res.ok) {
+        const created = await res.json().catch(() => ({}));
+        postId = created.id || null;
+      } else {
         errorText = await res.text();
       }
 
