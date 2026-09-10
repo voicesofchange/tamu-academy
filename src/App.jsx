@@ -25,6 +25,7 @@ import Module6Economics from './pages/Module6Economics';
 import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
 import Resources from './pages/Resources';
 import LearnerStories from './pages/LearnerStories';
+import CommunityInsights from './pages/CommunityInsights';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
 import Articles from './pages/Articles';
@@ -100,6 +101,7 @@ const AuthenticatedApp = () => {
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/insights" element={<CommunityInsights />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
@@ -141,7 +143,6 @@ const AuthenticatedApp = () => {
       <Route path="/programmes" element={<Navigate to="/courses" replace />} />
       <Route path="/learning-areas" element={<Navigate to="/courses#learning-areas" replace />} />
       <Route path="/partner" element={<Navigate to="/contact?type=partnership" replace />} />
-      <Route path="/insights" element={<Navigate to="/resources" replace />} />
       <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

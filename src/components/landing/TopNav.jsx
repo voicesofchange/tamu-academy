@@ -23,7 +23,7 @@ export default function TopNav() {
   const { isAuthenticated, logout } = useAuth();
   const { t } = useTranslation();
   const navLinks = isAuthenticated
-    ? [...NAV_LINKS.slice(0, 3), { key: 'nav.myCourses', to: '/my-courses' }, ...NAV_LINKS.slice(3)]
+    ? [...NAV_LINKS.slice(0, 3), { key: 'nav.myCourses', to: '/my-courses' }, { key: 'nav.insights', to: '/insights' }, ...NAV_LINKS.slice(3)]
     : NAV_LINKS;
 
   useEffect(() => {
