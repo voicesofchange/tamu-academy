@@ -75,6 +75,7 @@ export default function Register() {
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
       }
+      base44.analytics.track({ eventName: "user_registered", properties: { method: "email" } });
       const returnTo = safeReturnTo();
       window.location.href = returnTo === "/" ? "/welcome" : returnTo;
     } catch (err) {
@@ -99,6 +100,7 @@ export default function Register() {
 
   const handleGoogle = () => {
     const returnTo = safeReturnTo();
+    base44.analytics.track({ eventName: "user_registered", properties: { method: "google" } });
     base44.auth.loginWithProvider("google", returnTo === "/" ? "/welcome" : returnTo);
   };
 

@@ -91,6 +91,7 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
         return;
       }
     }
+    base44.analytics.track({ eventName: "course_started", properties: { course_slug: courseSlug } });
     navigate(modulePath);
   }
 
