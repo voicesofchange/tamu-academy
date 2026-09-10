@@ -133,15 +133,6 @@ export default async function(req: Request): Promise<Response> {
         if (!isModulePublished(m4CourseSlug, mSlug)) {
           return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
-        const m4Prereq = getModulePrerequisite(m4CourseSlug, mSlug);
-        if (m4Prereq) {
-          const m4PrereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-            learner_id: user.id, course_slug: m4CourseSlug, module_slug: m4Prereq, status: 'completed',
-          });
-          if (!m4PrereqRows || m4PrereqRows.length === 0) {
-            return Response.json({ error: 'Forbidden' }, { status: 403 });
-          }
-        }
         m4CanRecord = true;
       }
 
@@ -291,24 +282,27 @@ export default async function(req: Request): Promise<Response> {
         if (!isModulePublished(courseSlug, moduleSlug)) {
           return Response.json({ error: 'Forbidden' }, { status: 403 });
         }
-        const prereqRoute = getModulePrerequisite(courseSlug, moduleSlug);
-        if (prereqRoute) {
-          const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-            learner_id: user.id,
-            course_slug: courseSlug,
-            module_slug: prereqRoute,
-            status: 'completed',
-          });
-          if (!prereqRows || prereqRows.length === 0) {
-            return Response.json({ error: 'Forbidden' }, { status: 403 });
-          }
-        }
         canRecordProgress = true;
       }
     } else {
-      // Module 1 and Module 2: admin-only (existing behavior).
-      if (!isAdmin) {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      // Module 1 and Module 2: enrollment + published check.
+      if (isAdmin) {
+        const isPublished = isModulePublished(courseSlug, moduleSlug);
+        const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id, course_slug: courseSlug, status: 'active',
+        });
+        canRecordProgress = isPublished && !!(enrollmentRows && enrollmentRows.length > 0);
+      } else {
+        const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+          learner_id: user.id, course_slug: courseSlug, status: 'active',
+        });
+        if (!enrollmentRows || enrollmentRows.length === 0) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        if (!isModulePublished(courseSlug, moduleSlug)) {
+          return Response.json({ error: 'Forbidden' }, { status: 403 });
+        }
+        canRecordProgress = true;
       }
     }
 

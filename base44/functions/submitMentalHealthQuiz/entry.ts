@@ -2,6 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import {
   isQuizSupported,
   getQuizAnswerKey,
+  isModulePublished,
 } from '../../shared/mental-health-curriculum.js';
 
 /**
@@ -78,9 +79,10 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       user = null;
     }
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const isAdmin = user.role === 'admin';
 
     let body = {};
     try {
@@ -134,6 +136,19 @@ export default async function(req: Request): Promise<Response> {
       // Defensive — isQuizSupported returned true but the helper
       // returned null. Treat as not found.
       return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Enrollment + published check for non-admins
+    if (!isAdmin) {
+      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: user.id, course_slug: courseSlug, status: 'active',
+      });
+      if (!enrollmentRows || enrollmentRows.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      if (!isModulePublished(courseSlug, moduleSlug)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     // Validate the answer array shape: must be present and exactly

@@ -158,18 +158,6 @@ export default async function(req: Request): Promise<Response> {
       if (!isPublished) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-      const prereqRoute = getModulePrerequisite(courseSlug, moduleSlug);
-      if (prereqRoute) {
-        const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-          learner_id: user.id,
-          course_slug: courseSlug,
-          module_slug: prereqRoute,
-          status: 'completed',
-        });
-        if (!prereqRows || prereqRows.length === 0) {
-          return Response.json({ error: 'Forbidden' }, { status: 403 });
-        }
-      }
       canRecordProgress = true;
     }
 
