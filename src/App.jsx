@@ -53,6 +53,7 @@ import MhInsights from './pages/MhInsights';
 import EconomicsCourseCompletion from './pages/EconomicsCourseCompletion';
 import EconomicsCertificate from './pages/EconomicsCertificate';
 import MyCourses from './pages/MyCourses';
+import MotivationCoach from './pages/MotivationCoach';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -101,6 +102,7 @@ const AuthenticatedApp = () => {
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/motivation-coach" element={<MotivationCoach />} />
         <Route path="/insights" element={<CommunityInsights />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
