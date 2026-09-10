@@ -107,6 +107,17 @@ export default async function(req) {
       reviews: approvedStories.filter(s => s.story_type === 'review').length,
     };
 
+    // Recent module completion milestones (for real-time feed)
+    const recentMilestones = moduleProgress
+      .filter(mp => mp.status === 'completed' && mp.completed_at)
+      .sort((a, b) => new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime())
+      .slice(0, 12)
+      .map(mp => ({
+        course_slug: mp.course_slug,
+        module_slug: mp.module_slug,
+        completed_at: mp.completed_at,
+      }));
+
     return Response.json({
       totals: {
         enrollments: totalEnrollments,
@@ -121,6 +132,7 @@ export default async function(req) {
       moduleMilestones,
       geographicReach,
       storyStats,
+      recentMilestones,
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

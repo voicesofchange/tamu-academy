@@ -112,6 +112,11 @@ html {
   100% { background-position: 200% center; }
 }
 
+@keyframes tamuPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.4); }
+}
+
 .tamu-bg {
   animation: backgroundReveal 1.5s ease-out forwards;
 }

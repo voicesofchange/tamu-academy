@@ -8,6 +8,7 @@ import InsightStatCard from '@/components/insights/InsightStatCard';
 import EnrollmentTrendChart from '@/components/insights/EnrollmentTrendChart';
 import CourseBreakdownChart from '@/components/insights/CourseBreakdownChart';
 import ModuleMilestonesChart from '@/components/insights/ModuleMilestonesChart';
+import DiasporaProgressMap from '@/components/insights/DiasporaProgressMap';
 import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
@@ -94,6 +95,8 @@ export default function CommunityInsights() {
               <InsightStatCard value={data.totals.stories} label={t('insights.statStories')} />
             </div>
           </PageSection>
+
+          <DiasporaProgressMap data={data} courseLabels={courseLabels} t={t} />
 
           {data.enrollmentTrend.length > 0 && (
             <PageSection heading={t('insights.trendHeading')}>
