@@ -102,6 +102,15 @@ export default async function(req: Request): Promise<Response> {
       updated_at: now,
     });
 
+    try {
+      await base44.analytics.track({
+        eventName: 'course_enrolled',
+        properties: { course_slug: requestedCourseSlug },
+      });
+    } catch (err) {
+      console.warn('[enrollMentalHealth] analytics.track failed:', err && err.message);
+    }
+
     return Response.json({ enrollment: created, alreadyEnrolled: false });
   } catch (error) {
     console.error('[enrollMentalHealth] Unexpected error:', error && error.message);

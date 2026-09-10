@@ -99,6 +99,15 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.entities.ContactInquiry.create(record);
 
+    try {
+      await base44.analytics.track({
+        eventName: 'contact_inquiry_submitted',
+        properties: { inquiry_type: inquiry_type },
+      });
+    } catch (err) {
+      console.warn('[submitContactInquiry] analytics.track failed:', err && err.message);
+    }
+
     // Send notification email. Free-text inputs are HTML-escaped before being
     // inserted into the notification body/subject so a malicious submission
     // cannot inject markup into the administrator's email client. Enum
