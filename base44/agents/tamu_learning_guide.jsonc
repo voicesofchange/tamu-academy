@@ -4,16 +4,35 @@
   "tool_configs": [
     {
       "function_name": "getTamuGuideData",
-      "description": "Returns approved public Tamu Academy information: published courses with titles, slugs, descriptions, module counts, estimated times, publication status, certificate availability, and overview routes; approved public learning resources with titles, categories, descriptions, and URLs; and public site navigation links. No learner data, no curriculum, no assessments."
+      "description": "Returns approved public Tamu Academy information: published courses, public learning resources, and site navigation links. No learner data."
     },
     {
       "function_name": "getEconomicsCourseCompletion",
-      "description": "Returns the authenticated learner's own progress summary for the Understanding African Economies and the Global System course: enrollment status, per-module completion, completed module count, total modules, incomplete modules, course completion status, and certificate eligibility. Derives the learner from the authenticated session; returns an error for logged-out users."
+      "description": "Returns the authenticated learner's own progress summary for the Understanding African Economies course. Derives the learner from the session."
     },
     {
       "function_name": "getMentalHealthCourseCompletion",
-      "description": "Returns the authenticated learner's own progress summary for the Mental Health, Community and Culture course: enrollment status, per-module completion, completed module count, total modules, incomplete modules, course completion status, and certificate eligibility. Derives the learner from the authenticated session; returns an error for logged-out users."
+      "description": "Returns the authenticated learner's own progress summary for the Mental Health, Community and Culture course. Derives the learner from the session."
     }
   ],
+  "context_files": [],
+  "app_user_connector_configs": [],
+  "selected_skill_names": [],
+  "selected_workspace_skill_ids": [],
+  "model": "automatic",
+  "whatsapp_greeting": null,
+  "telegram_greeting": null,
+  "line_greeting": null,
+  "memory_config": {
+    "enabled": true,
+    "scope": "both",
+    "include_other_conversation_context": false,
+    "instructions": null
+  },
+  "voice_config": {
+    "voice_id": null
+  },
+  "emails_settings": null,
+  "allow_anonymous_access": false,
   "name": "tamu_learning_guide"
 }

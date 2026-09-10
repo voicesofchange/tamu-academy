@@ -192,6 +192,7 @@ export default function UbuntuMentalHealth() {
           </p>
         </div>
       </PageSection>
+      <TamuGuideWidget />
     </PageLayout>
   );
 }

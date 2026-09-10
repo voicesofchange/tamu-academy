@@ -206,6 +206,7 @@ export default function Resources() {
           border-color: rgba(212,161,42,0.4);
         }
       `}</style>
+      <TamuGuideWidget />
     </PageLayout>
   );
 }
