@@ -7,6 +7,7 @@ import PageSection from '@/components/page/PageSection';
 import ResourceCard from '@/components/resources/ResourceCard';
 import { RESOURCE_AREAS, getResourcesByArea, getActiveResourceCount } from '@/lib/resources-data';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const CONTENT = {
   heroEyebrow: 'Resources',

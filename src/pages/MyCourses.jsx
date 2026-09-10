@@ -10,6 +10,7 @@ import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 

@@ -3,6 +3,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const CONTENT = {
   navAttr: 'A Waiyaki House learning venture',
@@ -814,6 +815,8 @@ export default function LaunchLanding() {
           </Link>
         </p>
       </footer>
+
+      <TamuGuideWidget />
 
       <style>{`
         .launch-sr-only {

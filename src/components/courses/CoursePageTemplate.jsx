@@ -11,6 +11,7 @@ import StartCourseButton from '@/components/courses/StartCourseButton';
 import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
 import { useTranslation } from '@/lib/i18n';
+import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -176,6 +177,7 @@ export default function CoursePageTemplate({ course }) {
           </Link>
         </div>
       </PageSection>
+      <TamuGuideWidget />
     </PageLayout>
   );
 }

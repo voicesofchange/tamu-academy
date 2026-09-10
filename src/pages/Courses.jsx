@@ -10,6 +10,7 @@ import StatusBadge from '@/components/page/StatusBadge';
 import TrackCard from '@/components/courses/TrackCard';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -325,6 +326,7 @@ export default function Courses() {
           {c.discussPartnership} →
         </Link>
       </PageSection>
+      <TamuGuideWidget />
     </PageLayout>
   );
 }
