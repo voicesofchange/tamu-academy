@@ -1,0 +1,75 @@
+{
+  "name": "LinkedInAnnouncement",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "title": "Event Type",
+      "enum": [
+        "module_live",
+        "learner_story_featured",
+        "certificate_milestone"
+      ]
+    },
+    "ref_id": {
+      "type": "string",
+      "title": "Reference ID",
+      "description": "Module slug, story id, or milestone count string"
+    },
+    "org_urn": {
+      "type": "string",
+      "title": "Organization URN"
+    },
+    "message": {
+      "type": "string",
+      "title": "Posted Message",
+      "format": "textarea"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "posted",
+        "failed",
+        "seeded"
+      ],
+      "default": "posted"
+    },
+    "linkedin_post_id": {
+      "type": "string",
+      "title": "LinkedIn Post ID"
+    },
+    "error": {
+      "type": "string",
+      "title": "Error Details",
+      "format": "textarea"
+    }
+  },
+  "required": [
+    "event_type",
+    "ref_id",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

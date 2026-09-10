@@ -1,0 +1,45 @@
+{
+  "name": "Announce New Course Module Releases on LinkedIn",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "Daily check that posts newly published course modules to the LinkedIn organization page",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "announce_course_releases_linkedin",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "check_releases": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "checkCourseReleasesLinkedIn",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check for new module releases",
+            "description": "Posts any newly published modules to LinkedIn"
+          }
+        }
+      }
+    ]
+  }
+}

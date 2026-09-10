@@ -1,0 +1,40 @@
+{
+  "name": "Share Certificate Milestone on LinkedIn",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "create"
+      ],
+      "entity_name": "CourseCertificate"
+    }
+  },
+  "description": "Posts a LinkedIn organization update when a certificate milestone count is reached",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "share_certificate_milestone_linkedin",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "post_milestone": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "onCertificateIssuedLinkedIn",
+            "args": {
+              "certificate_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check and post certificate milestone",
+            "description": "Posts if the certificate count hits a milestone"
+          }
+        }
+      }
+    ]
+  }
+}

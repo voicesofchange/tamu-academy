@@ -1,0 +1,40 @@
+{
+  "name": "Share Featured Learner Story on LinkedIn",
+  "description": "Posts a LinkedIn organization update when a learner story is featured",
+  "trigger": {
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "LearnerStory",
+      "events": [
+        "update"
+      ]
+    },
+    "condition": "${ .trigger.data.status == \"featured\" and .trigger.old_data.status != \"featured\" }"
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "share_featured_story_linkedin",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "post_story": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "onLearnerStoryFeaturedLinkedIn",
+            "args": {
+              "story_id": "${ .trigger.entity_id }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Post featured story to LinkedIn",
+            "description": "Shares the newly featured learner story"
+          }
+        }
+      }
+    ]
+  }
+}
