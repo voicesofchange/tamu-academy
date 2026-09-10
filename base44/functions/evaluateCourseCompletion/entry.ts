@@ -76,6 +76,7 @@ export default async function(req: Request): Promise<Response> {
       user = null;
     }
 
+    const isAuthenticated = !!user;
     if (user) {
       // Authenticated direct call — verify ownership or admin.
       if (user.id !== learnerId && user.role !== 'admin') {
@@ -137,14 +138,18 @@ export default async function(req: Request): Promise<Response> {
     const allComplete = incompleteModules.length === 0;
 
     // Find the enrollment record for this learner + course.
-    const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
-      learner_id: learnerId,
-      course_slug: courseSlug,
-    });
-
+    // Only return the enrollment id to authenticated callers; the
+    // internal workflow does not need it and unauthenticated callers
+    // must not enumerate other learners' enrollment identifiers.
     let enrollmentId: string | null = null;
-    if (Array.isArray(enrollmentRows) && enrollmentRows.length > 0) {
-      enrollmentId = enrollmentRows[0].id || null;
+    if (isAuthenticated) {
+      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+        learner_id: learnerId,
+        course_slug: courseSlug,
+      });
+      if (Array.isArray(enrollmentRows) && enrollmentRows.length > 0) {
+        enrollmentId = enrollmentRows[0].id || null;
+      }
     }
 
     return Response.json({
@@ -154,7 +159,9 @@ export default async function(req: Request): Promise<Response> {
       course_slug: courseSlug,
       final_module_slug: moduleSlug,
       enrollment_id: enrollmentId,
-      incomplete_modules: allComplete ? [] : incompleteModules,
+      // Only return the incomplete-module list to authenticated callers;
+      // unauthenticated callers get only the boolean the workflow needs.
+      incomplete_modules: isAuthenticated ? (allComplete ? [] : incompleteModules) : [],
     });
   } catch (error) {
     console.error('[evaluateCourseCompletion] Error:', error && error.message);

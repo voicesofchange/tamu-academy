@@ -82,29 +82,30 @@ export default async function(req: Request): Promise<Response> {
       if (user.id !== learnerId && user.role !== 'admin') {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-    } else {
-      // Unauthenticated call (internal workflow path) — verify ALL
-      // required modules are genuinely completed before marking the
-      // enrollment as completed.
-      const requiredRoutes = getRequiredModuleRoutes(courseSlug);
-      const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-        learner_id: learnerId,
-        course_slug: courseSlug,
-      });
-      const completedRoutes = new Set<string>();
-      if (Array.isArray(progressRows)) {
-        for (const row of progressRows) {
-          if (row && row.module_slug && row.status === 'completed') {
-            completedRoutes.add(row.module_slug);
-          }
+    }
+
+    // Always verify ALL required modules are genuinely completed before
+    // marking the enrollment as completed. This applies to both
+    // authenticated direct callers (prevents self-attested completion)
+    // and the internal workflow path.
+    const requiredRoutes = getRequiredModuleRoutes(courseSlug);
+    const progressRows = await base44.asServiceRole.entities.ModuleProgress.filter({
+      learner_id: learnerId,
+      course_slug: courseSlug,
+    });
+    const completedRoutes = new Set<string>();
+    if (Array.isArray(progressRows)) {
+      for (const row of progressRows) {
+        if (row && row.module_slug && row.status === 'completed') {
+          completedRoutes.add(row.module_slug);
         }
       }
-      const allModulesComplete = requiredRoutes.every(
-        (route) => completedRoutes.has(route),
-      );
-      if (!allModulesComplete) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
+    }
+    const allModulesComplete = requiredRoutes.every(
+      (route) => completedRoutes.has(route),
+    );
+    if (!allModulesComplete) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Find the enrollment record.

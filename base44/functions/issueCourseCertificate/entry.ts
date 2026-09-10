@@ -53,12 +53,8 @@ export default async function(req: Request): Promise<Response> {
 
     const learnerId = String(body.learner_id || '');
     const courseSlug = String(body.course_slug || '');
-    const enrollmentId = String(body.enrollment_id || '');
-    const learnerName = String(body.learner_name || '');
-    const courseTitle = String(body.course_title || '');
-    const completedAt = String(body.completed_at || '');
 
-    if (!learnerId || !courseSlug || !enrollmentId || !learnerName || !courseTitle || !completedAt) {
+    if (!learnerId || !courseSlug) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -69,9 +65,11 @@ export default async function(req: Request): Promise<Response> {
 
     // --- Authentication / Authorization ---
     // Authenticated callers must own the learner_id or be an admin.
-    // Unauthenticated callers (internal workflow) must pass a data
+    // All callers (authenticated or internal workflow) must pass a data
     // integrity check: the CourseEnrollment record must exist with
-    // status "completed" for this learner + course.
+    // status "completed" for this learner + course. Client-supplied
+    // learner_name, course_title, completed_at, and enrollment_id are
+    // NOT trusted — they are derived from server-side records below.
     let user: { id: string; role?: string } | null = null;
     try {
       user = await base44.auth.me();
@@ -84,18 +82,20 @@ export default async function(req: Request): Promise<Response> {
       if (user.id !== learnerId && user.role !== 'admin') {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
-    } else {
-      // Unauthenticated call (internal workflow path) — verify the
-      // enrollment is genuinely completed before issuing a certificate.
-      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
-        learner_id: learnerId,
-        course_slug: courseSlug,
-        status: 'completed',
-      });
-      if (!enrollmentRows || enrollmentRows.length === 0) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
     }
+
+    // Always verify the enrollment is genuinely completed before issuing
+    // a certificate. Applies to both authenticated direct callers and
+    // the internal workflow path.
+    const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+      learner_id: learnerId,
+      course_slug: courseSlug,
+      status: 'completed',
+    });
+    if (!enrollmentRows || enrollmentRows.length === 0) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const enrollment = enrollmentRows[0];
 
     // Idempotency guard — double-check no certificate exists.
     const existingCerts = await base44.asServiceRole.entities.CourseCertificate.filter({
@@ -112,6 +112,24 @@ export default async function(req: Request): Promise<Response> {
       });
     }
 
+    // Derive all certificate fields from server-side records — never
+    // trust client-supplied learner_name, course_title, completed_at,
+    // or enrollment_id.
+    let learnerName: string | null = null;
+    try {
+      const learner = await base44.asServiceRole.entities.User.get(learnerId);
+      learnerName = learner?.full_name || null;
+    } catch (_) {
+      learnerName = null;
+    }
+    if (!learnerName) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const courseTitle = courseConfig.title;
+    const completedAtValue = enrollment.completed_at || new Date().toISOString();
+    const enrollmentId = enrollment.id;
+
     // Generate opaque certificate ID and verification code.
     // Neither value exposes the learner's email or any database ID.
     const certificateId = crypto.randomUUID();
@@ -127,7 +145,7 @@ export default async function(req: Request): Promise<Response> {
       learner_name: learnerName,
       course_title: courseTitle,
       course_enrollment_id: enrollmentId,
-      completed_at: completedAt,
+      completed_at: completedAtValue,
       issued_at: issuedAt,
       status: 'valid',
       completion_statement: courseConfig.completionStatement,
