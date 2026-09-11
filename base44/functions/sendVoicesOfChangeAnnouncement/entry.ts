@@ -99,7 +99,7 @@ const foldHeader = (value) => {
 
 const buildRawMime = (fromEmail, bccList, subject, text, html) => {
   const boundary = 'tamu_boundary_' + Math.random().toString(36).slice(2);
-  const bcc = foldHeader(bccList.join(', '));
+  const bcc = bccList.join(', ');
   const mime = [
     `From: Tamu Academy <${fromEmail}>`,
     `To: ${fromEmail}`,
