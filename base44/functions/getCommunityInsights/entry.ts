@@ -17,13 +17,18 @@ export default async function(req) {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    const isAdmin = user.role === 'admin';
 
+    // ContactInquiry is admin-only under RLS; only fetch it for admins so its
+    // geographic distribution is never exposed to ordinary learners.
     const [enrollments, certificates, moduleProgress, stories, inquiries] = await Promise.all([
       base44.asServiceRole.entities.CourseEnrollment.list('-created_date', 500),
       base44.asServiceRole.entities.CourseCertificate.list('-created_date', 500),
       base44.asServiceRole.entities.ModuleProgress.list('-created_date', 500),
       base44.asServiceRole.entities.LearnerStory.list('-created_date', 500),
-      base44.asServiceRole.entities.ContactInquiry.list('-created_date', 500),
+      isAdmin
+        ? base44.asServiceRole.entities.ContactInquiry.list('-created_date', 500)
+        : Promise.resolve([]),
     ]);
 
     // Totals
@@ -83,17 +88,20 @@ export default async function(req) {
       return a.module.localeCompare(b.module);
     });
 
-    // Geographic reach
+    // Geographic reach — derived from ContactInquiry (admin-only). Only
+    // populated for admins; empty for ordinary learners.
     const geoMap = {};
     for (const inq of inquiries) {
       if (!inq.country) continue;
       if (!geoMap[inq.country]) geoMap[inq.country] = 0;
       geoMap[inq.country]++;
     }
-    const geographicReach = Object.entries(geoMap)
-      .map(([country, count]) => ({ country, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+    const geographicReach = isAdmin
+      ? Object.entries(geoMap)
+          .map(([country, count]) => ({ country, count }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 10)
+      : [];
 
     // Story stats
     const ratedStories = approvedStories.filter(s => s.rating && s.rating > 0);

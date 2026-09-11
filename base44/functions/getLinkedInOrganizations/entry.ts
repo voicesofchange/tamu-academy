@@ -14,13 +14,16 @@ const LINKEDIN_VERSION = '202408';
 export default async function(req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
-    const { accessToken } = await base44.asServiceRole.connectors.getConnection('linkedin');
 
-    // 0. Verify the token works with a profile call.
-    const profileRes = await fetch('https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName)', {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    });
-    const profileInfo = profileRes.ok ? await profileRes.json() : { profileStatus: profileRes.status };
+    // Authorization: builder-only tool. The connected LinkedIn account's
+    // identity and administered pages must not be exposed to anonymous or
+    // non-admin callers.
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Admin access required' }, { status: 403 });
+    }
+
+    const { accessToken } = await base44.asServiceRole.connectors.getConnection('linkedin');
 
     // 1. List organizations where the connected user is an APPROVED admin (minimal call).
     const aclRes = await fetch(
@@ -37,7 +40,6 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({
         error: `LinkedIn ACL lookup failed: ${aclRes.status}`,
         details: txt,
-        profileInfo,
       }, { status: 502 });
     }
     const aclData = await aclRes.json();
@@ -51,7 +53,7 @@ export default async function(req: Request): Promise<Response> {
       .filter(Boolean);
 
     if (orgIds.length === 0) {
-      return Response.json({ organizations: [], profileInfo, rawAcl: aclData });
+      return Response.json({ organizations: [] });
     }
 
     // 2. Fetch each organization's name + vanity name.
@@ -76,7 +78,7 @@ export default async function(req: Request): Promise<Response> {
       })
     );
 
-    return Response.json({ organizations: orgs, profileInfo });
+    return Response.json({ organizations: orgs });
   } catch (error) {
     console.error('[getLinkedInOrganizations] Error:', error && error.message);
     return Response.json({ error: 'Internal error', details: error && error.message }, { status: 500 });
