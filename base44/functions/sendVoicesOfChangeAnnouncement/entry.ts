@@ -2,8 +2,11 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 
 // Public site URL used in the email body.
 const SITE_URL = 'https://tamuacademy.org';
+// Tracking pixel endpoint (function URL on the published app).
+const TRACKING_PIXEL_BASE = 'https://tamu-learn-global.base44.app/functions/trackEmailOpen';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECIPIENTS = 200;
+const SEND_BATCH = 10;
 
 const COURSES_URL = `${SITE_URL}/courses`;
 const ECONOMICS_URL = `${SITE_URL}/courses/understanding-african-economies-and-the-global-system`;
@@ -81,29 +84,12 @@ const utf8Base64 = (str) => {
   return btoa(binary);
 };
 
-const foldHeader = (value) => {
-  const maxLine = 78;
-  if (value.length <= maxLine) return value;
-  const parts = value.split(', ');
-  let result = '';
-  let line = '';
-  for (const part of parts) {
-    if (line && line.length + part.length + 2 > maxLine) {
-      result += line + '\r\n ';
-      line = '';
-    }
-    line = line ? line + ', ' + part : part;
-  }
-  return result + line;
-};
-
-const buildRawMime = (fromEmail, bccList, subject, text, html) => {
+// Build a raw MIME message addressed to a single recipient (per-recipient tracking).
+const buildRawMime = (fromEmail, toEmail, subject, text, html) => {
   const boundary = 'tamu_boundary_' + Math.random().toString(36).slice(2);
-  const bcc = bccList.join(', ');
   const mime = [
     `From: Tamu Academy <${fromEmail}>`,
-    `To: ${fromEmail}`,
-    `Bcc: ${bcc}`,
+    `To: ${toEmail}`,
     `Subject: ${subject}`,
     `MIME-Version: 1.0`,
     `Content-Type: multipart/alternative; boundary="${boundary}"`,
@@ -124,7 +110,7 @@ const buildRawMime = (fromEmail, bccList, subject, text, html) => {
   return btoa(mime).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 };
 
-export default async function(req) {
+export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
@@ -159,32 +145,60 @@ export default async function(req) {
       });
     }
 
-    const raw = buildRawMime(fromEmail, emails, message.subject, message.text, message.html);
-
-    const sendRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ raw }),
-    });
-
-    if (!sendRes.ok) {
-      const sErr = await sendRes.json().catch(() => ({}));
-      return Response.json({
-        sent: 0,
-        failed: emails.length,
-        eligible: emails.length,
-        sender: fromEmail,
-        errors: [{ error: sErr.error?.message || `Gmail send failed (${sendRes.status})` }],
-      }, { status: 502 });
+    if (emails.length === 0) {
+      return Response.json({ sent: 0, failed: 0, eligible: 0, sender: fromEmail, tracked: true });
     }
 
-    const sendResult = await sendRes.json();
+    // Create a tracking record per recipient before sending.
+    const now = new Date().toISOString();
+    const records = emails.map((email) => ({
+      tracking_token: crypto.randomUUID(),
+      recipient_email: email,
+      message_type: messageType,
+      sent_at: now,
+      open_count: 0,
+    }));
+    await base44.asServiceRole.entities.EmailOpenEvent.bulkCreate(records);
+
+    const sendOne = async (email, token) => {
+      const pixel = `<img src="${TRACKING_PIXEL_BASE}?t=${token}" width="1" height="1" alt="" style="display:none;border:0;outline:none;" />`;
+      const html = message.html + pixel;
+      const raw = buildRawMime(fromEmail, email, message.subject, message.text, html);
+      try {
+        const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ raw }),
+        });
+        return { email, ok: res.ok };
+      } catch (e) {
+        return { email, ok: false, error: e.message };
+      }
+    };
+
+    let sent = 0;
+    let failed = 0;
+    const errors = [];
+    for (let i = 0; i < emails.length; i += SEND_BATCH) {
+      const slice = emails.slice(i, i + SEND_BATCH);
+      const tokenSlice = records.slice(i, i + SEND_BATCH);
+      const results = await Promise.all(slice.map((email, j) => sendOne(email, tokenSlice[j].tracking_token)));
+      for (const r of results) {
+        if (r.ok) sent++;
+        else {
+          failed++;
+          errors.push({ email: r.email, error: r.error || 'Gmail send failed' });
+        }
+      }
+    }
+
     return Response.json({
-      sent: emails.length,
-      failed: 0,
+      sent,
+      failed,
       eligible: emails.length,
       sender: fromEmail,
-      gmail_message_id: sendResult.id,
+      tracked: true,
+      errors,
     });
   } catch (error) {
     console.error('[sendVoicesOfChangeAnnouncement] error:', error.message);

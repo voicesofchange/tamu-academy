@@ -260,6 +260,11 @@ export default function VoicesOfChangeAnnouncement() {
             )}
             {result.sender ? ` from ${result.sender}` : ''}.
           </p>
+          {result.tracked && (
+            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
+              Open engagement will appear in the tracking panel below.
+            </p>
+          )}
           {result.failed > 0 && result.errors && result.errors.length > 0 && (
             <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
               {result.errors.slice(0, 8).map(e => e.email).join(', ')}{result.errors.length > 8 ? '…' : ''}
