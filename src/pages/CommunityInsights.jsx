@@ -10,6 +10,7 @@ import CourseBreakdownChart from '@/components/insights/CourseBreakdownChart';
 import ModuleMilestonesChart from '@/components/insights/ModuleMilestonesChart';
 import DiasporaProgressMap from '@/components/insights/DiasporaProgressMap';
 import FollowUpInquiries from '@/components/insights/FollowUpInquiries';
+import VoicesOfChangeAnnouncement from '@/components/insights/VoicesOfChangeAnnouncement';
 import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
@@ -62,6 +63,10 @@ export default function CommunityInsights() {
 
       <PageSection>
         <FollowUpInquiries />
+      </PageSection>
+
+      <PageSection>
+        <VoicesOfChangeAnnouncement />
       </PageSection>
 
       {loading ? (
