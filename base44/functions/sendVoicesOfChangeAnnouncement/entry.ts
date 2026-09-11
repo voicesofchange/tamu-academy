@@ -5,41 +5,50 @@ const SITE_URL = 'https://tamuacademy.org';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECIPIENTS = 200;
 
-const MESSAGES = {
-  announcement: {
-    subject: 'From Voices of Change to Tamu Academy — our courses are now live',
-    body: `Hello,
+const COURSES_URL = `${SITE_URL}/courses`;
+const ECONOMICS_URL = `${SITE_URL}/courses/understanding-african-economies-and-the-global-system`;
+const MH_URL = `${SITE_URL}/courses/mental-health-community-and-culture`;
 
-Your engagement with Voices of Change has meant a great deal to us — and we want to share where that work has grown.
+const buildEmail = (opening) => {
+  const text = `Hello,
 
-Tamu Academy is our new educational arm: a free learning platform grounded in diaspora perspectives, exploring economics, governance, and global affairs and the public good. Our first courses are now live and open for enrollment.
-
-Explore them here: ${SITE_URL}/courses
-
-More courses will follow soon. We would be glad to have you learn with us.
-
-Warm regards,
-The Tamu Academy team
-${SITE_URL}`,
-  },
-  follow_up: {
-    subject: 'A reminder: your courses at Tamu Academy are waiting',
-    body: `Hello,
-
-A short while ago we wrote to share that Tamu Academy — an extension of the Voices of Change education platform — is now live with its first two courses.
-
-If you haven't had a chance to start yet, we'd love for you to begin today:
+${opening}
 
 Understanding African Economies and the Global System
+Start this course: ${ECONOMICS_URL}
+
 Ubuntu Mental Health: Mental Health, Community and Culture
+Start this course: ${MH_URL}
 
 Both courses are open now — explore and start learning today. More learning areas are on the way, spanning economics, governance, technology, wellbeing, history, and global affairs, all grounded in African thought and experience.
 
-Explore everything at tamuacademy.org/courses.
+Explore everything at ${COURSES_URL}.
 
 Asante,
 The Tamu Academy Team
-An extension of the Voices of Change education platform`,
+An extension of the Voices of Change education platform`;
+
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;">
+<p>Hello,</p>
+<p>${opening}</p>
+<p><strong>Understanding African Economies and the Global System</strong><br/><a href="${ECONOMICS_URL}" style="color:#D4A12A;">Start this course</a></p>
+<p><strong>Ubuntu Mental Health: Mental Health, Community and Culture</strong><br/><a href="${MH_URL}" style="color:#D4A12A;">Start this course</a></p>
+<p>Both courses are open now — explore and start learning today. More learning areas are on the way, spanning economics, governance, technology, wellbeing, history, and global affairs, all grounded in African thought and experience.</p>
+<p>Explore everything at <a href="${COURSES_URL}" style="color:#D4A12A;">tamuacademy.org/courses</a>.</p>
+<p>Asante,<br/>The Tamu Academy Team<br/>An extension of the Voices of Change education platform</p>
+</div>`;
+
+  return { text, html };
+};
+
+const MESSAGES = {
+  announcement: {
+    subject: 'Tamu Academy courses are now live',
+    ...buildEmail("We're reaching out personally because you've been part of our journey — thank you. We're excited to share some news: Tamu Academy, an extension of the Voices of Change education platform, is now live with its first courses."),
+  },
+  follow_up: {
+    subject: 'A reminder: Tamu Academy courses are now live',
+    ...buildEmail("We're writing to you again because you've been part of our journey — and we'd love for you to join in. As a reminder, Tamu Academy, an extension of the Voices of Change education platform, is now live with its first courses."),
   },
 };
 
@@ -96,7 +105,9 @@ export default async function(req) {
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: email,
           subject: message.subject,
-          body: message.body,
+          html: message.html,
+          text: message.text,
+          from_name: 'Tamu Academy',
         });
         sent++;
       } catch (err) {
