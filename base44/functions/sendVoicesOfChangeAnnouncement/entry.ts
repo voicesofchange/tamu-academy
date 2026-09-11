@@ -5,8 +5,10 @@ const SITE_URL = 'https://tamuacademy.org';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECIPIENTS = 200;
 
-const buildMessage = () => {
-  return `Hello,
+const MESSAGES = {
+  announcement: {
+    subject: 'From Voices of Change to Tamu Academy — our courses are now live',
+    body: `Hello,
 
 Your engagement with Voices of Change has meant a great deal to us — and we want to share where that work has grown.
 
@@ -18,7 +20,27 @@ More courses will follow soon. We would be glad to have you learn with us.
 
 Warm regards,
 The Tamu Academy team
-${SITE_URL}`;
+${SITE_URL}`,
+  },
+  follow_up: {
+    subject: 'A reminder: your courses at Tamu Academy are waiting',
+    body: `Hello,
+
+A short while ago we wrote to share that Tamu Academy — an extension of the Voices of Change education platform — is now live with its first two courses.
+
+If you haven't had a chance to start yet, we'd love for you to begin today:
+
+Understanding African Economies and the Global System
+Ubuntu Mental Health: Mental Health, Community and Culture
+
+Both courses are open now — explore and start learning today. More learning areas are on the way, spanning economics, governance, technology, wellbeing, history, and global affairs, all grounded in African thought and experience.
+
+Explore everything at tamuacademy.org/courses.
+
+Asante,
+The Tamu Academy Team
+An extension of the Voices of Change education platform`,
+  },
 };
 
 // Parse a free-form list (array, comma/semicolon/newline/whitespace separated string)
@@ -52,6 +74,8 @@ export default async function(req) {
 
     const body = await req.json().catch(() => ({}));
     const dryRun = body.dry_run === true;
+    const messageType = body.message_type === 'follow_up' ? 'follow_up' : 'announcement';
+    const message = MESSAGES[messageType];
 
     const emails = parseEmails(body.emails).slice(0, MAX_RECIPIENTS);
 
@@ -71,8 +95,8 @@ export default async function(req) {
       try {
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: email,
-          subject: 'From Voices of Change to Tamu Academy — our courses are now live',
-          body: buildMessage(),
+          subject: message.subject,
+          body: message.body,
         });
         sent++;
       } catch (err) {

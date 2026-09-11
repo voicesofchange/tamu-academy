@@ -118,6 +118,7 @@ aberironald@gmail.com`;
 
 export default function VoicesOfChangeAnnouncement() {
   const [emailsText, setEmailsText] = useState(PREFILL_EMAILS);
+  const [messageType, setMessageType] = useState('announcement');
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(null);
@@ -131,6 +132,7 @@ export default function VoicesOfChangeAnnouncement() {
       const res = await base44.functions.invoke('sendVoicesOfChangeAnnouncement', {
         dry_run: true,
         emails: emailsText,
+        message_type: messageType,
       });
       setPreview(res && res.data ? res.data : null);
     } catch (e) {
@@ -143,7 +145,7 @@ export default function VoicesOfChangeAnnouncement() {
   const sendAnnouncement = async () => {
     if (!preview || preview.eligible_count === 0) return;
     const ok = window.confirm(
-      `Send the Voices of Change → Tamu Academy announcement to ${preview.eligible_count} recipient${preview.eligible_count === 1 ? '' : 's'}?`
+      `Send the ${messageType === 'follow_up' ? 'follow-up reminder' : 'announcement'} to ${preview.eligible_count} recipient${preview.eligible_count === 1 ? '' : 's'}?`
     );
     if (!ok) return;
     setBusy('send');
@@ -152,6 +154,7 @@ export default function VoicesOfChangeAnnouncement() {
       const res = await base44.functions.invoke('sendVoicesOfChangeAnnouncement', {
         dry_run: false,
         emails: emailsText,
+        message_type: messageType,
       });
       setResult(res && res.data ? res.data : null);
       setPreview(null);
@@ -166,11 +169,38 @@ export default function VoicesOfChangeAnnouncement() {
     <div style={cardStyle}>
       <span style={labelStyle}>Voices of Change outreach</span>
       <h3 style={{ color: '#F5EFE0', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: '0 0 0.75rem' }}>
-        Announce Tamu Academy to the Voices of Change community
+        {messageType === 'announcement'
+          ? 'Announce Tamu Academy to the Voices of Change community'
+          : 'Follow up with the Voices of Change community'}
       </h3>
-      <p style={{ ...bodyText, marginBottom: '1.25rem', maxWidth: '560px' }}>
-        Sends a tailored email introducing Tamu Academy as the educational arm of Voices of Change, with a link to the live courses. Paste the email list below (one per line, or comma-separated), preview, then send.
+      <p style={{ ...bodyText, marginBottom: '1rem', maxWidth: '560px' }}>
+        {messageType === 'announcement'
+          ? 'Sends a tailored email introducing Tamu Academy as the educational arm of Voices of Change, with a link to the live courses. Paste the email list below (one per line, or comma-separated), preview, then send.'
+          : 'Sends a follow-up reminder to everyone who received the first announcement, encouraging them to start a course. Uses the same recipient list — preview, then send.'}
       </p>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
+        {['announcement', 'follow_up'].map((mt) => (
+          <button
+            key={mt}
+            onClick={() => { setMessageType(mt); setPreview(null); setResult(null); }}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: '0.72rem',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              border: messageType === mt ? 'none' : '1px solid rgba(212,161,42,0.3)',
+              backgroundColor: messageType === mt ? '#D4A12A' : 'transparent',
+              color: messageType === mt ? '#1A130E' : 'rgba(245,239,224,0.7)',
+              fontWeight: messageType === mt ? 500 : 300,
+            }}
+          >
+            {mt === 'announcement' ? 'Announcement' : 'Follow-up'}
+          </button>
+        ))}
+      </div>
 
       <textarea
         value={emailsText}
