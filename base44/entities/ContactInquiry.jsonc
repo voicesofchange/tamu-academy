@@ -100,6 +100,19 @@
     "internal_notes": {
       "type": "string",
       "title": "Internal Notes"
+    },
+    "followup_sent_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Follow-Up Email Sent At"
+    },
+    "followup_status": {
+      "type": "string",
+      "title": "Follow-Up Email Status",
+      "enum": [
+        "sent",
+        "failed"
+      ]
     }
   },
   "required": [
