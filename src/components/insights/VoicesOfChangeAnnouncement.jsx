@@ -243,6 +243,11 @@ export default function VoicesOfChangeAnnouncement() {
           <p style={{ ...bodyText, marginBottom: '0.5rem' }}>
             {preview.eligible_count} valid recipient{preview.eligible_count === 1 ? '' : 's'} (duplicates and invalid entries removed).
           </p>
+          {preview.sender && (
+            <p style={{ ...bodyText, marginBottom: 0 }}>
+              Sending from <span style={{ color: accent }}>{preview.sender}</span> via Gmail.
+            </p>
+          )}
         </div>
       )}
 
@@ -253,7 +258,7 @@ export default function VoicesOfChangeAnnouncement() {
             {result.failed > 0 && (
               <>, <span style={{ color: '#E8951C', fontWeight: 500 }}>{result.failed}</span> failed</>
             )}
-            .
+            {result.sender ? ` from ${result.sender}` : ''}.
           </p>
           {result.failed > 0 && result.errors && result.errors.length > 0 && (
             <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
