@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
-import PageLayout from '@/components/page/PageLayout';
-import PageSection from '@/components/page/PageSection';
+import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
+import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import LessonVideo from '@/components/courses/module/LessonVideo';
@@ -15,23 +15,23 @@ import MhModuleNav from '@/components/courses/MhModuleNav';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const termHeading = { color: '#F5EFE0', fontSize: 'clamp(1.05rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.55rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const termHeading = { color: '#f8f0df', fontSize: 'clamp(1.05rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.55rem' };
 
 const disclaimerBoxStyle = {
   padding: '1.4rem 1.6rem',
-  border: '1px solid rgba(212,161,42,0.28)',
+  border: '1px solid rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
   marginBottom: '1.25rem',
 };
 
 const competencyBoxStyle = {
   padding: '1.25rem 1.5rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
   marginTop: '1.5rem',
 };
 
@@ -108,7 +108,7 @@ function renderLabeledItems(items) {
     <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
       {items.map((it, i) => (
         <li key={i} style={{ marginBottom: '0.85rem' }}>
-          <span style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>{it.label}: </span>
+          <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{it.label}: </span>
           {it.text}
         </li>
       ))}
@@ -127,13 +127,13 @@ function renderSources(sources, c) {
               href={s.url}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
+              style={{ color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' }}
             >
               {c.openSource}
             </a>
           </p>
           {s.note && (
-            <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)', margin: 0 }}>
+            <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)', margin: 0 }}>
               {s.note}
             </p>
           )}
@@ -150,19 +150,19 @@ function SupportingReadingBlock({ reading, c }) {
       style={{
         marginTop: '2rem',
         padding: '1.4rem 1.6rem',
-        border: '1px solid rgba(212,161,42,0.18)',
+        border: '1px solid rgba(232,184,91,0.18)',
         borderRadius: '4px',
-        background: 'rgba(245,239,224,0.02)',
+        background: 'rgba(243,234,216,0.02)',
       }}
     >
       <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.6rem' }}>
         {c.supportingReadingLabel}
       </span>
       <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.35rem' }}>
-        <strong style={{ fontWeight: 500, color: '#F5EFE0' }}>{reading.title}</strong>
+        <strong style={{ fontWeight: 500, color: '#f8f0df' }}>{reading.title}</strong>
       </p>
       <p className="font-body" style={{ ...bodyText, margin: '0 0 0.5rem', fontSize: '0.9rem' }}>
-        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.publisherPrefix}: </strong>
+        <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{c.publisherPrefix}: </strong>
         {reading.publisher}
       </p>
       <p className="font-body" style={{ ...bodyText, margin: '0 0 0.5rem', fontSize: '0.9rem' }}>
@@ -170,12 +170,12 @@ function SupportingReadingBlock({ reading, c }) {
           href={reading.url}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
+          style={{ color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' }}
         >
           {c.openReading}
         </a>
       </p>
-      <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)', margin: 0 }}>
+      <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)', margin: 0 }}>
         {c.evidenceLabelPrefix}: {reading.evidenceLabel}
       </p>
     </div>
@@ -188,7 +188,7 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
   const modulePath = `${coursePath}/${mod.route}`;
 
   return (
-    <PageLayout>
+    <ModuleLessonLayout>
       <PageMeta
         title={`${mod.number}: ${mod.title} | Tamu Academy`}
         description={mod.description}
@@ -210,13 +210,13 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
           <StatusBadge label={mod.number} />
           <StatusBadge label={mod.status} />
         </div>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
           {mod.title}
         </h1>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
           {c.learningArea}: {course.learningArea}
         </p>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
           {c.estimatedTime}: {mod.estimatedTime}
         </p>
         <motion.div
@@ -229,7 +229,7 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         </motion.div>
       </header>
 
-      <PageSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
+      <ModuleLessonSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
         {renderParagraphs(lesson.moduleOverview.paragraphs)}
         <div style={competencyBoxStyle}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
@@ -239,9 +239,9 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
             {lesson.moduleOverview.competency}
           </p>
         </div>
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
+      <ModuleLessonSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
         <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label={c.disclaimerLabel}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
@@ -251,9 +251,9 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
             {lesson.learningObjectives.earlyDisclaimer}
           </p>
         </div>
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.coreMediaHeading}>
+      <ModuleLessonSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.coreMediaHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>
           {lesson.coreMedia.primary.roleInModule}
         </p>
@@ -274,28 +274,28 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         {lesson.coreMedia.supportingReadings.map((reading) => (
           <SupportingReadingBlock key={reading.url} reading={reading} c={c} />
         ))}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading={c.watchHeading}>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)' }}>
+      <ModuleLessonSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading={c.watchHeading}>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)' }}>
           {c.watchIntro}
         </p>
         {renderObjectives(lesson.questionsToConsider)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="tamu-introduction" eyebrow={c.introEyebrow} heading={c.introHeading}>
+      <ModuleLessonSection id="tamu-introduction" eyebrow={c.introEyebrow} heading={c.introHeading}>
         {renderParagraphs(lesson.tamuIntroduction.paragraphs)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="key-concepts" eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
+      <ModuleLessonSection id="key-concepts" eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
         {renderConcepts(lesson.keyConcepts)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="relational-personhood" eyebrow={c.explanationEyebrow} heading={lesson.explanation.relationalPersonhood.heading}>
+      <ModuleLessonSection id="relational-personhood" eyebrow={c.explanationEyebrow} heading={lesson.explanation.relationalPersonhood.heading}>
         {renderParagraphs(lesson.explanation.relationalPersonhood.paragraphs)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="ubuntu-and-mental-health" eyebrow={c.explanationEyebrow} heading={lesson.explanation.ubuntuAndMentalHealth.heading}>
+      <ModuleLessonSection id="ubuntu-and-mental-health" eyebrow={c.explanationEyebrow} heading={lesson.explanation.ubuntuAndMentalHealth.heading}>
         {renderParagraphs(lesson.explanation.ubuntuAndMentalHealth.paragraphs)}
         <ol className="font-body" style={{ ...bodyText, margin: '0 0 1.15rem 1.4rem' }}>
           {lesson.explanation.ubuntuAndMentalHealth.numberedItems.map((q, i) => (
@@ -303,21 +303,21 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
           ))}
         </ol>
         {renderParagraphs(lesson.explanation.ubuntuAndMentalHealth.trailingParagraphs)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="different-emphases" eyebrow={c.explanationEyebrow} heading={lesson.explanation.differentEmphases.heading}>
+      <ModuleLessonSection id="different-emphases" eyebrow={c.explanationEyebrow} heading={lesson.explanation.differentEmphases.heading}>
         {renderParagraphs(lesson.explanation.differentEmphases.paragraphs)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="community-protection" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityProtection.heading}>
+      <ModuleLessonSection id="community-protection" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityProtection.heading}>
         {renderLabeledItems(lesson.explanation.communityProtection.items)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="community-strain" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityStrain.heading}>
+      <ModuleLessonSection id="community-strain" eyebrow={c.explanationEyebrow} heading={lesson.explanation.communityStrain.heading}>
         {renderLabeledItems(lesson.explanation.communityStrain.items)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="central-takeaway" eyebrow={c.takeawayEyebrow} heading={c.takeawayHeading}>
+      <ModuleLessonSection id="central-takeaway" eyebrow={c.takeawayEyebrow} heading={c.takeawayHeading}>
         {renderParagraphs(lesson.centralTakeaway.paragraphs)}
         <div style={{ ...disclaimerBoxStyle, marginTop: '1.5rem' }} aria-label={c.disclaimerLabel}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
@@ -327,49 +327,49 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
             {lesson.centralTakeaway.finalDisclaimer}
           </p>
         </div>
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="case-study" eyebrow={c.caseStudyEyebrow} heading={lesson.caseStudy.heading}>
+      <ModuleLessonSection id="case-study" eyebrow={c.caseStudyEyebrow} heading={lesson.caseStudy.heading}>
         {renderParagraphs(lesson.caseStudy.paragraphs)}
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="interactive-scenario" eyebrow={c.applyEyebrow} heading={c.applyHeading}>
+      <ModuleLessonSection id="interactive-scenario" eyebrow={c.applyEyebrow} heading={c.applyHeading}>
         <MhInteractiveScenario
           courseSlug="mental-health-community-and-culture"
           moduleSlug="module-1"
           scenario={lesson.interactiveScenario}
         />
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="community-of-care-map" eyebrow={c.activityEyebrow} heading={lesson.communityOfCareMap.heading}>
+      <ModuleLessonSection id="community-of-care-map" eyebrow={c.activityEyebrow} heading={lesson.communityOfCareMap.heading}>
         <MhCommunityCareMap config={lesson.communityOfCareMap} />
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="private-reflection" eyebrow={c.reflectEyebrow} heading={lesson.privateReflection.heading}>
+      <ModuleLessonSection id="private-reflection" eyebrow={c.reflectEyebrow} heading={lesson.privateReflection.heading}>
         <MhPrivateReflection config={lesson.privateReflection} />
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="knowledge-check" eyebrow={c.assessEyebrow} heading={lesson.knowledgeCheck.heading}>
+      <ModuleLessonSection id="knowledge-check" eyebrow={c.assessEyebrow} heading={lesson.knowledgeCheck.heading}>
         <MhKnowledgeCheck
           courseSlug="mental-health-community-and-culture"
           moduleSlug="module-1"
           quiz={lesson.knowledgeCheck}
         />
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="closing-section">
+      <ModuleLessonSection id="closing-section">
         <MhModuleCompletion
           courseSlug="mental-health-community-and-culture"
           moduleRoute="module-1"
         />
-      </PageSection>
+      </ModuleLessonSection>
 
-      <PageSection id="sources" eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
+      <ModuleLessonSection id="sources" eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
         {renderSources(lesson.sources, c)}
-      </PageSection>
+      </ModuleLessonSection>
 
       <GoldDivider width="260px" margin="0 0 2rem" />
       <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
-    </PageLayout>
+    </ModuleLessonLayout>
   );
 }

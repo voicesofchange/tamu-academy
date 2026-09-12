@@ -6,13 +6,13 @@ const navLinkStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: 'rgba(212,161,42,0.7)',
+  color: 'rgba(232,184,91,0.7)',
   fontSize: '0.72rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
   textDecoration: 'none',
   fontWeight: 500,
-  border: '1px solid rgba(212,161,42,0.35)',
+  border: '1px solid rgba(232,184,91,0.35)',
   borderRadius: '2px',
   padding: '0.65rem 1.3rem',
   transition: 'color 0.25s ease, borderColor 0.25s ease',
@@ -20,9 +20,9 @@ const navLinkStyle = {
 
 const navDisabledStyle = {
   ...navLinkStyle,
-  color: 'rgba(245,239,224,0.28)',
+  color: 'rgba(243,234,216,0.28)',
   cursor: 'not-allowed',
-  borderColor: 'rgba(245,239,224,0.12)',
+  borderColor: 'rgba(243,234,216,0.12)',
 };
 
 const CONTENT = {
@@ -47,7 +47,7 @@ export default function MhModuleNav({ course, module: mod, courseSlug }) {
   const completionPath = `${coursePath}/completion`;
 
   return (
-    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
+    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevModule ? (
           <Link to={`${coursePath}/${prevModule.route}`} className="font-body tamu-nav-link" style={navLinkStyle}>
@@ -70,7 +70,7 @@ export default function MhModuleNav({ course, module: mod, courseSlug }) {
       </div>
       {isLastModule && (
         <div style={{ marginBottom: '1.5rem' }}>
-          <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...navLinkStyle, borderColor: 'rgba(212,161,42,0.5)', color: '#D4A12A' }}>
+          <Link to={completionPath} className="font-body tamu-nav-link" style={{ ...navLinkStyle, borderColor: 'rgba(232,184,91,0.5)', color: '#e8b85b' }}>
             {c.continueToCompletion} &rarr;
           </Link>
         </div>

@@ -7,12 +7,12 @@ import MhModule7Progress from '@/components/courses/MhModule7Progress';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const headingStyle = { color: '#F5EFE0', fontSize: '1.3rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const headingStyle = { color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' };
 const sectionStyle = { marginBottom: '2.5rem' };
-const boxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
-const linkStyle = { color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' };
+const boxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
+const linkStyle = { color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' };
 
 function renderRichText(text) {
   if (!text) return null;
@@ -86,10 +86,10 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
     return (
       <div key={session.key} style={{ marginBottom: '1.75rem' }}>
         <h3 className="font-heading" style={{ ...headingStyle, fontSize: '1.1rem' }}>{session.title}</h3>
-        <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.6)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
-          <strong style={{ color: 'rgba(212,161,42,0.85)' }}>Hosts:</strong> {session.hosts} · <strong style={{ color: 'rgba(212,161,42,0.85)' }}>Publisher:</strong> {session.publisher} · <strong style={{ color: 'rgba(212,161,42,0.85)' }}>Length:</strong> {session.approximateLength}
+        <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
+          <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Hosts:</strong> {session.hosts} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Publisher:</strong> {session.publisher} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Length:</strong> {session.approximateLength}
         </p>
-        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
+        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
           <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
         </div>
         <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', marginBottom: '0.4rem' }}>
@@ -99,8 +99,8 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           {' · '}
           <a href={`#${session.writtenAlternativeSectionId}`} style={linkStyle}>Written alternative</a>
         </p>
-        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', fontSize: '0.82rem', marginBottom: '0.75rem' }}>{session.contentNote}</p>
-        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', cursor: 'pointer', padding: '0.6rem 0.9rem', border: `1px solid ${isReviewed ? 'rgba(212,161,42,0.4)' : 'rgba(212,161,42,0.18)'}`, borderRadius: '4px', backgroundColor: isReviewed ? 'rgba(212,161,42,0.04)' : 'transparent' }}>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.82rem', marginBottom: '0.75rem' }}>{session.contentNote}</p>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', cursor: 'pointer', padding: '0.6rem 0.9rem', border: `1px solid ${isReviewed ? 'rgba(232,184,91,0.4)' : 'rgba(232,184,91,0.18)'}`, borderRadius: '4px', backgroundColor: isReviewed ? 'rgba(232,184,91,0.04)' : 'transparent' }}>
           <input type="checkbox" checked={isReviewed} onChange={() => toggleMediaSession(session.key)} style={{ marginTop: '0.15rem' }} id={`media-ack-${session.key}`} />
           <span className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>I have reviewed this session or its written alternative.</span>
         </label>
@@ -109,12 +109,12 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#1A130E', padding: '2rem 1.5rem 4rem' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#24150f', padding: '2rem 1.5rem 4rem' }}>
       <div style={{ maxWidth: '780px', margin: '0 auto' }}>
         <ModuleEmblem />
         <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{course.title}</p>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.75rem', fontWeight: 400, lineHeight: 1.2, marginBottom: '0.5rem' }}>Roots of Resilience: Storytelling, Survival, and Collective Healing</h1>
-        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '2rem' }}>{moduleMeta.estimatedTime}</p>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.75rem', fontWeight: 400, lineHeight: 1.2, marginBottom: '0.5rem' }}>Roots of Resilience: Storytelling, Survival, and Collective Healing</h1>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '2rem' }}>{moduleMeta.estimatedTime}</p>
         <GoldDivider width="220px" margin="0 0 2rem" />
 
         {/* Module Overview */}
@@ -156,12 +156,12 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
         {/* Core Media */}
         <div style={sectionStyle}>
           <h2 className="font-heading" style={headingStyle}>Anchor Media</h2>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
           {lesson.coreMedia.sessions.map((session, idx) => renderMediaSession(session, idx))}
           {allMediaReviewed && (
             <div style={{ marginTop: '1rem' }}>
               <button type="button" disabled={mediaAckPending} onClick={handleMarkMediaReviewed} className="font-body"
-                style={{ color: '#1A130E', backgroundColor: '#D4A12A', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
+                style={{ color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
                 {mediaAckPending ? 'Saving...' : 'Mark all media reviewed'}
               </button>
               {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>We could not save your progress. Please try again.</p>}
@@ -207,7 +207,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
         <div style={sectionStyle}>
           <h2 className="font-heading" style={headingStyle}>{lesson.storyLab.title}</h2>
           <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>{lesson.storyLab.eyebrow}</p>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.storyLab.subtitle}</p>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.storyLab.subtitle}</p>
           <MhStoryLab courseSlug={courseSlug} moduleRoute={moduleSlug} lab={lesson.storyLab} onCompleted={() => setRefreshTrigger((t) => t + 1)} />
         </div>
 
@@ -219,7 +219,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Privacy notice</span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{lesson.privateReflection.privacyNotice}</p>
           </div>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem' }}>{lesson.privateReflection.optionalNote}</p>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem' }}>{lesson.privateReflection.optionalNote}</p>
         </div>
 
         {/* Knowledge Check */}
@@ -255,7 +255,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1rem' }}>
             {lesson.optionalExtendedAssignment.requirements.map((req, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{req}</li>)}
           </ol>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', fontSize: '0.85rem' }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem' }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
         </div>
 
         {/* Sources */}
@@ -268,7 +268,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
               </li>
             ))}
           </ul>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem' }}>{lesson.sourcesFurtherLearning.reviewNote}</p>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem' }}>{lesson.sourcesFurtherLearning.reviewNote}</p>
         </div>
 
         {/* Progress Tracking */}

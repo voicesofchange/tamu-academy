@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GOLD = '#D4A12A';
+const GOLD = '#e8b85b';
 
 /**
  * MhLessonOrnaments — decorative motifs shared across the Mental Health
