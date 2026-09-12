@@ -8,7 +8,7 @@ const primaryButtonStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: '#1A130E',
+  color: '#24150f',
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
@@ -17,7 +17,7 @@ const primaryButtonStyle = {
   border: 'none',
   borderRadius: '2px',
   padding: '0.7rem 1.5rem',
-  backgroundColor: '#D4A12A',
+  backgroundColor: '#e8b85b',
   fontFamily: "'DM Sans', sans-serif",
   whiteSpace: 'nowrap',
 };
@@ -26,13 +26,13 @@ const secondaryButtonStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
   fontWeight: 500,
   textDecoration: 'none',
-  border: '1px solid rgba(212,161,42,0.5)',
+  border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '2px',
   padding: '0.65rem 1.4rem',
   fontFamily: "'DM Sans', sans-serif",
@@ -40,7 +40,7 @@ const secondaryButtonStyle = {
 };
 
 const infoTextStyle = {
-  color: 'rgba(245,239,224,0.62)',
+  color: 'rgba(243,234,216,0.62)',
   fontSize: '0.85rem',
   lineHeight: 1.65,
   fontWeight: 300,

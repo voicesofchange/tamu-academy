@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.97rem',
   lineHeight: 1.85,
   fontWeight: 300,
@@ -14,7 +14,7 @@ const primaryButtonStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: '#1A130E',
+  color: '#24150f',
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
@@ -23,29 +23,29 @@ const primaryButtonStyle = {
   border: 'none',
   borderRadius: '2px',
   padding: '0.65rem 1.3rem',
-  backgroundColor: '#D4A12A',
+  backgroundColor: '#e8b85b',
 };
 
 const linkButtonStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
   fontWeight: 500,
   textDecoration: 'none',
-  border: '1px solid rgba(212,161,42,0.5)',
+  border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '2px',
   padding: '0.65rem 1.3rem',
 };
 
 const dashedBox = {
   padding: '1.5rem 1.75rem',
-  border: '1px dashed rgba(212,161,42,0.18)',
+  border: '1px dashed rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 
 const tpl = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
@@ -108,7 +108,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
   if (loading) {
     return (
       <div style={dashedBox}>
-        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
+        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
           {c.loadingProgress}
         </p>
       </div>
@@ -136,7 +136,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
               {enrollError}
             </p>
           )}
-          <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', margin: '1rem 0 0' }}>
+          <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: '1rem 0 0' }}>
             {c.privacyNote}
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
   if (!progress) {
     return (
       <div style={dashedBox}>
-        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
+        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
           {c.signInPrompt}
         </p>
       </div>
@@ -170,10 +170,10 @@ export default function EconomicsCourseProgress({ courseSlug }) {
     <div aria-live="polite" role="status">
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
             {c.overallProgress}
           </span>
-          <span className="font-body" style={{ color: '#F5EFE0', fontSize: '1rem', fontWeight: 500 }}>
+          <span className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500 }}>
             {tpl(c.modulesCount, { count: completedCount, total: totalModules })}
           </span>
         </div>
@@ -183,9 +183,9 @@ export default function EconomicsCourseProgress({ courseSlug }) {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-label="Course completion progress"
-          style={{ width: '100%', height: '6px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '3px', overflow: 'hidden' }}
+          style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
         >
-          <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '3px', transition: 'width 0.6s ease' }} />
+          <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
         </div>
       </div>
 
@@ -201,7 +201,7 @@ export default function EconomicsCourseProgress({ courseSlug }) {
       </div>
 
       {progress.certificateEligible ? (
-        <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.04)' }}>
+        <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
             {c.completedAll}
           </p>
@@ -218,11 +218,11 @@ export default function EconomicsCourseProgress({ courseSlug }) {
                 to={`/courses/${courseSlug}/${m.route}`}
                 className="font-body"
                 style={{
-                  color: 'rgba(212,161,42,0.7)',
+                  color: 'rgba(232,184,91,0.7)',
                   fontSize: '0.72rem',
                   letterSpacing: '0.04em',
                   textDecoration: 'none',
-                  border: '1px solid rgba(212,161,42,0.25)',
+                  border: '1px solid rgba(232,184,91,0.25)',
                   borderRadius: '2px',
                   padding: '0.4rem 0.8rem',
                 }}
@@ -234,12 +234,12 @@ export default function EconomicsCourseProgress({ courseSlug }) {
         </div>
       ) : (
         <div style={dashedBox}>
-          <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
+          <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
             {c.signInToTrack}
           </p>
         </div>
       )}
-      <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', margin: '0.75rem 0 0' }}>
+      <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: '0.75rem 0 0' }}>
         {c.privacyNote}
       </p>
     </div>
