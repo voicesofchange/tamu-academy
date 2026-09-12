@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.97rem',
   lineHeight: 1.85,
   fontWeight: 300,
@@ -13,10 +13,10 @@ const optionBase = {
   alignItems: 'flex-start',
   gap: '0.85rem',
   padding: '0.9rem 1.15rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
   marginBottom: '0.85rem',
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.95rem',
   cursor: 'pointer',
   transition: 'border-color 0.2s ease, background-color 0.2s ease',
@@ -24,20 +24,20 @@ const optionBase = {
 
 const optionSelected = {
   ...optionBase,
-  borderColor: 'rgba(212,161,42,0.7)',
-  backgroundColor: 'rgba(212,161,42,0.06)',
+  borderColor: 'rgba(232,184,91,0.7)',
+  backgroundColor: 'rgba(232,184,91,0.06)',
 };
 
 const optionBest = {
   ...optionBase,
-  borderColor: 'rgba(212,161,42,0.85)',
-  backgroundColor: 'rgba(212,161,42,0.1)',
+  borderColor: 'rgba(232,184,91,0.85)',
+  backgroundColor: 'rgba(232,184,91,0.1)',
   cursor: 'default',
 };
 
 const optionSubmittedWrong = {
   ...optionBase,
-  borderColor: 'rgba(245,239,224,0.45)',
+  borderColor: 'rgba(243,234,216,0.45)',
   cursor: 'default',
 };
 
@@ -48,9 +48,9 @@ const optionDim = {
 };
 
 const actionButtonStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   backgroundColor: 'transparent',
-  border: '1px solid rgba(212,161,42,0.45)',
+  border: '1px solid rgba(232,184,91,0.45)',
   padding: '0.65rem 1.5rem',
   fontSize: '0.78rem',
   fontWeight: 500,
@@ -61,8 +61,8 @@ const actionButtonStyle = {
 };
 
 const submitButtonStyle = {
-  color: '#1A130E',
-  backgroundColor: '#D4A12A',
+  color: '#24150f',
+  backgroundColor: '#e8b85b',
   border: 'none',
   padding: '0.7rem 1.7rem',
   fontSize: '0.82rem',
@@ -140,7 +140,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
           style={{
             ...bodyText,
             fontStyle: 'italic',
-            color: 'rgba(245,239,224,0.62)',
+            color: 'rgba(243,234,216,0.62)',
             marginBottom: '1rem',
           }}
         >
@@ -152,7 +152,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
         style={{
           ...bodyText,
           marginBottom: '1.25rem',
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontWeight: 400,
           fontSize: '1.05rem',
         }}
@@ -198,7 +198,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
                     aria-label={`Option ${i + 1}: ${opt}`}
                   />
                   <span style={{ flex: 1 }}>
-                    <strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>
+                    <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
                       Option {i + 1}.
                     </strong>{' '}
                     {opt}
@@ -248,9 +248,9 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
           style={{
             marginTop: '1.5rem',
             padding: '1.25rem 1.5rem',
-            border: `1px solid ${result.isCorrect ? 'rgba(212,161,42,0.5)' : 'rgba(245,239,224,0.3)'}`,
+            border: `1px solid ${result.isCorrect ? 'rgba(232,184,91,0.5)' : 'rgba(243,234,216,0.3)'}`,
             borderRadius: '4px',
-            background: 'rgba(245,239,224,0.02)',
+            background: 'rgba(243,234,216,0.02)',
           }}
         >
           <p
@@ -259,7 +259,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
               ...bodyText,
               margin: 0,
               marginBottom: '0.6rem',
-              color: '#F5EFE0',
+              color: '#f8f0df',
               fontWeight: 500,
             }}
           >
@@ -272,7 +272,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
             style={{
               ...bodyText,
               fontStyle: 'italic',
-              color: 'rgba(245,239,224,0.7)',
+              color: 'rgba(243,234,216,0.7)',
               margin: 0,
             }}
           >
@@ -287,7 +287,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
           style={{
             ...bodyText,
             fontStyle: 'italic',
-            color: 'rgba(245,239,224,0.55)',
+            color: 'rgba(243,234,216,0.55)',
             fontSize: '0.85rem',
             marginTop: '1.25rem',
             marginBottom: 0,

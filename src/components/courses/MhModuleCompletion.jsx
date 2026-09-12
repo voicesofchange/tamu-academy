@@ -3,14 +3,14 @@ import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.97rem',
   lineHeight: 1.85,
   fontWeight: 300,
 };
 
 const eyebrowStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.6rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -18,7 +18,7 @@ const eyebrowStyle = {
 };
 
 const sectionHeadingStyle = {
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontSize: 'clamp(1.3rem, 3vw, 1.9rem)',
   fontWeight: 400,
   lineHeight: 1.3,
@@ -29,7 +29,7 @@ const sectionHeadingStyle = {
 const dividerStyle = {
   width: '100%',
   height: '1px',
-  background: 'linear-gradient(90deg, transparent, rgba(212,161,42,0.35) 30%, rgba(212,161,42,0.35) 70%, transparent)',
+  background: 'linear-gradient(90deg, transparent, rgba(232,184,91,0.35) 30%, rgba(232,184,91,0.35) 70%, transparent)',
   margin: '3rem 0',
 };
 
@@ -38,7 +38,7 @@ const requirementRowStyle = {
   alignItems: 'flex-start',
   gap: '0.85rem',
   padding: '0.85rem 0',
-  borderBottom: '1px solid rgba(245,239,224,0.07)',
+  borderBottom: '1px solid rgba(243,234,216,0.07)',
 };
 
 const checkIconStyle = (met) => ({
@@ -46,8 +46,8 @@ const checkIconStyle = (met) => ({
   width: '20px',
   height: '20px',
   borderRadius: '50%',
-  border: met ? '2px solid rgba(95,172,115,0.7)' : '2px solid rgba(212,161,42,0.45)',
-  background: met ? 'rgba(95,172,115,0.12)' : 'rgba(212,161,42,0.05)',
+  border: met ? '2px solid rgba(232,184,91,0.7)' : '2px solid rgba(232,184,91,0.45)',
+  background: met ? 'rgba(232,184,91,0.12)' : 'rgba(232,184,91,0.05)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -59,10 +59,10 @@ const completeButtonStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '0.85rem 2rem',
-  background: 'rgba(212,161,42,0.12)',
-  border: '1px solid rgba(212,161,42,0.5)',
+  background: 'rgba(232,184,91,0.12)',
+  border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '2px',
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.78rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -75,16 +75,16 @@ const disabledButtonStyle = {
   ...completeButtonStyle,
   opacity: 0.35,
   cursor: 'not-allowed',
-  background: 'rgba(245,239,224,0.04)',
-  border: '1px solid rgba(245,239,224,0.2)',
-  color: 'rgba(245,239,224,0.4)',
+  background: 'rgba(243,234,216,0.04)',
+  border: '1px solid rgba(243,234,216,0.2)',
+  color: 'rgba(243,234,216,0.4)',
 };
 
 const completedBoxStyle = {
   padding: '1.75rem 2rem',
-  border: '1px solid rgba(95,172,115,0.35)',
+  border: '1px solid rgba(232,184,91,0.35)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(95,172,115,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
   marginTop: '1.5rem',
 };
 
@@ -98,17 +98,17 @@ const errorBoxStyle = {
 
 const disclaimerBoxStyle = {
   padding: '1.4rem 1.6rem',
-  border: '1px solid rgba(212,161,42,0.28)',
+  border: '1px solid rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
   marginTop: '1.5rem',
 };
 
 const upcomingBoxStyle = {
   padding: '1.75rem 2rem',
-  border: '1px dashed rgba(212,161,42,0.28)',
+  border: '1px dashed rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
   marginTop: '2.5rem',
 };
 
@@ -158,7 +158,7 @@ function CheckIcon({ met }) {
     <div style={checkIconStyle(met)} aria-hidden="true">
       {met && (
         <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-          <path d="M1 4L3.5 6.5L9 1" stroke="rgba(95,172,115,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 4L3.5 6.5L9 1" stroke="rgba(232,184,91,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )}
     </div>
@@ -175,7 +175,7 @@ function RequirementRow({ reqKey, label, note, status, doneLabel, pendingLabel }
           {label}
         </p>
         {note && (
-          <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.84rem', color: 'rgba(245,239,224,0.48)', fontStyle: 'italic' }}>
+          <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.84rem', color: 'rgba(243,234,216,0.48)', fontStyle: 'italic' }}>
             {note}
           </p>
         )}
@@ -189,7 +189,7 @@ function RequirementRow({ reqKey, label, note, status, doneLabel, pendingLabel }
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
           fontWeight: 500,
-          color: met ? 'rgba(95,172,115,0.75)' : 'rgba(245,239,224,0.35)',
+          color: met ? 'rgba(232,184,91,0.75)' : 'rgba(243,234,216,0.35)',
           paddingTop: '2px',
         }}
         aria-label={met ? doneLabel : pendingLabel}
@@ -317,7 +317,7 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         <div
           role="list"
           aria-label={c.completeHeading}
-          style={{ borderTop: '1px solid rgba(245,239,224,0.07)', marginBottom: '1.75rem' }}
+          style={{ borderTop: '1px solid rgba(243,234,216,0.07)', marginBottom: '1.75rem' }}
         >
           {c.requirements.map((r) => (
             <RequirementRow
@@ -335,7 +335,7 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
         {/* Completed state */}
         {completedAt && (
           <div style={completedBoxStyle} role="status" aria-live="polite">
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem', color: 'rgba(95,172,115,0.7)' }}>
+            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem', color: 'rgba(232,184,91,0.7)' }}>
               {c.moduleCompleteLabel}
             </span>
             <p className="font-body" style={{ ...bodyText, margin: 0 }}>
@@ -385,7 +385,7 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
 
         {/* Instruction for unmet requirements */}
         {requirements && !allMet && !completedAt && (
-          <p className="font-body" style={{ ...bodyText, marginTop: '1rem', fontSize: '0.88rem', color: 'rgba(245,239,224,0.52)' }}>
+          <p className="font-body" style={{ ...bodyText, marginTop: '1rem', fontSize: '0.88rem', color: 'rgba(243,234,216,0.52)' }}>
             {c.pendingReqsNote}
           </p>
         )}

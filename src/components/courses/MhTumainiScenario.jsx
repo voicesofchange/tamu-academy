@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.97rem',
   lineHeight: 1.85,
   fontWeight: 300,
 };
 
 const eyebrowStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.6rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -18,9 +18,9 @@ const eyebrowStyle = {
 
 const decisionBoxStyle = {
   padding: '1.4rem 1.6rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.02)',
+  backgroundColor: 'rgba(243,234,216,0.02)',
   marginBottom: '1.75rem',
 };
 
@@ -29,10 +29,10 @@ const optionBase = {
   alignItems: 'flex-start',
   gap: '0.85rem',
   padding: '0.9rem 1.15rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
   marginBottom: '0.85rem',
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.95rem',
   cursor: 'pointer',
   transition: 'border-color 0.2s ease, background-color 0.2s ease',
@@ -40,32 +40,32 @@ const optionBase = {
 
 const optionSelected = {
   ...optionBase,
-  borderColor: 'rgba(212,161,42,0.7)',
-  backgroundColor: 'rgba(212,161,42,0.06)',
+  borderColor: 'rgba(232,184,91,0.7)',
+  backgroundColor: 'rgba(232,184,91,0.06)',
 };
 
 const feedbackBoxStyle = {
   marginTop: '1rem',
   padding: '1rem 1.25rem',
-  border: '1px solid rgba(212,161,42,0.35)',
+  border: '1px solid rgba(232,184,91,0.35)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.02)',
+  backgroundColor: 'rgba(243,234,216,0.02)',
 };
 
 const summaryBoxStyle = {
   marginTop: '2rem',
   padding: '1.5rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.5)',
+  border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.04)',
+  backgroundColor: 'rgba(232,184,91,0.04)',
 };
 
 const finalMessageBoxStyle = {
   marginTop: '1.5rem',
   padding: '1.25rem 1.5rem',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.03)',
+  backgroundColor: 'rgba(243,234,216,0.03)',
 };
 
 const stepContainerStyle = {
@@ -82,9 +82,9 @@ const stepButtonBase = {
   width: '2.2rem',
   height: '2.2rem',
   borderRadius: '50%',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   backgroundColor: 'transparent',
-  color: 'rgba(245,239,224,0.5)',
+  color: 'rgba(243,234,216,0.5)',
   fontSize: '0.85rem',
   fontWeight: 400,
   cursor: 'pointer',
@@ -94,15 +94,15 @@ const stepButtonBase = {
 
 const stepButtonCurrent = {
   ...stepButtonBase,
-  borderColor: '#D4A12A',
-  color: '#D4A12A',
-  backgroundColor: 'rgba(212,161,42,0.08)',
+  borderColor: '#e8b85b',
+  color: '#e8b85b',
+  backgroundColor: 'rgba(232,184,91,0.08)',
 };
 
 const stepButtonAnswered = {
   ...stepButtonBase,
-  borderColor: 'rgba(212,161,42,0.5)',
-  color: 'rgba(212,161,42,0.85)',
+  borderColor: 'rgba(232,184,91,0.5)',
+  color: 'rgba(232,184,91,0.85)',
 };
 
 const stepButtonDisabled = {
@@ -116,10 +116,10 @@ const navButtonStyle = {
   alignItems: 'center',
   gap: '0.4rem',
   padding: '0.6rem 1.2rem',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   borderRadius: '4px',
   backgroundColor: 'transparent',
-  color: 'rgba(245,239,224,0.85)',
+  color: 'rgba(243,234,216,0.85)',
   fontSize: '0.9rem',
   fontWeight: 400,
   cursor: 'pointer',
@@ -129,7 +129,7 @@ const navButtonStyle = {
 
 const retryButtonStyle = {
   ...navButtonStyle,
-  borderColor: 'rgba(232,149,28,0.6)',
+  borderColor: 'rgba(232,184,91,0.6)',
   color: '#E8951C',
   marginTop: '0.75rem',
 };
@@ -343,7 +343,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
         style={{
           ...bodyText,
           marginBottom: '1.5rem',
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontWeight: 400,
           fontSize: '1.02rem',
         }}
@@ -390,7 +390,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
         </span>
         <h3
           className="font-heading"
-          style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}
+          style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}
         >
           {activeDecision.heading}
         </h3>
@@ -425,7 +425,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
                       aria-label={`Option ${optionLabel(i)}: ${opt}`}
                     />
                     <span style={{ flex: 1 }}>
-                      <strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>
+                      <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
                         {optionLabel(i)}.
                       </strong>{' '}
                       {opt}
@@ -437,7 +437,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
           </ul>
         </fieldset>
         {isPending && (
-          <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', margin: 0 }}>
+          <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem', margin: 0 }}>
             Loading feedback…
           </p>
         )}
@@ -446,7 +446,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>
               Feedback
             </span>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(245,239,224,0.7)' }}>
+            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.7)' }}>
               {feedbacks[activeDecisionId]}
             </p>
           </div>
@@ -476,7 +476,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
 
       {/* Completion status — visible regardless of active step. */}
       {completionPending && !completed && !completionError && (
-        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>
+        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>
           Completing scenario…
         </p>
       )}
@@ -484,7 +484,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       {/* Completion error + keyboard-accessible retry. Selections
           and feedback are retained — retry re-submits the same set. */}
       {completionError && (
-        <div role="alert" style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,149,28,0.4)', borderRadius: '4px', backgroundColor: 'rgba(232,149,28,0.04)', marginBottom: '1.5rem' }}>
+        <div role="alert" style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', marginBottom: '1.5rem' }}>
           <p className="font-body" style={{ ...bodyText, color: '#e8955c', margin: 0 }}>
             We could not complete your scenario right now.
           </p>
@@ -498,7 +498,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       {completed && (
         <div role="status" aria-live="polite">
           <div style={summaryBoxStyle}>
-            <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>
+            <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>
               Your Design Summary
             </h3>
             {scenario.summaryHeadings.map((heading, i) => {
@@ -521,7 +521,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
               Final Design Message
             </span>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(245,239,224,0.75)' }}>
+            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.75)' }}>
               {scenario.finalDesignMessage}
             </p>
           </div>

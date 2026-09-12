@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const subHeading = { color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.4vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: '2.25rem 0 0.7rem' };
-const partHeading = { color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: '2.6rem 0 0.85rem' };
-const promptStyle = { color: 'rgba(245,239,224,0.62)', fontSize: '0.86rem', lineHeight: 1.6, marginBottom: '0.95rem', fontStyle: 'italic', fontWeight: 300 };
-const labelStyle = { color: 'rgba(245,239,224,0.85)', fontSize: '0.8rem', letterSpacing: '0.03em', display: 'block', marginBottom: '0.4rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const subHeading = { color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.4vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: '2.25rem 0 0.7rem' };
+const partHeading = { color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: '2.6rem 0 0.85rem' };
+const promptStyle = { color: 'rgba(243,234,216,0.62)', fontSize: '0.86rem', lineHeight: 1.6, marginBottom: '0.95rem', fontStyle: 'italic', fontWeight: 300 };
+const labelStyle = { color: 'rgba(243,234,216,0.85)', fontSize: '0.8rem', letterSpacing: '0.03em', display: 'block', marginBottom: '0.4rem' };
 const fieldStyle = {
-  width: '100%', backgroundColor: 'rgba(245,239,224,0.03)', border: '1px solid rgba(212,161,42,0.22)',
-  borderRadius: '4px', padding: '0.7rem 0.9rem', color: '#F5EFE0', fontSize: '0.92rem', lineHeight: 1.6,
+  width: '100%', backgroundColor: 'rgba(243,234,216,0.03)', border: '1px solid rgba(232,184,91,0.22)',
+  borderRadius: '4px', padding: '0.7rem 0.9rem', color: '#f8f0df', fontSize: '0.92rem', lineHeight: 1.6,
   resize: 'vertical', fontFamily: 'inherit',
 };
-const boxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' };
-const privacyBoxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)' };
+const boxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' };
+const privacyBoxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)' };
 const clearBtnStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.45rem',
-  color: 'rgba(212,161,42,0.9)', fontSize: '0.72rem', letterSpacing: '0.14em',
-  textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)',
+  color: 'rgba(232,184,91,0.9)', fontSize: '0.72rem', letterSpacing: '0.14em',
+  textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)',
   borderRadius: '2px', padding: '0.6rem 1.1rem', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit',
 };
 
@@ -49,7 +49,7 @@ export default function MhCareDesignLab({ lab }) {
 
   return (
     <div className="tamu-print-area" style={{ marginTop: '0.5rem' }}>
-      <p className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '1.04rem', fontStyle: 'italic', marginBottom: '1.5rem' }}>
+      <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '1.04rem', fontStyle: 'italic', marginBottom: '1.5rem' }}>
         {lab.subtitle}
       </p>
 
@@ -77,7 +77,7 @@ export default function MhCareDesignLab({ lab }) {
       <h3 className="font-heading" style={subHeading}>{lab.careExplanation.heading}</h3>
       {lab.careExplanation.sections.map((sec) => (
         <div key={sec.letter} style={{ ...boxStyle, marginBottom: '1.1rem' }}>
-          <h4 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.08rem', fontWeight: 400, margin: '0 0 0.5rem' }}>
+          <h4 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.08rem', fontWeight: 400, margin: '0 0 0.5rem' }}>
             {sec.letter} — {sec.name}
           </h4>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
@@ -100,9 +100,9 @@ export default function MhCareDesignLab({ lab }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem', marginBottom: '1.5rem' }}>
         {lab.step2Principles.cards.map((card) => (
           <div key={card.name} style={boxStyle}>
-            <h4 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 400, margin: '0 0 0.4rem' }}>{card.name}</h4>
-            <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', color: 'rgba(245,239,224,0.6)', marginBottom: '0.7rem' }}>
-              <strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>Evidence note:</strong> {card.evidenceNote}
+            <h4 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, margin: '0 0 0.4rem' }}>{card.name}</h4>
+            <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', color: 'rgba(243,234,216,0.6)', marginBottom: '0.7rem' }}>
+              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Evidence note:</strong> {card.evidenceNote}
             </p>
             <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.4rem' }}>{card.transferPrompt}</p>
             <Field id={`care-s2-${card.name.replace(/\s+/g, '-')}`} label="POSSIBLE TRANSFER"
@@ -139,7 +139,7 @@ export default function MhCareDesignLab({ lab }) {
         {lab.sectionR.pathwaySteps.map((step, i) => (
           <div key={i} style={boxStyle}>
             <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem' }}>
-              <strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>{step.label}:</strong> {step.prompt}
+              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{step.label}:</strong> {step.prompt}
             </p>
             <Field id={`care-r-pathway-${i}`} label={lab.sectionR.localPathwayLabel}
               value={fields[`r_pathway_${i}`] || ''} onChange={(v) => setField(`r_pathway_${i}`, v)} rows={2} />
@@ -196,7 +196,7 @@ export default function MhCareDesignLab({ lab }) {
           <label key={i} className="font-body" style={{ ...bodyText, display: 'flex', gap: '0.6rem', alignItems: 'flex-start', cursor: 'pointer' }}>
             <input type="checkbox" checked={checks[i] || false}
               onChange={() => setChecks((prev) => prev.map((v, idx) => (idx === i ? !v : v)))}
-              style={{ marginTop: '0.35rem', accentColor: '#D4A12A' }} />
+              style={{ marginTop: '0.35rem', accentColor: '#e8b85b' }} />
             <span>{item}</span>
           </label>
         ))}

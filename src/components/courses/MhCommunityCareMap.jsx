@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.95rem',
   lineHeight: 1.7,
   fontWeight: 300,
 };
 
 const eyebrowStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.6rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -17,19 +17,19 @@ const eyebrowStyle = {
 
 const privacyBoxStyle = {
   padding: '1.1rem 1.35rem',
-  border: '1px solid rgba(212,161,42,0.28)',
+  border: '1px solid rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
 };
 
 const textareaStyle = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '0.55rem 0.7rem',
-  border: '1px solid rgba(212,161,42,0.25)',
+  border: '1px solid rgba(232,184,91,0.25)',
   borderRadius: '3px',
-  background: 'rgba(245,239,224,0.025)',
-  color: 'rgba(245,239,224,0.85)',
+  background: 'rgba(243,234,216,0.025)',
+  color: 'rgba(243,234,216,0.85)',
   fontSize: '0.9rem',
   lineHeight: 1.5,
   fontFamily: 'inherit',
@@ -39,7 +39,7 @@ const textareaStyle = {
 };
 
 const labelStyle = {
-  color: 'rgba(212,161,42,0.82)',
+  color: 'rgba(232,184,91,0.82)',
   fontWeight: 500,
   fontSize: '0.78rem',
   letterSpacing: '0.03em',
@@ -48,9 +48,9 @@ const labelStyle = {
 };
 
 const actionButtonStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   backgroundColor: 'transparent',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   padding: '0.55rem 1.1rem',
   fontSize: '0.76rem',
   fontWeight: 500,
@@ -222,7 +222,7 @@ export default function MhCommunityCareMap({ config }) {
 
         {config.ringDefinitions.map((ring) => (
           <section key={ring.id} style={{ marginBottom: '1.5rem' }} aria-label={ring.label}>
-            <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, marginBottom: '0.6rem' }}>
+            <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 400, marginBottom: '0.6rem' }}>
               {ring.label}
             </h3>
 
@@ -231,7 +231,7 @@ export default function MhCommunityCareMap({ config }) {
                 key={idx}
                 style={{
                   padding: '0.85rem 1rem',
-                  border: '1px solid rgba(212,161,42,0.16)',
+                  border: '1px solid rgba(232,184,91,0.16)',
                   borderRadius: '4px',
                   marginBottom: '0.7rem',
                 }}
@@ -294,12 +294,12 @@ export default function MhCommunityCareMap({ config }) {
         className={blankPrintActive ? 'tamu-print-area hidden print:block' : 'hidden'}
         aria-hidden="true"
       >
-        <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.35rem', fontWeight: 400, marginBottom: '0.7rem' }}>
+        <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.35rem', fontWeight: 400, marginBottom: '0.7rem' }}>
           {config.heading} — Blank Worksheet
         </h3>
         {config.ringDefinitions.map((ring) => (
           <section key={`blank-${ring.id}`} style={{ marginBottom: '1.4rem' }} aria-label={ring.label}>
-            <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.55rem' }}>
+            <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.55rem' }}>
               {ring.label}
             </h3>
             {config.entryFields.map((field) => (

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.95rem',
   lineHeight: 1.7,
   fontWeight: 300,
 };
 
 const eyebrowStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.6rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -18,15 +18,15 @@ const eyebrowStyle = {
 
 const privacyBoxStyle = {
   padding: '1.1rem 1.35rem',
-  border: '1px solid rgba(212,161,42,0.28)',
+  border: '1px solid rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
   marginBottom: '1.4rem',
 };
 
 const questionCardStyle = {
   padding: '1.2rem 1.4rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
   marginBottom: '1.3rem',
 };
@@ -36,10 +36,10 @@ const optionBase = {
   alignItems: 'flex-start',
   gap: '0.85rem',
   padding: '0.85rem 1.1rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
   marginBottom: '0.65rem',
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.93rem',
   cursor: 'pointer',
   transition: 'border-color 0.2s ease, background-color 0.2s ease',
@@ -47,20 +47,20 @@ const optionBase = {
 
 const optionSelectedStyle = {
   ...optionBase,
-  borderColor: 'rgba(212,161,42,0.7)',
-  backgroundColor: 'rgba(212,161,42,0.06)',
+  borderColor: 'rgba(232,184,91,0.7)',
+  backgroundColor: 'rgba(232,184,91,0.06)',
 };
 
 const optionCorrectStyle = {
   ...optionBase,
-  borderColor: 'rgba(212,161,42,0.85)',
-  backgroundColor: 'rgba(212,161,42,0.10)',
+  borderColor: 'rgba(232,184,91,0.85)',
+  backgroundColor: 'rgba(232,184,91,0.10)',
   cursor: 'default',
 };
 
 const optionWrongStyle = {
   ...optionBase,
-  borderColor: 'rgba(245,239,224,0.45)',
+  borderColor: 'rgba(243,234,216,0.45)',
   cursor: 'default',
 };
 
@@ -71,8 +71,8 @@ const optionDimStyle = {
 };
 
 const submitButtonStyle = {
-  color: '#1A130E',
-  backgroundColor: '#D4A12A',
+  color: '#24150f',
+  backgroundColor: '#e8b85b',
   border: 'none',
   padding: '0.7rem 1.7rem',
   fontSize: '0.82rem',
@@ -84,9 +84,9 @@ const submitButtonStyle = {
 };
 
 const retryButtonStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   backgroundColor: 'transparent',
-  border: '1px solid rgba(212,161,42,0.45)',
+  border: '1px solid rgba(232,184,91,0.45)',
   padding: '0.65rem 1.5rem',
   fontSize: '0.78rem',
   fontWeight: 500,
@@ -181,7 +181,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
   return (
     <div>
       {quiz.subtitle && (
-        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(212,161,42,0.78)', marginBottom: '1.1rem', fontSize: '0.9rem' }}>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.1rem', fontSize: '0.9rem' }}>
           {quiz.subtitle}
         </p>
       )}
@@ -196,7 +196,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
       </div>
 
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>{quiz.learnerInstruction}</p>
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(212,161,42,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>
         Passing requires {quiz.passingScore} of {quiz.questions.length} correct answers.
       </p>
 
@@ -209,8 +209,8 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               style={questionCardStyle}
               aria-label={`Question ${qIdx + 1}`}
             >
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
-                <span style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span>{' '}
+              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
+                <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span>{' '}
                 {q.prompt}
               </h3>
               <fieldset style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
@@ -251,7 +251,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                             aria-label={`Option ${optionLabel(i)}: ${opt}`}
                           />
                           <span style={{ flex: 1 }}>
-                            <strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>
+                            <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
                               {optionLabel(i)}.
                             </strong>{' '}
                             {opt}
@@ -268,9 +268,9 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                   style={{
                     marginTop: '0.85rem',
                     padding: '0.85rem 1rem',
-                    border: `1px solid ${qResult.isCorrect ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.25)'}`,
+                    border: `1px solid ${qResult.isCorrect ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.25)'}`,
                     borderRadius: '3px',
-                    backgroundColor: 'rgba(245,239,224,0.02)',
+                    backgroundColor: 'rgba(243,234,216,0.02)',
                   }}
                 >
                   <p
@@ -279,7 +279,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                       ...bodyText,
                       margin: 0,
                       marginBottom: '0.4rem',
-                      color: qResult.isCorrect ? '#D4A12A' : '#e8955c',
+                      color: qResult.isCorrect ? '#e8b85b' : '#e8955c',
                       fontWeight: 500,
                     }}
                   >
@@ -291,7 +291,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                       ...bodyText,
                       fontStyle: 'italic',
                       margin: 0,
-                      color: 'rgba(245,239,224,0.7)',
+                      color: 'rgba(243,234,216,0.7)',
                       fontSize: '0.88rem',
                     }}
                   >
@@ -349,9 +349,9 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
           style={{
             marginTop: '1.5rem',
             padding: '1.2rem 1.4rem',
-            border: `1px solid ${result.passed ? 'rgba(212,161,42,0.5)' : 'rgba(245,239,224,0.3)'}`,
+            border: `1px solid ${result.passed ? 'rgba(232,184,91,0.5)' : 'rgba(243,234,216,0.3)'}`,
             borderRadius: '4px',
-            backgroundColor: 'rgba(245,239,224,0.02)',
+            backgroundColor: 'rgba(243,234,216,0.02)',
           }}
         >
           <p
@@ -360,7 +360,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               ...bodyText,
               margin: 0,
               marginBottom: '0.5rem',
-              color: '#F5EFE0',
+              color: '#f8f0df',
               fontWeight: 500,
               fontSize: '1.1rem',
             }}
@@ -373,7 +373,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               ...bodyText,
               margin: 0,
               marginBottom: '0.5rem',
-              color: 'rgba(245,239,224,0.7)',
+              color: 'rgba(243,234,216,0.7)',
               fontSize: '0.9rem',
             }}
           >
@@ -384,7 +384,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
             style={{
               ...bodyText,
               margin: 0,
-              color: result.passed ? '#D4A12A' : '#e8955c',
+              color: result.passed ? '#e8b85b' : '#e8955c',
               fontStyle: 'italic',
             }}
           >

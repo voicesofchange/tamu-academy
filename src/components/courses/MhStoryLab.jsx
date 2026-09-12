@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.92rem', lineHeight: 1.75, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const sectionBoxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
-const fieldLabelStyle = { color: '#D4A12A', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.35rem', display: 'block' };
-const fieldPromptStyle = { color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', fontStyle: 'italic', marginBottom: '0.5rem' };
-const textareaStyle = { width: '100%', minHeight: '70px', padding: '0.7rem 0.9rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '3px', backgroundColor: 'rgba(245,239,224,0.03)', color: '#F5EFE0', fontSize: '0.9rem', fontFamily: 'inherit', resize: 'vertical', outline: 'none' };
-const clearButtonStyle = { color: '#e8955c', backgroundColor: 'transparent', border: '1px solid rgba(232,149,28,0.4)', padding: '0.5rem 1.2rem', fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
-const completeButtonStyle = { color: '#1A130E', backgroundColor: '#D4A12A', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
-const checklistItemStyle = { display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginBottom: '0.6rem', color: 'rgba(245,239,224,0.7)', fontSize: '0.88rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.75, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const sectionBoxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
+const fieldLabelStyle = { color: '#e8b85b', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.35rem', display: 'block' };
+const fieldPromptStyle = { color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', fontStyle: 'italic', marginBottom: '0.5rem' };
+const textareaStyle = { width: '100%', minHeight: '70px', padding: '0.7rem 0.9rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '3px', backgroundColor: 'rgba(243,234,216,0.03)', color: '#f8f0df', fontSize: '0.9rem', fontFamily: 'inherit', resize: 'vertical', outline: 'none' };
+const clearButtonStyle = { color: '#e8955c', backgroundColor: 'transparent', border: '1px solid rgba(232,184,91,0.4)', padding: '0.5rem 1.2rem', fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
+const completeButtonStyle = { color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
+const checklistItemStyle = { display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginBottom: '0.6rem', color: 'rgba(243,234,216,0.7)', fontSize: '0.88rem' };
 
 function Field({ id, label, prompt, value, onChange }) {
   return (
@@ -24,7 +24,7 @@ function Field({ id, label, prompt, value, onChange }) {
 function SectionBox({ heading, children }) {
   return (
     <div style={sectionBoxStyle}>
-      <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, marginBottom: '1rem' }}>{heading}</h3>
+      <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, marginBottom: '1rem' }}>{heading}</h3>
       {children}
     </div>
   );
@@ -79,7 +79,7 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
 
   return (
     <div className="tamu-print-area">
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1.2rem', fontSize: '0.85rem' }}>{lab.safetyScope}</p>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.2rem', fontSize: '0.85rem' }}>{lab.safetyScope}</p>
 
       <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>How to use this lab</p>
       <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1.5rem' }}>
@@ -89,12 +89,12 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
       <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>Route options</p>
       <ul className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1.5rem', listStyle: 'none' }}>
         {lab.routeOptions.map((r) => (
-          <li key={r.key} style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'rgba(212,161,42,0.85)' }}>{r.label}:</strong> {r.purpose}</li>
+          <li key={r.key} style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'rgba(232,184,91,0.85)' }}>{r.label}:</strong> {r.purpose}</li>
         ))}
       </ul>
 
       <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>{lab.frameworkLabel}</p>
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1.5rem', fontSize: '0.85rem' }}>{lab.frameworkSummary}</p>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.5rem', fontSize: '0.85rem' }}>{lab.frameworkSummary}</p>
 
       {allSections.map((section, sIdx) => (
         <SectionBox key={sIdx} heading={section.heading}>
@@ -125,7 +125,7 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
       </SectionBox>
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, marginBottom: '1rem' }}>{lab.completionChecklist.heading}</h3>
+        <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, marginBottom: '1rem' }}>{lab.completionChecklist.heading}</h3>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {lab.completionChecklist.items.map((item, i) => (
             <li key={i} style={checklistItemStyle}>
@@ -136,17 +136,17 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
         </ul>
       </div>
 
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)', marginBottom: '1.5rem', fontSize: '0.82rem' }}>{lab.finalReminder}</p>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.5rem', fontSize: '0.82rem' }}>{lab.finalReminder}</p>
 
       <div className="no-print" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <button type="button" onClick={() => window.print()} style={{ ...clearButtonStyle, color: '#D4A12A', borderColor: 'rgba(212,161,42,0.4)' }}>Print worksheet</button>
+        <button type="button" onClick={() => window.print()} style={{ ...clearButtonStyle, color: '#e8b85b', borderColor: 'rgba(232,184,91,0.4)' }}>Print worksheet</button>
         {!showClearConfirm ? (
           <button type="button" onClick={() => setShowClearConfirm(true)} style={clearButtonStyle}>Clear all</button>
         ) : (
           <>
             <span className="font-body" style={{ ...bodyText, color: '#e8955c', fontSize: '0.85rem' }}>Clear all entries? This cannot be undone.</span>
             <button type="button" onClick={handleClearAll} style={clearButtonStyle}>Yes, clear</button>
-            <button type="button" onClick={() => setShowClearConfirm(false)} style={{ ...clearButtonStyle, color: 'rgba(245,239,224,0.7)', borderColor: 'rgba(245,239,224,0.25)' }}>Cancel</button>
+            <button type="button" onClick={() => setShowClearConfirm(false)} style={{ ...clearButtonStyle, color: 'rgba(243,234,216,0.7)', borderColor: 'rgba(243,234,216,0.25)' }}>Cancel</button>
           </>
         )}
         {!ackDone && (
@@ -154,7 +154,7 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
             {ackPending ? 'Saving...' : 'Acknowledge completion'}
           </button>
         )}
-        {ackDone && <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.82rem', fontStyle: 'italic' }}>Completion acknowledged.</span>}
+        {ackDone && <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.82rem', fontStyle: 'italic' }}>Completion acknowledged.</span>}
         {ackError && <p className="font-body" role="alert" style={{ color: '#e8955c', fontSize: '0.85rem', margin: 0 }}>{ackError}</p>}
       </div>
     </div>

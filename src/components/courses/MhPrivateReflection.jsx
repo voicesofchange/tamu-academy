@@ -1,14 +1,14 @@
 import React from 'react';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.97rem',
   lineHeight: 1.85,
   fontWeight: 300,
 };
 
 const eyebrowStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.6rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -17,23 +17,23 @@ const eyebrowStyle = {
 
 const reminderBoxStyle = {
   padding: '1.1rem 1.35rem',
-  border: '1px solid rgba(212,161,42,0.28)',
+  border: '1px solid rgba(232,184,91,0.28)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(212,161,42,0.05)',
+  backgroundColor: 'rgba(232,184,91,0.05)',
 };
 
 const privacyBoxStyle = {
   padding: '1.25rem 1.5rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 
 const offlineBannerStyle = {
   padding: '0.95rem 1.2rem',
-  border: '1px dashed rgba(212,161,42,0.32)',
+  border: '1px dashed rgba(232,184,91,0.32)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 
 /**

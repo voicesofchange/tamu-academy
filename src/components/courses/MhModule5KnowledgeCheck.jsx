@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const privacyBoxStyle = { padding: '1.1rem 1.35rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.05)', marginBottom: '1.4rem' };
-const questionCardStyle = { padding: '1.2rem 1.4rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', marginBottom: '1.3rem' };
-const optionBase = { display: 'flex', alignItems: 'flex-start', gap: '0.85rem', padding: '0.85rem 1.1rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', marginBottom: '0.65rem', color: 'rgba(245,239,224,0.78)', fontSize: '0.93rem', cursor: 'pointer', transition: 'border-color 0.2s ease, background-color 0.2s ease' };
-const optionSelectedStyle = { ...optionBase, borderColor: 'rgba(212,161,42,0.7)', backgroundColor: 'rgba(212,161,42,0.06)' };
-const optionCorrectStyle = { ...optionBase, borderColor: 'rgba(212,161,42,0.85)', backgroundColor: 'rgba(212,161,42,0.10)', cursor: 'default' };
-const optionWrongStyle = { ...optionBase, borderColor: 'rgba(245,239,224,0.45)', cursor: 'default' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const privacyBoxStyle = { padding: '1.1rem 1.35rem', border: '1px solid rgba(232,184,91,0.28)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)', marginBottom: '1.4rem' };
+const questionCardStyle = { padding: '1.2rem 1.4rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', marginBottom: '1.3rem' };
+const optionBase = { display: 'flex', alignItems: 'flex-start', gap: '0.85rem', padding: '0.85rem 1.1rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', marginBottom: '0.65rem', color: 'rgba(243,234,216,0.78)', fontSize: '0.93rem', cursor: 'pointer', transition: 'border-color 0.2s ease, background-color 0.2s ease' };
+const optionSelectedStyle = { ...optionBase, borderColor: 'rgba(232,184,91,0.7)', backgroundColor: 'rgba(232,184,91,0.06)' };
+const optionCorrectStyle = { ...optionBase, borderColor: 'rgba(232,184,91,0.85)', backgroundColor: 'rgba(232,184,91,0.10)', cursor: 'default' };
+const optionWrongStyle = { ...optionBase, borderColor: 'rgba(243,234,216,0.45)', cursor: 'default' };
 const optionDimStyle = { ...optionBase, opacity: 0.6, cursor: 'default' };
-const submitButtonStyle = { color: '#1A130E', backgroundColor: '#D4A12A', border: 'none', padding: '0.7rem 1.7rem', fontSize: '0.82rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
-const retryButtonStyle = { color: '#D4A12A', backgroundColor: 'transparent', border: '1px solid rgba(212,161,42,0.45)', padding: '0.65rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
+const submitButtonStyle = { color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.7rem 1.7rem', fontSize: '0.82rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
+const retryButtonStyle = { color: '#e8b85b', backgroundColor: 'transparent', border: '1px solid rgba(232,184,91,0.45)', padding: '0.65rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: 'pointer' };
 
 function optionLabel(i) { return String.fromCharCode(65 + i); }
 function findResultForQuestion(feedback, questionId) {
@@ -68,20 +68,20 @@ export default function MhModule5KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
 
   return (
     <div>
-      {quiz.subtitle && <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(212,161,42,0.78)', marginBottom: '1.1rem', fontSize: '0.9rem' }}>{quiz.subtitle}</p>}
+      {quiz.subtitle && <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.1rem', fontSize: '0.9rem' }}>{quiz.subtitle}</p>}
       <div style={privacyBoxStyle}>
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Privacy notice</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{quiz.privacyNotice}</p>
       </div>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>{quiz.learnerInstruction}</p>
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(212,161,42,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>Passing requires {quiz.passingScore} of {quiz.questions.length} correct answers.</p>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>Passing requires {quiz.passingScore} of {quiz.questions.length} correct answers.</p>
       <form onSubmit={handleSubmit} aria-label="Module 5 knowledge check">
         {quiz.questions.map((q, qIdx) => {
           const qResult = findResultForQuestion(result && result.feedback, q.id);
           return (
             <section key={q.id} style={questionCardStyle} aria-label={`Question ${qIdx + 1}`}>
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
-                <span style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span> {q.prompt}
+              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
+                <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span> {q.prompt}
               </h3>
               <fieldset style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
                 <legend className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>{q.prompt}</legend>
@@ -101,7 +101,7 @@ export default function MhModule5KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                         <label style={style}>
                           <input type="radio" name={q.id} value={i} checked={isSelected || false} disabled={locked}
                             onChange={() => handleSelect(q.id, i)} style={{ marginTop: '0.2rem' }} aria-label={`Option ${optionLabel(i)}: ${opt}`} />
-                          <span style={{ flex: 1 }}><strong style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>{optionLabel(i)}.</strong> {opt}</span>
+                          <span style={{ flex: 1 }}><strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{optionLabel(i)}.</strong> {opt}</span>
                         </label>
                       </li>
                     );
@@ -109,15 +109,15 @@ export default function MhModule5KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                 </ul>
               </fieldset>
               {qResult && (
-                <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${qResult.isCorrect ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
-                  <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', color: qResult.isCorrect ? '#D4A12A' : '#e8955c', fontWeight: 500 }}>{qResult.isCorrect ? 'Correct' : 'Reconsider'}</p>
+                <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${qResult.isCorrect ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
+                  <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', color: qResult.isCorrect ? '#e8b85b' : '#e8955c', fontWeight: 500 }}>{qResult.isCorrect ? 'Correct' : 'Reconsider'}</p>
                   {typeof selections[q.id] === 'number' && (
-                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: 'rgba(245,239,224,0.6)', fontWeight: 500 }}>Your answer:</span> <span style={{ color: '#F5EFE0' }}>{q.options[selections[q.id]]}</span></p>
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: 'rgba(243,234,216,0.6)', fontWeight: 500 }}>Your answer:</span> <span style={{ color: '#f8f0df' }}>{q.options[selections[q.id]]}</span></p>
                   )}
                   {qResult.correctAnswerText && (
-                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: '#D4A12A', fontWeight: 500 }}>Correct answer:</span> <span style={{ color: '#F5EFE0' }}>{qResult.correctAnswerText}</span></p>
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: '#e8b85b', fontWeight: 500 }}>Correct answer:</span> <span style={{ color: '#f8f0df' }}>{qResult.correctAnswerText}</span></p>
                   )}
-                  <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(245,239,224,0.7)', fontSize: '0.88rem' }}>{qResult.feedback}</p>
+                  <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.7)', fontSize: '0.88rem' }}>{qResult.feedback}</p>
                 </div>
               )}
             </section>
@@ -131,9 +131,9 @@ export default function MhModule5KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
         {serverError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>{serverError}</p>}
       </form>
       {result && (
-        <div role="status" aria-live="polite" style={{ marginTop: '1.5rem', padding: '1.2rem 1.4rem', border: `1px solid ${result.passed ? 'rgba(212,161,42,0.5)' : 'rgba(245,239,224,0.3)'}`, borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
-          <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.5rem', color: '#F5EFE0', fontWeight: 500, fontSize: '1.1rem' }}>{result.passed ? passedMessage : notPassedMessage}</p>
-          <p className="font-body" style={{ ...bodyText, margin: 0, color: result.passed ? '#D4A12A' : '#e8955c', fontStyle: 'italic' }}>{result.passed ? 'You passed this knowledge check.' : 'You did not pass this knowledge check. Review the feedback above and try again.'}</p>
+        <div role="status" aria-live="polite" style={{ marginTop: '1.5rem', padding: '1.2rem 1.4rem', border: `1px solid ${result.passed ? 'rgba(232,184,91,0.5)' : 'rgba(243,234,216,0.3)'}`, borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
+          <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.5rem', color: '#f8f0df', fontWeight: 500, fontSize: '1.1rem' }}>{result.passed ? passedMessage : notPassedMessage}</p>
+          <p className="font-body" style={{ ...bodyText, margin: 0, color: result.passed ? '#e8b85b' : '#e8955c', fontStyle: 'italic' }}>{result.passed ? 'You passed this knowledge check.' : 'You did not pass this knowledge check. Review the feedback above and try again.'}</p>
         </div>
       )}
     </div>
