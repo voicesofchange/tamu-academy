@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PageLayout from '@/components/page/PageLayout';
+import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import PageMeta from '@/components/seo/PageMeta';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import StatusBadge from '@/components/page/StatusBadge';
 import { useTranslation } from '@/lib/i18n';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 /**
  * Production guard shown when an in-development module is viewed publicly
@@ -20,7 +20,7 @@ export default function ModuleDevelopmentState({ course, module }) {
   const modulePath = `${coursePath}/${module.route}`;
 
   return (
-    <PageLayout>
+    <ModuleLessonLayout>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={`${module.title} — enroll in the course to access this module.`}
@@ -41,16 +41,16 @@ export default function ModuleDevelopmentState({ course, module }) {
           <StatusBadge label={module.number} />
           <StatusBadge label={module.status} />
         </div>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: 0 }}>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: 0 }}>
           {module.title}
         </h1>
       </header>
 
-      <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
+      <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
           {t('common.moduleEnrollPrompt')}
         </p>
-        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.6)' }}>
+        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)' }}>
           {t('common.moduleEnrollHint')}
         </p>
       </div>
@@ -59,11 +59,11 @@ export default function ModuleDevelopmentState({ course, module }) {
         <Link
           to={coursePath}
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
           &larr; {t('common.returnToCourse')}
         </Link>
       </div>
-    </PageLayout>
+    </ModuleLessonLayout>
   );
 }

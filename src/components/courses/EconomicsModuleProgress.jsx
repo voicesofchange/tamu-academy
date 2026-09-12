@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.88rem',
   lineHeight: 1.7,
   fontWeight: 300,
@@ -45,9 +45,9 @@ const requirementRowBase = {
 };
 
 const markButtonBase = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   backgroundColor: 'transparent',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   padding: '0.4rem 0.9rem',
   fontSize: '0.72rem',
   fontWeight: 500,
@@ -72,9 +72,9 @@ const completeButtonBase = {
 
 const modeSelectStyle = {
   padding: '0.35rem 0.6rem',
-  background: 'rgba(245,239,224,0.02)',
-  color: 'rgba(245,239,224,0.85)',
-  border: '1px solid rgba(212,161,42,0.25)',
+  background: 'rgba(243,234,216,0.02)',
+  color: 'rgba(243,234,216,0.85)',
+  border: '1px solid rgba(232,184,91,0.25)',
   borderRadius: '2px',
   fontSize: '0.72rem',
   fontFamily: 'inherit',
@@ -200,7 +200,7 @@ export default function EconomicsModuleProgress({
         style={{
           ...bodyText,
           fontStyle: 'italic',
-          color: 'rgba(245,239,224,0.6)',
+          color: 'rgba(243,234,216,0.6)',
           fontSize: '0.85rem',
           marginBottom: '1.25rem',
         }}
@@ -209,7 +209,7 @@ export default function EconomicsModuleProgress({
       </p>
 
       {loading ? (
-        <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.5)' }}>
+        <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>
           {c.loading}
         </p>
       ) : progress && progress.eligibleToSave ? (
@@ -227,14 +227,14 @@ export default function EconomicsModuleProgress({
                   style={{
                     ...requirementRowBase,
                     border: `1px solid ${
-                      isCompleted ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.12)'
+                      isCompleted ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.12)'
                     }`,
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, flexWrap: 'wrap' }}>
                     <span
                       style={{
-                        color: isCompleted ? '#D4A12A' : 'rgba(245,239,224,0.4)',
+                        color: isCompleted ? '#e8b85b' : 'rgba(243,234,216,0.4)',
                         fontSize: '0.9rem',
                         fontWeight: 500,
                       }}
@@ -293,7 +293,7 @@ export default function EconomicsModuleProgress({
                     <span
                       className="font-body"
                       style={{
-                        color: '#D4A12A',
+                        color: '#e8b85b',
                         fontSize: '0.72rem',
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
@@ -308,7 +308,7 @@ export default function EconomicsModuleProgress({
                     <span
                       className="font-body"
                       style={{
-                        color: 'rgba(245,239,224,0.5)',
+                        color: 'rgba(243,234,216,0.5)',
                         fontSize: '0.72rem',
                         fontStyle: 'italic',
                         whiteSpace: 'nowrap',
@@ -321,7 +321,7 @@ export default function EconomicsModuleProgress({
                     <span
                       className="font-body"
                       style={{
-                        color: '#D4A12A',
+                        color: '#e8b85b',
                         fontSize: '0.72rem',
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
@@ -347,12 +347,12 @@ export default function EconomicsModuleProgress({
                 ...completeButtonBase,
                 color:
                   allComplete && !completionPending && !progress.moduleCompleted
-                    ? '#1A130E'
-                    : 'rgba(245,239,224,0.4)',
+                    ? '#24150f'
+                    : 'rgba(243,234,216,0.4)',
                 backgroundColor:
                   allComplete && !completionPending && !progress.moduleCompleted
-                    ? '#D4A12A'
-                    : 'rgba(212,161,42,0.15)',
+                    ? '#e8b85b'
+                    : 'rgba(232,184,91,0.15)',
                 cursor:
                   allComplete && !completionPending && !progress.moduleCompleted
                     ? 'pointer'
@@ -368,7 +368,7 @@ export default function EconomicsModuleProgress({
               className="font-body"
               role="alert"
               style={{
-                color: statusMessage.type === 'success' ? '#D4A12A' : '#e8955c',
+                color: statusMessage.type === 'success' ? '#e8b85b' : '#e8955c',
                 marginTop: '1rem',
                 marginBottom: 0,
                 fontSize: '0.88rem',
@@ -382,7 +382,7 @@ export default function EconomicsModuleProgress({
             <p
               className="font-body"
               style={{
-                color: '#D4A12A',
+                color: '#e8b85b',
                 marginTop: '1rem',
                 marginBottom: 0,
                 fontSize: '0.9rem',
@@ -397,9 +397,9 @@ export default function EconomicsModuleProgress({
         <div
           style={{
             padding: '1.1rem 1.35rem',
-            border: '1px solid rgba(212,161,42,0.22)',
+            border: '1px solid rgba(232,184,91,0.22)',
             borderRadius: '4px',
-            backgroundColor: 'rgba(212,161,42,0.04)',
+            backgroundColor: 'rgba(232,184,91,0.04)',
           }}
         >
           <p
@@ -408,7 +408,7 @@ export default function EconomicsModuleProgress({
               ...bodyText,
               fontStyle: 'italic',
               margin: 0,
-              color: 'rgba(245,239,224,0.6)',
+              color: 'rgba(243,234,216,0.6)',
               fontSize: '0.88rem',
             }}
           >

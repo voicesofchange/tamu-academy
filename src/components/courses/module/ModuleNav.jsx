@@ -7,7 +7,7 @@ const navLinkStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: 'rgba(212,161,42,0.7)',
+  color: 'rgba(232,184,91,0.75)',
   fontSize: '0.72rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -19,7 +19,7 @@ const disabledStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.4rem',
-  color: 'rgba(245,239,224,0.28)',
+  color: 'rgba(243,234,216,0.3)',
   fontSize: '0.72rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
@@ -43,7 +43,7 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
   const nextTitle = nextModule ? `${nextModule.number} ${c.nextUnavailable}` : c.nextModuleUnavailable;
 
   return (
-    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
+    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevPath ? (
           <Link to={prevPath} className="font-body" style={navLinkStyle}>
@@ -63,10 +63,10 @@ export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModu
           </Link>
         ) : endOfCourse ? (
           <div style={{ textAlign: 'right' }}>
-            <span className="font-body" style={{ display: 'inline-block', color: 'rgba(212,161,42,0.85)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.3)', borderRadius: '2px', padding: '0.2rem 0.65rem' }}>
+            <span className="font-body" style={{ display: 'inline-block', color: 'rgba(232,184,91,0.85)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(232,184,91,0.3)', borderRadius: '2px', padding: '0.2rem 0.65rem' }}>
               {endOfCourse.label}
             </span>
-            <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', letterSpacing: '0.06em', fontStyle: 'italic', margin: '0.55rem 0 0 0' }}>
+            <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: '0.06em', fontStyle: 'italic', margin: '0.55rem 0 0 0' }}>
               {endOfCourse.milestone}
             </p>
           </div>

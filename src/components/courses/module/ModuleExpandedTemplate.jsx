@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
-import PageLayout from '@/components/page/PageLayout';
-import PageSection from '@/components/page/PageSection';
+import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
+import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleNav from '@/components/courses/module/ModuleNav';
@@ -13,7 +13,7 @@ import AfricanCaseStudy from '@/components/courses/module/AfricanCaseStudy';
 import PolicyChoiceActivity from '@/components/courses/module/PolicyChoiceActivity';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const CONTENT = {
   moduleCompetency: 'Module Competency',
@@ -72,7 +72,7 @@ export default function ModuleExpandedTemplate({ course, module }) {
   const supportingVideos = media.supporting || [];
 
   return (
-    <PageLayout>
+    <ModuleLessonLayout>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={module.competency}
@@ -94,10 +94,10 @@ export default function ModuleExpandedTemplate({ course, module }) {
           <StatusBadge label={module.number} />
           <StatusBadge label={module.status} />
         </div>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
           {module.title}
         </h1>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
           {c.estimatedTime}: {module.estimatedTime}
         </p>
         <motion.div
@@ -105,10 +105,10 @@ export default function ModuleExpandedTemplate({ course, module }) {
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
           aria-hidden="true"
-          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)', marginBottom: '1.75rem', transformOrigin: 'left' }}
+          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #e8b85b 50%, #e8b85b 65%, transparent)', marginBottom: '1.75rem', transformOrigin: 'left' }}
         />
-        <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
+        <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
             {c.moduleCompetency}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{module.competency}</p>
@@ -117,26 +117,26 @@ export default function ModuleExpandedTemplate({ course, module }) {
 
       {/* 2. Learning objectives */}
       {module.learningObjectives && (
-        <PageSection eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
+        <ModuleLessonSection eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.learningObjectives.map((o, i) => (
               <li key={i} style={{ marginBottom: '0.6rem' }}>{o}</li>
             ))}
           </ol>
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 3. Tamu Academy introduction */}
       {module.overview && module.overview.length > 0 && (
-        <PageSection eyebrow={c.introEyebrow} heading={c.introHeading}>
+        <ModuleLessonSection eyebrow={c.introEyebrow} heading={c.introHeading}>
           {module.overview.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 4-6. Video embed + link + attribution */}
-      <PageSection eyebrow={c.videosEyebrow} heading={c.videosHeading}>
+      <ModuleLessonSection eyebrow={c.videosEyebrow} heading={c.videosHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>
           {c.videosIntro}
         </p>
@@ -144,12 +144,12 @@ export default function ModuleExpandedTemplate({ course, module }) {
         {supportingVideos.map((v, i) => (
           <LessonVideo key={v.id || i} video={v} />
         ))}
-      </PageSection>
+      </ModuleLessonSection>
 
       {/* 7. Questions to consider while watching */}
       {module.watchingQuestions && module.watchingQuestions.length > 0 && (
-        <PageSection eyebrow={c.watchEyebrow} heading={c.watchHeading}>
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)' }}>
+        <ModuleLessonSection eyebrow={c.watchEyebrow} heading={c.watchHeading}>
+          <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)' }}>
             {c.watchIntro}
           </p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
@@ -157,115 +157,115 @@ export default function ModuleExpandedTemplate({ course, module }) {
               <li key={i} style={{ marginBottom: '0.85rem' }}>{q}</li>
             ))}
           </ol>
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 8. Original Tamu Academy explanation */}
       {module.explanation && module.explanation.length > 0 && (
-        <PageSection eyebrow={c.explanationEyebrow} heading={c.explanationHeading}>
+        <ModuleLessonSection eyebrow={c.explanationEyebrow} heading={c.explanationHeading}>
           {module.explanation.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 9. Key concepts and definitions */}
       {module.keyConcepts && (
-        <PageSection eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
+        <ModuleLessonSection eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
             {module.keyConcepts.map((concept) => (
               <div key={concept.term}>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}>
+                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}>
                   {concept.term}
                 </h3>
                 <p className="font-body" style={{ ...bodyText, marginBottom: '0.6rem' }}>{concept.definition}</p>
                 {concept.example && (
-                  <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.62)', marginBottom: 0 }}>
+                  <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)', marginBottom: 0 }}>
                     {c.examplePrefix}: {concept.example}
                   </p>
                 )}
               </div>
             ))}
           </div>
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 10. African case study */}
       {module.caseStudy && (
-        <PageSection eyebrow={c.caseStudyEyebrow} heading={c.caseStudyHeading}>
+        <ModuleLessonSection eyebrow={c.caseStudyEyebrow} heading={c.caseStudyHeading}>
           <AfricanCaseStudy caseStudy={module.caseStudy} />
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 11. Interactive policy activity */}
       {module.policyActivity && (
-        <PageSection eyebrow={c.activityEyebrow} heading={module.policyActivity.title}>
+        <ModuleLessonSection eyebrow={c.activityEyebrow} heading={module.policyActivity.title}>
           {module.policyActivity.purpose && (
             <p className="font-body" style={{ ...bodyText, marginBottom: '0.5rem' }}>
-              <span style={{ color: 'rgba(212,161,42,0.85)', fontWeight: 500 }}>{c.purposePrefix}: </span>
+              <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{c.purposePrefix}: </span>
               {module.policyActivity.purpose}
             </p>
           )}
           <div style={{ height: '1.5rem' }} />
           <PolicyChoiceActivity policyActivity={module.policyActivity} />
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 12 & 13. Knowledge check + feedback */}
       {module.quiz && (
-        <PageSection eyebrow={c.checkEyebrow} heading={c.checkHeading}>
+        <ModuleLessonSection eyebrow={c.checkEyebrow} heading={c.checkHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
             {c.checkIntro}
           </p>
           <KnowledgeCheck quiz={module.quiz} courseSlug={course.slug} moduleRoute={module.route} onPassed={() => setQuizPassedTrigger((t) => t + 1)} />
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 14. Reflection prompt */}
       {module.reflectionQuestions && module.reflectionQuestions.length > 0 && (
-        <PageSection eyebrow={c.reflectEyebrow} heading={c.reflectHeading}>
+        <ModuleLessonSection eyebrow={c.reflectEyebrow} heading={c.reflectHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.reflectionQuestions.map((q, i) => (
               <li key={i} style={{ marginBottom: '0.85rem' }}>{q}</li>
             ))}
           </ol>
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 15. Completion requirements */}
       {module.completionRequirements && module.completionRequirements.length > 0 && (
-        <PageSection eyebrow={c.requirementsEyebrow} heading={c.requirementsHeading}>
+        <ModuleLessonSection eyebrow={c.requirementsEyebrow} heading={c.requirementsHeading}>
           <EconomicsModuleProgress courseSlug={course.slug} moduleRoute={module.route} completionRequirements={module.completionRequirements} refreshTrigger={quizPassedTrigger} />
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* Module closing */}
       {module.closingText && module.closingText.length > 0 && (
-        <PageSection eyebrow={c.closingEyebrow} heading={c.closingHeading}>
+        <ModuleLessonSection eyebrow={c.closingEyebrow} heading={c.closingHeading}>
           {module.closingText.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* Course closing — final module only */}
       {module.courseClosingText && (
-        <PageSection eyebrow={c.courseClosingEyebrow} heading={c.courseClosingHeading}>
+        <ModuleLessonSection eyebrow={c.courseClosingEyebrow} heading={c.courseClosingHeading}>
           {module.courseClosingText.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 16. Sources and further learning */}
       {module.sources && module.sources.length > 0 && (
-        <PageSection eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
+        <ModuleLessonSection eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.sources.map((s, i) => (
               <li key={i} style={{ marginBottom: '0.5rem' }}>{s}</li>
             ))}
           </ol>
-        </PageSection>
+        </ModuleLessonSection>
       )}
 
       {/* 17. Previous and next lesson navigation */}
@@ -277,6 +277,6 @@ export default function ModuleExpandedTemplate({ course, module }) {
         nextLabel={nextLabel}
         endOfCourse={module.endOfCourse}
       />
-    </PageLayout>
+    </ModuleLessonLayout>
   );
 }

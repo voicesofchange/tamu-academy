@@ -73,11 +73,11 @@ export default function ModuleRoutePage({ moduleRoute }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#1A130E',
+          backgroundColor: '#24150f',
         }}
       >
         <div
-          className="w-8 h-8 border-4 border-[rgba(212,161,42,0.18)] border-t-[#D4A12A] rounded-full animate-spin"
+          className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin"
           aria-label="Loading module"
         />
       </div>
