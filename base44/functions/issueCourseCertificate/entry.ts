@@ -31,13 +31,17 @@ import { getCourseConfig } from '../../shared/course-registry.js';
  *     + course must exist with status "completed". This prevents
  *     unauthenticated attackers from forging certificates for
  *     incomplete or nonexistent enrollments.
+ *   - The verification_code is ONLY returned to authenticated callers
+ *     (the learner or an admin). Unauthenticated callers receive the
+ *     certificate_id but not the verification_code, preventing
+ *     credential exposure to anonymous HTTP requests.
  *
  * Returns:
  *   {
  *     certificate_created: boolean,
  *     certificate_already_existed: boolean,
  *     certificate_id: string,
- *     verification_code: string (only when newly created)
+ *     verification_code: string (only for authenticated callers, when newly created)
  *   }
  */
 export default async function(req: Request): Promise<Response> {
@@ -151,12 +155,19 @@ export default async function(req: Request): Promise<Response> {
       completion_statement: courseConfig.completionStatement,
     });
 
-    return Response.json({
+    // Only return the verification_code to authenticated callers (the
+    // learner or an admin). Unauthenticated callers (the internal workflow)
+    // do not need it — the workflow does not use the return value — and
+    // returning it would expose a credential to anonymous HTTP callers.
+    const response: Record<string, unknown> = {
       certificate_created: true,
       certificate_already_existed: false,
       certificate_id: created?.certificate_id || certificateId,
-      verification_code: created?.verification_code || verificationCode,
-    });
+    };
+    if (user) {
+      response.verification_code = created?.verification_code || verificationCode;
+    }
+    return Response.json(response);
   } catch (error) {
     console.error('[issueCourseCertificate] Error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

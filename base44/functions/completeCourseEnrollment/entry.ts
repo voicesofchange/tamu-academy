@@ -28,13 +28,16 @@ import {
  *     integrity check — EVERY required module for the course must
  *     have a ModuleProgress row with status "completed". This prevents
  *     unauthenticated attackers from arbitrarily completing enrollments.
+ *   - The learner_name (PII) is ONLY returned to authenticated callers
+ *     (the learner or an admin). Unauthenticated callers receive null,
+ *     preventing full-name exposure to anonymous HTTP requests.
  *
  * Returns:
  *   {
  *     enrollment_id: string,
  *     certificate_exists: boolean,
  *     existing_certificate_id: string | null,
- *     learner_name: string | null,
+ *     learner_name: string | null (null for unauthenticated callers),
  *     course_title: string,
  *     completed_at: string (ISO),
  *     learner_id: string,
@@ -149,11 +152,16 @@ export default async function(req: Request): Promise<Response> {
       learnerName = null;
     }
 
+    // Only return the learner's full name to authenticated callers (the
+    // learner or an admin). Unauthenticated callers (the internal workflow)
+    // receive null — issueCourseCertificate derives the name server-side
+    // from the User entity, so the workflow does not need it here, and
+    // returning it would expose PII to anonymous HTTP callers.
     return Response.json({
       enrollment_id: enrollment.id,
       certificate_exists: certificateExists,
       existing_certificate_id: certificateExists ? existingCerts[0].certificate_id : null,
-      learner_name: learnerName,
+      learner_name: user ? learnerName : null,
       course_title: courseConfig.title,
       completed_at: nowIso,
       learner_id: learnerId,
