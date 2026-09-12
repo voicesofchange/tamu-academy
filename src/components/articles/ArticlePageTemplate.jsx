@@ -38,8 +38,8 @@ function ArticleStructuredData({ article }) {
   return null;
 }
 
-const bodyStyle = { color: 'rgba(245,239,224,0.72)', fontSize: '0.97rem', lineHeight: 1.9, fontWeight: 300, margin: '0 0 1.1rem' };
-const dimStyle  = { color: 'rgba(245,239,224,0.4)', fontSize: '0.82rem', lineHeight: 1.75, fontWeight: 300 };
+const bodyStyle = { color: 'rgba(243,234,216,0.72)', fontSize: '0.97rem', lineHeight: 1.9, fontWeight: 300, margin: '0 0 1.1rem' };
+const dimStyle  = { color: 'rgba(243,234,216,0.4)', fontSize: '0.82rem', lineHeight: 1.75, fontWeight: 300 };
 
 /** Render a closing note that may contain a [text](/path) link */
 function ClosingNote({ text }) {
@@ -52,8 +52,8 @@ function ClosingNote({ text }) {
           const [, label, href] = match;
           const isInternal = href.startsWith('/');
           return isInternal
-            ? <Link key={i} to={href} style={{ color: 'rgba(212,161,42,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</Link>
-            : <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</a>;
+            ? <Link key={i} to={href} style={{ color: 'rgba(232,184,91,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</Link>
+            : <a key={i} href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,184,91,0.75)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>{label}</a>;
         }
         // Split on \n\n for paragraph breaks within the closing note
         return part.split('\n\n').map((chunk, j) => (
@@ -89,7 +89,7 @@ export default function ArticlePageTemplate({ article }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="font-body"
-          style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}
+          style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}
         >
           {a.category}
         </motion.span>
@@ -99,7 +99,7 @@ export default function ArticlePageTemplate({ article }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.08 }}
           className="font-heading"
-          style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
+          style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
         >
           {a.title}
         </motion.h1>
@@ -110,7 +110,7 @@ export default function ArticlePageTemplate({ article }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
             className="font-heading"
-            style={{ color: 'rgba(212,161,42,0.85)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1.25rem' }}
+            style={{ color: 'rgba(232,184,91,0.85)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 1.25rem' }}
           >
             {a.subtitle}
           </motion.p>
@@ -122,7 +122,7 @@ export default function ArticlePageTemplate({ article }) {
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 0.25 }}
           aria-hidden="true"
-          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)', margin: '1.5rem 0', transformOrigin: 'left' }}
+          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #E2B652 50%, #e8b85b 65%, transparent)', margin: '1.5rem 0', transformOrigin: 'left' }}
         />
 
         {/* Meta row */}
@@ -131,7 +131,7 @@ export default function ArticlePageTemplate({ article }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="font-body"
-          style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1.25rem', color: 'rgba(245,239,224,0.45)', fontSize: '0.75rem', letterSpacing: '0.06em' }}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1.25rem', color: 'rgba(243,234,216,0.45)', fontSize: '0.75rem', letterSpacing: '0.06em' }}
         >
           {a.author && <span>{a.author}</span>}
           {a.publisher && a.publisher !== a.author && <span>{a.publisher}</span>}
@@ -139,7 +139,7 @@ export default function ArticlePageTemplate({ article }) {
           {a.updatedDate && <span>Updated {a.updatedDate}</span>}
           {a.readingTime && <span>{a.readingTime} min read</span>}
           {a.status === 'in-development' && (
-            <span style={{ color: 'rgba(212,161,42,0.5)', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
+            <span style={{ color: 'rgba(232,184,91,0.5)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
               In Development
             </span>
           )}
@@ -154,9 +154,9 @@ export default function ArticlePageTemplate({ article }) {
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.35 }}
           aria-label="Introductory note"
           className="font-body"
-          style={{ marginBottom: '2.5rem', padding: '1.25rem 1.5rem', border: '1px solid rgba(212,161,42,0.25)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', color: 'rgba(245,239,224,0.75)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300 }}
+          style={{ marginBottom: '2.5rem', padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.03)', color: 'rgba(243,234,216,0.75)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300 }}
         >
-          <strong style={{ fontWeight: 500, color: '#F5EFE0' }}>A note before we begin: </strong>
+          <strong style={{ fontWeight: 500, color: '#f8f0df' }}>A note before we begin: </strong>
           {a.safetyNote}
         </motion.aside>
       )}
@@ -169,7 +169,7 @@ export default function ArticlePageTemplate({ article }) {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.72)', fontSize: '1.02rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '3rem', borderLeft: '2px solid rgba(212,161,42,0.3)', paddingLeft: '1.25rem' }}
+          style={{ color: 'rgba(243,234,216,0.72)', fontSize: '1.02rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '3rem', borderLeft: '2px solid rgba(232,184,91,0.3)', paddingLeft: '1.25rem' }}
         >
           {a.summary}
         </motion.p>
@@ -185,10 +185,10 @@ export default function ArticlePageTemplate({ article }) {
           aria-label="Watch the related episode"
           style={{ marginBottom: '3.5rem' }}
         >
-          <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
+          <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
             Watch the Related Episode
           </p>
-          <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
+          <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)' }}>
             <iframe
               src={`https://www.youtube.com/embed/${a.videoId}`}
               title={`Tamu Academy — ${a.videoTitle}`}
@@ -203,9 +203,9 @@ export default function ArticlePageTemplate({ article }) {
             target="_blank"
             rel="noopener noreferrer"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(245,239,224,0.4)', fontSize: '0.72rem', letterSpacing: '0.1em', textDecoration: 'none', marginTop: '0.6rem', transition: 'color 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.4)'}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(243,234,216,0.4)', fontSize: '0.72rem', letterSpacing: '0.1em', textDecoration: 'none', marginTop: '0.6rem', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.4)'}
           >
             <ExternalLink size={12} aria-hidden="true" />
             Watch on YouTube
@@ -228,7 +228,7 @@ export default function ArticlePageTemplate({ article }) {
                 style={{ marginBottom: isLast ? '1.5rem' : '3rem' }}
               >
                 {section.heading && (
-                  <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.55rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1.25rem' }}>
+                  <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.2vw, 1.55rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1.25rem' }}>
                     {section.heading}
                   </h2>
                 )}
@@ -245,8 +245,8 @@ export default function ArticlePageTemplate({ article }) {
 
                 {/* Pull quote — after body paragraphs */}
                 {section.pullQuote && (
-                  <blockquote style={{ margin: '1.75rem 0 0', borderLeft: '3px solid #D4A12A', paddingLeft: '1.25rem' }}>
-                    <p className="font-heading" style={{ color: 'rgba(212,161,42,0.9)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
+                  <blockquote style={{ margin: '1.75rem 0 0', borderLeft: '3px solid #e8b85b', paddingLeft: '1.25rem' }}>
+                    <p className="font-heading" style={{ color: 'rgba(232,184,91,0.9)', fontSize: 'clamp(1rem, 2vw, 1.3rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
                       "{section.pullQuote}"
                     </p>
                   </blockquote>
@@ -254,7 +254,7 @@ export default function ArticlePageTemplate({ article }) {
 
                 {/* Closing note on last section */}
                 {isLast && section.closingNote && (
-                  <p className="font-body" style={{ ...dimStyle, marginTop: '2rem', fontStyle: 'italic', borderTop: '1px solid rgba(245,239,224,0.08)', paddingTop: '1.5rem' }}>
+                  <p className="font-body" style={{ ...dimStyle, marginTop: '2rem', fontStyle: 'italic', borderTop: '1px solid rgba(243,234,216,0.08)', paddingTop: '1.5rem' }}>
                     <ClosingNote text={section.closingNote} />
                   </p>
                 )}
@@ -272,14 +272,14 @@ export default function ArticlePageTemplate({ article }) {
           viewport={{ once: true, margin: '-30px' }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
           aria-label="Key takeaways"
-          style={{ marginBottom: '3rem', padding: '1.75rem 2rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.02)' }}
+          style={{ marginBottom: '3rem', padding: '1.75rem 2rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.02)' }}
         >
-          <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
+          <h2 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
             Key Takeaways
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {a.keyTakeaways.map((item, i) => (
-              <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 }}>
+              <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 }}>
                 {item}
               </li>
             ))}
@@ -297,12 +297,12 @@ export default function ArticlePageTemplate({ article }) {
           aria-label="Reflect and apply"
           style={{ marginBottom: '3rem' }}
         >
-          <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
+          <h2 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
             Reflect and Apply
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {a.reflectionQuestions.map((q, i) => (
-              <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300 }}>
+              <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300 }}>
                 {q}
               </li>
             ))}
@@ -320,14 +320,14 @@ export default function ArticlePageTemplate({ article }) {
           aria-label="Related resources"
           style={{ marginBottom: '3rem' }}
         >
-          <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
+          <h2 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 1rem' }}>
             Related Resources
           </h2>
           <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {a.relatedResources.map((r, i) => (
-              <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>
+              <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>
                 {r.url ? (
-                  <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.8)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,184,91,0.8)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                     {r.title} <ExternalLink size={11} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '3px' }} aria-label="(external link)" />
                   </a>
                 ) : r.title}
@@ -345,16 +345,16 @@ export default function ArticlePageTemplate({ article }) {
           viewport={{ once: true, margin: '-30px' }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
           aria-label="Sources"
-          style={{ marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(245,239,224,0.08)' }}
+          style={{ marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(243,234,216,0.08)' }}
         >
-          <h2 className="font-body" style={{ color: 'rgba(245,239,224,0.4)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.85rem' }}>
+          <h2 className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.85rem' }}>
             Sources
           </h2>
           <ol style={{ margin: 0, paddingLeft: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {a.sources.map((s, i) => (
-              <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.8rem', lineHeight: 1.65, fontWeight: 300 }}>
+              <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.38)', fontSize: '0.8rem', lineHeight: 1.65, fontWeight: 300 }}>
                 {s.url ? (
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(212,161,42,0.55)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,184,91,0.55)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                     {s.citation} <ExternalLink size={10} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} aria-label="(external link)" />
                   </a>
                 ) : s.citation}
@@ -372,35 +372,35 @@ export default function ArticlePageTemplate({ article }) {
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
           aria-label="If you are struggling"
-          style={{ marginBottom: '3rem', padding: '1.75rem 2rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+          style={{ marginBottom: '3rem', padding: '1.75rem 2rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}
         >
-          <h2 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.85rem' }}>
+          <h2 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.85rem' }}>
             If You Are Struggling
           </h2>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
             {a.supportResources.intro}
           </p>
           <ul style={{ margin: '0 0 1.25rem', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {a.supportResources.resources.map((r, i) => (
-              <li key={i} className="font-body" style={{ borderLeft: '2px solid rgba(212,161,42,0.25)', paddingLeft: '1rem' }}>
-                <span style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>{r.region}</span>
+              <li key={i} className="font-body" style={{ borderLeft: '2px solid rgba(232,184,91,0.25)', paddingLeft: '1rem' }}>
+                <span style={{ color: 'rgba(243,234,216,0.45)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>{r.region}</span>
                 <a
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: 'rgba(212,161,42,0.85)', fontSize: '0.93rem', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                  style={{ color: 'rgba(232,184,91,0.85)', fontSize: '0.93rem', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
                 >
                   {r.label}
                   <ExternalLink size={11} aria-hidden="true" />
                 </a>
-                <p style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: '0.2rem 0 0' }}>
+                <p style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: '0.2rem 0 0' }}>
                   {r.description}
-                  {r.phone && <> · <span style={{ color: 'rgba(212,161,42,0.7)' }}>{r.phone}</span></>}
+                  {r.phone && <> · <span style={{ color: 'rgba(232,184,91,0.7)' }}>{r.phone}</span></>}
                 </p>
               </li>
             ))}
           </ul>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
             {a.supportResources.emergencyNote}
           </p>
         </motion.section>
@@ -414,11 +414,11 @@ export default function ArticlePageTemplate({ article }) {
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           aria-label="Editorial and educational notes"
-          style={{ marginBottom: '3rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(245,239,224,0.08)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+          style={{ marginBottom: '3rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(243,234,216,0.08)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
         >
           {a.editorialNote && (
             <p className="font-body" style={dimStyle}>
-              <strong style={{ fontWeight: 500, color: 'rgba(245,239,224,0.5)' }}>Editorial note: </strong>
+              <strong style={{ fontWeight: 500, color: 'rgba(243,234,216,0.5)' }}>Editorial note: </strong>
               {a.editorialNote}
             </p>
           )}
@@ -431,14 +431,14 @@ export default function ArticlePageTemplate({ article }) {
       )}
 
       {/* ── Prev / Next navigation ───────────────────────────────────────── */}
-      <nav aria-label="Article navigation" style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(212,161,42,0.12)', flexWrap: 'wrap' }}>
+      <nav aria-label="Article navigation" style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(232,184,91,0.12)', flexWrap: 'wrap' }}>
         {a.previousArticle ? (
           <Link
             to={`/articles/${a.previousArticle}`}
             className="font-body"
-            style={{ color: 'rgba(212,161,42,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(212,161,42,0.7)'}
+            style={{ color: 'rgba(232,184,91,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(232,184,91,0.7)'}
           >
             ← Previous Article
           </Link>
@@ -447,9 +447,9 @@ export default function ArticlePageTemplate({ article }) {
           <Link
             to={`/articles/${a.nextArticle}`}
             className="font-body"
-            style={{ color: 'rgba(212,161,42,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(212,161,42,0.7)'}
+            style={{ color: 'rgba(232,184,91,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(232,184,91,0.7)'}
           >
             Next Article →
           </Link>
@@ -458,19 +458,19 @@ export default function ArticlePageTemplate({ article }) {
 
       {/* ── Back links ───────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
-        <Link to="/articles" className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.5)'}>
+        <Link to="/articles" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>
           ← All Articles
         </Link>
-        <Link to="/videos" className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.5)'}>
+        <Link to="/videos" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>
           Watch Episodes →
         </Link>
-        <Link to="/resources" className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.5)'}>
+        <Link to="/resources" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>
           Explore Resources →
         </Link>
       </div>

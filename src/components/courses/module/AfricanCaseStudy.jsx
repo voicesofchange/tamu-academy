@@ -1,7 +1,7 @@
 import React from 'react';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.93rem',
   lineHeight: 1.85,
   fontWeight: 300,
@@ -34,7 +34,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
       <h3
         className="font-heading"
         style={{
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontSize: 'clamp(1.1rem, 2.4vw, 1.4rem)',
           fontWeight: 400,
           lineHeight: 1.25,
@@ -47,7 +47,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
         <p
           className="font-body"
           style={{
-            color: 'rgba(212,161,42,0.85)',
+            color: 'rgba(232,184,91,0.85)',
             fontSize: '0.72rem',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
@@ -70,7 +70,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
             <h4
               className="font-heading"
               style={{
-                color: 'rgba(212,161,42,0.85)',
+                color: 'rgba(232,184,91,0.85)',
                 fontSize: '0.82rem',
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -98,8 +98,8 @@ export default function AfricanCaseStudy({ caseStudy }) {
                   style={{
                     padding: '0.55rem 0.8rem',
                     textAlign: 'left',
-                    borderBottom: '1px solid rgba(212,161,42,0.3)',
-                    color: '#D4A12A',
+                    borderBottom: '1px solid rgba(232,184,91,0.3)',
+                    color: '#e8b85b',
                     fontSize: '0.68rem',
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
@@ -112,8 +112,8 @@ export default function AfricanCaseStudy({ caseStudy }) {
                   style={{
                     padding: '0.55rem 0.8rem',
                     textAlign: 'left',
-                    borderBottom: '1px solid rgba(212,161,42,0.3)',
-                    color: '#F5EFE0',
+                    borderBottom: '1px solid rgba(232,184,91,0.3)',
+                    color: '#f8f0df',
                     fontWeight: 400,
                   }}
                 >
@@ -127,8 +127,8 @@ export default function AfricanCaseStudy({ caseStudy }) {
                   <td
                     style={{
                       padding: '0.55rem 0.8rem',
-                      borderBottom: '1px solid rgba(245,239,224,0.08)',
-                      color: 'rgba(212,161,42,0.85)',
+                      borderBottom: '1px solid rgba(243,234,216,0.08)',
+                      color: 'rgba(232,184,91,0.85)',
                       fontWeight: 500,
                       verticalAlign: 'top',
                     }}
@@ -138,8 +138,8 @@ export default function AfricanCaseStudy({ caseStudy }) {
                   <td
                     style={{
                       padding: '0.55rem 0.8rem',
-                      borderBottom: '1px solid rgba(245,239,224,0.08)',
-                      color: 'rgba(245,239,224,0.78)',
+                      borderBottom: '1px solid rgba(243,234,216,0.08)',
+                      color: 'rgba(243,234,216,0.78)',
                       verticalAlign: 'top',
                       lineHeight: 1.7,
                     }}
@@ -158,14 +158,14 @@ export default function AfricanCaseStudy({ caseStudy }) {
           style={{
             marginTop: '1.5rem',
             padding: '1rem 1.25rem',
-            border: '1px solid rgba(212,161,42,0.22)',
+            border: '1px solid rgba(232,184,91,0.22)',
             borderRadius: '4px',
-            background: 'rgba(245,239,224,0.02)',
+            background: 'rgba(243,234,216,0.02)',
           }}
         >
           <span
             style={{
-              color: '#D4A12A',
+              color: '#e8b85b',
               fontSize: '0.66rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -197,7 +197,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
             ...bodyText,
             fontStyle: 'italic',
             fontSize: '0.82rem',
-            color: 'rgba(245,239,224,0.55)',
+            color: 'rgba(243,234,216,0.55)',
             marginTop: '1rem',
             marginBottom: 0,
           }}

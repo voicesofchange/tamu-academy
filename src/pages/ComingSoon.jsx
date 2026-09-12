@@ -7,7 +7,7 @@ export default function ComingSoon() {
     <div
       className="tamu-bg"
       style={{
-        backgroundColor: '#1A130E',
+        backgroundColor: '#24150f',
         height: '100dvh',
         width: '100%',
         position: 'relative',
@@ -23,7 +23,7 @@ export default function ComingSoon() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse 40% 35% at 50% 48%, rgba(212,161,42,0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 40% 35% at 50% 48%, rgba(232,184,91,0.04) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -45,11 +45,11 @@ export default function ComingSoon() {
           pointerEvents: 'none',
         }}
       >
-        <ellipse cx="400" cy="200" rx="395" ry="195" fill="none" stroke="#D4A12A" strokeWidth="1.2"/>
-        <ellipse cx="400" cy="200" rx="395" ry="98" fill="none" stroke="#D4A12A" strokeWidth="0.6" opacity="0.6"/>
-        <line x1="5" y1="200" x2="795" y2="200" stroke="#D4A12A" strokeWidth="0.6" opacity="0.6"/>
-        <ellipse cx="400" cy="200" rx="198" ry="195" fill="none" stroke="#D4A12A" strokeWidth="0.5" opacity="0.5"/>
-        <line x1="400" y1="5" x2="400" y2="395" stroke="#D4A12A" strokeWidth="0.5" opacity="0.4"/>
+        <ellipse cx="400" cy="200" rx="395" ry="195" fill="none" stroke="#e8b85b" strokeWidth="1.2"/>
+        <ellipse cx="400" cy="200" rx="395" ry="98" fill="none" stroke="#e8b85b" strokeWidth="0.6" opacity="0.6"/>
+        <line x1="5" y1="200" x2="795" y2="200" stroke="#e8b85b" strokeWidth="0.6" opacity="0.6"/>
+        <ellipse cx="400" cy="200" rx="198" ry="195" fill="none" stroke="#e8b85b" strokeWidth="0.5" opacity="0.5"/>
+        <line x1="400" y1="5" x2="400" y2="395" stroke="#e8b85b" strokeWidth="0.5" opacity="0.4"/>
         <path d="M 390 155 L 420 148 L 445 162 L 450 188 L 445 218 L 428 240 L 405 248 L 382 238 L 370 215 L 372 188 L 380 168 Z" fill="none" stroke="#E8951C" strokeWidth="0.8" opacity="0.5"/>
       </svg>
 
@@ -97,7 +97,7 @@ export default function ComingSoon() {
             style={{
               width: '80px',
               height: '1px',
-              background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)',
+              background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #E2B652 50%, #e8b85b 65%, transparent)',
               margin: '0 auto 1.75rem',
             }}
           />
@@ -107,7 +107,7 @@ export default function ComingSoon() {
             <p
               className="tamu-descriptor"
               style={{
-                color: '#F5EFE0',
+                color: '#f8f0df',
                 fontSize: 'clamp(0.7rem, 1vw, 0.85rem)',
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
@@ -120,7 +120,7 @@ export default function ComingSoon() {
             >
               AfroCentric video lessons on the mind,<br />
               policy, the world, and the planet —{' '}
-              <span style={{ color: '#D4A12A', opacity: 1 }}>launching soon.</span>
+              <span style={{ color: '#e8b85b', opacity: 1 }}>launching soon.</span>
             </p>
           </main>
         </div>
@@ -135,12 +135,12 @@ export default function ComingSoon() {
           display: 'flex',
           justifyContent: 'center',
           padding: '1.25rem 2rem',
-          borderTop: '1px solid rgba(212,161,42,0.1)',
+          borderTop: '1px solid rgba(232,184,91,0.1)',
         }}
       >
         <span
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: '0.6rem',
             letterSpacing: '0.3em',
             textTransform: 'uppercase',

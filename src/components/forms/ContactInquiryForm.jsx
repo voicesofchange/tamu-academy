@@ -97,10 +97,10 @@ const CONTENT = {
 
 const inputStyle = {
   width: '100%',
-  backgroundColor: 'rgba(245,239,224,0.04)',
-  border: '1px solid rgba(212,161,42,0.22)',
+  backgroundColor: 'rgba(243,234,216,0.04)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '3px',
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontSize: '0.93rem',
   fontFamily: "'DM Sans', sans-serif",
   fontWeight: 300,
@@ -116,7 +116,7 @@ const inputErrorStyle = {
 
 const labelStyle = {
   display: 'block',
-  color: 'rgba(245,239,224,0.72)',
+  color: 'rgba(243,234,216,0.72)',
   fontSize: '0.78rem',
   letterSpacing: '0.08em',
   fontWeight: 500,
@@ -258,15 +258,15 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         tabIndex={-1}
         role="status"
         aria-live="polite"
-        style={{ padding: '2.5rem', border: '1px solid rgba(212,161,42,0.28)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', outline: 'none' }}
+        style={{ padding: '2.5rem', border: '1px solid rgba(232,184,91,0.28)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.03)', outline: 'none' }}
       >
-        <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
+        <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
           {c.received}
         </p>
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
           {heading}
         </h2>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.75rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.75rem' }}>
           {message}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem' }}>
@@ -274,13 +274,13 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             <>
               <Link
                 to="/academy"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
                 {c.returnToAcademy}
               </Link>
               <Link
                 to="/"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
                 {c.returnToHomepage}
               </Link>
@@ -289,13 +289,13 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             <>
               <Link
                 to="/"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
                 {c.returnToHomepage}
               </Link>
               <Link
                 to="/courses"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
                 {c.exploreProgrammes}
               </Link>
@@ -327,7 +327,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Name + Email */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-full_name" style={labelStyle}>{c.fullName} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-full_name" style={labelStyle}>{c.fullName} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-full_name"
             type="text"
@@ -343,7 +343,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-full_name" message={errors.full_name} />
         </div>
         <div>
-          <label htmlFor="field-email" style={labelStyle}>{c.emailAddress} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-email" style={labelStyle}>{c.emailAddress} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-email"
             type="email"
@@ -363,7 +363,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Country + City */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-country" style={labelStyle}>{c.country} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-country" style={labelStyle}>{c.country} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
           <input
             id="field-country"
             type="text"
@@ -379,7 +379,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-country" message={errors.country} />
         </div>
         <div style={fieldWrap}>
-          <label htmlFor="field-city" style={labelStyle}>{c.cityOrCommunity} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
+          <label htmlFor="field-city" style={labelStyle}>{c.cityOrCommunity} <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input
             id="field-city"
             type="text"
@@ -394,18 +394,18 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Org + Role */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-org" style={labelStyle}>{c.organization} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
+          <label htmlFor="field-org" style={labelStyle}>{c.organization} <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input id="field-org" type="text" maxLength={200} value={form.organization} onChange={set('organization')} style={inputStyle} />
         </div>
         <div>
-          <label htmlFor="field-role" style={labelStyle}>{c.role} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
+          <label htmlFor="field-role" style={labelStyle}>{c.role} <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
           <input id="field-role" type="text" maxLength={120} value={form.role} onChange={set('role')} style={inputStyle} />
         </div>
       </div>
 
       {/* Inquiry type */}
       <div style={fieldWrap}>
-        <label htmlFor="field-inquiry_type" style={labelStyle}>{c.inquiryType} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span></label>
+        <label htmlFor="field-inquiry_type" style={labelStyle}>{c.inquiryType} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
         <select
           id="field-inquiry_type"
           value={form.inquiry_type}
@@ -423,7 +423,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Programme of interest */}
       <div style={fieldWrap}>
-        <label htmlFor="field-programme" style={labelStyle}>{c.programmeInterest} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
+        <label htmlFor="field-programme" style={labelStyle}>{c.programmeInterest} <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
         <select
           id="field-programme"
           value={form.programme_interest}
@@ -438,8 +438,8 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Message */}
       <div style={fieldWrap}>
         <label htmlFor="field-message" style={labelStyle}>
-          {c.message} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
-          <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>{c.messageHint}</span>
+          {c.message} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span>
+          <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>{c.messageHint}</span>
         </label>
         <textarea
           id="field-message"
@@ -454,7 +454,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <FieldError id="err-message" message={errors.message} />
-          <span id="msg-count" aria-live="polite" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', marginTop: '0.35rem', marginLeft: 'auto', flexShrink: 0 }}>
+          <span id="msg-count" aria-live="polite" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', marginTop: '0.35rem', marginLeft: 'auto', flexShrink: 0 }}>
             {form.message.length}/2000
           </span>
         </div>
@@ -462,7 +462,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Referral source */}
       <div style={fieldWrap}>
-        <label htmlFor="field-referral" style={labelStyle}>{c.referralSource} <span style={{ color: 'rgba(245,239,224,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
+        <label htmlFor="field-referral" style={labelStyle}>{c.referralSource} <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300 }}>{c.optional}</span></label>
         <select
           id="field-referral"
           value={form.referral_source}
@@ -481,9 +481,9 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             type="checkbox"
             checked={form.updates_consent}
             onChange={set('updates_consent')}
-            style={{ marginTop: '0.2rem', accentColor: '#D4A12A', width: '16px', height: '16px', flexShrink: 0 }}
+            style={{ marginTop: '0.2rem', accentColor: '#e8b85b', width: '16px', height: '16px', flexShrink: 0 }}
           />
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
             {c.updatesConsent}
           </span>
         </label>
@@ -499,17 +499,17 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             aria-required="true"
             aria-describedby={errors.privacy_acknowledgment ? 'err-privacy' : undefined}
             aria-invalid={!!errors.privacy_acknowledgment}
-            style={{ marginTop: '0.2rem', accentColor: '#D4A12A', width: '16px', height: '16px', flexShrink: 0 }}
+            style={{ marginTop: '0.2rem', accentColor: '#e8b85b', width: '16px', height: '16px', flexShrink: 0 }}
           />
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
-            {c.privacyAck} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span><span className="sr-only"> (required)</span>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
+            {c.privacyAck} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span>
           </span>
         </label>
         <FieldError id="err-privacy" message={errors.privacy_acknowledgment} />
       </div>
 
       {/* Privacy notice */}
-      <p className="font-body" style={{ color: 'rgba(245,239,224,0.58)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
+      <p className="font-body" style={{ color: 'rgba(243,234,216,0.58)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
         {c.privacyNotice}
       </p>
 
@@ -518,8 +518,8 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
         disabled={status === 'submitting'}
         style={{
           display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-          color: status === 'submitting' ? 'rgba(26,19,14,0.6)' : '#1A130E',
-          backgroundColor: status === 'submitting' ? 'rgba(212,161,42,0.6)' : '#D4A12A',
+          color: status === 'submitting' ? 'rgba(26,19,14,0.6)' : '#24150f',
+          backgroundColor: status === 'submitting' ? 'rgba(232,184,91,0.6)' : '#e8b85b',
           fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
           fontWeight: 500, fontFamily: "'DM Sans', sans-serif",
           border: '1px solid transparent', borderRadius: '2px', padding: '0.75rem 1.6rem',
@@ -532,8 +532,8 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       <style>{`
         @media (max-width: 560px) { .form-two-col { grid-template-columns: 1fr !important; } }
-        select option { background-color: #2a1f17; color: #F5EFE0; }
-        input:focus, select:focus, textarea:focus { outline: 2px solid rgba(212,161,42,0.55); outline-offset: 1px; }
+        select option { background-color: #2a1f17; color: #f8f0df; }
+        input:focus, select:focus, textarea:focus { outline: 2px solid rgba(232,184,91,0.55); outline-offset: 1px; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
       `}</style>
     </form>

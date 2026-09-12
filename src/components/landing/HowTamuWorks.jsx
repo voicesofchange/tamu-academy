@@ -44,9 +44,9 @@ export default function HowTamuWorks() {
               transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.1 }}
               style={{
                 padding: '1.75rem',
-                border: '1px solid rgba(212,161,42,0.16)',
+                border: '1px solid rgba(232,184,91,0.16)',
                 borderRadius: '4px',
-                backgroundColor: 'rgba(245,239,224,0.02)',
+                backgroundColor: 'rgba(243,234,216,0.02)',
               }}
             >
               <h3
@@ -57,7 +57,7 @@ export default function HowTamuWorks() {
               </h3>
               <p
                 className="font-body"
-                style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}
+                style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}
               >
                 {p.desc}
               </p>

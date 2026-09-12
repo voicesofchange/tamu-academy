@@ -56,7 +56,7 @@ export default function SocialLinks() {
             justifyContent: "center",
             minWidth: 44,
             minHeight: 44,
-            color: hovered === label ? "#E2B652" : "#D4A12A",
+            color: hovered === label ? "#E2B652" : "#e8b85b",
             transform: hovered === label ? "scale(1.15)" : "scale(1)",
             transition: "color 0.2s ease, transform 0.2s ease",
             outline: "none",
@@ -64,7 +64,7 @@ export default function SocialLinks() {
             textDecoration: "none",
           }}
           onFocus={(e) => {
-            e.currentTarget.style.outline = "2px solid #D4A12A";
+            e.currentTarget.style.outline = "2px solid #e8b85b";
             e.currentTarget.style.outlineOffset = "4px";
           }}
           onBlur={(e) => {

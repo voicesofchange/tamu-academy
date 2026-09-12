@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
@@ -59,7 +60,7 @@ const CONTENT = {
   ctaGetInTouch: 'Get in Touch →',
 };
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '1rem', lineHeight: 1.85, fontWeight: 300, margin: '0 0 1.25rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '1rem', lineHeight: 1.85, fontWeight: 300, margin: '0 0 1.25rem' };
 const bodyTextClass = 'font-body';
 
 export default function About() {
@@ -72,6 +73,8 @@ export default function About() {
         description="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses with subject-matter experts and knowledge holders across mental health, economics, AI, and public policy."
         path="/about"
       />
+      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'About' }]} />
+
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
@@ -90,9 +93,9 @@ export default function About() {
         <p className={bodyTextClass} style={bodyText}>{c.pillarsIntro}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', margin: '1.5rem 0 1.5rem' }}>
           {c.pillars.map((pillar) => (
-            <div key={pillar.name} style={{ padding: '1.5rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
+            <div key={pillar.name} style={{ padding: '1.5rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
               <span className="font-heading" style={{ color: '#E2B652', fontSize: '1.1rem', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>{pillar.name}</span>
-              <span className={bodyTextClass} style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.7 }}>{pillar.desc}</span>
+              <span className={bodyTextClass} style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.93rem', fontWeight: 300, lineHeight: 1.7 }}>{pillar.desc}</span>
             </div>
           ))}
         </div>
@@ -101,8 +104,8 @@ export default function About() {
 
       {/* Mission */}
       <PageSection eyebrow={c.missionEyebrow}>
-        <blockquote style={{ borderLeft: '2px solid rgba(212,161,42,0.45)', paddingLeft: '1.5rem', margin: '0' }}>
-          <p className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
+        <blockquote style={{ borderLeft: '2px solid rgba(232,184,91,0.45)', paddingLeft: '1.5rem', margin: '0' }}>
+          <p className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
             "{c.missionQuote}"
           </p>
         </blockquote>
@@ -110,8 +113,8 @@ export default function About() {
 
       {/* Vision */}
       <PageSection eyebrow={c.visionEyebrow}>
-        <blockquote style={{ borderLeft: '2px solid rgba(212,161,42,0.45)', paddingLeft: '1.5rem', margin: '0' }}>
-          <p className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
+        <blockquote style={{ borderLeft: '2px solid rgba(232,184,91,0.45)', paddingLeft: '1.5rem', margin: '0' }}>
+          <p className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
             "{c.visionQuote}"
           </p>
         </blockquote>
@@ -127,10 +130,10 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.06 }}
-              style={{ padding: '1.5rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+              style={{ padding: '1.5rem', border: '1px solid rgba(232,184,91,0.14)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}
             >
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 500, margin: '0 0 0.6rem', lineHeight: 1.3 }}>{title}</h3>
-              <p className={bodyTextClass} style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{desc}</p>
+              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 500, margin: '0 0 0.6rem', lineHeight: 1.3 }}>{title}</h3>
+              <p className={bodyTextClass} style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{desc}</p>
             </motion.div>
           ))}
         </div>
@@ -141,7 +144,7 @@ export default function About() {
         <p className={bodyTextClass} style={bodyText}>{c.approachIntro}</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '0.5rem' }}>
           {c.approachMethods.map((m) => (
-            <span key={m} className={bodyTextClass} style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.82rem', letterSpacing: '0.06em', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>{m}</span>
+            <span key={m} className={bodyTextClass} style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.82rem', letterSpacing: '0.06em', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>{m}</span>
           ))}
         </div>
       </PageSection>
@@ -157,8 +160,8 @@ export default function About() {
       <PageSection heading={c.currentHeading}>
         <p className={bodyTextClass} style={bodyText}>{c.currentP1}</p>
         <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem', marginBottom: '1.25rem' }}>{c.currentP2}</p>
-        <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>{c.ctaWatch}</Link>
-        <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaExplore}</Link>
+        <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>{c.ctaWatch}</Link>
+        <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaExplore}</Link>
       </PageSection>
 
       {/* Current Stage */}
@@ -167,15 +170,15 @@ export default function About() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.03)', marginBottom: '2rem' }}
+        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.03)', marginBottom: '2rem' }}
       >
-        <span className={bodyTextClass} style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>{c.currentStageLabel}</span>
-        <p className={bodyTextClass} style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
+        <span className={bodyTextClass} style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>{c.currentStageLabel}</span>
+        <p className={bodyTextClass} style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.25rem' }}>
           {c.currentStageP}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-          <Link to="/contact?inquiry=university-or-institutional-partnership" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaPartnership}</Link>
-          <Link to="/contact" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaGetInTouch}</Link>
+          <Link to="/contact?inquiry=university-or-institutional-partnership" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaPartnership}</Link>
+          <Link to="/contact" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaGetInTouch}</Link>
         </div>
       </motion.div>
     </PageLayout>

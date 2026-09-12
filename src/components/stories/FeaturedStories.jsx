@@ -3,8 +3,8 @@ import { useTranslation } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
 
 const cardStyle = {
-  background: 'rgba(245,239,224,0.03)',
-  border: '1px solid rgba(212,161,42,0.15)',
+  background: 'rgba(243,234,216,0.03)',
+  border: '1px solid rgba(232,184,91,0.15)',
   borderRadius: '4px',
   padding: '1.75rem',
   marginBottom: '1.5rem',
@@ -12,12 +12,12 @@ const cardStyle = {
 
 const badgeStyle = {
   display: 'inline-block',
-  color: 'rgba(212,161,42,0.85)',
+  color: 'rgba(232,184,91,0.85)',
   fontSize: '0.6rem',
   letterSpacing: '0.15em',
   textTransform: 'uppercase',
   fontWeight: 500,
-  border: '1px solid rgba(212,161,42,0.25)',
+  border: '1px solid rgba(232,184,91,0.25)',
   borderRadius: '2px',
   padding: '0.2rem 0.6rem',
   marginRight: '0.5rem',
@@ -45,7 +45,7 @@ export default function FeaturedStories() {
 
   if (loading) {
     return (
-      <p style={{ color: 'rgba(245,239,224,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.9rem' }}>
+      <p style={{ color: 'rgba(243,234,216,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.9rem' }}>
         {t('common.loading')}
       </p>
     );
@@ -53,7 +53,7 @@ export default function FeaturedStories() {
 
   if (stories.length === 0) {
     return (
-      <p style={{ color: 'rgba(245,239,224,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.9rem', fontStyle: 'italic' }}>
+      <p style={{ color: 'rgba(243,234,216,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.9rem', fontStyle: 'italic' }}>
         {t('stories.featuredEmpty')}
       </p>
     );
@@ -73,18 +73,18 @@ export default function FeaturedStories() {
             <span style={badgeStyle}>{story.story_type === 'review' ? t('stories.form.typeReview') : t('stories.form.typeStory')}</span>
             {story.course_slug && <span style={badgeStyle}>{courseLabel(story.course_slug)}</span>}
           </div>
-          <h3 style={{ color: '#F5EFE0', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 400, margin: '0 0 0.75rem', lineHeight: 1.3 }}>
+          <h3 style={{ color: '#f8f0df', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 400, margin: '0 0 0.75rem', lineHeight: 1.3 }}>
             {story.title}
           </h3>
           {story.rating > 0 && (
-            <div style={{ color: '#D4A12A', fontSize: '1.1rem', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
+            <div style={{ color: '#e8b85b', fontSize: '1.1rem', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
               {'★'.repeat(story.rating)}{'☆'.repeat(5 - story.rating)}
             </div>
           )}
-          <p style={{ color: 'rgba(245,239,224,0.8)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.92rem', lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 1.25rem' }}>
+          <p style={{ color: 'rgba(243,234,216,0.8)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.92rem', lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: '0 0 1.25rem' }}>
             {story.content}
           </p>
-          <p style={{ color: 'rgba(245,239,224,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem' }}>
+          <p style={{ color: 'rgba(243,234,216,0.5)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.8rem' }}>
             — {story.author_name}{story.author_location ? `, ${story.author_location}` : ''}
           </p>
         </div>

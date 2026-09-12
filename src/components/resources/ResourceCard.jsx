@@ -22,16 +22,16 @@ export default function ResourceCard({ resource, index = 0 }) {
         display: 'flex',
         flexDirection: 'column',
         padding: '1.5rem 1.75rem',
-        border: '1px solid rgba(212,161,42,0.14)',
+        border: '1px solid rgba(232,184,91,0.14)',
         borderRadius: '4px',
-        backgroundColor: 'rgba(245,239,224,0.02)',
+        backgroundColor: 'rgba(243,234,216,0.02)',
       }}
       className="tamu-card"
     >
       <h4
         className="font-heading"
         style={{
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
           fontWeight: 400,
           lineHeight: 1.3,
@@ -44,7 +44,7 @@ export default function ResourceCard({ resource, index = 0 }) {
       <span
         className="font-body"
         style={{
-          color: '#D4A12A',
+          color: '#e8b85b',
           fontSize: '0.62rem',
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
@@ -59,7 +59,7 @@ export default function ResourceCard({ resource, index = 0 }) {
       <p
         className="font-body"
         style={{
-          color: 'rgba(245,239,224,0.68)',
+          color: 'rgba(243,234,216,0.68)',
           fontSize: '0.85rem',
           lineHeight: 1.7,
           fontWeight: 300,
@@ -81,7 +81,7 @@ export default function ResourceCard({ resource, index = 0 }) {
         <span
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.5)',
+            color: 'rgba(243,234,216,0.5)',
             fontSize: '0.65rem',
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -93,7 +93,7 @@ export default function ResourceCard({ resource, index = 0 }) {
         <span
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.5)',
+            color: 'rgba(243,234,216,0.5)',
             fontSize: '0.65rem',
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
@@ -114,14 +114,14 @@ export default function ResourceCard({ resource, index = 0 }) {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.5rem',
-          color: '#D4A12A',
+          color: '#e8b85b',
           fontSize: '0.72rem',
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
           textDecoration: 'none',
           fontWeight: 500,
           padding: '0.4rem 0',
-          borderBottom: '1px solid rgba(212,161,42,0.3)',
+          borderBottom: '1px solid rgba(232,184,91,0.3)',
           width: 'fit-content',
         }}
       >
@@ -134,7 +134,7 @@ export default function ResourceCard({ resource, index = 0 }) {
 
       <style>{`
         .tamu-resource-link:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 4px;
           border-radius: 2px;
         }

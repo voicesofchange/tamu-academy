@@ -9,10 +9,10 @@ import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' };
-const moduleLinkStyle = { display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.2rem' };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' };
+const moduleLinkStyle = { display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.2rem' };
 
 const CONTENT = {
   heroEyebrow: 'Insights',
@@ -66,9 +66,9 @@ function ProgressBar({ value, label }) {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={label}
-      style={{ width: '100%', height: '8px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '4px', overflow: 'hidden' }}
+      style={{ width: '100%', height: '8px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '4px', overflow: 'hidden' }}
     >
-      <div style={{ width: `${pct}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '4px', transition: 'width 0.6s ease' }} />
+      <div style={{ width: `${pct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '4px', transition: 'width 0.6s ease' }} />
     </div>
   );
 }
@@ -101,7 +101,7 @@ function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c })
             <StatusBadge label={mod.number} />
             <StatusBadge label={statusLabel} />
           </div>
-          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
+          <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
             {mod.title}
           </h3>
         </div>
@@ -113,7 +113,7 @@ function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c })
       <div style={{ marginBottom: '0.6rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
           <span className="font-body" style={eyebrowStyle}>{c.sectionProgress}</span>
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.82rem', fontWeight: 400 }}>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.82rem', fontWeight: 400 }}>
             {tpl(c.ofSections, { done: doneSections, total: totalSections })}
           </span>
         </div>
@@ -121,7 +121,7 @@ function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c })
       </div>
 
       {completed ? (
-        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(212,161,42,0.7)', fontSize: '0.85rem' }}>
+        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(232,184,91,0.7)', fontSize: '0.85rem' }}>
           {c.allSectionsComplete}
         </p>
       ) : remainingKeys.length > 0 ? (
@@ -134,7 +134,7 @@ function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c })
           </ul>
         </div>
       ) : (
-        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', fontSize: '0.85rem' }}>
+        <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem' }}>
           {tpl(c.trackingOpensLater, { number: mod.number })}
         </p>
       )}
@@ -208,7 +208,7 @@ export default function MhInsights() {
       {loading ? (
         <PageSection eyebrow={c.loadingEyebrow} heading={c.loadingHeading}>
           <div style={cardStyle}>
-            <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)' }}>
+            <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
               {c.loadingBody}
             </p>
           </div>
@@ -230,14 +230,14 @@ export default function MhInsights() {
             <div style={{ marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
                 <span className="font-body" style={eyebrowStyle}>{c.overallProgressLabel}</span>
-                <span className="font-body" style={{ color: '#F5EFE0', fontSize: '1rem', fontWeight: 500 }}>
+                <span className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500 }}>
                   {tpl(c.ofModules, { count: completedCount, total: totalModules })}
                 </span>
               </div>
               <ProgressBar value={overallPct} label={c.overallHeading} />
             </div>
             {completion && completion.certificateEligible ? (
-              <div style={{ ...cardStyle, borderColor: 'rgba(212,161,42,0.3)', backgroundColor: 'rgba(212,161,42,0.04)' }}>
+              <div style={{ ...cardStyle, borderColor: 'rgba(232,184,91,0.3)', backgroundColor: 'rgba(232,184,91,0.04)' }}>
                 <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem' }}>
                   {c.certReady}
                 </p>
@@ -246,7 +246,7 @@ export default function MhInsights() {
                 </Link>
               </div>
             ) : (
-              <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.55)', margin: 0 }}>
+              <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', margin: 0 }}>
                 {c.certNotReady}
               </p>
             )}
@@ -265,7 +265,7 @@ export default function MhInsights() {
                 />
               ))}
             </div>
-            <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(245,239,224,0.5)', margin: '1.25rem 0 0' }}>
+            <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: '1.25rem 0 0' }}>
               {c.privacyNote}
             </p>
           </PageSection>

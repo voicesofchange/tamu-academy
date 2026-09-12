@@ -5,6 +5,7 @@ import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import ModuleNav from '@/components/courses/module/ModuleNav';
 import KnowledgeCheck from '@/components/courses/module/KnowledgeCheck';
 import EconomicsModuleProgress from '@/components/courses/EconomicsModuleProgress';
@@ -86,6 +87,10 @@ export default function ModuleExpandedTemplate({ course, module }) {
         course={course.title}
         coursePath={coursePath}
         moduleLabel={module.number}
+      />
+      <ModuleProgressBar
+        current={moduleIndex + 1}
+        total={course.modules.length}
       />
 
       {/* 1. Lesson title and estimated completion time */}

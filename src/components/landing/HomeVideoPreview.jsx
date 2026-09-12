@@ -7,7 +7,7 @@ export default function HomeVideoPreview() {
     <section
       style={{
         padding: 'clamp(3.5rem, 7vw, 5.5rem) clamp(1.5rem, 6vw, 6rem)',
-        borderTop: '1px solid rgba(212,161,42,0.08)',
+        borderTop: '1px solid rgba(232,184,91,0.08)',
       }}
     >
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -19,13 +19,13 @@ export default function HomeVideoPreview() {
           style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem' }}
         >
           <div style={{ maxWidth: '560px' }}>
-            <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
+            <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
               Now Available
             </p>
-            <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
+            <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
               Tamu Academy's First Lessons
             </h2>
-            <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
+            <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
               The first publicly available Tamu Academy learning collection — free introductory videos exploring wellbeing, institutions, policy, economics, and global systems.
             </p>
           </div>
@@ -35,10 +35,10 @@ export default function HomeVideoPreview() {
             className="font-body"
             style={{
               display: 'inline-flex', alignItems: 'center',
-              color: '#D4A12A',
+              color: '#e8b85b',
               fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
               textDecoration: 'none', fontWeight: 500,
-              border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem',
+              border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem',
               flexShrink: 0,
             }}
           >

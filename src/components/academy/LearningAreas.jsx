@@ -98,22 +98,22 @@ export default function LearningAreas() {
   display: flex;
   gap: 1.25rem;
   padding: 1.6rem 1.35rem;
-  background-color: rgba(245,239,224,0.02);
-  border: 1px solid rgba(212,161,42,0.18);
+  background-color: rgba(243,234,216,0.02);
+  border: 1px solid rgba(232,184,91,0.18);
   border-radius: 4px;
   align-items: flex-start;
   transition: border-color 0.25s ease, background-color 0.25s ease;
 }
 .academy-area-row:hover {
-  border-color: rgba(212,161,42,0.4);
-  background-color: rgba(245,239,224,0.04);
+  border-color: rgba(232,184,91,0.4);
+  background-color: rgba(243,234,216,0.04);
 }
 .academy-area-index {
   flex: 0 0 auto;
 }
 .academy-area-number {
   font-size: clamp(1.7rem, 3.4vw, 2.1rem);
-  color: rgba(212,161,42,0.75);
+  color: rgba(232,184,91,0.75);
   line-height: 1;
   letter-spacing: 0.02em;
   display: block;
@@ -123,14 +123,14 @@ export default function LearningAreas() {
   min-width: 0;
 }
 .academy-area-course {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1.05rem, 2.4vw, 1.35rem);
   font-weight: 400;
   line-height: 1.25;
   margin: 0.25rem 0 0.5rem;
 }
 .academy-area-desc {
-  color: rgba(245,239,224,0.7);
+  color: rgba(243,234,216,0.7);
   font-size: 0.92rem;
   line-height: 1.6;
   font-weight: 300;

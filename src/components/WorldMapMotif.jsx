@@ -13,12 +13,12 @@ export default function WorldMapMotif() {
       <defs>
         <radialGradient id="africaGlow" cx="50%" cy="50%" r="60%">
           <stop offset="0%" stopColor="#E8951C" stopOpacity="0.9" />
-          <stop offset="60%" stopColor="#D4A12A" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#D4A12A" stopOpacity="0.4" />
+          <stop offset="60%" stopColor="#e8b85b" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#e8b85b" stopOpacity="0.4" />
         </radialGradient>
         <radialGradient id="continentGold" cx="50%" cy="50%" r="60%">
           <stop offset="0%" stopColor="#E2B652" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#D4A12A" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#e8b85b" stopOpacity="0.4" />
         </radialGradient>
         <filter id="africaHalo">
           <feGaussianBlur stdDeviation="6" result="blur" />
@@ -112,10 +112,10 @@ export default function WorldMapMotif() {
       <ellipse cx="420" cy="65" rx="6" ry="12" fill="url(#continentGold)" opacity="0.6" />
 
       {/* Subtle meridian / grid lines */}
-      <line x1="0" y1="250" x2="1000" y2="250" stroke="#D4A12A" strokeWidth="0.4" strokeOpacity="0.35" strokeDasharray="4 8" />
-      <line x1="500" y1="0" x2="500" y2="500" stroke="#D4A12A" strokeWidth="0.4" strokeOpacity="0.25" strokeDasharray="4 8" />
-      <ellipse cx="500" cy="250" rx="480" ry="230" fill="none" stroke="#D4A12A" strokeWidth="0.4" strokeOpacity="0.2" />
-      <ellipse cx="500" cy="250" rx="300" ry="230" fill="none" stroke="#D4A12A" strokeWidth="0.3" strokeOpacity="0.15" />
+      <line x1="0" y1="250" x2="1000" y2="250" stroke="#e8b85b" strokeWidth="0.4" strokeOpacity="0.35" strokeDasharray="4 8" />
+      <line x1="500" y1="0" x2="500" y2="500" stroke="#e8b85b" strokeWidth="0.4" strokeOpacity="0.25" strokeDasharray="4 8" />
+      <ellipse cx="500" cy="250" rx="480" ry="230" fill="none" stroke="#e8b85b" strokeWidth="0.4" strokeOpacity="0.2" />
+      <ellipse cx="500" cy="250" rx="300" ry="230" fill="none" stroke="#e8b85b" strokeWidth="0.3" strokeOpacity="0.15" />
     </svg>
   );
 }

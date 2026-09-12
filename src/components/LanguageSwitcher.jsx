@@ -30,14 +30,14 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
   const current = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0];
 
   const baseStyle = {
-    color: 'rgba(245,239,224,0.78)',
+    color: 'rgba(243,234,216,0.78)',
     fontSize: variant === 'mobile' ? '0.8rem' : variant === 'icon' ? '0.72rem' : '0.68rem',
     letterSpacing: variant === 'icon' ? '0.04em' : '0.15em',
     textTransform: variant === 'icon' ? 'none' : 'uppercase',
     fontWeight: 500,
     whiteSpace: 'nowrap',
     background: 'none',
-    border: variant === 'mobile' ? 'none' : variant === 'icon' ? '1px solid rgba(212,161,42,0.25)' : '1px solid rgba(212,161,42,0.3)',
+    border: variant === 'mobile' ? 'none' : variant === 'icon' ? '1px solid rgba(232,184,91,0.25)' : '1px solid rgba(232,184,91,0.3)',
     borderRadius: '2px',
     padding: variant === 'mobile' ? '0.85rem 0' : variant === 'icon' ? '0.3rem 0.5rem' : '0.3rem 0.6rem',
     cursor: 'pointer',
@@ -45,7 +45,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
     alignItems: 'center',
     gap: '0.3rem',
     fontFamily: "'DM Sans', sans-serif",
-    borderBottom: variant === 'mobile' ? '1px solid rgba(212,161,42,0.07)' : 'none',
+    borderBottom: variant === 'mobile' ? '1px solid rgba(232,184,91,0.07)' : 'none',
     width: variant === 'mobile' ? '100%' : 'auto',
     justifyContent: variant === 'mobile' ? 'space-between' : 'flex-start',
   };
@@ -74,7 +74,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
             marginTop: variant === 'mobile' ? 0 : '0.4rem',
             minWidth: '140px',
             backgroundColor: 'rgba(20,14,10,0.96)',
-            border: '1px solid rgba(212,161,42,0.2)',
+            border: '1px solid rgba(232,184,91,0.2)',
             borderRadius: '4px',
             overflow: 'hidden',
             zIndex: 100,
@@ -98,11 +98,11 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: lang.code === language ? '#D4A12A' : 'rgba(245,239,224,0.78)',
+                color: lang.code === language ? '#e8b85b' : 'rgba(243,234,216,0.78)',
                 fontSize: '0.78rem',
                 fontWeight: 500,
                 fontFamily: "'DM Sans', sans-serif",
-                borderBottom: '1px solid rgba(212,161,42,0.08)',
+                borderBottom: '1px solid rgba(232,184,91,0.08)',
               }}
             >
               {lang.nativeLabel}

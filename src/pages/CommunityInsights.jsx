@@ -15,8 +15,8 @@ import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
 
-const bodyText = { color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
-const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' };
+const bodyText = { color: 'rgba(243,234,216,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
+const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' };
 
 export default function CommunityInsights() {
   const { t } = useTranslation();
@@ -84,7 +84,7 @@ export default function CommunityInsights() {
       {loading ? (
         <PageSection heading={t('insights.loadingMessage')}>
           <div style={cardStyle}>
-            <p style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.5)' }}>
+            <p style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
               {t('insights.loadingMessage')}
             </p>
           </div>
@@ -146,11 +146,11 @@ export default function CommunityInsights() {
                 {data.geographicReach.map(g => (
                   <div key={g.country} style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem',
-                    padding: '0.5rem 1rem', border: '1px solid rgba(212,161,42,0.18)',
-                    borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)',
+                    padding: '0.5rem 1rem', border: '1px solid rgba(232,184,91,0.18)',
+                    borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)',
                   }}>
-                    <span style={{ color: '#F5EFE0', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif" }}>{g.country}</span>
-                    <span style={{ color: '#D4A12A', fontSize: '0.85rem', fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>{g.count}</span>
+                    <span style={{ color: '#f8f0df', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif" }}>{g.country}</span>
+                    <span style={{ color: '#e8b85b', fontSize: '0.85rem', fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>{g.count}</span>
                   </div>
                 ))}
               </div>
@@ -162,18 +162,18 @@ export default function CommunityInsights() {
               <p style={{ ...bodyText, marginBottom: '1.5rem' }}>{t('insights.storyIntro')}</p>
               <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap' }}>
                 <div>
-                  <div style={{ color: '#D4A12A', fontSize: '2.2rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1 }}>
+                  <div style={{ color: '#e8b85b', fontSize: '2.2rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1 }}>
                     {data.storyStats.total}
                   </div>
-                  <div style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
+                  <div style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
                     {t('insights.statStories')}
                   </div>
                 </div>
                 <div>
-                  <div style={{ color: '#D4A12A', fontSize: '2.2rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1 }}>
+                  <div style={{ color: '#e8b85b', fontSize: '2.2rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1 }}>
                     {data.storyStats.avgRating > 0 ? `${data.storyStats.avgRating} \u2605` : '—'}
                   </div>
-                  <div style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
+                  <div style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
                     {t('insights.avgRating')}
                   </div>
                 </div>

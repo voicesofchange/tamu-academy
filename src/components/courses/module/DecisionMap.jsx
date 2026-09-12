@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Printer } from 'lucide-react';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 /**
  * Everyday Economic Decision Map — applied activity.
@@ -54,11 +54,11 @@ export default function DecisionMap({ activity, storageKey }) {
             <label
               htmlFor={`field-${f.id}`}
               className="font-body"
-              style={{ display: 'block', color: '#F5EFE0', fontSize: '0.82rem', letterSpacing: '0.04em', fontWeight: 500, marginBottom: '0.35rem' }}
+              style={{ display: 'block', color: '#f8f0df', fontSize: '0.82rem', letterSpacing: '0.04em', fontWeight: 500, marginBottom: '0.35rem' }}
             >
               {f.label}
             </label>
-            <span className="font-body" style={{ display: 'block', color: 'rgba(245,239,224,0.55)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '0.5rem' }}>
+            <span className="font-body" style={{ display: 'block', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '0.5rem' }}>
               {f.helper}
             </span>
             <textarea
@@ -66,7 +66,7 @@ export default function DecisionMap({ activity, storageKey }) {
               value={values[f.id] || ''}
               onChange={(e) => handleChange(f.id, e.target.value)}
               rows={3}
-              style={{ width: '100%', padding: '0.7rem 0.85rem', background: 'rgba(245,239,224,0.02)', color: 'rgba(245,239,224,0.85)', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '3px', fontSize: '0.9rem', lineHeight: 1.7, fontFamily: 'inherit', resize: 'vertical' }}
+              style={{ width: '100%', padding: '0.7rem 0.85rem', background: 'rgba(243,234,216,0.02)', color: 'rgba(243,234,216,0.85)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '3px', fontSize: '0.9rem', lineHeight: 1.7, fontFamily: 'inherit', resize: 'vertical' }}
             />
           </div>
         ))}
@@ -76,7 +76,7 @@ export default function DecisionMap({ activity, storageKey }) {
         <button
           type="button"
           onClick={() => window.print()}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.3rem', border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', background: 'transparent', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.3rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', background: 'transparent', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
           <Printer size={14} aria-hidden="true" />
           Print / Save as PDF
@@ -84,7 +84,7 @@ export default function DecisionMap({ activity, storageKey }) {
         <button
           type="button"
           onClick={handleClear}
-          style={{ padding: '0.65rem 1.3rem', border: '1px solid rgba(245,239,224,0.2)', borderRadius: '2px', background: 'transparent', color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ padding: '0.65rem 1.3rem', border: '1px solid rgba(243,234,216,0.2)', borderRadius: '2px', background: 'transparent', color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
           Clear Responses
         </button>

@@ -16,9 +16,9 @@ export default function FeaturedLesson({ lesson, onSelect }) {
         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
         gap: '2.5rem',
         padding: '2.5rem',
-        border: '1px solid rgba(212,161,42,0.28)',
+        border: '1px solid rgba(232,184,91,0.28)',
         borderRadius: '4px',
-        backgroundColor: 'rgba(212,161,42,0.025)',
+        backgroundColor: 'rgba(232,184,91,0.025)',
         alignItems: 'center',
         marginBottom: '1rem',
       }}
@@ -34,13 +34,13 @@ export default function FeaturedLesson({ lesson, onSelect }) {
           aspectRatio: '16 / 9',
           borderRadius: '4px',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg, #1A130E 0%, #241B12 60%, #1A130E 100%)',
+          background: 'linear-gradient(135deg, #24150f 0%, #241B12 60%, #24150f 100%)',
           position: 'relative',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '1px solid rgba(212,161,42,0.15)',
+          border: '1px solid rgba(232,184,91,0.15)',
           outline: 'none',
         }}
       >
@@ -53,10 +53,10 @@ export default function FeaturedLesson({ lesson, onSelect }) {
           />
         ) : (
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" aria-hidden="true" style={{ opacity: 0.25 }}>
-            <circle cx="24" cy="24" r="22" stroke="#D4A12A" strokeWidth="1" />
-            <circle cx="24" cy="24" r="14" stroke="#D4A12A" strokeWidth="1" />
-            <line x1="24" y1="2" x2="24" y2="46" stroke="#D4A12A" strokeWidth="0.8" strokeDasharray="3 4" />
-            <line x1="2" y1="24" x2="46" y2="24" stroke="#D4A12A" strokeWidth="0.8" strokeDasharray="3 4" />
+            <circle cx="24" cy="24" r="22" stroke="#e8b85b" strokeWidth="1" />
+            <circle cx="24" cy="24" r="14" stroke="#e8b85b" strokeWidth="1" />
+            <line x1="24" y1="2" x2="24" y2="46" stroke="#e8b85b" strokeWidth="0.8" strokeDasharray="3 4" />
+            <line x1="2" y1="24" x2="46" y2="24" stroke="#e8b85b" strokeWidth="0.8" strokeDasharray="3 4" />
           </svg>
         )}
 
@@ -70,15 +70,15 @@ export default function FeaturedLesson({ lesson, onSelect }) {
             width: '60px',
             height: '60px',
             borderRadius: '50%',
-            backgroundColor: '#D4A12A',
+            backgroundColor: '#e8b85b',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 32px rgba(212,161,42,0.28)',
+            boxShadow: '0 0 32px rgba(232,184,91,0.28)',
             transition: 'transform 0.2s ease, box-shadow 0.2s ease',
           }}
         >
-          <Play size={22} fill="#1A130E" color="#1A130E" style={{ marginLeft: '3px' }} />
+          <Play size={22} fill="#24150f" color="#24150f" style={{ marginLeft: '3px' }} />
         </div>
 
         {/* Duration */}
@@ -90,7 +90,7 @@ export default function FeaturedLesson({ lesson, onSelect }) {
               bottom: '0.65rem',
               right: '0.65rem',
               backgroundColor: 'rgba(26,19,14,0.78)',
-              color: 'rgba(245,239,224,0.85)',
+              color: 'rgba(243,234,216,0.85)',
               fontSize: '0.72rem',
               padding: '0.22rem 0.55rem',
               borderRadius: '2px',
@@ -108,12 +108,12 @@ export default function FeaturedLesson({ lesson, onSelect }) {
           <span
             className="font-body"
             style={{
-              color: 'rgba(212,161,42,0.85)',
+              color: 'rgba(232,184,91,0.85)',
               fontSize: '0.62rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               fontWeight: 500,
-              border: '1px solid rgba(212,161,42,0.3)',
+              border: '1px solid rgba(232,184,91,0.3)',
               borderRadius: '999px',
               padding: '0.25rem 0.75rem',
             }}
@@ -124,7 +124,7 @@ export default function FeaturedLesson({ lesson, onSelect }) {
             <span
               className="font-body"
               style={{
-                color: 'rgba(245,239,224,0.45)',
+                color: 'rgba(243,234,216,0.45)',
                 fontSize: '0.62rem',
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
@@ -136,20 +136,20 @@ export default function FeaturedLesson({ lesson, onSelect }) {
           )}
         </div>
 
-        <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
+        <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
           {lesson.category}
         </span>
 
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.8vw, 1.7rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.8vw, 1.7rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
           {lesson.title}
         </h2>
 
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
           {lesson.description}
         </p>
 
         {lesson.discussionQuestions?.length > 0 && (
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.42)', fontSize: '0.82rem', fontWeight: 300, fontStyle: 'italic', margin: 0 }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.42)', fontSize: '0.82rem', fontWeight: 300, fontStyle: 'italic', margin: 0 }}>
             Includes {lesson.discussionQuestions.length} reflection question{lesson.discussionQuestions.length !== 1 ? 's' : ''}
           </p>
         )}
@@ -162,20 +162,20 @@ export default function FeaturedLesson({ lesson, onSelect }) {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
-            color: '#1A130E',
-            backgroundColor: '#D4A12A',
+            color: '#24150f',
+            backgroundColor: '#e8b85b',
             fontSize: '0.7rem',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
             fontWeight: 500,
-            border: '1px solid #D4A12A',
+            border: '1px solid #e8b85b',
             borderRadius: '2px',
             padding: '0.6rem 1.2rem',
             cursor: 'pointer',
             transition: 'background-color 0.2s ease',
           }}
         >
-          <Play size={13} fill="#1A130E" />
+          <Play size={13} fill="#24150f" />
           {lesson.videoUrl ? 'Watch Now' : 'Preview'}
         </button>
       </div>

@@ -76,8 +76,8 @@ export default function PartnershipInquiry() {
 
       <style>{`
 .pi-root {
-  background-color: #1A130E;
-  color: #F5EFE0;
+  background-color: #24150f;
+  color: #f8f0df;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
@@ -93,10 +93,10 @@ export default function PartnershipInquiry() {
   gap: 1rem;
   flex-wrap: wrap;
   padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 5vw, 3rem);
-  border-bottom: 1px solid rgba(212,161,42,0.12);
+  border-bottom: 1px solid rgba(232,184,91,0.12);
 }
 .pi-brand {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1rem, 2vw, 1.2rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -106,7 +106,7 @@ export default function PartnershipInquiry() {
   align-items: baseline;
   gap: 0.4rem;
 }
-.pi-accent { color: #D4A12A; }
+.pi-accent { color: #e8b85b; }
 .pi-topnav-attr {
   color: rgba(92,117,111,0.95);
   font-size: 0.6rem;
@@ -116,7 +116,7 @@ export default function PartnershipInquiry() {
   margin-left: 0.6rem;
 }
 .pi-back {
-  color: rgba(245,239,224,0.85);
+  color: rgba(243,234,216,0.85);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -125,7 +125,7 @@ export default function PartnershipInquiry() {
   transition: color 0.25s ease;
   white-space: nowrap;
 }
-.pi-back:hover { color: #D4A12A; }
+.pi-back:hover { color: #e8b85b; }
 /* ---------- Main ---------- */
 .pi-main {
   flex: 1 1 auto;
@@ -141,7 +141,7 @@ export default function PartnershipInquiry() {
   text-align: left;
 }
 .pi-eyebrow {
-  color: #D4A12A;
+  color: #e8b85b;
   font-size: 0.66rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -157,7 +157,7 @@ export default function PartnershipInquiry() {
   margin: 0 0 2rem;
 }
 .pi-h1 {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(2rem, 5vw, 2.8rem);
   font-weight: 400;
   line-height: 1.15;
@@ -165,7 +165,7 @@ export default function PartnershipInquiry() {
   margin: 0 0 1.25rem;
 }
 .pi-support {
-  color: rgba(245,239,224,0.78);
+  color: rgba(243,234,216,0.78);
   font-size: clamp(0.98rem, 2vw, 1.1rem);
   line-height: 1.7;
   font-weight: 300;
@@ -174,12 +174,12 @@ export default function PartnershipInquiry() {
 }
 .pi-form-wrap {
   padding-top: 2rem;
-  border-top: 1px solid rgba(212,161,42,0.18);
+  border-top: 1px solid rgba(232,184,91,0.18);
 }
 /* ---------- Footer ---------- */
 .pi-footer {
   padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 5vw, 3rem) clamp(2rem, 5vw, 3rem);
-  border-top: 1px solid rgba(212,161,42,0.12);
+  border-top: 1px solid rgba(232,184,91,0.12);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -189,7 +189,7 @@ export default function PartnershipInquiry() {
   width: 100%;
 }
 .pi-footer-brand {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: 0.92rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -205,14 +205,14 @@ export default function PartnershipInquiry() {
   margin: 0;
 }
 .pi-footer-copy {
-  color: rgba(245,239,224,0.42);
+  color: rgba(243,234,216,0.42);
   font-size: 0.7rem;
   font-weight: 300;
   margin: 0.85rem 0 0;
 }
 .pi-footer-links { margin: 0.85rem 0 0; }
 .pi-footer-links a {
-  color: rgba(212,161,42,0.85);
+  color: rgba(232,184,91,0.85);
   font-size: 0.64rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -223,7 +223,7 @@ export default function PartnershipInquiry() {
 .pi-brand:focus-visible,
 .pi-back:focus-visible,
 .pi-footer-links a:focus-visible {
-  outline: 2px solid rgba(212,161,42,0.7);
+  outline: 2px solid rgba(232,184,91,0.7);
   outline-offset: 3px;
 }
 @media (max-width: 600px) {

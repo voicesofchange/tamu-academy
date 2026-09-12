@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
-const accent = '#D4A12A';
+const accent = '#e8b85b';
 const cardStyle = {
   padding: '1.5rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 const labelStyle = {
   color: accent,
@@ -19,7 +19,7 @@ const labelStyle = {
   fontFamily: "'DM Sans', sans-serif",
 };
 const bodyText = {
-  color: 'rgba(245,239,224,0.7)',
+  color: 'rgba(243,234,216,0.7)',
   fontSize: '0.9rem',
   lineHeight: 1.6,
   fontFamily: "'DM Sans', sans-serif",
@@ -33,11 +33,11 @@ const btnBase = {
   padding: '0.7rem 1.4rem',
   borderRadius: '4px',
   cursor: 'pointer',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   transition: 'all 0.25s ease',
 };
-const btnPrimary = { ...btnBase, backgroundColor: accent, color: '#1A130E', border: 'none', fontWeight: 500 };
-const btnGhost = { ...btnBase, backgroundColor: 'transparent', color: '#F5EFE0' };
+const btnPrimary = { ...btnBase, backgroundColor: accent, color: '#24150f', border: 'none', fontWeight: 500 };
+const btnGhost = { ...btnBase, backgroundColor: 'transparent', color: '#f8f0df' };
 
 // Pre-filled with the Voices of Change engagement list (deduplicated).
 const PREFILL_EMAILS = `kathurironnie@gmail.com
@@ -168,7 +168,7 @@ export default function VoicesOfChangeAnnouncement() {
   return (
     <div style={cardStyle}>
       <span style={labelStyle}>Voices of Change outreach</span>
-      <h3 style={{ color: '#F5EFE0', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: '0 0 0.75rem' }}>
+      <h3 style={{ color: '#f8f0df', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: '0 0 0.75rem' }}>
         {messageType === 'announcement'
           ? 'Announce Tamu Academy to the Voices of Change community'
           : 'Follow up with the Voices of Change community'}
@@ -191,9 +191,9 @@ export default function VoicesOfChangeAnnouncement() {
               padding: '0.5rem 1rem',
               borderRadius: '4px',
               cursor: 'pointer',
-              border: messageType === mt ? 'none' : '1px solid rgba(212,161,42,0.3)',
-              backgroundColor: messageType === mt ? '#D4A12A' : 'transparent',
-              color: messageType === mt ? '#1A130E' : 'rgba(245,239,224,0.7)',
+              border: messageType === mt ? 'none' : '1px solid rgba(232,184,91,0.3)',
+              backgroundColor: messageType === mt ? '#e8b85b' : 'transparent',
+              color: messageType === mt ? '#24150f' : 'rgba(243,234,216,0.7)',
               fontWeight: messageType === mt ? 500 : 300,
             }}
           >
@@ -212,9 +212,9 @@ export default function VoicesOfChangeAnnouncement() {
           minHeight: '160px',
           padding: '0.75rem',
           backgroundColor: 'rgba(26,19,14,0.6)',
-          border: '1px solid rgba(212,161,42,0.25)',
+          border: '1px solid rgba(232,184,91,0.25)',
           borderRadius: '4px',
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontFamily: 'ui-monospace, monospace',
           fontSize: '0.8rem',
           lineHeight: 1.5,
@@ -252,7 +252,7 @@ export default function VoicesOfChangeAnnouncement() {
       )}
 
       {result && (
-        <div style={{ marginTop: '1.25rem', padding: '0.9rem 1rem', border: '1px solid rgba(212,161,42,0.25)', borderRadius: '4px' }}>
+        <div style={{ marginTop: '1.25rem', padding: '0.9rem 1rem', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '4px' }}>
           <p style={{ ...bodyText, margin: 0 }}>
             <span style={{ color: accent, fontWeight: 500 }}>{result.sent}</span> sent
             {result.failed > 0 && (
@@ -261,12 +261,12 @@ export default function VoicesOfChangeAnnouncement() {
             {result.sender ? ` from ${result.sender}` : ''}.
           </p>
           {result.tracked && (
-            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
+            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(243,234,216,0.5)' }}>
               Open engagement will appear in the tracking panel below.
             </p>
           )}
           {result.failed > 0 && result.errors && result.errors.length > 0 && (
-            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
+            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(243,234,216,0.5)' }}>
               {result.errors.slice(0, 8).map(e => e.email).join(', ')}{result.errors.length > 8 ? '…' : ''}
             </p>
           )}

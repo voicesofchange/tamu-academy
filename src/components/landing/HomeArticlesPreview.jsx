@@ -6,7 +6,7 @@ export default function HomeArticlesPreview() {
   return (
     <section
       style={{
-        borderTop: '1px solid rgba(212,161,42,0.12)',
+        borderTop: '1px solid rgba(232,184,91,0.12)',
         padding: 'clamp(3rem, 6vw, 4.5rem) clamp(1.5rem, 8vw, 5rem)',
       }}
       aria-label="Articles preview"
@@ -22,7 +22,7 @@ export default function HomeArticlesPreview() {
           <span
             className="font-body"
             style={{
-              color: '#D4A12A',
+              color: '#e8b85b',
               fontSize: '0.62rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -38,7 +38,7 @@ export default function HomeArticlesPreview() {
           <h2
             className="font-heading"
             style={{
-              color: '#F5EFE0',
+              color: '#f8f0df',
               fontSize: 'clamp(1.35rem, 2.8vw, 1.9rem)',
               fontWeight: 400,
               lineHeight: 1.25,
@@ -54,7 +54,7 @@ export default function HomeArticlesPreview() {
             style={{
               width: '48px',
               height: '1px',
-              background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)',
+              background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #E2B652 50%, #e8b85b 65%, transparent)',
               margin: '0 0 1.25rem',
             }}
           />
@@ -62,17 +62,17 @@ export default function HomeArticlesPreview() {
           {/* Featured article */}
           <div
             style={{
-              border: '1px solid rgba(212,161,42,0.2)',
+              border: '1px solid rgba(232,184,91,0.2)',
               borderRadius: '4px',
               padding: '1.5rem',
               marginBottom: '1.75rem',
-              backgroundColor: 'rgba(212,161,42,0.02)',
+              backgroundColor: 'rgba(232,184,91,0.02)',
             }}
           >
             <span
               className="font-body"
               style={{
-                color: 'rgba(212,161,42,0.7)',
+                color: 'rgba(232,184,91,0.7)',
                 fontSize: '0.6rem',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -86,7 +86,7 @@ export default function HomeArticlesPreview() {
             <h3
               className="font-heading"
               style={{
-                color: '#F5EFE0',
+                color: '#f8f0df',
                 fontSize: 'clamp(1.05rem, 2vw, 1.3rem)',
                 fontWeight: 400,
                 lineHeight: 1.3,
@@ -98,7 +98,7 @@ export default function HomeArticlesPreview() {
             <p
               className="font-body"
               style={{
-                color: 'rgba(245,239,224,0.6)',
+                color: 'rgba(243,234,216,0.6)',
                 fontSize: '0.9rem',
                 lineHeight: 1.75,
                 fontWeight: 300,
@@ -113,19 +113,19 @@ export default function HomeArticlesPreview() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                color: '#D4A12A',
+                color: '#e8b85b',
                 fontSize: '0.7rem',
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 fontWeight: 500,
-                border: '1px solid rgba(212,161,42,0.4)',
+                border: '1px solid rgba(232,184,91,0.4)',
                 borderRadius: '2px',
                 padding: '0.5rem 1rem',
                 transition: 'border-color 0.2s, color 0.2s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#D4A12A'; e.currentTarget.style.color = '#E2B652'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(212,161,42,0.4)'; e.currentTarget.style.color = '#D4A12A'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#e8b85b'; e.currentTarget.style.color = '#E2B652'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(232,184,91,0.4)'; e.currentTarget.style.color = '#e8b85b'; }}
             >
               Read the Article →
             </Link>
@@ -136,7 +136,7 @@ export default function HomeArticlesPreview() {
             to="/articles"
             className="font-body"
             style={{
-              color: 'rgba(245,239,224,0.5)',
+              color: 'rgba(243,234,216,0.5)',
               fontSize: '0.7rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -144,8 +144,8 @@ export default function HomeArticlesPreview() {
               fontWeight: 500,
               transition: 'color 0.2s',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.5)'}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}
           >
             View All Articles →
           </Link>

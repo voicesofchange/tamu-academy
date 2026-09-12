@@ -30,8 +30,8 @@ const BTN_STYLE = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.5rem',
-  backgroundColor: '#D4A12A',
-  color: '#1A130E',
+  backgroundColor: '#e8b85b',
+  color: '#24150f',
   border: 'none',
   borderRadius: '999px',
   padding: '0.7rem 1.2rem',
@@ -58,8 +58,8 @@ const PANEL = {
   width: 'min(420px, 100vw)',
   maxWidth: '100%',
   height: 'min(620px, 80vh)',
-  backgroundColor: '#1A130E',
-  border: '1px solid rgba(212,161,42,0.3)',
+  backgroundColor: '#24150f',
+  border: '1px solid rgba(232,184,91,0.3)',
   borderRadius: '10px',
   display: 'flex',
   flexDirection: 'column',
@@ -72,7 +72,7 @@ const HEADER = {
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0.85rem 1rem',
-  borderBottom: '1px solid rgba(212,161,42,0.18)',
+  borderBottom: '1px solid rgba(232,184,91,0.18)',
   flexShrink: 0,
 };
 
@@ -233,8 +233,8 @@ export default function TamuGuideWidget() {
             {/* Header */}
             <div style={HEADER}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Sparkles size={16} style={{ color: '#D4A12A' }} aria-hidden="true" />
-                <span className="font-heading" style={{ color: '#F5EFE0', fontSize: '1rem', fontWeight: 500, letterSpacing: '0.02em' }}>
+                <Sparkles size={16} style={{ color: '#e8b85b' }} aria-hidden="true" />
+                <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500, letterSpacing: '0.02em' }}>
                   Tamu Learning Guide
                 </span>
               </div>
@@ -243,7 +243,7 @@ export default function TamuGuideWidget() {
                   onClick={handleClear}
                   aria-label="Clear conversation and start a new one"
                   title="Clear conversation"
-                  style={{ background: 'none', border: 'none', color: 'rgba(245,239,224,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
+                  style={{ background: 'none', border: 'none', color: 'rgba(243,234,216,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
                   className="tamu-guide-icon-btn"
                 >
                   <Trash2 size={15} aria-hidden="true" />
@@ -252,7 +252,7 @@ export default function TamuGuideWidget() {
                   onClick={handleClose}
                   aria-label="Close chat"
                   title="Close"
-                  style={{ background: 'none', border: 'none', color: 'rgba(245,239,224,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
+                  style={{ background: 'none', border: 'none', color: 'rgba(243,234,216,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
                   className="tamu-guide-icon-btn"
                 >
                   <X size={17} aria-hidden="true" />
@@ -261,8 +261,8 @@ export default function TamuGuideWidget() {
             </div>
 
             {/* Privacy notice */}
-            <div style={{ padding: '0.5rem 1rem', borderBottom: '1px solid rgba(212,161,42,0.1)', backgroundColor: 'rgba(212,161,42,0.04)' }}>
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.68rem', lineHeight: 1.45, margin: 0 }}>
+            <div style={{ padding: '0.5rem 1rem', borderBottom: '1px solid rgba(232,184,91,0.1)', backgroundColor: 'rgba(232,184,91,0.04)' }}>
+              <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.68rem', lineHeight: 1.45, margin: 0 }}>
                 {PRIVACY_NOTICE}
               </p>
             </div>
@@ -283,9 +283,9 @@ export default function TamuGuideWidget() {
                         disabled={sending}
                         className="font-body tamu-guide-chip"
                         style={{
-                          background: 'rgba(212,161,42,0.1)',
-                          border: '1px solid rgba(212,161,42,0.3)',
-                          color: '#D4A12A',
+                          background: 'rgba(232,184,91,0.1)',
+                          border: '1px solid rgba(232,184,91,0.3)',
+                          color: '#e8b85b',
                           borderRadius: '999px',
                           padding: '0.4rem 0.8rem',
                           fontSize: '0.74rem',
@@ -306,7 +306,7 @@ export default function TamuGuideWidget() {
 
                 {loading && (
                   <div style={{ display: 'flex', justifyContent: 'center', padding: '0.5rem' }}>
-                    <div style={{ width: '1.4rem', height: '1.4rem', border: '2px solid rgba(212,161,42,0.2)', borderTopColor: '#D4A12A', borderRadius: '50%', animation: 'tamuGuideSpin 0.7s linear infinite' }} />
+                    <div style={{ width: '1.4rem', height: '1.4rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'tamuGuideSpin 0.7s linear infinite' }} />
                   </div>
                 )}
               </div>
@@ -315,7 +315,7 @@ export default function TamuGuideWidget() {
             {/* Input */}
             <form
               onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}
-              style={{ display: 'flex', gap: '0.5rem', padding: '0.75rem 1rem', borderTop: '1px solid rgba(212,161,42,0.18)', flexShrink: 0 }}
+              style={{ display: 'flex', gap: '0.5rem', padding: '0.75rem 1rem', borderTop: '1px solid rgba(232,184,91,0.18)', flexShrink: 0 }}
             >
               <input
                 ref={inputRef}
@@ -327,11 +327,11 @@ export default function TamuGuideWidget() {
                 className="font-body"
                 style={{
                   flex: 1,
-                  background: 'rgba(245,239,224,0.05)',
-                  border: '1px solid rgba(245,239,224,0.15)',
+                  background: 'rgba(243,234,216,0.05)',
+                  border: '1px solid rgba(243,234,216,0.15)',
                   borderRadius: '8px',
                   padding: '0.6rem 0.85rem',
-                  color: '#F5EFE0',
+                  color: '#f8f0df',
                   fontSize: '0.88rem',
                   outline: 'none',
                   fontFamily: "'DM Sans', sans-serif",
@@ -342,8 +342,8 @@ export default function TamuGuideWidget() {
                 disabled={sending || !input.trim()}
                 aria-label="Send message"
                 style={{
-                  background: '#D4A12A',
-                  color: '#1A130E',
+                  background: '#e8b85b',
+                  color: '#24150f',
                   border: 'none',
                   borderRadius: '8px',
                   padding: '0 0.85rem',
@@ -365,21 +365,21 @@ export default function TamuGuideWidget() {
       <style>{`
         @keyframes tamuGuideSpin { to { transform: rotate(360deg); } }
         .tamu-guide-trigger:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 3px;
         }
-        .tamu-guide-trigger:hover { background-color: rgba(212,161,42,0.88); }
+        .tamu-guide-trigger:hover { background-color: rgba(232,184,91,0.88); }
         .tamu-guide-icon-btn:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 2px;
         }
-        .tamu-guide-icon-btn:hover { color: #F5EFE0; }
+        .tamu-guide-icon-btn:hover { color: #f8f0df; }
         .tamu-guide-chip:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 2px;
         }
-        .tamu-guide-chip:hover { background: rgba(212,161,42,0.18); }
-        .tamu-guide-overlay input:focus { border-color: rgba(212,161,42,0.5); }
+        .tamu-guide-chip:hover { background: rgba(232,184,91,0.18); }
+        .tamu-guide-overlay input:focus { border-color: rgba(232,184,91,0.5); }
         @media (max-width: 480px) {
           .tamu-guide-trigger span { display: none; }
         }

@@ -3,12 +3,12 @@ import { base44 } from '@/api/base44Client';
 import { formatDistanceToNow } from 'date-fns';
 import { MailOpen, Mail, RefreshCw } from 'lucide-react';
 
-const accent = '#D4A12A';
+const accent = '#e8b85b';
 const cardStyle = {
   padding: '1.5rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 const labelStyle = {
   color: accent,
@@ -21,7 +21,7 @@ const labelStyle = {
   fontFamily: "'DM Sans', sans-serif",
 };
 const bodyText = {
-  color: 'rgba(245,239,224,0.7)',
+  color: 'rgba(243,234,216,0.7)',
   fontSize: '0.9rem',
   lineHeight: 1.6,
   fontFamily: "'DM Sans', sans-serif",
@@ -35,7 +35,7 @@ const btnBase = {
   padding: '0.5rem 1rem',
   borderRadius: '4px',
   cursor: 'pointer',
-  border: '1px solid rgba(212,161,42,0.3)',
+  border: '1px solid rgba(232,184,91,0.3)',
   transition: 'all 0.25s ease',
   backgroundColor: 'transparent',
 };
@@ -77,7 +77,7 @@ export default function VoicesOpenTracking() {
       <div style={{ color: accent, fontSize: '2rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1 }}>
         {value}
       </div>
-      <div style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
+      <div style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.4rem' }}>
         {label}
       </div>
     </div>
@@ -88,12 +88,12 @@ export default function VoicesOpenTracking() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <span style={labelStyle}>Email engagement</span>
-          <h3 style={{ color: '#F5EFE0', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: 0 }}>
+          <h3 style={{ color: '#f8f0df', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: 0 }}>
             Open tracking — Voices of Change outreach
           </h3>
         </div>
         <button
-          style={{ ...btnBase, color: '#F5EFE0', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+          style={{ ...btnBase, color: '#f8f0df', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
           onClick={load}
           disabled={loading}
         >
@@ -128,9 +128,9 @@ export default function VoicesOpenTracking() {
                 onClick={() => setFilter(f.key)}
                 style={{
                   ...btnBase,
-                  border: filter === f.key ? 'none' : '1px solid rgba(212,161,42,0.3)',
+                  border: filter === f.key ? 'none' : '1px solid rgba(232,184,91,0.3)',
                   backgroundColor: filter === f.key ? accent : 'transparent',
-                  color: filter === f.key ? '#1A130E' : 'rgba(245,239,224,0.7)',
+                  color: filter === f.key ? '#24150f' : 'rgba(243,234,216,0.7)',
                   fontWeight: filter === f.key ? 500 : 300,
                 }}
               >
@@ -140,13 +140,13 @@ export default function VoicesOpenTracking() {
           </div>
 
           {filtered.length === 0 ? (
-            <p style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(245,239,224,0.5)' }}>
+            <p style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
               {events.length === 0
                 ? 'No tracked sends yet. Sends from this panel will appear here.'
                 : 'No recipients match this filter.'}
             </p>
           ) : (
-            <div style={{ maxHeight: '320px', overflowY: 'auto', border: '1px solid rgba(212,161,42,0.15)', borderRadius: '4px' }}>
+            <div style={{ maxHeight: '320px', overflowY: 'auto', border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px' }}>
               {filtered.map((e) => {
                 const isOpened = !!e.opened_at;
                 return (
@@ -158,16 +158,16 @@ export default function VoicesOpenTracking() {
                       justifyContent: 'space-between',
                       gap: '0.75rem',
                       padding: '0.6rem 0.9rem',
-                      borderBottom: '1px solid rgba(212,161,42,0.1)',
+                      borderBottom: '1px solid rgba(232,184,91,0.1)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', minWidth: 0, flex: 1 }}>
                       {isOpened ? (
                         <MailOpen size={15} style={{ color: accent, flexShrink: 0 }} />
                       ) : (
-                        <Mail size={15} style={{ color: 'rgba(245,239,224,0.35)', flexShrink: 0 }} />
+                        <Mail size={15} style={{ color: 'rgba(243,234,216,0.35)', flexShrink: 0 }} />
                       )}
-                      <span style={{ color: '#F5EFE0', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ color: '#f8f0df', fontSize: '0.82rem', fontFamily: "'DM Sans', sans-serif", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {e.recipient_email}
                       </span>
                     </div>
@@ -175,16 +175,16 @@ export default function VoicesOpenTracking() {
                       {isOpened ? (
                         <>
                           {e.open_count > 1 && (
-                            <span style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif" }}>
+                            <span style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif" }}>
                               {e.open_count}×
                             </span>
                           )}
-                          <span style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif", whiteSpace: 'nowrap' }}>
+                          <span style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif", whiteSpace: 'nowrap' }}>
                             {formatDistanceToNow(new Date(e.opened_at), { addSuffix: true })}
                           </span>
                         </>
                       ) : (
-                        <span style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif" }}>
+                        <span style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.72rem', fontFamily: "'DM Sans', sans-serif" }}>
                           Not opened
                         </span>
                       )}

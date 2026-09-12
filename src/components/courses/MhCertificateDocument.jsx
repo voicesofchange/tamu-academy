@@ -3,8 +3,8 @@ import React from 'react';
 /**
  * MhCertificateDocument — the visual certificate of completion.
  *
- * Formal, AfroCentric design using the Tamu Academy gold (#D4A12A) and
- * espresso (#1A130E) brand palette on a cream ground (#FCFAF5).
+ * Formal, AfroCentric design using the Tamu Academy gold (#e8b85b) and
+ * espresso (#24150f) brand palette on a cream ground (#FCFAF5).
  * Ornamental motifs are geometric, inspired by West African textile
  * traditions (concentric forms, diamonds, sunburst rays) — decorative
  * rather than sacred symbols.
@@ -14,11 +14,11 @@ import React from 'react';
  *   isPreview: boolean — when true, shows a placeholder certificate ID
  */
 
-const GOLD = '#D4A12A';
-const ESPRESSO = '#1A130E';
+const GOLD = '#e8b85b';
+const ESPRESSO = '#24150f';
 const CREAM = '#FCFAF5';
-const GOLD_SOFT = 'rgba(212,161,42,0.35)';
-const GOLD_FAINT = 'rgba(212,161,42,0.18)';
+const GOLD_SOFT = 'rgba(232,184,91,0.35)';
+const GOLD_FAINT = 'rgba(232,184,91,0.18)';
 const MUTE = '#786E5F';
 const MUTE_DEEP = '#645A4E';
 

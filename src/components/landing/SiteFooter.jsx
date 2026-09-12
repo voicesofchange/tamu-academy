@@ -9,6 +9,7 @@ const LINKS = [
   { key: 'nav.videos', to: '/videos' },
   { key: 'nav.articles', to: '/articles' },
   { key: 'nav.resources', to: '/resources' },
+  { key: 'nav.stories', to: '/stories' },
   { key: 'nav.contact', to: '/contact' },
   { key: 'nav.privacy', to: '/privacy' },
 ];
@@ -25,7 +26,7 @@ export default function SiteFooter() {
         alignItems: 'center',
         gap: '1.5rem',
         padding: '2.5rem 2rem 3rem',
-        borderTop: '1px solid rgba(212,161,42,0.12)',
+        borderTop: '1px solid rgba(232,184,91,0.12)',
       }}
     >
       <nav aria-label="Footer navigation" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.25rem 1.5rem' }}>
@@ -35,7 +36,7 @@ export default function SiteFooter() {
             to={to}
             className="font-body tamu-nav-link"
             style={{
-              color: 'rgba(245,239,224,0.6)',
+              color: 'rgba(243,234,216,0.6)',
               fontSize: '0.62rem',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -52,7 +53,7 @@ export default function SiteFooter() {
       <span
         className="font-body"
         style={{
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontSize: '0.62rem',
           letterSpacing: '0.3em',
           textTransform: 'uppercase',

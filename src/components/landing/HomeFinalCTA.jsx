@@ -29,7 +29,7 @@ export default function HomeFinalCTA() {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         style={{ maxWidth: '640px', margin: '0 auto' }}
       >
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.75rem' }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.75rem' }}>
           {c.heading}
         </h2>
 
@@ -41,11 +41,11 @@ export default function HomeFinalCTA() {
               className="font-body"
               style={{
                 display: 'inline-flex', alignItems: 'center',
-                color: primary ? '#1A130E' : '#D4A12A',
-                backgroundColor: primary ? '#D4A12A' : 'transparent',
+                color: primary ? '#24150f' : '#e8b85b',
+                backgroundColor: primary ? '#e8b85b' : 'transparent',
                 fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
                 textDecoration: 'none', fontWeight: 500,
-                border: primary ? '1px solid #D4A12A' : '1px solid rgba(212,161,42,0.4)',
+                border: primary ? '1px solid #e8b85b' : '1px solid rgba(232,184,91,0.4)',
                 borderRadius: '2px', padding: '0.65rem 1.3rem',
               }}
             >

@@ -3,14 +3,14 @@ import StatusBadge from '@/components/page/StatusBadge';
 import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const optionBase = {
   display: 'flex',
   alignItems: 'flex-start',
   gap: '0.6rem',
   padding: '0.6rem 0.85rem',
-  border: '1px solid rgba(245,239,224,0.12)',
+  border: '1px solid rgba(243,234,216,0.12)',
   borderRadius: '3px',
   cursor: 'pointer',
   transition: 'border-color 0.2s, background-color 0.2s',
@@ -134,9 +134,9 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
         return (
           <fieldset
             key={q.id}
-            style={{ marginBottom: '1.75rem', border: '1px solid rgba(245,239,224,0.1)', borderRadius: '4px', padding: '1.25rem 1.4rem', margin: '0 0 1.75rem' }}
+            style={{ marginBottom: '1.75rem', border: '1px solid rgba(243,234,216,0.1)', borderRadius: '4px', padding: '1.25rem 1.4rem', margin: '0 0 1.75rem' }}
           >
-            <legend className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 400, padding: '0 0.4rem' }}>
+            <legend className="font-body" style={{ color: '#f8f0df', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 400, padding: '0 0.4rem' }}>
               {qi + 1}. {q.prompt}
             </legend>
 
@@ -148,10 +148,10 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
                   disabled={locked}
                   rows={6}
                   aria-label={`Written response for question ${qi + 1}`}
-                  style={{ width: '100%', marginTop: '0.85rem', padding: '0.7rem 0.85rem', background: 'rgba(245,239,224,0.02)', color: 'rgba(245,239,224,0.85)', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '3px', fontSize: '0.9rem', lineHeight: 1.7, fontFamily: 'inherit', resize: 'vertical' }}
+                  style={{ width: '100%', marginTop: '0.85rem', padding: '0.7rem 0.85rem', background: 'rgba(243,234,216,0.02)', color: 'rgba(243,234,216,0.85)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '3px', fontSize: '0.9rem', lineHeight: 1.7, fontFamily: 'inherit', resize: 'vertical' }}
                 />
                 {fb && (
-                  <p className="font-body" style={{ ...bodyText, fontSize: '0.86rem', fontStyle: 'italic', marginTop: '0.85rem', marginBottom: 0, color: 'rgba(245,239,224,0.7)' }}>
+                  <p className="font-body" style={{ ...bodyText, fontSize: '0.86rem', fontStyle: 'italic', marginTop: '0.85rem', marginBottom: 0, color: 'rgba(243,234,216,0.7)' }}>
                     {fb.feedback}
                   </p>
                 )}
@@ -164,11 +164,11 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
                   if (result && fb) {
                     const isCorrectOption = fb.isCorrect && selected;
                     const isWrongOption = selected && !fb.isCorrect;
-                    if (isCorrectOption) stateStyle = { borderColor: 'rgba(212,161,42,0.6)', backgroundColor: 'rgba(212,161,42,0.06)' };
+                    if (isCorrectOption) stateStyle = { borderColor: 'rgba(232,184,91,0.6)', backgroundColor: 'rgba(232,184,91,0.06)' };
                     else if (isWrongOption) stateStyle = { borderColor: 'rgba(220,120,120,0.5)', backgroundColor: 'rgba(220,120,120,0.05)' };
                     else stateStyle = { opacity: 0.6 };
                   } else if (selected) {
-                    stateStyle = { borderColor: 'rgba(212,161,42,0.7)', backgroundColor: 'rgba(212,161,42,0.06)' };
+                    stateStyle = { borderColor: 'rgba(232,184,91,0.7)', backgroundColor: 'rgba(232,184,91,0.06)' };
                   }
                   return (
                     <label key={oi} style={{ ...optionBase, ...stateStyle }}>
@@ -179,11 +179,11 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
                         checked={selected}
                         onChange={() => setOption(qi, oi)}
                         disabled={locked}
-                        style={{ marginTop: '0.2rem', accentColor: '#D4A12A' }}
+                        style={{ marginTop: '0.2rem', accentColor: '#e8b85b' }}
                       />
                       <span className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: 0 }}>
-                        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{letter(oi)}.</strong> {opt}
-                        {result && fb && fb.isCorrect && selected && <span style={{ marginLeft: '0.5rem', color: 'rgba(212,161,42,0.85)' }}>&#10003;</span>}
+                        <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{letter(oi)}.</strong> {opt}
+                        {result && fb && fb.isCorrect && selected && <span style={{ marginLeft: '0.5rem', color: 'rgba(232,184,91,0.85)' }}>&#10003;</span>}
                         {result && fb && selected && !fb.isCorrect && <span style={{ marginLeft: '0.5rem', color: 'rgba(220,120,120,0.85)' }}>&#10007;</span>}
                       </span>
                     </label>
@@ -193,15 +193,15 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
             )}
 
             {result && fb && !q.written && (
-              <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${fb.isCorrect ? 'rgba(212,161,42,0.4)' : 'rgba(245,239,224,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
-                <p className="font-body" style={{ ...bodyText, margin: '0 0 0.4rem', color: fb.isCorrect ? '#D4A12A' : '#e8955c', fontWeight: 500 }}>
+              <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${fb.isCorrect ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
+                <p className="font-body" style={{ ...bodyText, margin: '0 0 0.4rem', color: fb.isCorrect ? '#e8b85b' : '#e8955c', fontWeight: 500 }}>
                   {fb.isCorrect ? c.correct : c.reconsider}
                 </p>
-                <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: '0 0 0.35rem', color: 'rgba(245,239,224,0.7)', fontSize: '0.88rem' }}>
+                <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: '0 0 0.35rem', color: 'rgba(243,234,216,0.7)', fontSize: '0.88rem' }}>
                   {fb.feedback}
                 </p>
                 {!fb.isCorrect && fb.correctAnswerText && (
-                  <p className="font-body" style={{ ...bodyText, margin: 0, color: 'rgba(212,161,42,0.8)', fontSize: '0.86rem' }}>
+                  <p className="font-body" style={{ ...bodyText, margin: 0, color: 'rgba(232,184,91,0.8)', fontSize: '0.86rem' }}>
                     {tpl(c.correctAnswer, { answer: fb.correctAnswerText })}
                   </p>
                 )}
@@ -217,10 +217,10 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
           disabled={pending || !allAnswered}
           style={{
             padding: '0.7rem 1.6rem',
-            border: '1px solid rgba(212,161,42,0.4)',
+            border: '1px solid rgba(232,184,91,0.4)',
             borderRadius: '2px',
-            background: allAnswered ? 'rgba(212,161,42,0.08)' : 'transparent',
-            color: allAnswered ? '#D4A12A' : 'rgba(245,239,224,0.35)',
+            background: allAnswered ? 'rgba(232,184,91,0.08)' : 'transparent',
+            color: allAnswered ? '#e8b85b' : 'rgba(243,234,216,0.35)',
             fontSize: '0.72rem',
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -253,7 +253,7 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
           <button
             type="button"
             onClick={handleRetry}
-            style={{ padding: '0.7rem 1.6rem', border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', background: 'transparent', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
+            style={{ padding: '0.7rem 1.6rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', background: 'transparent', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
           >
             {c.tryAgain}
           </button>

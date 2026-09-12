@@ -12,7 +12,7 @@ import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const COURSE_META = {
   [MENTAL_HEALTH_COURSE.slug]: MENTAL_HEALTH_COURSE,
@@ -21,15 +21,15 @@ const COURSE_META = {
 
 const primaryButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#1A130E', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+  color: '#24150f', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
   fontWeight: 600, textDecoration: 'none', border: 'none', borderRadius: '2px',
-  padding: '0.65rem 1.3rem', backgroundColor: '#D4A12A',
+  padding: '0.65rem 1.3rem', backgroundColor: '#e8b85b',
 };
 
 const linkButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#D4A12A', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
-  fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(212,161,42,0.5)',
+  color: '#e8b85b', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+  fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '2px', padding: '0.65rem 1.3rem',
 };
 
@@ -112,7 +112,7 @@ export default function MyCourses() {
 
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
-          <div style={{ width: '2rem', height: '2rem', border: '3px solid rgba(212,161,42,0.2)', borderTopColor: '#D4A12A', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+          <div style={{ width: '2rem', height: '2rem', border: '3px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       ) : courses.length === 0 ? (
@@ -120,6 +120,14 @@ export default function MyCourses() {
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
             {c.emptyBody}
           </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+            {[MENTAL_HEALTH_COURSE, ECONOMICS_COURSE].map((course) => (
+              <Link key={course.slug} to={`/courses/${course.slug}`} style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', textDecoration: 'none', display: 'block' }}>
+                <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{pubStatus[course.slug]?.isLive ? 'Available Now' : 'In Development'}</span>
+                <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, lineHeight: 1.3, display: 'block' }}>{course.title}</span>
+              </Link>
+            ))}
+          </div>
           <Link to="/courses" className="font-body" style={primaryButtonStyle}>
             {c.browseCourses} &rarr;
           </Link>
@@ -133,20 +141,20 @@ export default function MyCourses() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.35)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.04)' }}
+                style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}
               >
-                <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>
+                <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>
                   {resumeTarget.meta?.title}
                 </p>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.5rem' }}>
+                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.5rem' }}>
                   {resumeTarget.firstIncomplete.number}: {resumeTarget.firstIncomplete.title}
                 </h3>
                 <div style={{ marginBottom: '1.25rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                    <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+                    <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
                       {c.progress}
                     </span>
-                    <span className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 500 }}>
+                    <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500 }}>
                       {resumeTarget.completedCount} {c.of} {resumeTarget.completion?.totalModules} {c.modules}
                     </span>
                   </div>
@@ -156,9 +164,9 @@ export default function MyCourses() {
                     aria-valuemin={0}
                     aria-valuemax={100}
                     aria-label={`${resumeTarget.meta?.title} progress`}
-                    style={{ width: '100%', height: '6px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '3px', overflow: 'hidden' }}
+                    style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
                   >
-                    <div style={{ width: `${Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '3px', transition: 'width 0.6s ease' }} />
+                    <div style={{ width: `${Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
                   </div>
                 </div>
                 <Link to={`/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`} className="font-body" style={primaryButtonStyle}>
@@ -187,20 +195,20 @@ export default function MyCourses() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.6, ease: 'easeOut' }}
-                  style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '1.25rem' }}
+                  style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', marginBottom: '1.25rem' }}
                 >
                   <div style={{ marginBottom: '0.85rem' }}>
                     <StatusBadge label={statusLabel} />
                   </div>
-                  <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' }}>
+                  <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' }}>
                     {meta?.title}
                   </h3>
                   <div style={{ marginBottom: '1.25rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                      <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+                      <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
                         {c.progress}
                       </span>
-                      <span className="font-body" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 500 }}>
+                      <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500 }}>
                         {completedCount} {c.of} {totalModules} {c.modules}
                       </span>
                     </div>
@@ -210,9 +218,9 @@ export default function MyCourses() {
                       aria-valuemin={0}
                       aria-valuemax={100}
                       aria-label={`${meta?.title} progress`}
-                      style={{ width: '100%', height: '6px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '3px', overflow: 'hidden' }}
+                      style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
                     >
-                      <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '3px', transition: 'width 0.6s ease' }} />
+                      <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>

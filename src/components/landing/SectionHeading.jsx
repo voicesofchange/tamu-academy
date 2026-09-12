@@ -14,7 +14,7 @@ export default function SectionHeading({ eyebrow, title }) {
         <p
           className="font-body"
           style={{
-            color: '#D4A12A',
+            color: '#e8b85b',
             fontSize: '0.72rem',
             letterSpacing: '0.24em',
             textTransform: 'uppercase',
@@ -28,7 +28,7 @@ export default function SectionHeading({ eyebrow, title }) {
       <h2
         className="font-heading"
         style={{
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontSize: 'clamp(1.9rem, 4vw, 3rem)',
           lineHeight: 1.1,
           fontWeight: 500,

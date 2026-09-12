@@ -17,12 +17,12 @@ export default function LessonVideo({ video, fallbackText }) {
       <div
         style={{
           padding: '2rem',
-          border: '1px dashed rgba(212,161,42,0.25)',
+          border: '1px dashed rgba(232,184,91,0.25)',
           borderRadius: '4px',
           textAlign: 'center',
         }}
       >
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', margin: 0 }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', margin: 0 }}>
           {fallbackText || c.comingSoon}
         </p>
       </div>
@@ -40,7 +40,7 @@ export default function LessonVideo({ video, fallbackText }) {
           paddingBottom: '56.25%',
           borderRadius: '4px',
           overflow: 'hidden',
-          border: '1px solid rgba(212,161,42,0.18)',
+          border: '1px solid rgba(232,184,91,0.18)',
           backgroundColor: '#000000',
         }}
       >
@@ -57,7 +57,7 @@ export default function LessonVideo({ video, fallbackText }) {
       <p
         className="font-body"
         style={{
-          color: 'rgba(245,239,224,0.55)',
+          color: 'rgba(243,234,216,0.55)',
           fontSize: '0.78rem',
           marginTop: '0.6rem',
           marginBottom: 0,
@@ -68,7 +68,7 @@ export default function LessonVideo({ video, fallbackText }) {
           href={video.watchUrl}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
+          style={{ color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' }}
         >
           {c.openOnYouTube}
         </a>

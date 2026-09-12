@@ -68,7 +68,7 @@ export default function MotivationChat() {
   if (loading) {
     return (
       <div className="flex items-center justify-center" style={{ minHeight: '320px' }}>
-        <div className="w-7 h-7 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(212,161,42,0.2)', borderTopColor: '#D4A12A' }} />
+        <div className="w-7 h-7 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(232,184,91,0.2)', borderTopColor: '#e8b85b' }} />
       </div>
     );
   }
@@ -80,11 +80,11 @@ export default function MotivationChat() {
       <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', paddingRight: '0.25rem' }}>
         {!hasMessages ? (
           <div className="flex flex-col items-center justify-center text-center" style={{ height: '100%', gap: '1rem', padding: '1.5rem' }}>
-            <Sparkles size={32} style={{ color: '#D4A12A' }} />
-            <p className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.25rem', margin: 0 }}>
+            <Sparkles size={32} style={{ color: '#e8b85b' }} />
+            <p className="font-heading" style={{ color: '#f8f0df', fontSize: '1.25rem', margin: 0 }}>
               Your Motivation Coach is here.
             </p>
-            <p style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', maxWidth: '380px', margin: 0 }}>
+            <p style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.9rem', maxWidth: '380px', margin: 0 }}>
               Feeling stuck in your course? Share where you are and your coach will review your progress and help you find your next step.
             </p>
             <button
@@ -93,8 +93,8 @@ export default function MotivationChat() {
               className="font-body"
               style={{
                 marginTop: '0.5rem',
-                background: '#D4A12A',
-                color: '#1A130E',
+                background: '#e8b85b',
+                color: '#24150f',
                 border: 'none',
                 borderRadius: '6px',
                 padding: '0.6rem 1.4rem',
@@ -116,7 +116,7 @@ export default function MotivationChat() {
 
       <form
         onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}
-        style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(245,239,224,0.1)' }}
+        style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(243,234,216,0.1)' }}
       >
         <input
           type="text"
@@ -126,11 +126,11 @@ export default function MotivationChat() {
           className="font-body"
           style={{
             flex: 1,
-            background: 'rgba(245,239,224,0.05)',
-            border: '1px solid rgba(245,239,224,0.15)',
+            background: 'rgba(243,234,216,0.05)',
+            border: '1px solid rgba(243,234,216,0.15)',
             borderRadius: '8px',
             padding: '0.6rem 0.9rem',
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: '0.9rem',
             outline: 'none',
           }}
@@ -139,8 +139,8 @@ export default function MotivationChat() {
           type="submit"
           disabled={sending || !input.trim()}
           style={{
-            background: '#D4A12A',
-            color: '#1A130E',
+            background: '#e8b85b',
+            color: '#24150f',
             border: 'none',
             borderRadius: '8px',
             padding: '0 0.9rem',

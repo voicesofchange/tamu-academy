@@ -28,7 +28,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse 50% 42% at 50% 44%, rgba(212,161,42,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 50% 42% at 50% 44%, rgba(232,184,91,0.07) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -49,11 +49,11 @@ export default function Hero() {
           pointerEvents: 'none',
         }}
       >
-        <ellipse cx="400" cy="200" rx="395" ry="195" fill="none" stroke="#D4A12A" strokeWidth="1.2" />
-        <ellipse cx="400" cy="200" rx="395" ry="98" fill="none" stroke="#D4A12A" strokeWidth="0.6" opacity="0.6" />
-        <line x1="5" y1="200" x2="795" y2="200" stroke="#D4A12A" strokeWidth="0.6" opacity="0.6" />
-        <ellipse cx="400" cy="200" rx="198" ry="195" fill="none" stroke="#D4A12A" strokeWidth="0.5" opacity="0.5" />
-        <line x1="400" y1="5" x2="400" y2="395" stroke="#D4A12A" strokeWidth="0.5" opacity="0.4" />
+        <ellipse cx="400" cy="200" rx="395" ry="195" fill="none" stroke="#e8b85b" strokeWidth="1.2" />
+        <ellipse cx="400" cy="200" rx="395" ry="98" fill="none" stroke="#e8b85b" strokeWidth="0.6" opacity="0.6" />
+        <line x1="5" y1="200" x2="795" y2="200" stroke="#e8b85b" strokeWidth="0.6" opacity="0.6" />
+        <ellipse cx="400" cy="200" rx="198" ry="195" fill="none" stroke="#e8b85b" strokeWidth="0.5" opacity="0.5" />
+        <line x1="400" y1="5" x2="400" y2="395" stroke="#e8b85b" strokeWidth="0.5" opacity="0.4" />
       </svg>
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '860px' }}>
@@ -85,7 +85,7 @@ export default function Hero() {
           style={{
             width: '90px',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent, #D4A12A 35%, #E2B652 50%, #D4A12A 65%, transparent)',
+            background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #E2B652 50%, #e8b85b 65%, transparent)',
             margin: '0 auto 1.75rem',
           }}
         />
@@ -97,7 +97,7 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.9 }}
           className="font-body"
           style={{
-            color: 'rgba(212,161,42,0.75)',
+            color: 'rgba(232,184,91,0.75)',
             fontSize: '0.68rem',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -115,7 +115,7 @@ export default function Hero() {
           transition={{ duration: 1, ease: 'easeOut', delay: 1.0 }}
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             lineHeight: 1.12,
             fontWeight: 400,
@@ -133,7 +133,7 @@ export default function Hero() {
           transition={{ duration: 1, ease: 'easeOut', delay: 1.2 }}
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.78)',
+            color: 'rgba(243,234,216,0.78)',
             fontSize: 'clamp(0.95rem, 1.5vw, 1.12rem)',
             lineHeight: 1.85,
             fontWeight: 300,
@@ -155,11 +155,11 @@ export default function Hero() {
             to="/courses"
             style={{
               display: 'inline-flex', alignItems: 'center',
-              color: '#1A130E',
-              backgroundColor: '#D4A12A',
+              color: '#24150f',
+              backgroundColor: '#e8b85b',
               fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
               textDecoration: 'none', fontWeight: 500,
-              border: '1px solid #D4A12A',
+              border: '1px solid #e8b85b',
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
@@ -169,11 +169,11 @@ export default function Hero() {
             to="/videos"
             style={{
               display: 'inline-flex', alignItems: 'center',
-              color: '#D4A12A',
+              color: '#e8b85b',
               backgroundColor: 'transparent',
               fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
               textDecoration: 'none', fontWeight: 500,
-              border: '1px solid rgba(212,161,42,0.45)',
+              border: '1px solid rgba(232,184,91,0.45)',
               borderRadius: '2px', padding: '0.7rem 1.5rem',
             }}
           >
@@ -189,7 +189,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 1.6 }}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
-            color: 'rgba(212,161,42,0.6)',
+            color: 'rgba(232,184,91,0.6)',
             fontSize: '0.68rem', letterSpacing: '0.22em', textTransform: 'uppercase',
             textDecoration: 'none', fontWeight: 500,
           }}

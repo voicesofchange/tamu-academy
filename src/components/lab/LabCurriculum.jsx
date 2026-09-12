@@ -64,7 +64,7 @@ export default function LabCurriculum() {
       {MODULES.map((mod, i) => {
         const isOpen = open === i;
         return (
-          <div key={mod.n} style={{ border: '1px solid rgba(212,161,42,0.15)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', overflow: 'hidden' }}>
+          <div key={mod.n} style={{ border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)', overflow: 'hidden' }}>
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
@@ -72,10 +72,10 @@ export default function LabCurriculum() {
               style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', textAlign: 'left' }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-                <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.3rem', fontWeight: 400, opacity: 0.55, lineHeight: 1 }}>{mod.n}</span>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', fontWeight: 400, margin: 0, lineHeight: 1.3 }}>{mod.title}</h3>
+                <span className="font-heading" style={{ color: '#e8b85b', fontSize: '1.3rem', fontWeight: 400, opacity: 0.55, lineHeight: 1 }}>{mod.n}</span>
+                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', fontWeight: 400, margin: 0, lineHeight: 1.3 }}>{mod.title}</h3>
               </div>
-              <span aria-hidden="true" style={{ color: '#D4A12A', fontSize: '1.1rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: isOpen ? 'rotate(45deg)' : 'none' }}>+</span>
+              <span aria-hidden="true" style={{ color: '#e8b85b', fontSize: '1.1rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: isOpen ? 'rotate(45deg)' : 'none' }}>+</span>
             </button>
             <AnimatePresence initial={false}>
               {isOpen && (
@@ -87,13 +87,13 @@ export default function LabCurriculum() {
                   transition={{ duration: reduceMotion ? 0 : 0.3, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <div style={{ padding: '0 1.5rem 1.5rem', borderTop: '1px solid rgba(212,161,42,0.08)' }}>
-                    <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '1rem 0 0.65rem' }}>
+                  <div style={{ padding: '0 1.5rem 1.5rem', borderTop: '1px solid rgba(232,184,91,0.08)' }}>
+                    <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '1rem 0 0.65rem' }}>
                       {mod.type === 'questions' ? 'Key Questions' : 'Topics'}
                     </p>
                     <ul style={{ margin: 0, paddingLeft: '1.1rem' }}>
                       {mod.items.map((item) => (
-                        <li key={item} className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, marginBottom: '0.35rem' }}>{item}</li>
+                        <li key={item} className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, marginBottom: '0.35rem' }}>{item}</li>
                       ))}
                     </ul>
                   </div>
@@ -103,7 +103,7 @@ export default function LabCurriculum() {
           </div>
         );
       })}
-      <p className="font-body" style={{ color: 'rgba(245,239,224,0.4)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginTop: '0.75rem', fontStyle: 'italic' }}>
+      <p className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginTop: '0.75rem', fontStyle: 'italic' }}>
         This is a proposed curriculum that may be refined with facilitators, participants, community partners, and subject matter experts.
       </p>
     </div>

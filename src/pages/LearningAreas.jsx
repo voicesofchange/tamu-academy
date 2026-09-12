@@ -87,7 +87,7 @@ const AREAS = [
   },
 ];
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function LearningAreas() {
   const [expanded, setExpanded] = useState(null);
@@ -116,7 +116,7 @@ export default function LearningAreas() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.04 }}
-              style={{ border: '1px solid rgba(212,161,42,0.16)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', overflow: 'hidden' }}
+              style={{ border: '1px solid rgba(232,184,91,0.16)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)', overflow: 'hidden' }}
             >
               <button
                 onClick={() => setExpanded(open ? null : i)}
@@ -125,10 +125,10 @@ export default function LearningAreas() {
                 style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.75rem 2rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', textAlign: 'left' }}
               >
                 <div>
-                  <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.6rem', fontWeight: 400, opacity: 0.55, display: 'block', lineHeight: 1, marginBottom: '0.5rem' }}>{area.number}</span>
-                  <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>{area.title}</h2>
+                  <span className="font-heading" style={{ color: '#e8b85b', fontSize: '1.6rem', fontWeight: 400, opacity: 0.55, display: 'block', lineHeight: 1, marginBottom: '0.5rem' }}>{area.number}</span>
+                  <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>{area.title}</h2>
                 </div>
-                <span aria-hidden="true" style={{ color: '#D4A12A', fontSize: '1.2rem', marginTop: '0.25rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: open ? 'rotate(45deg)' : 'none' }}>+</span>
+                <span aria-hidden="true" style={{ color: '#e8b85b', fontSize: '1.2rem', marginTop: '0.25rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: open ? 'rotate(45deg)' : 'none' }}>+</span>
               </button>
 
               <AnimatePresence initial={false}>
@@ -141,27 +141,27 @@ export default function LearningAreas() {
                   transition={{ duration: reduceMotion ? 0 : 0.35, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                   >
-                    <div style={{ padding: '0 2rem 2rem', borderTop: '1px solid rgba(212,161,42,0.1)' }}>
+                    <div style={{ padding: '0 2rem 2rem', borderTop: '1px solid rgba(232,184,91,0.1)' }}>
                       <p className="font-body" style={{ ...bodyText, margin: '1.5rem 0 1.5rem' }}>{area.summary}</p>
 
-                      <h3 className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.75rem' }}>Questions Learners May Examine</h3>
+                      <h3 className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.75rem' }}>Questions Learners May Examine</h3>
                       <ul style={{ margin: '0 0 1.5rem', paddingLeft: '1.25rem' }}>
                         {area.questions.map((q) => (
                           <li key={q} className="font-body" style={{ ...bodyText, marginBottom: '0.5rem' }}>{q}</li>
                         ))}
                       </ul>
 
-                      <h3 className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.75rem' }}>Skills Learners May Develop</h3>
+                      <h3 className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.75rem' }}>Skills Learners May Develop</h3>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
                         {area.skills.map((s) => (
-                          <span key={s} className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.8rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '2px', padding: '0.25rem 0.7rem', fontWeight: 400 }}>{s}</span>
+                          <span key={s} className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.8rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '2px', padding: '0.25rem 0.7rem', fontWeight: 400 }}>{s}</span>
                         ))}
                       </div>
 
-                      <h3 className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>Related Programmes</h3>
+                      <h3 className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>Related Programmes</h3>
                       <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>{area.related}</p>
 
-                      <p className="font-body" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, marginTop: '1.25rem' }}>In Development</p>
+                      <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, marginTop: '1.25rem' }}>In Development</p>
                     </div>
                   </motion.div>
                 )}

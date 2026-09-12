@@ -73,7 +73,7 @@ export default function TopNav() {
         zIndex: 50,
         backgroundColor: scrolled || menuOpen ? 'rgba(20,14,10,0.92)' : 'transparent',
         backdropFilter: scrolled || menuOpen ? 'blur(10px)' : 'none',
-        borderBottom: scrolled || menuOpen ? '1px solid rgba(212,161,42,0.12)' : '1px solid transparent',
+        borderBottom: scrolled || menuOpen ? '1px solid rgba(232,184,91,0.12)' : '1px solid transparent',
         transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
       }}
     >
@@ -89,20 +89,20 @@ export default function TopNav() {
           to="/"
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: '1.15rem',
             letterSpacing: '0.04em',
             textDecoration: 'none',
             fontWeight: 500,
           }}
         >
-          Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
+          Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
         </Link>
 
         {/* Desktop nav */}
         <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.65rem, 1.8vw, 1.5rem)' }} className="tamu-desktop-nav">
           {navLinks.map(({ key, to }) => {
-            const active = location.pathname === to;
+            const active = location.pathname === to || (to !== '/' && location.pathname.startsWith(to + '/'));
             return (
               <Link
                 key={key}
@@ -110,14 +110,14 @@ export default function TopNav() {
                 className="tamu-nav-link"
                 aria-current={active ? 'page' : undefined}
                 style={{
-                  color: active ? '#D4A12A' : 'rgba(245,239,224,0.78)',
+                  color: active ? '#e8b85b' : 'rgba(243,234,216,0.78)',
                   fontSize: '0.68rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
                   fontWeight: 500,
                   whiteSpace: 'nowrap',
-                  borderBottom: active ? '1px solid rgba(212,161,42,0.5)' : '1px solid transparent',
+                  borderBottom: active ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
                   paddingBottom: '2px',
                 }}
               >
@@ -131,7 +131,7 @@ export default function TopNav() {
               onClick={handleSignOut}
               className="tamu-nav-link"
               style={{
-                color: 'rgba(245,239,224,0.78)',
+                color: 'rgba(243,234,216,0.78)',
                 fontSize: '0.68rem',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
@@ -154,7 +154,7 @@ export default function TopNav() {
                 to="/login"
                 className="tamu-nav-link"
                 style={{
-                  color: 'rgba(245,239,224,0.78)',
+                  color: 'rgba(243,234,216,0.78)',
                   fontSize: '0.68rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
@@ -168,15 +168,15 @@ export default function TopNav() {
               <Link
                 to="/register"
                 style={{
-                  color: '#1A130E',
-                  backgroundColor: '#D4A12A',
+                  color: '#24150f',
+                  backgroundColor: '#e8b85b',
                   fontSize: '0.68rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
                   fontWeight: 500,
                   whiteSpace: 'nowrap',
-                  border: '1px solid #D4A12A',
+                  border: '1px solid #e8b85b',
                   borderRadius: '2px',
                   padding: '0.35rem 0.85rem',
                 }}
@@ -219,7 +219,7 @@ export default function TopNav() {
                 display: 'block',
                 width: '22px',
                 height: '1.5px',
-                backgroundColor: '#D4A12A',
+                backgroundColor: '#e8b85b',
                 borderRadius: '2px',
                 transition: 'transform 0.25s ease, opacity 0.25s ease',
                 transform: menuOpen
@@ -242,12 +242,12 @@ export default function TopNav() {
           display: menuOpen ? 'flex' : 'none',
           flexDirection: 'column',
           padding: '0.5rem clamp(1.25rem, 5vw, 3.5rem) 1.5rem',
-          borderTop: '1px solid rgba(212,161,42,0.1)',
+          borderTop: '1px solid rgba(232,184,91,0.1)',
           gap: '0',
         }}
       >
         {navLinks.map(({ key, to }) => {
-          const active = location.pathname === to;
+          const active = location.pathname === to || (to !== '/' && location.pathname.startsWith(to + '/'));
           return (
             <Link
               key={key}
@@ -255,14 +255,14 @@ export default function TopNav() {
               className="tamu-nav-link"
               aria-current={active ? 'page' : undefined}
               style={{
-                color: active ? '#D4A12A' : 'rgba(245,239,224,0.82)',
+                color: active ? '#e8b85b' : 'rgba(243,234,216,0.82)',
                 fontSize: '0.8rem',
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 fontWeight: 500,
                 padding: '0.85rem 0',
-                borderBottom: '1px solid rgba(212,161,42,0.07)',
+                borderBottom: '1px solid rgba(232,184,91,0.07)',
                 display: 'block',
               }}
             >
@@ -276,13 +276,13 @@ export default function TopNav() {
             onClick={handleSignOut}
             className="tamu-nav-link"
             style={{
-              color: 'rgba(245,239,224,0.82)',
+              color: 'rgba(243,234,216,0.82)',
               fontSize: '0.8rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               fontWeight: 500,
               padding: '0.85rem 0',
-              borderBottom: '1px solid rgba(212,161,42,0.07)',
+              borderBottom: '1px solid rgba(232,184,91,0.07)',
               display: 'block',
               width: '100%',
               textAlign: 'left',
@@ -290,7 +290,7 @@ export default function TopNav() {
               border: 'none',
               borderBottomWidth: '1px',
               borderBottomStyle: 'solid',
-              borderBottomColor: 'rgba(212,161,42,0.07)',
+              borderBottomColor: 'rgba(232,184,91,0.07)',
               fontFamily: "'DM Sans', sans-serif",
               cursor: 'pointer',
             }}
@@ -303,14 +303,14 @@ export default function TopNav() {
               to="/login"
               className="tamu-nav-link"
               style={{
-                color: 'rgba(245,239,224,0.82)',
+                color: 'rgba(243,234,216,0.82)',
                 fontSize: '0.8rem',
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 fontWeight: 500,
                 padding: '0.85rem 0',
-                borderBottom: '1px solid rgba(212,161,42,0.07)',
+                borderBottom: '1px solid rgba(232,184,91,0.07)',
                 display: 'block',
               }}
             >
@@ -320,7 +320,7 @@ export default function TopNav() {
               to="/register"
               className="tamu-nav-link"
               style={{
-                color: '#D4A12A',
+                color: '#e8b85b',
                 fontSize: '0.8rem',
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
@@ -347,7 +347,7 @@ export default function TopNav() {
           #tamu-mobile-menu { display: none !important; }
         }
         .tamu-mobile-menu-btn:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 4px;
           border-radius: 2px;
         }

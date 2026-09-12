@@ -5,6 +5,7 @@ import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import PageMeta from '@/components/seo/PageMeta';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -157,7 +158,7 @@ function VideoPlayer({ lesson, c }) {
   return (
     <div style={{ width: '100%' }}>
       {/* 16:9 responsive iframe wrapper */}
-      <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(212,161,42,0.18)' }}>
+      <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)' }}>
         <iframe
           key={lesson.videoId}
           src={`https://www.youtube.com/embed/${lesson.videoId}`}
@@ -172,28 +173,28 @@ function VideoPlayer({ lesson, c }) {
       {/* Active video info */}
       <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem' }}>
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.3)', borderRadius: '999px', padding: '0.22rem 0.7rem' }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(232,184,91,0.3)', borderRadius: '999px', padding: '0.22rem 0.7rem' }}>
             {lesson.label}
           </span>
-          <span className="font-body" style={{ color: 'rgba(212,161,42,0.65)', fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 400 }}>
+          <span className="font-body" style={{ color: 'rgba(232,184,91,0.65)', fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 400 }}>
             {lesson.category}
           </span>
         </div>
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.5vw, 1.55rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.5vw, 1.55rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
           {lesson.title}
         </h2>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
           {lesson.description}
         </p>
 
         {lesson.discussionQuestions?.length > 0 && (
           <div style={{ marginTop: '0.5rem' }}>
-            <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
+            <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
               {c.reflectionQuestions}
             </p>
             <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
               {lesson.discussionQuestions.map((q, i) => (
-                <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.87rem', lineHeight: 1.65, fontWeight: 300 }}>
+                <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.87rem', lineHeight: 1.65, fontWeight: 300 }}>
                   {q}
                 </li>
               ))}
@@ -206,9 +207,9 @@ function VideoPlayer({ lesson, c }) {
           target="_blank"
           rel="noopener noreferrer"
           className="font-body"
-          style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(245,239,224,0.45)', fontSize: '0.72rem', letterSpacing: '0.1em', textDecoration: 'none', marginTop: '0.25rem', transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(245,239,224,0.45)'}
+          style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(243,234,216,0.45)', fontSize: '0.72rem', letterSpacing: '0.1em', textDecoration: 'none', marginTop: '0.25rem', transition: 'color 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.45)'}
         >
           <ExternalLink size={12} />
           {c.watchOnYouTube}
@@ -233,16 +234,16 @@ function LessonCard({ lesson, isActive, onSelect }) {
         width: '100%',
         textAlign: 'left',
         background: 'none',
-        border: `1px solid ${isActive ? 'rgba(212,161,42,0.55)' : 'rgba(212,161,42,0.14)'}`,
+        border: `1px solid ${isActive ? 'rgba(232,184,91,0.55)' : 'rgba(232,184,91,0.14)'}`,
         borderRadius: '4px',
         padding: '0.75rem',
         cursor: 'pointer',
-        backgroundColor: isActive ? 'rgba(212,161,42,0.06)' : 'rgba(245,239,224,0.015)',
+        backgroundColor: isActive ? 'rgba(232,184,91,0.06)' : 'rgba(243,234,216,0.015)',
         transition: 'border-color 0.2s, background-color 0.2s',
         outline: 'none',
       }}
-      onFocus={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(212,161,42,0.35)'; }}
-      onBlur={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(212,161,42,0.14)'; }}
+      onFocus={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(232,184,91,0.35)'; }}
+      onBlur={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(232,184,91,0.14)'; }}
     >
       {/* Thumbnail */}
       <div style={{ flexShrink: 0, width: '72px', aspectRatio: '16/9', borderRadius: '3px', overflow: 'hidden', backgroundColor: '#12100C', position: 'relative' }}>
@@ -250,23 +251,23 @@ function LessonCard({ lesson, isActive, onSelect }) {
           <img src={lesson.thumbnail} alt="" aria-hidden="true" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', opacity: isActive ? 1 : 0.7 }} />
         )}
         {isActive && (
-          <div style={{ position: 'absolute', inset: 0, border: '2px solid #D4A12A', borderRadius: '3px' }} />
+          <div style={{ position: 'absolute', inset: 0, border: '2px solid #e8b85b', borderRadius: '3px' }} />
         )}
       </div>
 
       {/* Text */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <span style={{ color: isActive ? '#D4A12A' : 'rgba(212,161,42,0.6)', fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>
+        <span style={{ color: isActive ? '#e8b85b' : 'rgba(232,184,91,0.6)', fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.2rem' }}>
           {lesson.label}
         </span>
-        <span className="font-heading" style={{ color: isActive ? '#F5EFE0' : 'rgba(245,239,224,0.75)', fontSize: '0.88rem', fontWeight: 400, lineHeight: 1.3, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span className="font-heading" style={{ color: isActive ? '#f8f0df' : 'rgba(243,234,216,0.75)', fontSize: '0.88rem', fontWeight: 400, lineHeight: 1.3, display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {lesson.title}
         </span>
       </div>
 
       {/* Active indicator */}
       {isActive && (
-        <div style={{ flexShrink: 0, width: '3px', height: '32px', backgroundColor: '#D4A12A', borderRadius: '2px' }} aria-hidden="true" />
+        <div style={{ flexShrink: 0, width: '3px', height: '32px', backgroundColor: '#e8b85b', borderRadius: '2px' }} aria-hidden="true" />
       )}
     </button>
   );
@@ -301,6 +302,8 @@ export default function Videos() {
       />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'First Lessons' }]} />
+
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
@@ -313,7 +316,7 @@ export default function Videos() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.45 }}
         className="font-body"
-        style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '1.25rem' }}
+        style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '1.25rem' }}
       >
         {c.introP1}
       </motion.p>
@@ -323,7 +326,7 @@ export default function Videos() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.55 }}
         className="font-body"
-        style={{ color: 'rgba(245,239,224,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem', fontStyle: 'italic' }}
+        style={{ color: 'rgba(243,234,216,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem', fontStyle: 'italic' }}
       >
         {c.introP2}
       </motion.p>
@@ -354,7 +357,7 @@ export default function Videos() {
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.55, ease: 'easeOut', delay: 0.1 }}
           >
-            <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
+            <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
               {c.allVideosLabel}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }} role="list" aria-label="Lesson selector">
@@ -374,7 +377,7 @@ export default function Videos() {
 
       {/* ── Browse by Topic ───────────────────────────────────────────────── */}
       <PageSection id="topics" eyebrow={c.topicsEyebrow} heading={c.topicsHeading}>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '1.75rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '1.75rem' }}>
           {c.topicsIntro}
         </p>
 
@@ -392,10 +395,10 @@ export default function Videos() {
               onClick={() => setActiveCategory(cat)}
               className="font-body"
               style={{
-                background: activeCategory === cat ? 'rgba(212,161,42,0.06)' : 'transparent',
-                border: `1px solid ${activeCategory === cat ? 'rgba(212,161,42,0.6)' : 'rgba(212,161,42,0.18)'}`,
+                background: activeCategory === cat ? 'rgba(232,184,91,0.06)' : 'transparent',
+                border: `1px solid ${activeCategory === cat ? 'rgba(232,184,91,0.6)' : 'rgba(232,184,91,0.18)'}`,
                 borderRadius: '2px',
-                color: activeCategory === cat ? '#D4A12A' : 'rgba(245,239,224,0.55)',
+                color: activeCategory === cat ? '#e8b85b' : 'rgba(243,234,216,0.55)',
                 fontSize: '0.72rem',
                 letterSpacing: '0.12em',
                 padding: '0.4rem 0.85rem',
@@ -410,7 +413,7 @@ export default function Videos() {
         </div>
 
         {filteredLessons.length === 0 ? (
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.4)', fontSize: '0.9rem', fontWeight: 300, fontStyle: 'italic' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.9rem', fontWeight: 300, fontStyle: 'italic' }}>
             {c.noLessonsText}
           </p>
         ) : (
@@ -426,12 +429,12 @@ export default function Videos() {
                   flexDirection: 'column',
                   textAlign: 'left',
                   background: 'none',
-                  border: `1px solid ${activeLesson.id === lesson.id ? 'rgba(212,161,42,0.5)' : 'rgba(212,161,42,0.16)'}`,
+                  border: `1px solid ${activeLesson.id === lesson.id ? 'rgba(232,184,91,0.5)' : 'rgba(232,184,91,0.16)'}`,
                   borderRadius: '4px',
                   overflow: 'hidden',
                   cursor: 'pointer',
                   padding: 0,
-                  backgroundColor: activeLesson.id === lesson.id ? 'rgba(212,161,42,0.05)' : 'rgba(245,239,224,0.02)',
+                  backgroundColor: activeLesson.id === lesson.id ? 'rgba(232,184,91,0.05)' : 'rgba(243,234,216,0.02)',
                 }}
               >
                 <div style={{ aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }}>
@@ -440,10 +443,10 @@ export default function Videos() {
                   )}
                 </div>
                 <div style={{ padding: '0.85rem 1rem' }}>
-                  <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>
+                  <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>
                     {lesson.label} · {lesson.category}
                   </span>
-                  <span className="font-heading" style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 400, lineHeight: 1.3 }}>
+                  <span className="font-heading" style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 400, lineHeight: 1.3 }}>
                     {lesson.title}
                   </span>
                 </div>
@@ -462,30 +465,30 @@ export default function Videos() {
         style={{
           marginBottom: '2rem',
           padding: '2.5rem',
-          border: '1px solid rgba(212,161,42,0.22)',
+          border: '1px solid rgba(232,184,91,0.22)',
           borderRadius: '4px',
-          backgroundColor: 'rgba(212,161,42,0.025)',
+          backgroundColor: 'rgba(232,184,91,0.025)',
           textAlign: 'center',
         }}
       >
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1rem' }}>
           {c.ctaHeading}
         </h2>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '520px', margin: '0 auto 1.75rem' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.97rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '520px', margin: '0 auto 1.75rem' }}>
           {c.ctaBody}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
           <Link
             to="/resources"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             {c.ctaResources}
           </Link>
           <Link
             to="/courses"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             {c.ctaCourses}
           </Link>

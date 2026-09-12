@@ -3,26 +3,26 @@ import ReactMarkdown from 'react-markdown';
 import { ChevronDown, ChevronUp, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
 const USER_BUBBLE = {
-  background: 'rgba(212,161,42,0.15)',
-  border: '1px solid rgba(212,161,42,0.3)',
+  background: 'rgba(232,184,91,0.15)',
+  border: '1px solid rgba(232,184,91,0.3)',
   borderRadius: '12px 12px 4px 12px',
   padding: '0.7rem 1rem',
-  color: '#F5EFE0',
+  color: '#f8f0df',
   maxWidth: '85%',
 };
 
 const ASSISTANT_BUBBLE = {
-  background: 'rgba(245,239,224,0.05)',
-  border: '1px solid rgba(245,239,224,0.12)',
+  background: 'rgba(243,234,216,0.05)',
+  border: '1px solid rgba(243,234,216,0.12)',
   borderRadius: '12px 12px 12px 4px',
   padding: '0.7rem 1rem',
-  color: '#F5EFE0',
+  color: '#f8f0df',
   maxWidth: '85%',
 };
 
 function statusInfo(status, results) {
   if (status === 'pending' || status === 'running' || status === 'in_progress') {
-    return { icon: <Loader2 size={13} className="animate-spin" style={{ color: '#D4A12A' }} />, text: 'Working…', ok: null };
+    return { icon: <Loader2 size={13} className="animate-spin" style={{ color: '#e8b85b' }} />, text: 'Working…', ok: null };
   }
   if (status === 'failed' || status === 'error') {
     return { icon: <XCircle size={13} style={{ color: '#E8826A' }} />, text: 'Failed', ok: false };
@@ -51,7 +51,7 @@ function ToolCallDisplay({ toolCall }) {
 
   if (hide) {
     return (
-      <div className="mt-1.5 text-xs flex items-center gap-1.5" style={{ color: 'rgba(245,239,224,0.55)' }}>
+      <div className="mt-1.5 text-xs flex items-center gap-1.5" style={{ color: 'rgba(243,234,216,0.55)' }}>
         {status.icon}
         <span>{status.text === 'Working…' ? (toolCall.display_projection?.active_label || 'Working…') : status.ok === false ? (toolCall.display_projection?.error_label || 'Failed') : (toolCall.display_projection?.label || label)}</span>
       </div>
@@ -59,7 +59,7 @@ function ToolCallDisplay({ toolCall }) {
   }
 
   return (
-    <div className="mt-1.5 text-xs" style={{ color: 'rgba(245,239,224,0.6)' }}>
+    <div className="mt-1.5 text-xs" style={{ color: 'rgba(243,234,216,0.6)' }}>
       <button onClick={() => setExpanded(!expanded)} className="flex items-center gap-1.5 hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
         {status.icon}
         <span>{label} — {status.text}</span>
@@ -69,13 +69,13 @@ function ToolCallDisplay({ toolCall }) {
         <div className="mt-1.5 space-y-1.5">
           {args && (
             <div>
-              <div style={{ color: 'rgba(245,239,224,0.4)', marginBottom: '0.2rem' }}>Parameters:</div>
+              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>Parameters:</div>
               <pre className="whitespace-pre-wrap break-words" style={{ background: 'rgba(0,0,0,0.25)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.7rem' }}>{String(args)}</pre>
             </div>
           )}
           {results && (
             <div>
-              <div style={{ color: 'rgba(245,239,224,0.4)', marginBottom: '0.2rem' }}>Result:</div>
+              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>Result:</div>
               <pre className="whitespace-pre-wrap break-words" style={{ background: 'rgba(0,0,0,0.25)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.7rem' }}>{String(results)}</pre>
             </div>
           )}

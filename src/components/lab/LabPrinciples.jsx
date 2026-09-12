@@ -23,10 +23,10 @@ export default function LabPrinciples() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-30px' }}
           transition={{ duration: 0.4, ease: 'easeOut', delay: i * 0.05 }}
-          style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '1.1rem 1.25rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+          style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '1.1rem 1.25rem', border: '1px solid rgba(232,184,91,0.14)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}
         >
-          <span aria-hidden="true" style={{ color: '#D4A12A', fontSize: '0.8rem', marginTop: '0.15rem', flexShrink: 0 }}>◆</span>
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.8)', fontSize: '0.9rem', lineHeight: 1.6, fontWeight: 300 }}>{p}</span>
+          <span aria-hidden="true" style={{ color: '#e8b85b', fontSize: '0.8rem', marginTop: '0.15rem', flexShrink: 0 }}>◆</span>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.8)', fontSize: '0.9rem', lineHeight: 1.6, fontWeight: 300 }}>{p}</span>
         </motion.div>
       ))}
     </div>

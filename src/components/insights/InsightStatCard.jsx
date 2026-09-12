@@ -2,9 +2,9 @@ import React from 'react';
 
 const cardStyle = {
   padding: '1.5rem 1.25rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.02)',
+  backgroundColor: 'rgba(243,234,216,0.02)',
   textAlign: 'center',
 };
 
@@ -12,7 +12,7 @@ export default function InsightStatCard({ value, label }) {
   return (
     <div style={cardStyle}>
       <div style={{
-        color: '#D4A12A',
+        color: '#e8b85b',
         fontSize: 'clamp(1.8rem, 4vw, 2.4rem)',
         fontFamily: "'Cormorant Garamond', serif",
         fontWeight: 400,
@@ -22,7 +22,7 @@ export default function InsightStatCard({ value, label }) {
         {value}
       </div>
       <div style={{
-        color: 'rgba(245,239,224,0.6)',
+        color: 'rgba(243,234,216,0.6)',
         fontSize: '0.68rem',
         letterSpacing: '0.1em',
         textTransform: 'uppercase',

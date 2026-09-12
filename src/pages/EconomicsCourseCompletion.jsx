@@ -11,22 +11,22 @@ import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-const eyebrowStyle = { color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
 
 const moduleLinkStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#D4A12A', fontSize: '0.78rem', letterSpacing: '0.04em',
+  color: '#e8b85b', fontSize: '0.78rem', letterSpacing: '0.04em',
   textDecoration: 'none', fontWeight: 500,
-  border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem',
+  border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem',
   transition: 'color 0.25s ease, borderColor 0.25s ease',
 };
 
 const completionButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-  color: '#1A130E', fontSize: '0.82rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+  color: '#24150f', fontSize: '0.82rem', letterSpacing: '0.06em', textTransform: 'uppercase',
   fontWeight: 600, textDecoration: 'none', border: 'none', borderRadius: '2px',
-  padding: '0.85rem 1.75rem', backgroundColor: '#D4A12A', cursor: 'pointer',
+  padding: '0.85rem 1.75rem', backgroundColor: '#e8b85b', cursor: 'pointer',
   transition: 'background-color 0.25s ease',
 };
 
@@ -117,7 +117,7 @@ export default function EconomicsCourseCompletion() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
           <StatusBadge label={c.courseCompletion} />
         </div>
-        <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
           {c.heading}
         </h1>
         <p className="font-body" style={{ ...bodyText, maxWidth: '640px', marginBottom: '1.5rem' }}>
@@ -127,14 +127,14 @@ export default function EconomicsCourseCompletion() {
 
       {state.status === 'loading' && (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(212,161,42,0.2)', borderTopColor: '#D4A12A', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
           <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{c.loadingProgress}</p>
         </div>
       )}
 
       {state.status === 'error' && (
         <PageSection eyebrow={c.errorEyebrow} heading={c.errorHeading}>
-          <p className="font-body" style={{ ...bodyText, color: 'rgba(245,239,224,0.6)' }}>
+          <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)' }}>
             {c.errorMsg}
           </p>
           <Link to={coursePath} className="font-body" style={{ ...moduleLinkStyle, marginTop: '1.5rem', display: 'inline-flex' }}>
@@ -153,13 +153,13 @@ export default function EconomicsCourseCompletion() {
               <div style={{ marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
                   <span className="font-body" style={{ ...eyebrowStyle }}>{c.modulesCompleted}</span>
-                  <span className="font-body" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 500 }}>
+                  <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 500 }}>
                     {tpl(c.ofTotal, { count: completedCount, total: totalModules })}
                   </span>
                 </div>
                 <div role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100} aria-label="Course completion progress"
-                  style={{ width: '100%', height: '6px', backgroundColor: 'rgba(245,239,224,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-                  <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#D4A12A', borderRadius: '3px', transition: 'width 0.6s ease' }} />
+                  style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
                 </div>
               </div>
               <p className="font-body" style={{ ...bodyText, margin: 0 }}>
@@ -173,25 +173,25 @@ export default function EconomicsCourseCompletion() {
                   <li key={m.route} style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap',
                     padding: '1rem 1.25rem',
-                    border: `1px solid ${m.completed ? 'rgba(212,161,42,0.3)' : 'rgba(245,239,224,0.08)'}`,
+                    border: `1px solid ${m.completed ? 'rgba(232,184,91,0.3)' : 'rgba(243,234,216,0.08)'}`,
                     borderRadius: '4px',
-                    backgroundColor: m.completed ? 'rgba(212,161,42,0.04)' : 'rgba(245,239,224,0.015)',
+                    backgroundColor: m.completed ? 'rgba(232,184,91,0.04)' : 'rgba(243,234,216,0.015)',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: '1 1 auto', minWidth: '200px' }}>
                       <span aria-hidden="true" style={{
                         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                         width: '1.5rem', height: '1.5rem', borderRadius: '50%', fontSize: '0.7rem', fontWeight: 600,
-                        color: m.completed ? '#1A130E' : 'rgba(245,239,224,0.5)',
-                        backgroundColor: m.completed ? '#D4A12A' : 'rgba(245,239,224,0.06)',
-                        border: m.completed ? 'none' : '1px solid rgba(245,239,224,0.15)', flexShrink: 0,
+                        color: m.completed ? '#24150f' : 'rgba(243,234,216,0.5)',
+                        backgroundColor: m.completed ? '#e8b85b' : 'rgba(243,234,216,0.06)',
+                        border: m.completed ? 'none' : '1px solid rgba(243,234,216,0.15)', flexShrink: 0,
                       }}>
                         {m.completed ? '\u2713' : ''}
                       </span>
                       <div>
-                        <p className="font-body" style={{ color: '#F5EFE0', fontSize: '0.92rem', fontWeight: 500, margin: 0 }}>
+                        <p className="font-body" style={{ color: '#f8f0df', fontSize: '0.92rem', fontWeight: 500, margin: 0 }}>
                           {m.number}: {m.title}
                         </p>
-                        <p className="font-body" style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.78rem', margin: '0.3rem 0 0' }}>
+                        <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.78rem', margin: '0.3rem 0 0' }}>
                           {m.completed ? `${c.completed}${m.completedAt ? ' ' + new Date(m.completedAt).toLocaleDateString() : ''}` : c.notYetCompleted}
                         </p>
                       </div>
@@ -202,7 +202,7 @@ export default function EconomicsCourseCompletion() {
                       </Link>
                     )}
                     {m.completed && (
-                      <Link to={`${coursePath}/${m.route}`} className="font-body tamu-nav-link" style={{ ...moduleLinkStyle, borderColor: 'rgba(212,161,42,0.2)', color: 'rgba(212,161,42,0.6)' }}>
+                      <Link to={`${coursePath}/${m.route}`} className="font-body tamu-nav-link" style={{ ...moduleLinkStyle, borderColor: 'rgba(232,184,91,0.2)', color: 'rgba(232,184,91,0.6)' }}>
                         {c.review} &rarr;
                       </Link>
                     )}
@@ -217,15 +217,15 @@ export default function EconomicsCourseCompletion() {
             </PageSection>
 
             <PageSection eyebrow={c.privacyEyebrow} heading={c.privacyHeading}>
-              <div style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
+              <div style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
                 <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem' }}>{c.certInfo}</p>
-                <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(245,239,224,0.62)' }}>{c.certPrivacy}</p>
+                <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.62)' }}>{c.certPrivacy}</p>
               </div>
             </PageSection>
 
             <PageSection eyebrow={c.certEyebrow} heading={c.certHeading}>
               {certificateEligible ? (
-                <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.04)', textAlign: 'center' }}>
+                <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', textAlign: 'center' }}>
                   <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
                     {tpl(c.eligibleMsg, { courseTitle: course.title })}
                   </p>
@@ -234,7 +234,7 @@ export default function EconomicsCourseCompletion() {
                   </Link>
                 </div>
               ) : (
-                <div style={{ padding: '2rem 2.25rem', border: '1px dashed rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}>
+                <div style={{ padding: '2rem 2.25rem', border: '1px dashed rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
                   <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>{c.notEligibleMsg}</p>
                   {incompleteModules && incompleteModules.length > 0 && (
                     <div>
@@ -252,7 +252,7 @@ export default function EconomicsCourseCompletion() {
               )}
             </PageSection>
 
-            <nav aria-label="Course navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(212,161,42,0.12)' }}>
+            <nav aria-label="Course navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link to={`${coursePath}/module-6`} className="font-body tamu-nav-link" style={moduleLinkStyle}>
                   &larr; {c.backToModule}

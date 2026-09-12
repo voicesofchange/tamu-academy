@@ -15,9 +15,9 @@ export default function VideoCard({ lesson, index, onSelect }) {
       aria-label={`Play lesson: ${lesson.title}`}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect(lesson)}
       style={{
-        border: '1px solid rgba(212,161,42,0.16)',
+        border: '1px solid rgba(232,184,91,0.16)',
         borderRadius: '4px',
-        backgroundColor: 'rgba(245,239,224,0.02)',
+        backgroundColor: 'rgba(243,234,216,0.02)',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -37,7 +37,7 @@ export default function VideoCard({ lesson, index, onSelect }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: `linear-gradient(135deg, #1A130E 0%, #241B12 60%, #1A130E 100%)`,
+          background: `linear-gradient(135deg, #24150f 0%, #241B12 60%, #24150f 100%)`,
         }}
       >
         {lesson.thumbnail ? (
@@ -49,10 +49,10 @@ export default function VideoCard({ lesson, index, onSelect }) {
           />
         ) : (
           <svg width="36" height="36" viewBox="0 0 48 48" fill="none" aria-hidden="true" style={{ opacity: 0.3 }}>
-            <circle cx="24" cy="24" r="22" stroke="#D4A12A" strokeWidth="1" />
-            <circle cx="24" cy="24" r="14" stroke="#D4A12A" strokeWidth="1" />
-            <line x1="24" y1="2" x2="24" y2="46" stroke="#D4A12A" strokeWidth="0.8" strokeDasharray="3 4" />
-            <line x1="2" y1="24" x2="46" y2="24" stroke="#D4A12A" strokeWidth="0.8" strokeDasharray="3 4" />
+            <circle cx="24" cy="24" r="22" stroke="#e8b85b" strokeWidth="1" />
+            <circle cx="24" cy="24" r="14" stroke="#e8b85b" strokeWidth="1" />
+            <line x1="24" y1="2" x2="24" y2="46" stroke="#e8b85b" strokeWidth="0.8" strokeDasharray="3 4" />
+            <line x1="2" y1="24" x2="46" y2="24" stroke="#e8b85b" strokeWidth="0.8" strokeDasharray="3 4" />
           </svg>
         )}
         {/* Play overlay */}
@@ -74,13 +74,13 @@ export default function VideoCard({ lesson, index, onSelect }) {
               width: '44px',
               height: '44px',
               borderRadius: '50%',
-              backgroundColor: '#D4A12A',
+              backgroundColor: '#e8b85b',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Play size={18} fill="#1A130E" color="#1A130E" style={{ marginLeft: '2px' }} />
+            <Play size={18} fill="#24150f" color="#24150f" style={{ marginLeft: '2px' }} />
           </div>
         </div>
         {/* Duration badge */}
@@ -92,7 +92,7 @@ export default function VideoCard({ lesson, index, onSelect }) {
               bottom: '0.5rem',
               right: '0.5rem',
               backgroundColor: 'rgba(26,19,14,0.82)',
-              color: 'rgba(245,239,224,0.85)',
+              color: 'rgba(243,234,216,0.85)',
               fontSize: '0.7rem',
               padding: '0.2rem 0.5rem',
               borderRadius: '2px',
@@ -110,9 +110,9 @@ export default function VideoCard({ lesson, index, onSelect }) {
               position: 'absolute',
               top: '0.5rem',
               left: '0.5rem',
-              backgroundColor: 'rgba(212,161,42,0.12)',
-              color: '#D4A12A',
-              border: '1px solid rgba(212,161,42,0.35)',
+              backgroundColor: 'rgba(232,184,91,0.12)',
+              color: '#e8b85b',
+              border: '1px solid rgba(232,184,91,0.35)',
               fontSize: '0.6rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
@@ -129,18 +129,18 @@ export default function VideoCard({ lesson, index, onSelect }) {
       <div style={{ padding: '1.1rem 1.3rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           {lesson.episode && (
-            <span className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 400 }}>
+            <span className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.6rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 400 }}>
               Ep {lesson.episode}
             </span>
           )}
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>
             {lesson.category}
           </span>
         </div>
-        <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
+        <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
           {lesson.title}
         </h3>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.85rem', lineHeight: 1.65, fontWeight: 300, margin: 0, flexGrow: 1 }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', lineHeight: 1.65, fontWeight: 300, margin: 0, flexGrow: 1 }}>
           {lesson.description}
         </p>
       </div>

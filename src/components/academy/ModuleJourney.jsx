@@ -299,7 +299,7 @@ export default function ModuleJourney() {
   align-items: center;
   padding: clamp(2rem, 5vw, 4rem) 0;
   overflow: hidden;
-  border-bottom: 1px solid rgba(212,161,42,0.1);
+  border-bottom: 1px solid rgba(232,184,91,0.1);
   /* Variable defaults — content remains fully visible before JS writes
      per-frame values, so the page is readable even if JS is disabled. */
   --module-opacity: 1;
@@ -315,7 +315,7 @@ export default function ModuleJourney() {
   will-change: transform, opacity;
 }
 .academy-module-row:nth-child(even) {
-  background: linear-gradient(180deg, rgba(245,239,224,0.012) 0%, rgba(245,239,224,0.03) 50%, rgba(245,239,224,0.012) 100%);
+  background: linear-gradient(180deg, rgba(243,234,216,0.012) 0%, rgba(243,234,216,0.03) 50%, rgba(243,234,216,0.012) 100%);
 }
 
 /* ---------- Layer 1 — oversized decorative number ---------- */
@@ -338,7 +338,7 @@ export default function ModuleJourney() {
 }
 .academy-module-number {
   font-size: clamp(11rem, 28vw, 22rem);
-  color: #D4A12A;
+  color: #e8b85b;
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 0.85;
@@ -347,7 +347,7 @@ export default function ModuleJourney() {
   opacity: var(--number-opacity, 0.1);
   transform: translate3d(0, var(--number-ty, 0px), 0) scale(var(--number-scale, 1));
 }
-.academy-module-right .academy-module-number { color: #F5EFE0; }
+.academy-module-right .academy-module-number { color: #f8f0df; }
 
 /* ---------- Layer 2 — accent gold rule that grows with progress ---------- */
 .academy-module-accent-line {
@@ -356,7 +356,7 @@ export default function ModuleJourney() {
   right: 0;
   top: 50%;
   height: 2px;
-  background: linear-gradient(90deg, rgba(212,161,42,0) 0%, rgba(212,161,42,0.65) 50%, rgba(212,161,42,0) 100%);
+  background: linear-gradient(90deg, rgba(232,184,91,0) 0%, rgba(232,184,91,0.65) 50%, rgba(232,184,91,0) 100%);
   transform-origin: left center;
   opacity: var(--accent-opacity, 1);
   transform: scaleX(var(--accent-scalex, 1));
@@ -379,7 +379,7 @@ export default function ModuleJourney() {
 .academy-module-left .academy-module-content { margin-right: auto; }
 .academy-module-right .academy-module-content { margin-left: auto; }
 .academy-module-title {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1.6rem, 3.6vw, 2.3rem);
   font-weight: 400;
   line-height: 1.2;
@@ -388,7 +388,7 @@ export default function ModuleJourney() {
   transition: color 0.3s ease;
 }
 .academy-module-desc {
-  color: rgba(245,239,224,0.78);
+  color: rgba(243,234,216,0.78);
   font-size: clamp(0.98rem, 2vw, 1.1rem);
   line-height: 1.7;
   font-weight: 300;
@@ -428,7 +428,7 @@ export default function ModuleJourney() {
   top: 0.5rem;
   bottom: 0.5rem;
   width: 1px;
-  background: rgba(212,161,42,0.18);
+  background: rgba(232,184,91,0.18);
   transform: translateX(-50%);
 }
 .academy-progress-marker {
@@ -442,27 +442,27 @@ export default function ModuleJourney() {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #1A130E;
-  border: 1px solid rgba(212,161,42,0.4);
+  background: #24150f;
+  border: 1px solid rgba(232,184,91,0.4);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 .academy-progress-label {
   font-size: 0.55rem;
   letter-spacing: 0.16em;
-  color: rgba(245,239,224,0.3);
+  color: rgba(243,234,216,0.3);
   text-transform: uppercase;
   transition: color 0.3s ease;
 }
 .academy-progress-active .academy-progress-dot {
-  background: #D4A12A;
-  border-color: #D4A12A;
+  background: #e8b85b;
+  border-color: #e8b85b;
   transform: scale(1.45);
-  box-shadow: 0 0 0 4px rgba(212,161,42,0.18);
+  box-shadow: 0 0 0 4px rgba(232,184,91,0.18);
 }
-.academy-progress-active .academy-progress-label { color: #D4A12A; }
+.academy-progress-active .academy-progress-label { color: #e8b85b; }
 .academy-progress-passed .academy-progress-dot {
-  background: rgba(212,161,42,0.45);
-  border-color: rgba(212,161,42,0.55);
+  background: rgba(232,184,91,0.45);
+  border-color: rgba(232,184,91,0.55);
 }
 
 /* ---------- Tablet (768–1023) ---------- */

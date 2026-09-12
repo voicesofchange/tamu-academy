@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 
-const accent = '#D4A12A';
+const accent = '#e8b85b';
 const cardStyle = {
   padding: '1.5rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 const labelStyle = {
   color: accent,
@@ -19,7 +19,7 @@ const labelStyle = {
   fontFamily: "'DM Sans', sans-serif",
 };
 const bodyText = {
-  color: 'rgba(245,239,224,0.7)',
+  color: 'rgba(243,234,216,0.7)',
   fontSize: '0.9rem',
   lineHeight: 1.6,
   fontFamily: "'DM Sans', sans-serif",
@@ -33,11 +33,11 @@ const btnBase = {
   padding: '0.7rem 1.4rem',
   borderRadius: '4px',
   cursor: 'pointer',
-  border: '1px solid rgba(212,161,42,0.4)',
+  border: '1px solid rgba(232,184,91,0.4)',
   transition: 'all 0.25s ease',
 };
-const btnPrimary = { ...btnBase, backgroundColor: accent, color: '#1A130E', border: 'none', fontWeight: 500 };
-const btnGhost = { ...btnBase, backgroundColor: 'transparent', color: '#F5EFE0' };
+const btnPrimary = { ...btnBase, backgroundColor: accent, color: '#24150f', border: 'none', fontWeight: 500 };
+const btnGhost = { ...btnBase, backgroundColor: 'transparent', color: '#f8f0df' };
 
 export default function FollowUpInquiries() {
   const [preview, setPreview] = useState(null);
@@ -81,7 +81,7 @@ export default function FollowUpInquiries() {
   return (
     <div style={cardStyle}>
       <span style={labelStyle}>Outreach</span>
-      <h3 style={{ color: '#F5EFE0', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: '0 0 0.75rem' }}>
+      <h3 style={{ color: '#f8f0df', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: '1.4rem', margin: '0 0 0.75rem' }}>
         Follow up with contact inquiries
       </h3>
       <p style={{ ...bodyText, marginBottom: '1.25rem', maxWidth: '560px' }}>
@@ -111,7 +111,7 @@ export default function FollowUpInquiries() {
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, maxHeight: '180px', overflowY: 'auto' }}>
             {preview.recipients.map((r, idx) => (
               <li key={idx} style={{ ...bodyText, padding: '0.25rem 0', fontSize: '0.82rem' }}>
-                {r.email} <span style={{ color: 'rgba(245,239,224,0.4)' }}>· {r.inquiry_type}</span>
+                {r.email} <span style={{ color: 'rgba(243,234,216,0.4)' }}>· {r.inquiry_type}</span>
               </li>
             ))}
           </ul>
@@ -119,7 +119,7 @@ export default function FollowUpInquiries() {
       )}
 
       {result && (
-        <div style={{ marginTop: '1.25rem', padding: '0.9rem 1rem', border: '1px solid rgba(212,161,42,0.25)', borderRadius: '4px' }}>
+        <div style={{ marginTop: '1.25rem', padding: '0.9rem 1rem', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '4px' }}>
           <p style={{ ...bodyText, margin: 0 }}>
             <span style={{ color: accent, fontWeight: 500 }}>{result.sent}</span> sent
             {result.failed > 0 && (
@@ -130,7 +130,7 @@ export default function FollowUpInquiries() {
             .
           </p>
           {result.failed > 0 && result.errors && result.errors.length > 0 && (
-            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(245,239,224,0.5)' }}>
+            <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(243,234,216,0.5)' }}>
               {result.errors.slice(0, 5).map(e => e.email).join(', ')}{result.errors.length > 5 ? '…' : ''}
             </p>
           )}

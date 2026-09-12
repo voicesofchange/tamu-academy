@@ -6,11 +6,11 @@ import { base44 } from '@/api/base44Client';
 
 const inputStyle = {
   width: '100%',
-  background: 'rgba(245,239,224,0.04)',
-  border: '1px solid rgba(212,161,42,0.2)',
+  background: 'rgba(243,234,216,0.04)',
+  border: '1px solid rgba(232,184,91,0.2)',
   borderRadius: '4px',
   padding: '0.75rem 1rem',
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontFamily: "'DM Sans', sans-serif",
   fontSize: '0.9rem',
   outline: 'none',
@@ -19,7 +19,7 @@ const inputStyle = {
 
 const labelStyle = {
   display: 'block',
-  color: 'rgba(245,239,224,0.7)',
+  color: 'rgba(243,234,216,0.7)',
   fontSize: '0.7rem',
   letterSpacing: '0.12em',
   textTransform: 'uppercase',
@@ -29,8 +29,8 @@ const labelStyle = {
 };
 
 const buttonStyle = {
-  background: '#D4A12A',
-  color: '#1A130E',
+  background: '#e8b85b',
+  color: '#24150f',
   border: 'none',
   borderRadius: '4px',
   padding: '0.85rem 2rem',
@@ -95,8 +95,8 @@ export default function LearnerStoryForm() {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', border: '1px solid rgba(212,161,42,0.15)', borderRadius: '4px', background: 'rgba(245,239,224,0.03)' }}>
-        <p style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.95rem', marginBottom: '1.25rem', fontFamily: "'DM Sans', sans-serif" }}>
+      <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', background: 'rgba(243,234,216,0.03)' }}>
+        <p style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.95rem', marginBottom: '1.25rem', fontFamily: "'DM Sans', sans-serif" }}>
           {t('stories.signInPrompt')}
         </p>
         <Link to="/login" style={{ ...buttonStyle, display: 'inline-block', textDecoration: 'none' }}>
@@ -108,8 +108,8 @@ export default function LearnerStoryForm() {
 
   if (status === 'success') {
     return (
-      <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', background: 'rgba(212,161,42,0.06)' }}>
-        <p style={{ color: '#D4A12A', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}>
+      <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', background: 'rgba(232,184,91,0.06)' }}>
+        <p style={{ color: '#e8b85b', fontSize: '1.1rem', marginBottom: '1.5rem', fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic' }}>
           {t('stories.form.success')}
         </p>
         <button onClick={resetForm} style={buttonStyle}>
@@ -162,8 +162,8 @@ export default function LearnerStoryForm() {
             onChange={(e) => update('story_type', e.target.value)}
             style={inputStyle}
           >
-            <option value="story" style={{ background: '#1A130E' }}>{t('stories.form.typeStory')}</option>
-            <option value="review" style={{ background: '#1A130E' }}>{t('stories.form.typeReview')}</option>
+            <option value="story" style={{ background: '#24150f' }}>{t('stories.form.typeStory')}</option>
+            <option value="review" style={{ background: '#24150f' }}>{t('stories.form.typeReview')}</option>
           </select>
         </div>
         <div style={{ flex: '1 1 200px' }}>
@@ -174,11 +174,11 @@ export default function LearnerStoryForm() {
             onChange={(e) => update('course_slug', e.target.value)}
             style={inputStyle}
           >
-            <option value="" style={{ background: '#1A130E' }}>{t('stories.form.selectCourse')}</option>
-            <option value="understanding-african-economies-and-the-global-system" style={{ background: '#1A130E' }}>
+            <option value="" style={{ background: '#24150f' }}>{t('stories.form.selectCourse')}</option>
+            <option value="understanding-african-economies-and-the-global-system" style={{ background: '#24150f' }}>
               {t('stories.courseEconomics')}
             </option>
-            <option value="mental-health-community-and-culture" style={{ background: '#1A130E' }}>
+            <option value="mental-health-community-and-culture" style={{ background: '#24150f' }}>
               {t('stories.courseMentalHealth')}
             </option>
           </select>
@@ -212,7 +212,7 @@ export default function LearnerStoryForm() {
                   border: 'none',
                   cursor: 'pointer',
                   fontSize: '1.8rem',
-                  color: n <= form.rating ? '#D4A12A' : 'rgba(245,239,224,0.25)',
+                  color: n <= form.rating ? '#e8b85b' : 'rgba(243,234,216,0.25)',
                   padding: '0.25rem',
                   lineHeight: 1,
                 }}

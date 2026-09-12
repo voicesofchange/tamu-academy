@@ -48,7 +48,7 @@ export default function LabLearningModel() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0', position: 'relative' }}>
       {/* Vertical connector line */}
-      <div aria-hidden="true" style={{ position: 'absolute', left: '1.45rem', top: '2.5rem', bottom: '2.5rem', width: '1px', background: 'linear-gradient(180deg, transparent, rgba(212,161,42,0.3) 10%, rgba(212,161,42,0.3) 90%, transparent)', pointerEvents: 'none' }} />
+      <div aria-hidden="true" style={{ position: 'absolute', left: '1.45rem', top: '2.5rem', bottom: '2.5rem', width: '1px', background: 'linear-gradient(180deg, transparent, rgba(232,184,91,0.3) 10%, rgba(232,184,91,0.3) 90%, transparent)', pointerEvents: 'none' }} />
       {STAGES.map(({ stage, label, desc }, i) => (
         <motion.div
           key={stage}
@@ -56,18 +56,18 @@ export default function LabLearningModel() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-30px' }}
           transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.07 }}
-          style={{ display: 'flex', gap: '1.5rem', padding: '1.4rem 0', borderBottom: i < STAGES.length - 1 ? '1px solid rgba(212,161,42,0.07)' : 'none', alignItems: 'flex-start' }}
+          style={{ display: 'flex', gap: '1.5rem', padding: '1.4rem 0', borderBottom: i < STAGES.length - 1 ? '1px solid rgba(232,184,91,0.07)' : 'none', alignItems: 'flex-start' }}
         >
           {/* Step indicator */}
-          <div style={{ flexShrink: 0, width: '2.9rem', height: '2.9rem', border: '1px solid rgba(212,161,42,0.35)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(212,161,42,0.06)', position: 'relative', zIndex: 1 }}>
-            <span className="font-heading" style={{ color: '#D4A12A', fontSize: '0.85rem', fontWeight: 500 }}>{i + 1}</span>
+          <div style={{ flexShrink: 0, width: '2.9rem', height: '2.9rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(232,184,91,0.06)', position: 'relative', zIndex: 1 }}>
+            <span className="font-heading" style={{ color: '#e8b85b', fontSize: '0.85rem', fontWeight: 500 }}>{i + 1}</span>
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
-              <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>{stage}</span>
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.15rem', fontWeight: 400, margin: 0 }}>{label}</h3>
+              <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500 }}>{stage}</span>
+              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 400, margin: 0 }}>{label}</h3>
             </div>
-            <p className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{desc}</p>
+            <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.9rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{desc}</p>
           </div>
         </motion.div>
       ))}

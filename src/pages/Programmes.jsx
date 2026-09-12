@@ -105,7 +105,7 @@ const PATHWAY_COMPONENTS = [
   'Ubuntu and the Public Good',
 ];
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Programmes() {
   const [expanded, setExpanded] = useState(null);
@@ -134,7 +134,7 @@ export default function Programmes() {
         </p>
         <Link
           to="/videos"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
           Watch the First Lessons →
         </Link>
@@ -147,23 +147,23 @@ export default function Programmes() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}
         >
           <div style={{ marginBottom: '1rem' }}>
             <StatusBadge label="Under Development" />
           </div>
-          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
+          <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
             Power, Policy and the Public Good
           </h3>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
             A practical learning pathway helping young people understand how public decisions are made, whose interests they serve, why policies succeed or fail, and how communities can influence change.
           </p>
-          <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
+          <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
             Proposed Components
           </p>
           <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {PATHWAY_COMPONENTS.map((c) => (
-              <li key={c} className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>{c}</li>
+              <li key={c} className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.9rem', lineHeight: 1.7, fontWeight: 300 }}>{c}</li>
             ))}
           </ul>
         </motion.div>
@@ -176,12 +176,12 @@ export default function Programmes() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}
         >
           <div style={{ marginBottom: '1rem' }}>
             <StatusBadge label="Proposed Pilot Programme" />
           </div>
-          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
+          <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
             Ubuntu and the Public Good
           </h3>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
@@ -195,15 +195,15 @@ export default function Programmes() {
               ['Final learner product', 'One-page policy memo'],
               ['Current status', 'Under development — available for partnership discussion'],
             ].map(([label, value]) => (
-              <div key={label} style={{ padding: '1rem 1.25rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
-                <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
-                <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>{value}</span>
+              <div key={label} style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,184,91,0.12)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
+                <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
+                <span className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>{value}</span>
               </div>
             ))}
           </div>
           <Link
             to="/contact?type=partnership&programme=ubuntu-and-the-public-good"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
           >
             Discuss a Pilot Partnership →
           </Link>
@@ -223,10 +223,10 @@ export default function Programmes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.07 }}
-              style={{ padding: '1.4rem 1.6rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+              style={{ padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.14)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}
             >
-              <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.15rem', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>{label}</span>
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>{desc}</p>
+              <span className="font-heading" style={{ color: '#e8b85b', fontSize: '1.15rem', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>{label}</span>
+              <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>{desc}</p>
             </motion.div>
           ))}
         </div>
@@ -247,7 +247,7 @@ export default function Programmes() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-30px' }}
                 transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.04 }}
-                style={{ border: '1px solid rgba(212,161,42,0.16)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', overflow: 'hidden' }}
+                style={{ border: '1px solid rgba(232,184,91,0.16)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)', overflow: 'hidden' }}
               >
                 <button
                   onClick={() => setExpanded(open ? null : i)}
@@ -256,10 +256,10 @@ export default function Programmes() {
                   style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.5rem 1.75rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', textAlign: 'left' }}
                 >
                   <div>
-                    <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.3rem', fontWeight: 400, opacity: 0.5, display: 'block', lineHeight: 1, marginBottom: '0.4rem' }}>{area.number}</span>
-                    <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>{area.title}</h3>
+                    <span className="font-heading" style={{ color: '#e8b85b', fontSize: '1.3rem', fontWeight: 400, opacity: 0.5, display: 'block', lineHeight: 1, marginBottom: '0.4rem' }}>{area.number}</span>
+                    <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>{area.title}</h3>
                   </div>
-                  <span aria-hidden="true" style={{ color: '#D4A12A', fontSize: '1.2rem', marginTop: '0.25rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: open ? 'rotate(45deg)' : 'none' }}>+</span>
+                  <span aria-hidden="true" style={{ color: '#e8b85b', fontSize: '1.2rem', marginTop: '0.25rem', flexShrink: 0, transition: 'transform 0.25s ease', transform: open ? 'rotate(45deg)' : 'none' }}>+</span>
                 </button>
                 <AnimatePresence initial={false}>
                   {open && (
@@ -271,21 +271,21 @@ export default function Programmes() {
                       transition={{ duration: reduceMotion ? 0 : 0.32, ease: 'easeInOut' }}
                       style={{ overflow: 'hidden' }}
                     >
-                      <div style={{ padding: '0 1.75rem 1.75rem', borderTop: '1px solid rgba(212,161,42,0.1)' }}>
+                      <div style={{ padding: '0 1.75rem 1.75rem', borderTop: '1px solid rgba(232,184,91,0.1)' }}>
                         <p className="font-body" style={{ ...bodyText, fontSize: '0.92rem', margin: '1.25rem 0' }}>{area.summary}</p>
-                        <h4 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.6rem' }}>Questions Learners May Examine</h4>
+                        <h4 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.6rem' }}>Questions Learners May Examine</h4>
                         <ul style={{ margin: '0 0 1.25rem', paddingLeft: '1.25rem' }}>
                           {area.questions.map((q) => (
-                            <li key={q} className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, marginBottom: '0.4rem' }}>{q}</li>
+                            <li key={q} className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, marginBottom: '0.4rem' }}>{q}</li>
                           ))}
                         </ul>
-                        <h4 className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.6rem' }}>Skills Learners May Develop</h4>
+                        <h4 className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.6rem' }}>Skills Learners May Develop</h4>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', marginBottom: '1.25rem' }}>
                           {area.skills.map((s) => (
-                            <span key={s} className="font-body" style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.78rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '2px', padding: '0.22rem 0.65rem', fontWeight: 400 }}>{s}</span>
+                            <span key={s} className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.78rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '2px', padding: '0.22rem 0.65rem', fontWeight: 400 }}>{s}</span>
                           ))}
                         </div>
-                        <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, margin: 0 }}>{area.related}</p>
+                        <p className="font-body" style={{ color: 'rgba(243,234,216,0.45)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, margin: 0 }}>{area.related}</p>
                       </div>
                     </motion.div>
                   )}
@@ -306,20 +306,20 @@ export default function Programmes() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '1rem' }}
+          style={{ padding: '2.25rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', marginBottom: '1rem' }}
         >
           <div style={{ marginBottom: '1rem' }}>
             <StatusBadge label="Proposed Initiative" />
           </div>
-          <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.75rem' }}>
+          <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.75rem' }}>
             Tamu Intercultural AI Leadership Lab
           </h3>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.25rem' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.87rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.25rem' }}>
             A proposed six-month learning and dialogue programme that would bring together culturally, linguistically, geographically, and socially diverse young people to examine how artificial intelligence affects identity, trust, language, misinformation, culture, and human relationships. This is a programme concept, not a currently active programme.
           </p>
           <Link
             to="/programmes/intercultural-ai-leadership-lab"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.3)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.3)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
           >
             Read the Full Concept →
           </Link>
@@ -334,13 +334,13 @@ export default function Programmes() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <Link
             to="/contact?type=partnership&programme=ubuntu-and-the-public-good"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             Discuss a Pilot Partnership →
           </Link>
           <Link
             to="/contact"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             Contact Tamu Academy →
           </Link>

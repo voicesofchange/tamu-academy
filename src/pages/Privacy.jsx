@@ -71,7 +71,7 @@ const CONTENT = {
 };
 
 const h1Style = {
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontSize: 'clamp(2rem, 5vw, 3rem)',
   fontWeight: 400,
   lineHeight: 1.2,
@@ -80,7 +80,7 @@ const h1Style = {
 };
 
 const h2Style = {
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontSize: 'clamp(1.18rem, 3vw, 1.5rem)',
   fontWeight: 400,
   lineHeight: 1.3,
@@ -89,7 +89,7 @@ const h2Style = {
 };
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.8)',
+  color: 'rgba(243,234,216,0.8)',
   fontSize: 'clamp(0.92rem, 2vw, 1rem)',
   lineHeight: 1.85,
   fontWeight: 300,
@@ -98,7 +98,7 @@ const bodyText = {
 };
 
 const listText = {
-  color: 'rgba(245,239,224,0.8)',
+  color: 'rgba(243,234,216,0.8)',
   fontSize: 'clamp(0.92rem, 2vw, 1rem)',
   lineHeight: 1.8,
   fontWeight: 300,
@@ -106,7 +106,7 @@ const listText = {
 };
 
 const metaText = {
-  color: 'rgba(245,239,224,0.6)',
+  color: 'rgba(243,234,216,0.6)',
   fontSize: '0.78rem',
   letterSpacing: '0.08em',
   fontWeight: 400,
@@ -114,7 +114,7 @@ const metaText = {
 };
 
 const brandWordmark = {
-  color: '#F5EFE0',
+  color: '#f8f0df',
   fontSize: 'clamp(1.1rem, 2.4vw, 1.4rem)',
   letterSpacing: '0.22em',
   textTransform: 'uppercase',
@@ -134,13 +134,13 @@ const brandAttribution = {
 };
 
 const linkStyle = {
-  color: '#D4A12A',
+  color: '#e8b85b',
   textDecoration: 'underline',
   fontFamily: "'DM Sans', sans-serif",
 };
 
 const footerLinkStyle = {
-  color: 'rgba(212,161,42,0.85)',
+  color: 'rgba(232,184,91,0.85)',
   fontSize: '0.64rem',
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
@@ -155,12 +155,12 @@ export default function Privacy() {
   return (
     <div
       style={{
-        backgroundColor: '#1A130E',
+        backgroundColor: '#24150f',
         minHeight: '100vh',
         width: '100%',
         overflowX: 'hidden',
         fontFamily: "'DM Sans', sans-serif",
-        color: '#F5EFE0',
+        color: '#f8f0df',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -180,7 +180,7 @@ export default function Privacy() {
       >
         <Link to="/" aria-label="Tamu Academy — return to homepage" style={{ textDecoration: 'none' }}>
           <p className="font-heading" style={brandWordmark}>
-            Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
+            Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
           </p>
         </Link>
         <p className="font-body" style={brandAttribution}>
@@ -228,19 +228,19 @@ export default function Privacy() {
             <p className="font-body" style={bodyText}>{c.s2Intro}</p>
             <ul style={{ ...listText, margin: '0 0 1.1rem', paddingLeft: '1.4rem' }}>
               <li style={{ marginBottom: '0.55rem' }}>
-                <strong style={{ color: 'rgba(245,239,224,0.92)', fontWeight: 500 }}>{c.s2Email}</strong> {c.s2EmailDesc}
+                <strong style={{ color: 'rgba(243,234,216,0.92)', fontWeight: 500 }}>{c.s2Email}</strong> {c.s2EmailDesc}
               </li>
               <li style={{ marginBottom: '0.55rem' }}>
-                <strong style={{ color: 'rgba(245,239,224,0.92)', fontWeight: 500 }}>{c.s2Consent}</strong> {c.s2ConsentDesc}
+                <strong style={{ color: 'rgba(243,234,216,0.92)', fontWeight: 500 }}>{c.s2Consent}</strong> {c.s2ConsentDesc}
               </li>
               <li style={{ marginBottom: '0.55rem' }}>
-                <strong style={{ color: 'rgba(245,239,224,0.92)', fontWeight: 500 }}>{c.s2Inquiry}</strong> {c.s2InquiryDesc}
+                <strong style={{ color: 'rgba(243,234,216,0.92)', fontWeight: 500 }}>{c.s2Inquiry}</strong> {c.s2InquiryDesc}
               </li>
               <li style={{ marginBottom: '0.55rem' }}>
-                <strong style={{ color: 'rgba(245,239,224,0.92)', fontWeight: 500 }}>{c.s2Technical}</strong> {c.s2TechnicalDesc}
+                <strong style={{ color: 'rgba(243,234,216,0.92)', fontWeight: 500 }}>{c.s2Technical}</strong> {c.s2TechnicalDesc}
               </li>
               <li style={{ marginBottom: '0.55rem' }}>
-                <strong style={{ color: 'rgba(245,239,224,0.92)', fontWeight: 500 }}>{c.s2Local}</strong> {c.s2LocalDesc}
+                <strong style={{ color: 'rgba(243,234,216,0.92)', fontWeight: 500 }}>{c.s2Local}</strong> {c.s2LocalDesc}
               </li>
             </ul>
             <p className="font-body" style={bodyText}>{c.s2Outro}</p>
@@ -330,13 +330,13 @@ export default function Privacy() {
               to="/"
               className="font-body"
               style={{
-                color: '#D4A12A',
+                color: '#e8b85b',
                 fontSize: '0.74rem',
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 fontWeight: 500,
-                borderBottom: '1px solid rgba(212,161,42,0.4)',
+                borderBottom: '1px solid rgba(232,184,91,0.4)',
                 paddingBottom: '0.25rem',
               }}
             >
@@ -350,7 +350,7 @@ export default function Privacy() {
       <footer
         style={{
           padding: 'clamp(2rem, 5vw, 3rem) clamp(1.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem)',
-          borderTop: '1px solid rgba(212,161,42,0.12)',
+          borderTop: '1px solid rgba(232,184,91,0.12)',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -361,7 +361,7 @@ export default function Privacy() {
         <p
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: '0.92rem',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -369,7 +369,7 @@ export default function Privacy() {
             margin: 0,
           }}
         >
-          Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
+          Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
         </p>
         <p
           className="font-body"
@@ -387,7 +387,7 @@ export default function Privacy() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.55)',
+            color: 'rgba(243,234,216,0.55)',
             fontSize: '0.62rem',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -400,7 +400,7 @@ export default function Privacy() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.42)',
+            color: 'rgba(243,234,216,0.42)',
             fontSize: '0.72rem',
             lineHeight: 1.7,
             fontWeight: 300,
@@ -413,7 +413,7 @@ export default function Privacy() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.4)',
+            color: 'rgba(243,234,216,0.4)',
             fontSize: '0.7rem',
             fontWeight: 300,
             margin: '0.3rem 0 0',
@@ -430,7 +430,7 @@ export default function Privacy() {
 
       <style>{`
         a:focus-visible {
-          outline: 2px solid rgba(212,161,42,0.7);
+          outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
           border-radius: 1px;
         }

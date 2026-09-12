@@ -29,7 +29,7 @@ export default function Landing() {
   return (
     <div
       style={{
-        backgroundColor: '#1A130E',
+        backgroundColor: '#24150f',
         minHeight: '100vh',
         width: '100%',
         overflowX: 'hidden',

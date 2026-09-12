@@ -8,33 +8,33 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const primaryButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#1A130E', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+  color: '#24150f', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
   fontWeight: 600, textDecoration: 'none', border: 'none', borderRadius: '2px',
-  padding: '0.65rem 1.3rem', backgroundColor: '#D4A12A',
+  padding: '0.65rem 1.3rem', backgroundColor: '#e8b85b',
 };
 
 const linkButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#D4A12A', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
-  fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(212,161,42,0.5)',
+  color: '#e8b85b', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
+  fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(232,184,91,0.5)',
   borderRadius: '2px', padding: '0.65rem 1.3rem',
 };
 
 const stepCardStyle = {
   padding: '1.75rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.22)',
+  border: '1px solid rgba(232,184,91,0.22)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 
 const iconWrapStyle = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   width: '2.75rem', height: '2.75rem', borderRadius: '50%',
-  backgroundColor: 'rgba(212,161,42,0.1)', border: '1px solid rgba(212,161,42,0.3)',
+  backgroundColor: 'rgba(232,184,91,0.1)', border: '1px solid rgba(232,184,91,0.3)',
   marginBottom: '1rem',
 };
 
@@ -98,12 +98,12 @@ export default function Welcome() {
                 style={stepCardStyle}
               >
                 <div style={iconWrapStyle}>
-                  <Icon size={20} color="#D4A12A" strokeWidth={1.5} aria-hidden="true" />
+                  <Icon size={20} color="#e8b85b" strokeWidth={1.5} aria-hidden="true" />
                 </div>
-                <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>
+                <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>
                   {step.eyebrow}
                 </span>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.2rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}>
+                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.2rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}>
                   {step.title}
                 </h3>
                 <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', lineHeight: 1.7, margin: 0 }}>

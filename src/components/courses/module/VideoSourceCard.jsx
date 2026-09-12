@@ -26,9 +26,9 @@ export default function VideoSourceCard({ source, attributionLabel }) {
       style={{
         marginTop: '1.25rem',
         padding: '1.25rem 1.4rem',
-        border: '1px solid rgba(212,161,42,0.22)',
+        border: '1px solid rgba(232,184,91,0.22)',
         borderRadius: '3px',
-        background: 'rgba(245,239,224,0.02)',
+        background: 'rgba(243,234,216,0.02)',
       }}
     >
       {attributionLabel && (
@@ -37,7 +37,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
           style={{
             display: 'block',
             marginBottom: '0.6rem',
-            color: '#D4A12A',
+            color: '#e8b85b',
             fontSize: '0.62rem',
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -50,7 +50,7 @@ export default function VideoSourceCard({ source, attributionLabel }) {
       <h3
         className="font-heading"
         style={{
-          color: '#F5EFE0',
+          color: '#f8f0df',
           fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
           fontWeight: 400,
           lineHeight: 1.25,
@@ -62,32 +62,32 @@ export default function VideoSourceCard({ source, attributionLabel }) {
       {speaker && (
         <p
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
+          style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.speakerLabel}: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{c.speakerLabel}: </strong>
           {speaker}
         </p>
       )}
       {publisher && (
         <p
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
+          style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.publisherLabel}: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{c.publisherLabel}: </strong>
           {publisher}
         </p>
       )}
       {watchUrl && (
         <p
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
+          style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.5rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.watchLabel}: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{c.watchLabel}: </strong>
           <a
             href={watchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#D4A12A', textDecoration: 'none', borderBottom: '1px dotted rgba(212,161,42,0.5)' }}
+            style={{ color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' }}
           >
             {watchUrl}
           </a>
@@ -96,16 +96,16 @@ export default function VideoSourceCard({ source, attributionLabel }) {
       {why && (
         <p
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.85rem' }}
+          style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.85, fontWeight: 300, marginBottom: '0.85rem' }}
         >
-          <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>{c.whySelectedLabel}: </strong>
+          <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{c.whySelectedLabel}: </strong>
           {why}
         </p>
       )}
       <p
         className="font-body"
         style={{
-          color: 'rgba(245,239,224,0.62)',
+          color: 'rgba(243,234,216,0.62)',
           fontSize: '0.85rem',
           fontStyle: 'italic',
           lineHeight: 1.7,

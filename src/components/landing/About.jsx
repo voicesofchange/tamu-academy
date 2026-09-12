@@ -27,7 +27,7 @@ export default function About() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.85)',
+            color: 'rgba(243,234,216,0.85)',
             fontSize: 'clamp(1.05rem, 1.5vw, 1.25rem)',
             lineHeight: 1.85,
             fontWeight: 300,
@@ -39,7 +39,7 @@ export default function About() {
           sweet in Swahili, and it reflects what we believe: learning should be something you savor,
           not something you endure. We make civic education accessible, practical, and culturally
           rooted, so that the people most affected by policy are equipped to shape it. Students
-          don't just study policy here. <span style={{ color: '#F5EFE0', fontWeight: 400 }}>They practice it.</span>
+          don't just study policy here. <span style={{ color: '#f8f0df', fontWeight: 400 }}>They practice it.</span>
         </p>
 
         <div
@@ -50,7 +50,7 @@ export default function About() {
             gap: '0.75rem 1.5rem',
             marginTop: '3rem',
             paddingTop: '2rem',
-            borderTop: '1px solid rgba(212,161,42,0.14)',
+            borderTop: '1px solid rgba(232,184,91,0.14)',
           }}
         >
           {FACTS.map((fact, i) => (
@@ -58,7 +58,7 @@ export default function About() {
               <span
                 className="font-body"
                 style={{
-                  color: 'rgba(245,239,224,0.7)',
+                  color: 'rgba(243,234,216,0.7)',
                   fontSize: '0.8rem',
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
@@ -68,7 +68,7 @@ export default function About() {
                 {fact}
               </span>
               {i < FACTS.length - 1 && (
-                <span aria-hidden="true" style={{ color: '#D4A12A', opacity: 0.5 }}>·</span>
+                <span aria-hidden="true" style={{ color: '#e8b85b', opacity: 0.5 }}>·</span>
               )}
             </React.Fragment>
           ))}

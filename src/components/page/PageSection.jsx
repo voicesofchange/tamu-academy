@@ -12,12 +12,12 @@ export default function PageSection({ id, eyebrow, heading, children, style = {}
       style={{ marginBottom: '4rem', scrollMarginTop: '90px', ...style }}
     >
       {eyebrow && (
-        <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
+        <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
           {eyebrow}
         </span>
       )}
       {heading && (
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1.25rem' }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1.25rem' }}>
           {heading}
         </h2>
       )}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import ResourceCard from '@/components/resources/ResourceCard';
 import { RESOURCE_AREAS, getResourcesByArea, getActiveResourceCount } from '@/lib/resources-data';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
@@ -22,7 +23,7 @@ const CONTENT = {
   externalNotice: "External resources are selected for their educational value and connection to Tamu Academy's learning areas. They are created and maintained by their respective organizations. Availability, content, and access requirements may change.",
 };
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Resources() {
   const activeCount = getActiveResourceCount();
@@ -35,6 +36,8 @@ export default function Resources() {
         description="A curated collection of free educational resources across Tamu Academy's six learning areas — AI, intercultural leadership, policy, economics, climate, and communication."
         path="/resources"
       />
+      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Resources' }]} />
+
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
@@ -67,19 +70,19 @@ export default function Resources() {
                   className="font-body tamu-area-anchor"
                   style={{
                     display: 'inline-block',
-                    color: 'rgba(245,239,224,0.72)',
+                    color: 'rgba(243,234,216,0.72)',
                     fontSize: '0.68rem',
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
                     textDecoration: 'none',
                     fontWeight: 500,
                     padding: '0.45rem 0.9rem',
-                    border: '1px solid rgba(212,161,42,0.18)',
+                    border: '1px solid rgba(232,184,91,0.18)',
                     borderRadius: '2px',
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  <span style={{ color: '#D4A12A', marginRight: '0.4rem' }}>{area.number}</span>
+                  <span style={{ color: '#e8b85b', marginRight: '0.4rem' }}>{area.number}</span>
                   {area.title}
                 </a>
               </li>
@@ -102,7 +105,7 @@ export default function Resources() {
                   <span
                     className="font-heading"
                     style={{
-                      color: '#D4A12A',
+                      color: '#e8b85b',
                       fontSize: '1.3rem',
                       fontWeight: 400,
                       opacity: 0.5,
@@ -117,7 +120,7 @@ export default function Resources() {
                     id={`${area.id}-heading`}
                     className="font-heading"
                     style={{
-                      color: '#F5EFE0',
+                      color: '#f8f0df',
                       fontSize: 'clamp(1.1rem, 2.4vw, 1.5rem)',
                       fontWeight: 400,
                       lineHeight: 1.25,
@@ -129,7 +132,7 @@ export default function Resources() {
                   <p
                     className="font-body"
                     style={{
-                      color: 'rgba(245,239,224,0.65)',
+                      color: 'rgba(243,234,216,0.65)',
                       fontSize: '0.88rem',
                       lineHeight: 1.75,
                       fontWeight: 300,
@@ -160,12 +163,12 @@ export default function Resources() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.2)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)' }}
+          style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.025)' }}
         >
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
             {c.videoSeriesP}
           </p>
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
             {c.videosComingSoon}
           </span>
         </motion.div>
@@ -177,9 +180,9 @@ export default function Resources() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(212,161,42,0.28)', backgroundColor: 'rgba(212,161,42,0.02)', marginBottom: '3rem' }}
+        style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(232,184,91,0.28)', backgroundColor: 'rgba(232,184,91,0.02)', marginBottom: '3rem' }}
       >
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.62)', fontSize: '0.85rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.62)', fontSize: '0.85rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
           {c.externalNotice}
         </p>
       </motion.div>
@@ -197,13 +200,13 @@ export default function Resources() {
           }
         }
         .tamu-area-anchor:focus-visible {
-          outline: 2px solid #D4A12A;
+          outline: 2px solid #e8b85b;
           outline-offset: 3px;
           border-radius: 2px;
         }
         .tamu-area-anchor:hover {
-          color: #F5EFE0;
-          border-color: rgba(212,161,42,0.4);
+          color: #f8f0df;
+          border-color: rgba(232,184,91,0.4);
         }
       `}</style>
       <TamuGuideWidget />

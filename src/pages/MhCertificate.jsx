@@ -10,19 +10,19 @@ import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const COURSE_SLUG = 'mental-health-community-and-culture';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const actionButtonStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: '0.5rem',
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
   fontWeight: 500,
   textDecoration: 'none',
-  border: '1px solid rgba(212,161,42,0.35)',
+  border: '1px solid rgba(232,184,91,0.35)',
   borderRadius: '2px',
   padding: '0.65rem 1.3rem',
   cursor: 'pointer',
@@ -103,7 +103,7 @@ export default function MhCertificate() {
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
-          <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
+          <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
             {c.notYetAvailable}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
@@ -122,7 +122,7 @@ export default function MhCertificate() {
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
-          <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
+          <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
             {c.profileNameRequired}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
@@ -141,7 +141,7 @@ export default function MhCertificate() {
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
-          <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(212,161,42,0.2)', borderTopColor: '#D4A12A', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
           <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{c.loading}</p>
         </div>
       </PageLayout>
@@ -153,7 +153,7 @@ export default function MhCertificate() {
       <PageLayout>
         <PageMeta title="Certificate | Tamu Academy" path={`${coursePath}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
-          <h1 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
+          <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
             {c.unavailable}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '500px', margin: '0 auto 2rem' }}>
@@ -189,8 +189,8 @@ export default function MhCertificate() {
       </div>
 
       {isPreview && (
-        <div className="no-print" style={{ padding: '0.75rem 1.25rem', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.06)', marginBottom: '1.5rem', textAlign: 'center' }}>
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
+        <div className="no-print" style={{ padding: '0.75rem 1.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.06)', marginBottom: '1.5rem', textAlign: 'center' }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
             {c.adminPreview}
           </span>
         </div>

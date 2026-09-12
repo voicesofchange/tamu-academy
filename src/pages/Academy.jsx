@@ -262,8 +262,8 @@ export default function Academy() {
       <style>{`
 /* ---------- Root / layout ---------- */
 .academy-root {
-  background-color: #1A130E;
-  color: #F5EFE0;
+  background-color: #24150f;
+  color: #f8f0df;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
@@ -280,11 +280,11 @@ export default function Academy() {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid rgba(212,161,42,0.12);
+  border-bottom: 1px solid rgba(232,184,91,0.12);
   flex-wrap: wrap;
 }
 .academy-topnav-brand {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1rem, 2vw, 1.2rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -294,7 +294,7 @@ export default function Academy() {
   align-items: baseline;
   gap: 0.4rem;
 }
-.academy-topnav-accent { color: #D4A12A; }
+.academy-topnav-accent { color: #e8b85b; }
 .academy-topnav-attr {
   color: rgba(92,117,111,0.95);
   font-size: 0.6rem;
@@ -310,7 +310,7 @@ export default function Academy() {
   flex-wrap: wrap;
 }
 .academy-nav-link {
-  color: rgba(245,239,224,0.85);
+  color: rgba(243,234,216,0.85);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -318,13 +318,13 @@ export default function Academy() {
   text-decoration: none;
 }
 .academy-nav-link[aria-current="page"] {
-  color: #D4A12A;
-  border-bottom: 1px solid rgba(212,161,42,0.6);
+  color: #e8b85b;
+  border-bottom: 1px solid rgba(232,184,91,0.6);
   padding-bottom: 0.15rem;
 }
 .academy-nav-join {
-  color: #1A130E;
-  background-color: #D4A12A;
+  color: #24150f;
+  background-color: #e8b85b;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -351,7 +351,7 @@ export default function Academy() {
   text-align: center;
 }
 .academy-eyebrow {
-  color: #D4A12A;
+  color: #e8b85b;
   font-size: 0.66rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
@@ -370,7 +370,7 @@ export default function Academy() {
   text-align: left;
 }
 .academy-h2 {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 400;
   line-height: 1.2;
@@ -378,7 +378,7 @@ export default function Academy() {
   margin: 0.5rem 0 0.85rem;
 }
 .academy-section-support {
-  color: rgba(245,239,224,0.72);
+  color: rgba(243,234,216,0.72);
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   line-height: 1.75;
   font-weight: 300;
@@ -401,7 +401,7 @@ export default function Academy() {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #D4A12A;
+  background: #e8b85b;
   display: inline-block;
   flex-shrink: 0;
 }
@@ -428,19 +428,19 @@ export default function Academy() {
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 .academy-cta-primary {
-  color: #1A130E;
-  background-color: #D4A12A;
+  color: #24150f;
+  background-color: #e8b85b;
   border: 1px solid transparent;
 }
-.academy-cta-primary:hover { background-color: rgba(212,161,42,0.85); }
+.academy-cta-primary:hover { background-color: rgba(232,184,91,0.85); }
 .academy-cta-secondary {
-  color: #F5EFE0;
+  color: #f8f0df;
   background-color: transparent;
-  border: 1px solid rgba(212,161,42,0.5);
+  border: 1px solid rgba(232,184,91,0.5);
 }
 .academy-cta-secondary:hover {
-  border-color: rgba(212,161,42,0.85);
-  color: #D4A12A;
+  border-color: rgba(232,184,91,0.85);
+  color: #e8b85b;
 }
 .academy-cta-inline {
   font-size: 0.66rem;
@@ -455,7 +455,7 @@ export default function Academy() {
   padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 3rem);
 }
 .academy-hero-h1 {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(2.1rem, 6vw, 3.4rem);
   font-weight: 400;
   line-height: 1.15;
@@ -463,7 +463,7 @@ export default function Academy() {
   margin: 0 0 1.5rem;
 }
 .academy-hero-support {
-  color: rgba(245,239,224,0.78);
+  color: rgba(243,234,216,0.78);
   font-size: clamp(0.98rem, 2vw, 1.15rem);
   line-height: 1.75;
   font-weight: 300;
@@ -486,11 +486,11 @@ export default function Academy() {
   text-align: center;
   max-width: 860px;
   margin: 0 auto;
-  border-top: 1px solid rgba(212,161,42,0.18);
-  border-bottom: 1px solid rgba(212,161,42,0.18);
+  border-top: 1px solid rgba(232,184,91,0.18);
+  border-bottom: 1px solid rgba(232,184,91,0.18);
 }
 .academy-pathway-format {
-  color: rgba(245,239,224,0.6);
+  color: rgba(243,234,216,0.6);
   font-size: 0.9rem;
   line-height: 1.7;
   font-weight: 300;
@@ -512,7 +512,7 @@ export default function Academy() {
   text-align: center;
   max-width: 760px;
   margin: 0 auto;
-  border-top: 1px solid rgba(212,161,42,0.12);
+  border-top: 1px solid rgba(232,184,91,0.12);
 }
 .academy-how-list {
   list-style: none;
@@ -530,7 +530,7 @@ export default function Academy() {
   display: flex;
   align-items: baseline;
   gap: 0.65rem;
-  color: rgba(245,239,224,0.78);
+  color: rgba(243,234,216,0.78);
   font-size: 0.94rem;
   line-height: 1.5;
   font-weight: 300;
@@ -539,7 +539,7 @@ export default function Academy() {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(212,161,42,0.75);
+  background: rgba(232,184,91,0.75);
   display: inline-block;
   flex-shrink: 0;
   position: relative;
@@ -568,26 +568,26 @@ export default function Academy() {
 .academy-idea-row {
   text-align: left;
   padding: 1.6rem 1.35rem;
-  border: 1px solid rgba(212,161,42,0.18);
-  background-color: rgba(245,239,224,0.02);
+  border: 1px solid rgba(232,184,91,0.18);
+  background-color: rgba(243,234,216,0.02);
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   transition: border-color 0.25s ease, background-color 0.25s ease;
 }
 .academy-idea-row:hover {
-  border-color: rgba(212,161,42,0.4);
-  background-color: rgba(245,239,224,0.04);
+  border-color: rgba(232,184,91,0.4);
+  background-color: rgba(243,234,216,0.04);
 }
 .academy-idea-title {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: clamp(1.15rem, 2.6vw, 1.45rem);
   font-weight: 400;
   line-height: 1.25;
   margin: 0.5rem 0 0.75rem;
 }
 .academy-idea-desc {
-  color: rgba(245,239,224,0.7);
+  color: rgba(243,234,216,0.7);
   font-size: 0.92rem;
   line-height: 1.6;
   font-weight: 300;
@@ -609,14 +609,14 @@ export default function Academy() {
   text-align: center;
   max-width: 720px;
   margin: 0 auto;
-  border-top: 1px solid rgba(212,161,42,0.18);
+  border-top: 1px solid rgba(232,184,91,0.18);
 }
 .academy-final-cta .academy-h2 { margin: 0 0 1rem; }
 
 /* ---------- Footer ---------- */
 .academy-footer {
   padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 5vw, 3rem) clamp(2rem, 5vw, 3rem);
-  border-top: 1px solid rgba(212,161,42,0.12);
+  border-top: 1px solid rgba(232,184,91,0.12);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -624,7 +624,7 @@ export default function Academy() {
   gap: 0.4rem;
 }
 .academy-footer-brand {
-  color: #F5EFE0;
+  color: #f8f0df;
   font-size: 0.92rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -640,7 +640,7 @@ export default function Academy() {
   margin: 0;
 }
 .academy-footer-copy {
-  color: rgba(245,239,224,0.42);
+  color: rgba(243,234,216,0.42);
   font-size: 0.7rem;
   font-weight: 300;
   margin: 0.85rem 0 0;
@@ -649,7 +649,7 @@ export default function Academy() {
   margin: 0.85rem 0 0;
 }
 .academy-footer-links a {
-  color: rgba(212,161,42,0.85);
+  color: rgba(232,184,91,0.85);
   font-size: 0.64rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -665,7 +665,7 @@ export default function Academy() {
 .academy-topnav-brand:focus-visible,
 .academy-footer-links a:focus-visible,
 .academy-idea-link a:focus-visible {
-  outline: 2px solid rgba(212,161,42,0.7);
+  outline: 2px solid rgba(232,184,91,0.7);
   outline-offset: 3px;
 }
 @media (max-width: 600px) {

@@ -21,8 +21,8 @@ export default function SkipLink() {
           left: 1rem;
           z-index: 9999;
           padding: 0.6rem 1.2rem;
-          background: #D4A12A;
-          color: #1A130E;
+          background: #e8b85b;
+          color: #24150f;
           font-family: 'DM Sans', sans-serif;
           font-size: 0.8rem;
           font-weight: 500;
@@ -33,7 +33,7 @@ export default function SkipLink() {
         }
         .tamu-skip-link:focus {
           top: 1rem;
-          outline: 2px solid #1A130E;
+          outline: 2px solid #24150f;
           outline-offset: 2px;
         }
       `}</style>

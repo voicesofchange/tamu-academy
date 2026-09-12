@@ -41,10 +41,10 @@ export default function HomePurpose() {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
-          <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
+          <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
             {c.purposeEyebrow}
           </p>
-          <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.5rem', maxWidth: '700px' }}>
+          <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.5rem', maxWidth: '700px' }}>
             {c.purposeHeading}
           </h2>
         </motion.div>
@@ -55,7 +55,7 @@ export default function HomePurpose() {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
           className="font-body"
-          style={{ color: 'rgba(245,239,224,0.78)', fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.85, fontWeight: 300, maxWidth: '700px', marginBottom: '2rem' }}
+          style={{ color: 'rgba(243,234,216,0.78)', fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.85, fontWeight: 300, maxWidth: '700px', marginBottom: '2rem' }}
         >
           {c.purposeBody}
         </motion.p>
@@ -69,7 +69,7 @@ export default function HomePurpose() {
           <Link
             to="/about"
             className="font-body"
-            style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}
+            style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}
           >
             {c.purposeLink} →
           </Link>
@@ -79,9 +79,9 @@ export default function HomePurpose() {
       {/* WHY INTERDISCIPLINARY */}
       <section
         style={{
-          backgroundColor: 'rgba(245,239,224,0.015)',
-          borderTop: '1px solid rgba(212,161,42,0.08)',
-          borderBottom: '1px solid rgba(212,161,42,0.08)',
+          backgroundColor: 'rgba(243,234,216,0.015)',
+          borderTop: '1px solid rgba(232,184,91,0.08)',
+          borderBottom: '1px solid rgba(232,184,91,0.08)',
           padding: 'clamp(4.5rem, 9vw, 7rem) clamp(1.5rem, 6vw, 6rem)',
         }}
       >
@@ -92,10 +92,10 @@ export default function HomePurpose() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
           >
-            <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
+            <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '1rem' }}>
               {c.interEyebrow}
             </p>
-            <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 2.5rem', maxWidth: '700px' }}>
+            <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 2.5rem', maxWidth: '700px' }}>
               {c.interHeading}
             </h2>
           </motion.div>
@@ -110,8 +110,8 @@ export default function HomePurpose() {
                 transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.07 }}
                 style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}
               >
-                <span className="font-heading" style={{ color: '#D4A12A', fontSize: '1.05rem', fontWeight: 400, flexShrink: 0 }}>{subject}</span>
-                <span className="font-body" style={{ color: 'rgba(245,239,224,0.68)', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 300 }}>{effect}</span>
+                <span className="font-heading" style={{ color: '#e8b85b', fontSize: '1.05rem', fontWeight: 400, flexShrink: 0 }}>{subject}</span>
+                <span className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 300 }}>{effect}</span>
               </motion.div>
             ))}
           </div>
@@ -122,7 +122,7 @@ export default function HomePurpose() {
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.35 }}
             className="font-body"
-            style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '600px', fontStyle: 'italic' }}
+            style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '600px', fontStyle: 'italic' }}
           >
             {c.interClosing}
           </motion.p>

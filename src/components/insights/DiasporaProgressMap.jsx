@@ -4,9 +4,9 @@ import { RadialBarChart, RadialBar, ResponsiveContainer, Tooltip, PolarAngleAxis
 
 const panelStyle = {
   padding: '1.5rem 1.75rem',
-  border: '1px solid rgba(212,161,42,0.18)',
+  border: '1px solid rgba(232,184,91,0.18)',
   borderRadius: '4px',
-  backgroundColor: 'rgba(245,239,224,0.015)',
+  backgroundColor: 'rgba(243,234,216,0.015)',
 };
 
 const liveBadgeStyle = {
@@ -14,12 +14,12 @@ const liveBadgeStyle = {
   alignItems: 'center',
   gap: '0.4rem',
   padding: '0.25rem 0.7rem',
-  border: '1px solid rgba(212,161,42,0.3)',
+  border: '1px solid rgba(232,184,91,0.3)',
   borderRadius: '20px',
   fontSize: '0.62rem',
   letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  color: '#D4A12A',
+  color: '#e8b85b',
   fontFamily: "'DM Sans', sans-serif",
   fontWeight: 500,
 };
@@ -29,7 +29,7 @@ const liveDotStyle = {
   width: '7px',
   height: '7px',
   borderRadius: '50%',
-  backgroundColor: '#D4A12A',
+  backgroundColor: '#e8b85b',
   animation: 'tamuPulse 2s ease-in-out infinite',
 };
 
@@ -101,7 +101,7 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
     name: courseLabels[c.slug] || c.slug,
     slug: c.slug,
     progress: c.enrollments > 0 ? Math.round((c.completions / c.enrollments) * 100) : 0,
-    fill: c.slug.includes('economics') ? '#D4A12A' : '#E8951C',
+    fill: c.slug.includes('economics') ? '#e8b85b' : '#E8951C',
   }));
 
   const maxCount = Math.max(...data.geographicReach.map(g => g.count), 1);
@@ -110,10 +110,10 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <span style={{ color: '#D4A12A', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif" }}>
+          <span style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif" }}>
             {t('insights.diasporaEyebrow')}
           </span>
-          <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
+          <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
             {t('insights.diasporaHeading')}
           </h2>
         </div>
@@ -123,22 +123,22 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
         </span>
       </div>
 
-      <p style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px', marginBottom: '1.75rem' }}>
+      <p style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px', marginBottom: '1.75rem' }}>
         {t('insights.diasporaIntro')}
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
         {/* Course Progress Rings */}
         <div style={panelStyle}>
-          <h3 style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", marginBottom: '1.25rem', margin: '0 0 1.25rem' }}>
+          <h3 style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", marginBottom: '1.25rem', margin: '0 0 1.25rem' }}>
             {t('insights.progressRingsHeading')}
           </h3>
           <ResponsiveContainer width="100%" height={180}>
             <RadialBarChart innerRadius="35%" outerRadius="100%" data={progressData} startAngle={90} endAngle={-270}>
               <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-              <RadialBar background={{ fill: 'rgba(245,239,224,0.05)' }} dataKey="progress" cornerRadius={6} />
+              <RadialBar background={{ fill: 'rgba(243,234,216,0.05)' }} dataKey="progress" cornerRadius={6} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1A130E', border: '1px solid rgba(212,161,42,0.3)', borderRadius: '4px', color: '#F5EFE0', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif" }}
+                contentStyle={{ backgroundColor: '#24150f', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', color: '#f8f0df', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif" }}
                 formatter={(value, name) => [`${value}%`, name]}
               />
             </RadialBarChart>
@@ -147,8 +147,8 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
             {progressData.map(p => (
               <div key={p.slug} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', backgroundColor: p.fill }} />
-                <span style={{ color: 'rgba(245,239,224,0.7)', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif" }}>{p.name}</span>
-                <span style={{ color: '#D4A12A', fontSize: '0.78rem', fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>{p.progress}%</span>
+                <span style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.78rem', fontFamily: "'DM Sans', sans-serif" }}>{p.name}</span>
+                <span style={{ color: '#e8b85b', fontSize: '0.78rem', fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>{p.progress}%</span>
               </div>
             ))}
           </div>
@@ -156,7 +156,7 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
 
         {/* Diaspora Reach Bubbles */}
         <div style={panelStyle}>
-          <h3 style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
+          <h3 style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", margin: '0 0 1.25rem' }}>
             {t('insights.diasporaReachHeading')}
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center' }}>
@@ -169,22 +169,22 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     padding: `${0.3 + 0.15 * ratio}rem ${0.7 + 0.4 * ratio}rem`,
-                    border: `1px solid rgba(212,161,42,${0.15 + 0.3 * ratio})`,
+                    border: `1px solid rgba(232,184,91,${0.15 + 0.3 * ratio})`,
                     borderRadius: '20px',
-                    backgroundColor: `rgba(212,161,42,${0.03 + 0.06 * ratio})`,
-                    color: '#F5EFE0',
+                    backgroundColor: `rgba(232,184,91,${0.03 + 0.06 * ratio})`,
+                    color: '#f8f0df',
                     fontSize: `${0.75 + 0.15 * ratio}rem`,
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: 300,
                   }}
                 >
                   {g.country}
-                  <span style={{ marginLeft: '0.4rem', color: '#D4A12A', fontWeight: 500, fontSize: '0.85em' }}>{g.count}</span>
+                  <span style={{ marginLeft: '0.4rem', color: '#e8b85b', fontWeight: 500, fontSize: '0.85em' }}>{g.count}</span>
                 </span>
               );
             })}
           </div>
-          <p style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.8rem', fontStyle: 'italic', fontFamily: "'DM Sans', sans-serif", marginTop: '1rem', marginBottom: 0 }}>
+          <p style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.8rem', fontStyle: 'italic', fontFamily: "'DM Sans', sans-serif", marginTop: '1rem', marginBottom: 0 }}>
             {t('insights.diasporaReachNote')}
           </p>
         </div>
@@ -193,23 +193,23 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
       {/* Live Milestone Stream */}
       <div style={panelStyle}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-          <h3 style={{ color: '#F5EFE0', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <h3 style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 400, fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             {t('insights.milestoneStreamHeading')}
           </h3>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ color: liveFlash === 'enrollment' ? '#D4A12A' : '#F5EFE0', fontSize: '1.3rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1, transition: 'color 0.4s' }}>
+              <div style={{ color: liveFlash === 'enrollment' ? '#e8b85b' : '#f8f0df', fontSize: '1.3rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1, transition: 'color 0.4s' }}>
                 {enrollmentCount}
               </div>
-              <div style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.2rem' }}>
+              <div style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.2rem' }}>
                 {t('insights.statEnrollments')}
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ color: liveFlash === 'milestone' ? '#D4A12A' : '#F5EFE0', fontSize: '1.3rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1, transition: 'color 0.4s' }}>
+              <div style={{ color: liveFlash === 'milestone' ? '#e8b85b' : '#f8f0df', fontSize: '1.3rem', fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, lineHeight: 1, transition: 'color 0.4s' }}>
                 {milestoneCount}
               </div>
-              <div style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.2rem' }}>
+              <div style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontFamily: "'DM Sans', sans-serif", marginTop: '0.2rem' }}>
                 {t('insights.statCompletions')}
               </div>
             </div>
@@ -217,7 +217,7 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
         </div>
 
         {milestones.length === 0 ? (
-          <p style={{ color: 'rgba(245,239,224,0.5)', fontSize: '0.88rem', fontStyle: 'italic', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
+          <p style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.88rem', fontStyle: 'italic', fontFamily: "'DM Sans', sans-serif", margin: 0 }}>
             {t('insights.milestonesEmpty')}
           </p>
         ) : (
@@ -230,19 +230,19 @@ export default function DiasporaProgressMap({ data, courseLabels, t }) {
                   alignItems: 'center',
                   gap: '0.75rem',
                   padding: '0.6rem 0.85rem',
-                  border: '1px solid rgba(212,161,42,0.12)',
+                  border: '1px solid rgba(232,184,91,0.12)',
                   borderRadius: '3px',
-                  backgroundColor: i === 0 && liveFlash === 'milestone' ? 'rgba(212,161,42,0.06)' : 'transparent',
+                  backgroundColor: i === 0 && liveFlash === 'milestone' ? 'rgba(232,184,91,0.06)' : 'transparent',
                   transition: 'background-color 0.5s',
                 }}
               >
-                <span style={{ color: '#D4A12A', fontSize: '0.7rem', fontFamily: "'DM Sans', sans-serif", fontWeight: 500, minWidth: '65px' }}>
+                <span style={{ color: '#e8b85b', fontSize: '0.7rem', fontFamily: "'DM Sans', sans-serif", fontWeight: 500, minWidth: '65px' }}>
                   {timeAgo(m.completed_at)}
                 </span>
-                <span style={{ color: 'rgba(245,239,224,0.75)', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
+                <span style={{ color: 'rgba(243,234,216,0.75)', fontSize: '0.85rem', fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>
                   {moduleLabel(m.module_slug)}
                 </span>
-                <span style={{ color: 'rgba(245,239,224,0.4)', fontSize: '0.75rem', fontFamily: "'DM Sans', sans-serif", fontStyle: 'italic' }}>
+                <span style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.75rem', fontFamily: "'DM Sans', sans-serif", fontStyle: 'italic' }}>
                   {courseLabels[m.course_slug] || m.course_slug}
                 </span>
               </div>

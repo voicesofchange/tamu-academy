@@ -86,7 +86,7 @@ export default function ProgramHighlights() {
   padding: clamp(2.5rem, 5vw, 3.5rem) 0;
   max-width: 880px;
   margin: 0 auto;
-  border-top: 1px solid rgba(212,161,42,0.12);
+  border-top: 1px solid rgba(232,184,91,0.12);
 }
 .academy-program-details {
   margin: 1.75rem 0 0;
@@ -103,12 +103,12 @@ export default function ProgramHighlights() {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.95rem 1.05rem;
-  border: 1px solid rgba(212,161,42,0.18);
+  border: 1px solid rgba(232,184,91,0.18);
   border-radius: 3px;
-  background-color: rgba(245,239,224,0.02);
+  background-color: rgba(243,234,216,0.02);
 }
 .academy-detail-label {
-  color: #D4A12A;
+  color: #e8b85b;
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -116,7 +116,7 @@ export default function ProgramHighlights() {
   margin: 0;
 }
 .academy-detail-value {
-  color: rgba(245,239,224,0.85);
+  color: rgba(243,234,216,0.85);
   font-size: 0.94rem;
   font-weight: 300;
   line-height: 1.5;

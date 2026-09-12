@@ -5,6 +5,7 @@ import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import PageMeta from '@/components/seo/PageMeta';
 import ArticleCard from '@/components/articles/ArticleCard';
 import { ARTICLES } from '@/lib/articles-data';
@@ -59,6 +60,8 @@ export default function Articles() {
       />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Articles' }]} />
+
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
@@ -76,14 +79,14 @@ export default function Articles() {
           href="#article-collection"
           onClick={handleBrowse}
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
           {c.browseArticles}
         </a>
         <Link
           to="/videos"
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
           {c.watchEpisodes}
         </Link>
@@ -98,27 +101,27 @@ export default function Articles() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           style={{
             padding: '1.75rem 2rem',
-            border: '1px solid rgba(212,161,42,0.22)',
+            border: '1px solid rgba(232,184,91,0.22)',
             borderRadius: '4px',
-            backgroundColor: 'rgba(212,161,42,0.025)',
+            backgroundColor: 'rgba(232,184,91,0.025)',
             display: 'flex',
             flexDirection: 'column',
             gap: '0.75rem',
           }}
         >
-          <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
+          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
             {c.welcomeEpisodeLabel}
           </span>
-          <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.4vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
+          <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.4vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
             {c.welcomeHeading}
           </h2>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0, maxWidth: '600px' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, margin: 0, maxWidth: '600px' }}>
             {c.welcomeP}
           </p>
           <Link
             to="/videos"
             className="font-body"
-            style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginTop: '0.25rem' }}
+            style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginTop: '0.25rem' }}
           >
             {c.watchWelcomeEpisode}
           </Link>
@@ -128,7 +131,7 @@ export default function Articles() {
       {/* ── Article Collection ────────────────────────────────────────────── */}
       <div id="article-collection" ref={collectionRef} style={{ scrollMarginTop: '90px' }}>
         <PageSection eyebrow={c.articlesEyebrow} heading={c.articlesHeading}>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '2rem' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '2rem' }}>
             {c.articlesIntro}
           </p>
 
@@ -154,23 +157,23 @@ export default function Articles() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ marginBottom: '2rem', padding: '2rem 2.5rem', border: '1px solid rgba(212,161,42,0.15)', borderRadius: '4px', textAlign: 'center' }}
+        style={{ marginBottom: '2rem', padding: '2rem 2.5rem', border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', textAlign: 'center' }}
       >
-        <p className="font-heading" style={{ color: 'rgba(245,239,224,0.55)', fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
+        <p className="font-heading" style={{ color: 'rgba(243,234,216,0.55)', fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
           {c.progressionNote}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
           <Link
             to="/videos"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             {c.watchEpisodes}
           </Link>
           <Link
             to="/resources"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(245,239,224,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(243,234,216,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
           >
             {c.exploreResources}
           </Link>

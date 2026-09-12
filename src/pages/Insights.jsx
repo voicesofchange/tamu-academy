@@ -16,7 +16,7 @@ const CATEGORIES = [
   { title: 'Tamu Academy Video Series', desc: 'An original video series exploring public policy, governance, global issues, and interdisciplinary leadership through accessible and engaging conversations.' },
 ];
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Insights() {
   return (
@@ -48,11 +48,11 @@ export default function Insights() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.05 }}
-              style={{ padding: '1.5rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}
+              style={{ padding: '1.5rem', border: '1px solid rgba(232,184,91,0.14)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}
             >
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.6rem', lineHeight: 1.3 }}>{cat.title}</h3>
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.62)', fontSize: '0.86rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 1rem' }}>{cat.desc}</p>
-              <span className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.67rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Coming Soon</span>
+              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.6rem', lineHeight: 1.3 }}>{cat.title}</h3>
+              <p className="font-body" style={{ color: 'rgba(243,234,216,0.62)', fontSize: '0.86rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 1rem' }}>{cat.desc}</p>
+              <span className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.67rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Coming Soon</span>
             </motion.div>
           ))}
         </div>
@@ -64,13 +64,13 @@ export default function Insights() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(212,161,42,0.025)' }}
+        style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.025)' }}
       >
-        <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, margin: '0 0 0.75rem' }}>Stay Informed</h2>
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1rem' }}>
+        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontWeight: 400, margin: '0 0 0.75rem' }}>Stay Informed</h2>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1rem' }}>
           Tamu Academy will share updates, new resources, and invitations to participate as they become available. A newsletter and community updates channel are in development.
         </p>
-        <span className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.72rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Sign-up coming soon — check back here or contact us to express interest</span>
+        <span className="font-body" style={{ color: 'rgba(243,234,216,0.38)', fontSize: '0.72rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Sign-up coming soon — check back here or contact us to express interest</span>
       </motion.div>
     </PageLayout>
   );

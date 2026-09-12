@@ -5,6 +5,7 @@ import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhKijaniScenario from '@/components/courses/MhKijaniScenario';
 import MhAmplifyLab from '@/components/courses/MhAmplifyLab';
@@ -140,6 +141,7 @@ export default function MhModule6Lesson({ course, module: mod, lesson }) {
     <ModuleLessonLayout>
       <PageMeta title={`${mod.number}: ${mod.title} | Tamu Academy`} description={mod.description} path={modulePath} noindex />
       <ModuleBreadcrumbs pillar={course.learningArea} track={course.title} course={course.title} coursePath={coursePath} moduleLabel={mod.number} />
+      <ModuleProgressBar current={course.modules.findIndex((m) => m.route === mod.route) + 1} total={course.modules.length} />
 
       <header style={{ marginBottom: '3rem' }}>
         <ModuleEmblem />

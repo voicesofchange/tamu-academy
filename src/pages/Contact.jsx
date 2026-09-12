@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
+import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -28,8 +29,8 @@ const CONTENT = {
   linkResources: 'Resources →',
 };
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
-const mutedText = { color: 'rgba(245,239,224,0.52)', fontSize: '0.85rem', lineHeight: 1.75, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const mutedText = { color: 'rgba(243,234,216,0.52)', fontSize: '0.85rem', lineHeight: 1.75, fontWeight: 300 };
 
 export default function Contact() {
   const { content: c } = useTranslatedContent('contact', CONTENT);
@@ -41,6 +42,8 @@ export default function Contact() {
         description="Contact Tamu Academy, express interest in proposed programmes, contribute as a facilitator, or discuss a community or institutional partnership."
         path="/contact"
       />
+      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Contact' }]} />
+
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
@@ -62,11 +65,11 @@ export default function Contact() {
       {/* Form section */}
       <PageSection id="send-an-inquiry" heading={c.sendHeading}>
         {/* Pre-form notice */}
-        <div style={{ marginBottom: '1.75rem', padding: '1rem 1.4rem', border: '1px solid rgba(212,161,42,0.16)', borderRadius: '3px', backgroundColor: 'rgba(212,161,42,0.025)' }}>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 0.5rem' }}>
+        <div style={{ marginBottom: '1.75rem', padding: '1rem 1.4rem', border: '1px solid rgba(232,184,91,0.16)', borderRadius: '3px', backgroundColor: 'rgba(232,184,91,0.025)' }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.85rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 0.5rem' }}>
             {c.formNotice1}
           </p>
-          <p className="font-body" style={{ color: 'rgba(245,239,224,0.45)', fontSize: '0.82rem', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
+          <p className="font-body" style={{ color: 'rgba(243,234,216,0.45)', fontSize: '0.82rem', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
             {c.formNotice2}
           </p>
         </div>
@@ -81,14 +84,14 @@ export default function Contact() {
       </PageSection>
 
       {/* Related links */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(212,161,42,0.1)' }}>
-        <Link to="/programmes" style={{ color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(232,184,91,0.1)' }}>
+        <Link to="/programmes" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           {c.linkProgrammes}
         </Link>
-        <Link to="/programmes#learning-areas" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+        <Link to="/programmes#learning-areas" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           {c.linkLearningAreas}
         </Link>
-        <Link to="/resources" style={{ color: 'rgba(245,239,224,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+        <Link to="/resources" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           {c.linkResources}
         </Link>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const bodyText = {
-  color: 'rgba(245,239,224,0.78)',
+  color: 'rgba(243,234,216,0.78)',
   fontSize: '0.93rem',
   lineHeight: 1.85,
   fontWeight: 300,
@@ -62,16 +62,16 @@ export default function PolicyChoiceActivity({ policyActivity }) {
           role="note"
           style={{
             padding: '0.85rem 1rem',
-            border: '1px solid rgba(212,161,42,0.28)',
+            border: '1px solid rgba(232,184,91,0.28)',
             borderRadius: '3px',
-            background: 'rgba(212,161,42,0.04)',
+            background: 'rgba(232,184,91,0.04)',
             marginBottom: '1.5rem',
           }}
         >
           <span
             className="font-body"
             style={{
-              color: 'rgba(212,161,42,0.85)',
+              color: 'rgba(232,184,91,0.85)',
               fontWeight: 500,
               fontSize: '0.72rem',
               letterSpacing: '0.14em',
@@ -99,7 +99,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               key={d.id}
               style={{
                 marginBottom: '2rem',
-                border: '1px solid rgba(245,239,224,0.1)',
+                border: '1px solid rgba(243,234,216,0.1)',
                 borderRadius: '4px',
                 padding: '1.25rem 1.4rem',
               }}
@@ -108,7 +108,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                 <span
                   className="font-body"
                   style={{
-                    color: 'rgba(212,161,42,0.85)',
+                    color: 'rgba(232,184,91,0.85)',
                     fontSize: '0.7rem',
                     letterSpacing: '0.18em',
                     textTransform: 'uppercase',
@@ -121,7 +121,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                   <span
                     className="font-body"
                     style={{
-                      color: 'rgba(245,239,224,0.55)',
+                      color: 'rgba(243,234,216,0.55)',
                       fontSize: '0.7rem',
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
@@ -135,7 +135,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               <p
                 className="font-body"
                 style={{
-                  color: '#F5EFE0',
+                  color: '#f8f0df',
                   fontSize: '0.96rem',
                   lineHeight: 1.65,
                   fontWeight: 400,
@@ -157,10 +157,10 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                         gap: '0.65rem',
                         alignItems: 'flex-start',
                         padding: '0.65rem 0.85rem',
-                        border: selected ? '1px solid rgba(212,161,42,0.5)' : '1px solid rgba(245,239,224,0.12)',
+                        border: selected ? '1px solid rgba(232,184,91,0.5)' : '1px solid rgba(243,234,216,0.12)',
                         borderRadius: '3px',
                         cursor: submitted ? 'default' : 'pointer',
-                        background: selected ? 'rgba(212,161,42,0.05)' : 'transparent',
+                        background: selected ? 'rgba(232,184,91,0.05)' : 'transparent',
                         transition: 'border-color 0.2s, background-color 0.2s',
                       }}
                     >
@@ -171,13 +171,13 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                         checked={selected}
                         onChange={() => selectChoice(d.id, o.id)}
                         disabled={submitted}
-                        style={{ marginTop: '0.2rem', accentColor: '#D4A12A' }}
+                        style={{ marginTop: '0.2rem', accentColor: '#e8b85b' }}
                       />
                       <span
                         className="font-body"
                         style={{ ...bodyText, fontSize: '0.9rem', margin: 0 }}
                       >
-                        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>
+                        <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                           {String.fromCharCode(65 + oi)}.
                         </strong>{' '}
                         {o.label}
@@ -194,16 +194,16 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                   style={{
                     marginTop: '1rem',
                     padding: '0.9rem 1.1rem',
-                    border: '1px solid rgba(212,161,42,0.22)',
+                    border: '1px solid rgba(232,184,91,0.22)',
                     borderRadius: '3px',
-                    background: 'rgba(212,161,42,0.03)',
+                    background: 'rgba(232,184,91,0.03)',
                   }}
                 >
                   <p
                     className="font-body"
                     style={{ ...bodyText, fontSize: '0.88rem', margin: '0 0 0.5rem' }}
                   >
-                    <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>
+                    <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                       You selected:{' '}
                     </strong>
                     {selOption.label}
@@ -213,7 +213,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                       className="font-body"
                       style={{ ...bodyText, fontSize: '0.88rem', margin: '0 0 0.5rem' }}
                     >
-                      <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>
+                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                         Likely effects:{' '}
                       </strong>
                       {selOption.effects}
@@ -224,7 +224,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                       className="font-body"
                       style={{ ...bodyText, fontSize: '0.88rem', margin: 0 }}
                     >
-                      <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>
+                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                         Limitations and risks:{' '}
                       </strong>
                       {selOption.limitations}
@@ -244,10 +244,10 @@ export default function PolicyChoiceActivity({ policyActivity }) {
           disabled={!allAnswered}
           style={{
             padding: '0.7rem 1.6rem',
-            border: '1px solid rgba(212,161,42,0.4)',
+            border: '1px solid rgba(232,184,91,0.4)',
             borderRadius: '2px',
-            background: allAnswered ? 'rgba(212,161,42,0.08)' : 'transparent',
-            color: allAnswered ? '#D4A12A' : 'rgba(245,239,224,0.35)',
+            background: allAnswered ? 'rgba(232,184,91,0.08)' : 'transparent',
+            color: allAnswered ? '#e8b85b' : 'rgba(243,234,216,0.35)',
             fontSize: '0.72rem',
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
@@ -267,14 +267,14 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               style={{
                 marginTop: '1.5rem',
                 padding: '1.1rem 1.3rem',
-                border: '1px solid rgba(212,161,42,0.3)',
+                border: '1px solid rgba(232,184,91,0.3)',
                 borderRadius: '4px',
-                background: 'rgba(245,239,224,0.02)',
+                background: 'rgba(243,234,216,0.02)',
               }}
             >
               <span
                 style={{
-                  color: 'rgba(212,161,42,0.85)',
+                  color: 'rgba(232,184,91,0.85)',
                   fontSize: '0.66rem',
                   letterSpacing: '0.18em',
                   textTransform: 'uppercase',
@@ -299,7 +299,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                   return (
                     <li key={d.id} style={{ marginBottom: '0.55rem', paddingLeft: '0.4rem' }}>
                       <span className="font-body" style={{ ...bodyText, fontSize: '0.88rem' }}>
-                        <strong style={{ fontWeight: 500, color: 'rgba(212,161,42,0.85)' }}>
+                        <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                           {d.categoryLabel || d.prompt}:{' '}
                         </strong>
                         {sel ? sel.label : 'No selection'}
@@ -311,7 +311,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               <p
                 className="font-body"
                 style={{
-                  color: 'rgba(245,239,224,0.6)',
+                  color: 'rgba(243,234,216,0.6)',
                   fontSize: '0.85rem',
                   fontStyle: 'italic',
                   marginTop: '0.85rem',
@@ -330,10 +330,10 @@ export default function PolicyChoiceActivity({ policyActivity }) {
             style={{
               marginTop: '1rem',
               padding: '0.65rem 1.4rem',
-              border: '1px solid rgba(212,161,42,0.4)',
+              border: '1px solid rgba(232,184,91,0.4)',
               borderRadius: '2px',
               background: 'transparent',
-              color: '#D4A12A',
+              color: '#e8b85b',
               fontSize: '0.72rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',

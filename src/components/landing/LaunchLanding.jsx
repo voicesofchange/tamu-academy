@@ -110,12 +110,12 @@ export default function LaunchLanding() {
   return (
     <div
       style={{
-        backgroundColor: '#1A130E',
+        backgroundColor: '#24150f',
         minHeight: '100vh',
         width: '100%',
         overflowX: 'hidden',
         fontFamily: "'DM Sans', sans-serif",
-        color: '#F5EFE0',
+        color: '#f8f0df',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -135,7 +135,7 @@ export default function LaunchLanding() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '1rem',
-          borderBottom: '1px solid rgba(212,161,42,0.12)',
+          borderBottom: '1px solid rgba(232,184,91,0.12)',
           flexWrap: 'wrap',
         }}
       >
@@ -144,7 +144,7 @@ export default function LaunchLanding() {
           aria-label="Tamu Academy — home"
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: 'clamp(1rem, 2vw, 1.2rem)',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -155,7 +155,7 @@ export default function LaunchLanding() {
             gap: '0.4rem',
           }}
         >
-          Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
+          Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
           <span
             className="font-body launch-topnav-attr"
             style={{
@@ -182,7 +182,7 @@ export default function LaunchLanding() {
             to="/academy"
             className="font-body launch-nav-link"
             style={{
-              color: 'rgba(245,239,224,0.85)',
+              color: 'rgba(243,234,216,0.85)',
               fontSize: '0.72rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -196,8 +196,8 @@ export default function LaunchLanding() {
             href="#early-access"
             className="font-body launch-nav-join"
             style={{
-              color: '#1A130E',
-              backgroundColor: '#D4A12A',
+              color: '#24150f',
+              backgroundColor: '#e8b85b',
               fontSize: '0.7rem',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -242,7 +242,7 @@ export default function LaunchLanding() {
           <h1
             className="font-heading"
             style={{
-              color: '#F5EFE0',
+              color: '#f8f0df',
               fontSize: 'clamp(2rem, 6vw, 3.6rem)',
               fontWeight: 400,
               lineHeight: 1.18,
@@ -259,7 +259,7 @@ export default function LaunchLanding() {
           <p
             className="font-body"
             style={{
-              color: 'rgba(245,239,224,0.78)',
+              color: 'rgba(243,234,216,0.78)',
               fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
               lineHeight: 1.7,
               fontWeight: 300,
@@ -286,8 +286,8 @@ export default function LaunchLanding() {
               className="font-body launch-cta-primary"
               style={{
                 display: 'inline-block',
-                color: '#1A130E',
-                backgroundColor: '#D4A12A',
+                color: '#24150f',
+                backgroundColor: '#e8b85b',
                 fontSize: '0.72rem',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
@@ -308,14 +308,14 @@ export default function LaunchLanding() {
               className="font-body launch-cta-secondary"
               style={{
                 display: 'inline-block',
-                color: '#F5EFE0',
+                color: '#f8f0df',
                 backgroundColor: 'transparent',
                 fontSize: '0.72rem',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
                 fontWeight: 500,
                 fontFamily: "'DM Sans', sans-serif",
-                border: '1px solid rgba(212,161,42,0.5)',
+                border: '1px solid rgba(232,184,91,0.5)',
                 borderRadius: '3px',
                 padding: '0.8rem 1.55rem',
                 textDecoration: 'none',
@@ -332,7 +332,7 @@ export default function LaunchLanding() {
             id="early-access"
             aria-labelledby="early-access-heading"
             style={{
-              borderTop: '1px solid rgba(212,161,42,0.18)',
+              borderTop: '1px solid rgba(232,184,91,0.18)',
               paddingTop: '2.25rem',
               scrollMarginTop: '90px',
             }}
@@ -341,7 +341,7 @@ export default function LaunchLanding() {
               id="early-access-heading"
               className="font-heading"
               style={{
-                color: '#F5EFE0',
+                color: '#f8f0df',
                 fontSize: 'clamp(1.4rem, 3vw, 1.9rem)',
                 fontWeight: 400,
                 letterSpacing: '0.01em',
@@ -355,7 +355,7 @@ export default function LaunchLanding() {
             <p
               className="font-body"
               style={{
-                color: 'rgba(245,239,224,0.62)',
+                color: 'rgba(243,234,216,0.62)',
                 fontSize: '0.88rem',
                 lineHeight: 1.6,
                 fontWeight: 300,
@@ -370,7 +370,7 @@ export default function LaunchLanding() {
             <p
               className="font-body"
               style={{
-                color: 'rgba(245,239,224,0.6)',
+                color: 'rgba(243,234,216,0.6)',
                 fontSize: '0.78rem',
                 lineHeight: 1.65,
                 fontWeight: 300,
@@ -378,9 +378,9 @@ export default function LaunchLanding() {
                 textAlign: 'left',
               }}
             >
-              <span style={{ color: 'rgba(245,239,224,0.78)', fontWeight: 500 }}>{c.noticeLabel}</span>{' '}
+              <span style={{ color: 'rgba(243,234,216,0.78)', fontWeight: 500 }}>{c.noticeLabel}</span>{' '}
               {c.noticeText}{' '}
-              <Link to="/privacy" className="font-body" style={{ color: '#D4A12A', textDecoration: 'underline' }}>
+              <Link to="/privacy" className="font-body" style={{ color: '#e8b85b', textDecoration: 'underline' }}>
                 {c.privacyPolicy}
               </Link>
               .
@@ -394,9 +394,9 @@ export default function LaunchLanding() {
                 aria-live="polite"
                 style={{
                   padding: '1.5rem 1.25rem',
-                  border: '1px solid rgba(212,161,42,0.28)',
+                  border: '1px solid rgba(232,184,91,0.28)',
                   borderRadius: '3px',
-                  backgroundColor: 'rgba(212,161,42,0.03)',
+                  backgroundColor: 'rgba(232,184,91,0.03)',
                   outline: 'none',
                   textAlign: 'left',
                 }}
@@ -404,7 +404,7 @@ export default function LaunchLanding() {
                 <p
                   className="font-body"
                   style={{
-                    color: 'rgba(245,239,224,0.85)',
+                    color: 'rgba(243,234,216,0.85)',
                     fontSize: '0.95rem',
                     lineHeight: 1.7,
                     fontWeight: 300,
@@ -421,14 +421,14 @@ export default function LaunchLanding() {
                   style={{
                     marginTop: '1.5rem',
                     paddingTop: '1.5rem',
-                    borderTop: '1px solid rgba(212,161,42,0.18)',
+                    borderTop: '1px solid rgba(232,184,91,0.18)',
                   }}
                 >
                   <p
                     id="launch-success-substack-heading"
                     className="font-body"
                     style={{
-                      color: 'rgba(245,239,224,0.78)',
+                      color: 'rgba(243,234,216,0.78)',
                       fontSize: '0.88rem',
                       lineHeight: 1.6,
                       fontWeight: 300,
@@ -446,8 +446,8 @@ export default function LaunchLanding() {
                     className="font-body launch-success-substack"
                     style={{
                       display: 'inline-block',
-                      color: '#1A130E',
-                      backgroundColor: '#D4A12A',
+                      color: '#24150f',
+                      backgroundColor: '#e8b85b',
                       fontSize: '0.72rem',
                       letterSpacing: '0.18em',
                       textTransform: 'uppercase',
@@ -466,7 +466,7 @@ export default function LaunchLanding() {
                   <p
                     className="font-body"
                     style={{
-                      color: 'rgba(245,239,224,0.55)',
+                      color: 'rgba(243,234,216,0.55)',
                       fontSize: '0.74rem',
                       lineHeight: 1.55,
                       fontWeight: 300,
@@ -530,14 +530,14 @@ export default function LaunchLanding() {
                     className="font-body launch-label"
                     style={{
                       display: 'block',
-                      color: 'rgba(245,239,224,0.72)',
+                      color: 'rgba(243,234,216,0.72)',
                       fontSize: '0.76rem',
                       letterSpacing: '0.1em',
                       fontWeight: 500,
                       marginBottom: '0.5rem',
                     }}
                   >
-                    {c.emailLabel} <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
+                    {c.emailLabel} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
                     <span className="launch-sr-only"> (required)</span>
                   </label>
                   <div className="launch-email-row" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -558,12 +558,12 @@ export default function LaunchLanding() {
                       className="launch-input"
                       style={{
                         width: '100%',
-                        backgroundColor: 'rgba(245,239,224,0.04)',
+                        backgroundColor: 'rgba(243,234,216,0.04)',
                         border: errors.email
                           ? '1px solid rgba(220,80,60,0.6)'
-                          : '1px solid rgba(212,161,42,0.24)',
+                          : '1px solid rgba(232,184,91,0.24)',
                         borderRadius: '3px',
-                        color: '#F5EFE0',
+                        color: '#f8f0df',
                         fontSize: '0.95rem',
                         fontFamily: "'DM Sans', sans-serif",
                         fontWeight: 300,
@@ -579,8 +579,8 @@ export default function LaunchLanding() {
                       aria-busy={status === 'submitting'}
                       className="launch-submit"
                       style={{
-                        color: status === 'submitting' ? 'rgba(26,19,14,0.6)' : '#1A130E',
-                        backgroundColor: status === 'submitting' ? 'rgba(212,161,42,0.6)' : '#D4A12A',
+                        color: status === 'submitting' ? 'rgba(26,19,14,0.6)' : '#24150f',
+                        backgroundColor: status === 'submitting' ? 'rgba(232,184,91,0.6)' : '#e8b85b',
                         fontSize: '0.72rem',
                         letterSpacing: '0.18em',
                         textTransform: 'uppercase',
@@ -640,7 +640,7 @@ export default function LaunchLanding() {
                       className="launch-checkbox"
                       style={{
                         marginTop: '0.25rem',
-                        accentColor: '#D4A12A',
+                        accentColor: '#e8b85b',
                         width: '16px',
                         height: '16px',
                         flexShrink: 0,
@@ -649,14 +649,14 @@ export default function LaunchLanding() {
                     <span
                       className="font-body"
                       style={{
-                        color: 'rgba(245,239,224,0.78)',
+                        color: 'rgba(243,234,216,0.78)',
                         fontSize: '0.85rem',
                         lineHeight: 1.6,
                         fontWeight: 300,
                       }}
                     >
                       {c.consentText}
-                      <span aria-hidden="true" style={{ color: '#D4A12A' }}>*</span>
+                      <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
                       <span className="launch-sr-only"> (required)</span>
                     </span>
                   </label>
@@ -681,13 +681,13 @@ export default function LaunchLanding() {
                       to="/privacy"
                       className="font-body"
                       style={{
-                        color: 'rgba(212,161,42,0.95)',
+                        color: 'rgba(232,184,91,0.95)',
                         fontSize: '0.74rem',
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
                         textDecoration: 'none',
                         fontWeight: 500,
-                        borderBottom: '1px solid rgba(212,161,42,0.35)',
+                        borderBottom: '1px solid rgba(232,184,91,0.35)',
                         paddingBottom: '0.15rem',
                       }}
                     >
@@ -704,7 +704,7 @@ export default function LaunchLanding() {
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: 'rgba(212,161,42,0.85)',
+                      color: 'rgba(232,184,91,0.85)',
                       fontSize: '0.74rem',
                       letterSpacing: '0.12em',
                       textTransform: 'uppercase',
@@ -727,7 +727,7 @@ export default function LaunchLanding() {
       <footer
         style={{
           padding: 'clamp(2rem, 5vw, 3rem) clamp(1.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem)',
-          borderTop: '1px solid rgba(212,161,42,0.12)',
+          borderTop: '1px solid rgba(232,184,91,0.12)',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -738,7 +738,7 @@ export default function LaunchLanding() {
         <p
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: '0.92rem',
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
@@ -746,7 +746,7 @@ export default function LaunchLanding() {
             margin: 0,
           }}
         >
-          Tamu <span style={{ color: '#D4A12A' }}>Academy</span>
+          Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
         </p>
         <p
           className="font-body"
@@ -764,7 +764,7 @@ export default function LaunchLanding() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.55)',
+            color: 'rgba(243,234,216,0.55)',
             fontSize: '0.62rem',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -777,7 +777,7 @@ export default function LaunchLanding() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.42)',
+            color: 'rgba(243,234,216,0.42)',
             fontSize: '0.72rem',
             lineHeight: 1.7,
             fontWeight: 300,
@@ -790,7 +790,7 @@ export default function LaunchLanding() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.4)',
+            color: 'rgba(243,234,216,0.4)',
             fontSize: '0.7rem',
             fontWeight: 300,
             margin: '0.3rem 0 0',
@@ -803,7 +803,7 @@ export default function LaunchLanding() {
             to="/privacy"
             className="font-body"
             style={{
-              color: 'rgba(212,161,42,0.85)',
+              color: 'rgba(232,184,91,0.85)',
               fontSize: '0.64rem',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
@@ -831,33 +831,33 @@ export default function LaunchLanding() {
           border: 0;
         }
         .launch-input:focus {
-          outline: 2px solid rgba(212,161,42,0.55);
+          outline: 2px solid rgba(232,184,91,0.55);
           outline-offset: 1px;
-          border-color: rgba(212,161,42,0.5);
+          border-color: rgba(232,184,91,0.5);
         }
         .launch-submit:focus-visible {
-          outline: 2px solid rgba(212,161,42,0.7);
+          outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
         }
         .launch-checkbox:focus-visible {
-          outline: 2px solid rgba(212,161,42,0.7);
+          outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
         }
         .launch-success-substack:focus-visible {
-          outline: 2px solid rgba(212,161,42,0.7);
+          outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
         }
         .launch-cta-primary:focus-visible,
         .launch-cta-secondary:focus-visible,
         .launch-nav-link:focus-visible,
         .launch-nav-join:focus-visible {
-          outline: 2px solid rgba(212,161,42,0.7);
+          outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
         }
-        .launch-cta-primary:hover { background-color: rgba(212,161,42,0.85); }
-        .launch-cta-secondary:hover { border-color: rgba(212,161,42,0.85); color: #D4A12A; }
-        .launch-nav-join:hover { background-color: rgba(212,161,42,0.85); }
-        .launch-nav-link:hover { color: #D4A12A; }
+        .launch-cta-primary:hover { background-color: rgba(232,184,91,0.85); }
+        .launch-cta-secondary:hover { border-color: rgba(232,184,91,0.85); color: #e8b85b; }
+        .launch-nav-join:hover { background-color: rgba(232,184,91,0.85); }
+        .launch-nav-link:hover { color: #e8b85b; }
         @media (max-width: 600px) {
           .launch-topnav-attr { display: none; }
         }

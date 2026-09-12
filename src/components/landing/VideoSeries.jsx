@@ -35,13 +35,13 @@ export default function VideoSeries() {
           className="font-body"
           style={{
             display: 'inline-block',
-            color: '#D4A12A',
+            color: '#e8b85b',
             fontSize: '0.72rem',
             letterSpacing: '0.24em',
             textTransform: 'uppercase',
             fontWeight: 500,
             padding: '0.4rem 1rem',
-            border: '1px solid rgba(212,161,42,0.3)',
+            border: '1px solid rgba(232,184,91,0.3)',
             borderRadius: '999px',
             marginBottom: '2rem',
           }}
@@ -52,7 +52,7 @@ export default function VideoSeries() {
         <h2
           className="font-heading"
           style={{
-            color: '#F5EFE0',
+            color: '#f8f0df',
             fontSize: 'clamp(2rem, 4.5vw, 3.25rem)',
             lineHeight: 1.12,
             fontWeight: 500,
@@ -65,7 +65,7 @@ export default function VideoSeries() {
         <p
           className="font-body"
           style={{
-            color: 'rgba(245,239,224,0.78)',
+            color: 'rgba(243,234,216,0.78)',
             fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
             lineHeight: 1.85,
             fontWeight: 300,
@@ -80,10 +80,10 @@ export default function VideoSeries() {
           className="font-body"
           style={{
             display: 'inline-flex', alignItems: 'center',
-            color: '#D4A12A',
+            color: '#e8b85b',
             fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
             textDecoration: 'none', fontWeight: 500,
-            border: '1px solid rgba(212,161,42,0.35)',
+            border: '1px solid rgba(232,184,91,0.35)',
             borderRadius: '2px', padding: '0.65rem 1.3rem',
           }}
         >

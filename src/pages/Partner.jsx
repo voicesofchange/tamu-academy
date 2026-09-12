@@ -45,7 +45,7 @@ const PARTNERSHIP_AREAS = [
   },
 ];
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Partner() {
   return (
@@ -79,16 +79,16 @@ export default function Partner() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.06 }}
-              style={{ padding: '1.6rem', border: '1px solid rgba(212,161,42,0.14)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+              style={{ padding: '1.6rem', border: '1px solid rgba(232,184,91,0.14)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)', display: 'flex', flexDirection: 'column', gap: '1rem' }}
             >
               <div>
-                <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.7rem', lineHeight: 1.3 }}>{area.title}</h3>
-                <p className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{area.desc}</p>
+                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.7rem', lineHeight: 1.3 }}>{area.title}</h3>
+                <p className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>{area.desc}</p>
               </div>
               <Link
                 to={area.ctaTo}
                 className="font-body"
-                style={{ color: '#D4A12A', fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, marginTop: 'auto' }}
+                style={{ color: '#e8b85b', fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, marginTop: 'auto' }}
               >
                 {area.ctaLabel} →
               </Link>
@@ -103,9 +103,9 @@ export default function Partner() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(212,161,42,0.35)', backgroundColor: 'rgba(212,161,42,0.025)', marginBottom: '3rem' }}
+        style={{ padding: '1.5rem 2rem', borderLeft: '2px solid rgba(232,184,91,0.35)', backgroundColor: 'rgba(232,184,91,0.025)', marginBottom: '3rem' }}
       >
-        <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0, fontStyle: 'italic' }}>
           "Partnerships will be considered based on alignment with Tamu Academy's mission, learner needs, ethical standards, and current capacity."
         </p>
       </motion.div>
@@ -114,7 +114,7 @@ export default function Partner() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
         <Link
           to="/contact?type=partnership"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
         >
           Discuss a Partnership →
         </Link>

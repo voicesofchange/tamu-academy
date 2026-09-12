@@ -19,30 +19,30 @@ export default function ArticleCard({ article }) {
     <article
       style={{
         padding: '1.5rem 1.75rem',
-        border: '1px solid rgba(212,161,42,0.16)',
+        border: '1px solid rgba(232,184,91,0.16)',
         borderRadius: '4px',
-        backgroundColor: 'rgba(245,239,224,0.018)',
+        backgroundColor: 'rgba(243,234,216,0.018)',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.65rem',
       }}
     >
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem' }}>
-        <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(212,161,42,0.28)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
+        <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(232,184,91,0.28)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
           {article.category}
         </span>
         {isDev && (
-          <span className="font-body" style={{ color: 'rgba(245,239,224,0.38)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(245,239,224,0.12)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
+          <span className="font-body" style={{ color: 'rgba(243,234,216,0.38)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(243,234,216,0.12)', borderRadius: '999px', padding: '0.2rem 0.65rem' }}>
             {c.inDevelopment}
           </span>
         )}
       </div>
 
-      <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.05rem, 2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
+      <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.05rem, 2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: 0 }}>
         {article.title}
       </h3>
 
-      <p className="font-body" style={{ color: 'rgba(245,239,224,0.6)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
+      <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
         {article.cardSummary || article.summary}
       </p>
 
@@ -51,7 +51,7 @@ export default function ArticleCard({ article }) {
           <span
             className="font-body"
             aria-disabled="true"
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.25)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(245,239,224,0.1)', borderRadius: '2px', padding: '0.5rem 1rem', cursor: 'default', userSelect: 'none' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.25)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, border: '1px solid rgba(243,234,216,0.1)', borderRadius: '2px', padding: '0.5rem 1rem', cursor: 'default', userSelect: 'none' }}
           >
             {c.comingSoon}
           </span>
@@ -59,7 +59,7 @@ export default function ArticleCard({ article }) {
           <Link
             to={`/articles/${article.slug}`}
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(245,239,224,0.6)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(245,239,224,0.22)', borderRadius: '2px', padding: '0.5rem 1rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.6)', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(243,234,216,0.22)', borderRadius: '2px', padding: '0.5rem 1rem' }}
           >
             {c.previewArticle} →
           </Link>
@@ -67,7 +67,7 @@ export default function ArticleCard({ article }) {
           <Link
             to={`/articles/${article.slug}`}
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.5rem 1rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.7rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.5rem 1rem' }}
           >
             {c.readArticle} →
           </Link>
@@ -78,9 +78,9 @@ export default function ArticleCard({ article }) {
           target="_blank"
           rel="noopener noreferrer"
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(212,161,42,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#D4A12A'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(212,161,42,0.7)'}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(232,184,91,0.7)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(232,184,91,0.7)'}
         >
           <ExternalLink size={11} aria-hidden="true" />
           {c.watchEpisode}

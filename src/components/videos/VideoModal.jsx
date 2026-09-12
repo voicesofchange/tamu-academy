@@ -48,7 +48,7 @@ export default function VideoModal({ lesson, onClose }) {
             width: '100%',
             maxWidth: '820px',
             backgroundColor: '#1E1410',
-            border: '1px solid rgba(212,161,42,0.22)',
+            border: '1px solid rgba(232,184,91,0.22)',
             borderRadius: '6px',
             overflow: 'hidden',
           }}
@@ -61,14 +61,14 @@ export default function VideoModal({ lesson, onClose }) {
               justifyContent: 'space-between',
               gap: '1rem',
               padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid rgba(212,161,42,0.1)',
+              borderBottom: '1px solid rgba(232,184,91,0.1)',
             }}
           >
             <div>
-              <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.35rem' }}>
+              <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.35rem' }}>
                 {lesson.category}
               </span>
-              <h2 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
+              <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.25, margin: 0 }}>
                 {lesson.title}
               </h2>
             </div>
@@ -78,9 +78,9 @@ export default function VideoModal({ lesson, onClose }) {
               style={{
                 flexShrink: 0,
                 background: 'none',
-                border: '1px solid rgba(212,161,42,0.2)',
+                border: '1px solid rgba(232,184,91,0.2)',
                 borderRadius: '2px',
-                color: 'rgba(245,239,224,0.55)',
+                color: 'rgba(243,234,216,0.55)',
                 cursor: 'pointer',
                 padding: '0.4rem',
                 display: 'flex',
@@ -116,12 +116,12 @@ export default function VideoModal({ lesson, onClose }) {
                 }}
               >
                 <svg width="52" height="52" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                  <circle cx="24" cy="24" r="22" stroke="rgba(212,161,42,0.28)" strokeWidth="1" />
-                  <circle cx="24" cy="24" r="14" stroke="rgba(212,161,42,0.16)" strokeWidth="1" />
-                  <line x1="24" y1="2" x2="24" y2="46" stroke="rgba(212,161,42,0.1)" strokeWidth="1" strokeDasharray="3 4" />
-                  <line x1="2" y1="24" x2="46" y2="24" stroke="rgba(212,161,42,0.1)" strokeWidth="1" strokeDasharray="3 4" />
+                  <circle cx="24" cy="24" r="22" stroke="rgba(232,184,91,0.28)" strokeWidth="1" />
+                  <circle cx="24" cy="24" r="14" stroke="rgba(232,184,91,0.16)" strokeWidth="1" />
+                  <line x1="24" y1="2" x2="24" y2="46" stroke="rgba(232,184,91,0.1)" strokeWidth="1" strokeDasharray="3 4" />
+                  <line x1="2" y1="24" x2="46" y2="24" stroke="rgba(232,184,91,0.1)" strokeWidth="1" strokeDasharray="3 4" />
                 </svg>
-                <span className="font-body" style={{ color: 'rgba(212,161,42,0.45)', fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
+                <span className="font-body" style={{ color: 'rgba(232,184,91,0.45)', fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
                   Coming Soon
                 </span>
               </div>
@@ -130,18 +130,18 @@ export default function VideoModal({ lesson, onClose }) {
 
           {/* Description */}
           <div style={{ padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <p className="font-body" style={{ color: 'rgba(245,239,224,0.72)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>
+            <p className="font-body" style={{ color: 'rgba(243,234,216,0.72)', fontSize: '0.93rem', lineHeight: 1.75, fontWeight: 300, margin: 0 }}>
               {lesson.description}
             </p>
 
             {lesson.discussionQuestions?.length > 0 && (
               <div>
-                <p className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
+                <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
                   Reflection Questions
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                   {lesson.discussionQuestions.map((q, i) => (
-                    <li key={i} className="font-body" style={{ color: 'rgba(245,239,224,0.65)', fontSize: '0.87rem', lineHeight: 1.65, fontWeight: 300 }}>
+                    <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.87rem', lineHeight: 1.65, fontWeight: 300 }}>
                       {q}
                     </li>
                   ))}
@@ -150,7 +150,7 @@ export default function VideoModal({ lesson, onClose }) {
             )}
 
             {lesson.duration && (
-              <p className="font-body" style={{ color: 'rgba(245,239,224,0.35)', fontSize: '0.78rem', fontWeight: 300, margin: 0 }}>
+              <p className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.78rem', fontWeight: 300, margin: 0 }}>
                 Duration: {lesson.duration}
               </p>
             )}

@@ -6,7 +6,7 @@ import StructuredData from '@/components/seo/StructuredData';
 
 export default function PageLayout({ children }) {
   return (
-    <div style={{ backgroundColor: '#1A130E', minHeight: '100vh', width: '100%', overflowX: 'hidden', fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ backgroundColor: '#24150f', minHeight: '100vh', width: '100%', overflowX: 'hidden', fontFamily: "'DM Sans', sans-serif" }}>
       <SkipLink />
       <StructuredData />
       <TopNav />
