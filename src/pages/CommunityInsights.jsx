@@ -13,12 +13,15 @@ import FollowUpInquiries from '@/components/insights/FollowUpInquiries';
 import VoicesOfChangeAnnouncement from '@/components/insights/VoicesOfChangeAnnouncement';
 import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
 import { useTranslation } from '@/lib/i18n';
+import { useAuth } from '@/lib/AuthContext';
 
 const bodyText = { color: 'rgba(245,239,224,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
 const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)' };
 
 export default function CommunityInsights() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -62,17 +65,21 @@ export default function CommunityInsights() {
         subheading={t('insights.intro')}
       />
 
-      <PageSection>
-        <FollowUpInquiries />
-      </PageSection>
+      {isAdmin && (
+        <>
+          <PageSection>
+            <FollowUpInquiries />
+          </PageSection>
 
-      <PageSection>
-        <VoicesOfChangeAnnouncement />
-      </PageSection>
+          <PageSection>
+            <VoicesOfChangeAnnouncement />
+          </PageSection>
 
-      <PageSection>
-        <VoicesOpenTracking />
-      </PageSection>
+          <PageSection>
+            <VoicesOpenTracking />
+          </PageSection>
+        </>
+      )}
 
       {loading ? (
         <PageSection heading={t('insights.loadingMessage')}>
