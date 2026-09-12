@@ -3,16 +3,19 @@ import PageMeta from '@/components/seo/PageMeta';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import PageLayout from '@/components/page/PageLayout';
-import PageHero from '@/components/page/PageHero';
-import PageSection from '@/components/page/PageSection';
-import StatusBadge from '@/components/page/StatusBadge';
-import TrackCard from '@/components/courses/TrackCard';
+import SkipLink from '@/components/a11y/SkipLink';
+import StructuredData from '@/components/seo/StructuredData';
+import TopNav from '@/components/landing/TopNav';
+import SiteFooter from '@/components/landing/SiteFooter';
+import JourneyCourseCard from '@/components/courses/journey/JourneyCourseCard';
+import JourneyTrackCard from '@/components/courses/journey/JourneyTrackCard';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
-const bodyText = { color: 'rgba(245,239,224,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+const HERO_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c5d7236bd_generated_12fdce95.jpg';
+const LESSON_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/43088212a_generated_88d7dc5c.jpg';
+const PROGRESS_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/992b69285_generated_83ba5579.jpg';
 
 const CONTENT = {
   heroEyebrow: 'Courses',
@@ -139,6 +142,15 @@ const CONTENT = {
   ],
 };
 
+const rise = (delay = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-40px' },
+  transition: { duration: 0.8, ease: 'easeOut', delay },
+});
+
+const eyebrowStyle = (color) => ({ color, fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' });
+
 export default function Courses() {
   const { content: c } = useTranslatedContent('courses', CONTENT);
   const [pubStatus, setPubStatus] = useState({});
@@ -166,167 +178,173 @@ export default function Courses() {
   }
 
   return (
-    <PageLayout>
+    <div style={{ background: '#24150f', minHeight: '100vh', overflowX: 'hidden' }}>
       <PageMeta
         title="Courses | Tamu Academy"
         description="Explore Tamu Academy's developing courses in mental health, economics, artificial intelligence, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
         path="/courses"
       />
-      <div id="learning-areas" style={{ scrollMarginTop: '90px' }} aria-hidden="true" />
-      <PageHero
-        eyebrow={c.heroEyebrow}
-        heading={c.heroHeading}
-        subheading={c.heroSubheading}
-      />
+      <SkipLink />
+      <StructuredData />
+      <TopNav />
+      <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
 
-      {/* Course Areas */}
-      {c.courseAreas.map((area, ai) => (
-        <PageSection
-          key={area.id}
-          id={area.id}
-          eyebrow={area.heritage ? c.heritageLabel : `${c.learningAreaLabel} ${area.number}`}
-          heading={area.area}
-        >
-          {area.heritage && (
-            <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', marginBottom: '1.5rem', fontStyle: 'italic', color: 'rgba(212,161,42,0.8)' }}>
-              {c.heritageNote}
-            </p>
-          )}
+        {/* Hero */}
+        <section style={{ position: 'relative', minHeight: '610px', padding: '130px clamp(1.5rem,6vw,88px) 82px', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+          <div aria-hidden style={{ position: 'absolute', inset: 0, background: `linear-gradient(90deg, rgba(36,21,15,0.97) 0%, rgba(36,21,15,0.78) 48%, rgba(36,21,15,0.25) 100%), url(${HERO_IMG}) center/cover`, opacity: 0.92 }} />
+          <motion.div {...rise(0.2)} style={{ position: 'relative', zIndex: 1, maxWidth: '690px' }}>
+            <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.heroEyebrow}</span>
+            <h1 className="font-heading" style={{ fontWeight: 400, fontSize: 'clamp(2.4rem,5.2vw,68px)', lineHeight: 1.02, letterSpacing: '-0.035em', margin: '18px 0 25px', color: '#f8f0df' }}>{c.heroHeading}</h1>
+            <p className="font-body" style={{ fontSize: 'clamp(1rem,1.5vw,18px)', lineHeight: 1.7, color: '#ddcfbb', maxWidth: '640px', margin: 0 }}>{c.heroSubheading}</p>
+            <div style={{ display: 'flex', gap: '14px', marginTop: '32px', flexWrap: 'wrap' }}>
+              <a href="#learning-areas" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.exploreCourse} →</a>
+              <Link to="/videos" className="tamu-journey-secondary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.watchVideos}</Link>
+            </div>
+          </motion.div>
+          <motion.div {...rise(0.32)} style={{ position: 'relative', zIndex: 1, marginTop: '52px', display: 'flex', alignItems: 'center', gap: '13px', color: '#c6b59e', fontSize: '12px' }} className="font-body">
+            <span>01</span>
+            <div aria-hidden style={{ height: '2px', width: 'min(245px, 40vw)', background: 'linear-gradient(90deg, #d99b37 0 32%, rgba(243,234,216,0.2) 32%)', boxShadow: '0 0 10px rgba(217,155,55,0.28)' }} />
+            <span>Learning journey</span>
+          </motion.div>
+        </section>
 
-          {area.courses.map((course) => {
-            const coursePath = course.slug ? `/courses/${course.slug}` : null;
-            return (
-            <motion.div
-              key={course.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.015)', marginBottom: '1.25rem' }}
-            >
-              <div style={{ marginBottom: '0.85rem' }}>
-                <StatusBadge label={statusFor(course)} />
+        {/* Learning Areas */}
+        <section id="learning-areas" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#faf6ec', color: '#39251b', scrollMarginTop: '90px' }}>
+          {c.courseAreas.map((area, ai) => (
+            <div key={area.id} id={area.id} style={{ marginBottom: ai < c.courseAreas.length - 1 ? '3.5rem' : 0, scrollMarginTop: '90px' }}>
+              <div style={{ marginBottom: '2rem' }}>
+                <span className="font-body" style={eyebrowStyle('#b97827')}>{area.heritage ? c.heritageLabel : `${c.learningAreaLabel} ${area.number}`}</span>
+                <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#39251b' }}>{area.area}</h2>
               </div>
-              <h3 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.85rem' }}>
-                {course.title}
-              </h3>
-              <p className="font-body" style={{ ...bodyText, margin: coursePath ? '0 0 1.25rem' : 0 }}>
-                {course.description}
-              </p>
-              {coursePath && (
-                <Link
-                  to={coursePath}
-                  style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
-                >
-                  {c.exploreCourse} &rarr;
-                </Link>
+              {area.heritage && (
+                <p className="font-body" style={{ fontSize: '15px', lineHeight: 1.7, color: '#806b58', marginBottom: '1.5rem', fontStyle: 'italic', maxWidth: '640px' }}>{c.heritageNote}</p>
               )}
-            </motion.div>
-            );
-          })}
-
-          {area.id === 'economics-and-development' && (
-            <>
-              <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginTop: '1.75rem', marginBottom: '1rem' }}>
-                {c.competencyTracks}
-              </span>
-              {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => {
-                const econPs = pubStatus['understanding-african-economies-and-the-global-system'];
-                const trackStatus = econPs && econPs.isLive ? c.nowAvailable : track.status;
-                return (
-                <div key={track.slug} style={{ marginBottom: '1.25rem' }}>
-                  <TrackCard track={{ ...track, status: trackStatus }} />
-                </div>
-                );
-              })}
-            </>
-          )}
-
-          {area.extra && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              style={{ padding: '2rem 2.25rem', border: '1px solid rgba(212,161,42,0.18)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.01)', marginTop: '1rem' }}
-            >
-              <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
-                {area.extra.eyebrow}
-              </span>
-              <div style={{ marginBottom: '0.85rem' }}>
-                <StatusBadge label={area.extra.badge} />
-              </div>
-              <h4 className="font-heading" style={{ color: '#F5EFE0', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.85rem' }}>
-                {area.extra.title}
-              </h4>
-              <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-                {area.extra.content}
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.65rem', marginBottom: '1.5rem' }}>
-                {area.extra.details.map(([label, value], di) => (
-                  <div key={di} style={{ padding: '0.9rem 1.1rem', border: '1px solid rgba(212,161,42,0.12)', borderRadius: '4px', backgroundColor: 'rgba(245,239,224,0.02)' }}>
-                    <span className="font-body" style={{ color: '#D4A12A', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
-                    <span className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>{value}</span>
-                  </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                {area.courses.map((course, ci) => (
+                  <JourneyCourseCard key={course.title} number={area.number} course={course} status={statusFor(course)} exploreLabel={c.exploreCourse} index={ci} />
                 ))}
               </div>
-              <Link
-                to={area.extra.ctaTo}
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem' }}
-              >
-                {area.extra.ctaLabel} &rarr;
-              </Link>
-            </motion.div>
-          )}
-        </PageSection>
-      ))}
-
-      {/* Course Product Model */}
-      <PageSection eyebrow={c.courseDesignEyebrow} heading={c.courseDesignHeading}>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          {c.courseDesignIntro}
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '1.5rem' }}>
-          {c.courseComponents.map((comp, ci) => (
-            <span key={ci} className="font-body" style={{ color: 'rgba(245,239,224,0.78)', fontSize: '0.83rem', border: '1px solid rgba(212,161,42,0.22)', borderRadius: '2px', padding: '0.35rem 0.85rem', fontWeight: 400 }}>{comp}</span>
+              {area.id === 'economics-and-development' && (
+                <div style={{ marginTop: '2rem' }}>
+                  <span className="font-body" style={{ color: '#b97827', fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}>{c.competencyTracks}</span>
+                  {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => {
+                    const econPs = pubStatus['understanding-african-economies-and-the-global-system'];
+                    const trackStatus = econPs && econPs.isLive ? c.nowAvailable : track.status;
+                    return <div key={track.slug} style={{ marginBottom: '1.25rem' }}><JourneyTrackCard track={{ ...track, status: trackStatus }} /></div>;
+                  })}
+                </div>
+              )}
+              {area.extra && (
+                <motion.div {...rise()} className="tamu-course-card" style={{ marginTop: '2rem', padding: '28px', background: 'rgba(255,255,255,0.5)', border: '1px solid #dac7ab', borderRadius: '4px' }}>
+                  <span className="font-body" style={{ color: '#b97827', fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>{area.extra.eyebrow}</span>
+                  <div style={{ marginBottom: '0.85rem' }}>
+                    <span className="font-body" style={{ color: '#9b5d1d', border: '1px solid #d7b57c', borderRadius: '20px', padding: '6px 10px', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{area.extra.badge}</span>
+                  </div>
+                  <h4 className="font-heading" style={{ color: '#39251b', fontSize: '24px', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.85rem' }}>{area.extra.title}</h4>
+                  <p className="font-body" style={{ color: '#796552', fontSize: '14px', lineHeight: 1.7, marginBottom: '1.25rem' }}>{area.extra.content}</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: '0.65rem', marginBottom: '1.5rem' }}>
+                    {area.extra.details.map(([label, value], di) => (
+                      <div key={di} style={{ padding: '14px 18px', border: '1px solid #dcc8a8', borderRadius: '4px', background: '#fffaf1' }}>
+                        <span className="font-body" style={{ color: '#b97827', fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>{label}</span>
+                        <span className="font-body" style={{ color: '#725a46', fontSize: '13px', lineHeight: 1.6 }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link to={area.extra.ctaTo} className="font-body" style={{ display: 'inline-flex', alignItems: 'center', color: '#9b5d1d', fontSize: '11px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, borderBottom: '1px solid #c18a36', paddingBottom: '2px', transition: 'color 0.25s ease' }}>{area.extra.ctaLabel} →</Link>
+                </motion.div>
+              )}
+            </div>
           ))}
-        </div>
-      </PageSection>
+        </section>
 
-      {/* Open Learning */}
-      <PageSection eyebrow={c.openLearningEyebrow} heading={c.openLearningHeading}>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          {c.openLearningBody}
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-          <Link
-            to="/videos"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#1A130E', backgroundColor: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #D4A12A', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-          >
-            {c.watchVideos} →
-          </Link>
-          <Link
-            to="/articles"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-          >
-            {c.readArticles} →
-          </Link>
-        </div>
-      </PageSection>
+        {/* Course Design / Lessons */}
+        <section id="lessons" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#302018', color: '#f3ead8' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: '35px', marginBottom: '37px', flexWrap: 'wrap' }}>
+            <div>
+              <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.courseDesignEyebrow}</span>
+              <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#f3ead8' }}>{c.courseDesignHeading}</h2>
+            </div>
+            <p className="font-body" style={{ maxWidth: '480px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{c.courseDesignIntro}</p>
+          </div>
+          <div className="tamu-lesson-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,300px) 1fr', gap: '42px', alignItems: 'start' }}>
+            <aside style={{ border: '1px solid rgba(232,184,91,0.3)', background: 'rgba(255,255,255,0.045)', padding: '22px', borderRadius: '4px' }}>
+              <h3 className="font-heading" style={{ fontWeight: 400, fontSize: '23px', margin: '0 0 21px', color: '#f3ead8' }}>Course Components</h3>
+              {c.courseComponents.map((comp, ci) => (
+                <div key={ci} className="font-body" style={{ display: 'flex', gap: '12px', padding: '15px 0', borderTop: ci === 0 ? '2px solid #d99b37' : '1px solid rgba(243,234,216,0.13)', fontSize: '13px', lineHeight: 1.45, color: '#f8f0df' }}>
+                  <span aria-hidden style={{ width: '18px', height: '18px', border: '1px solid #d99b37', borderRadius: '50%', flex: 'none', marginTop: '1px', position: 'relative', background: '#d99b37' }}>
+                    <span style={{ position: 'absolute', width: '7px', height: '3px', borderLeft: '2px solid #302018', borderBottom: '2px solid #302018', transform: 'rotate(-45deg)', left: '5px', top: '5px' }} />
+                  </span>
+                  <span>{comp}</span>
+                </div>
+              ))}
+            </aside>
+            <motion.article animate={{ y: [0, 8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'relative', padding: '36px 42px', minHeight: '405px', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '5px', overflow: 'hidden', background: '#3a261c' }}>
+              <div aria-hidden style={{ position: 'absolute', inset: 0, background: `linear-gradient(rgba(58,38,28,0.84),rgba(58,38,28,0.94)), url(${LESSON_IMG}) center/cover`, opacity: 0.7 }} />
+              <div style={{ position: 'relative' }}>
+                <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.courseComponents[0]}</span>
+                <h3 className="font-heading" style={{ fontSize: 'clamp(1.6rem,3vw,38px)', fontWeight: 400, lineHeight: 1.1, margin: '15px 0 18px', color: '#f8f0df' }}>{c.courseComponents[1]}</h3>
+                <p className="font-body" style={{ maxWidth: '650px', fontSize: '15px', lineHeight: 1.8, color: '#d9cbb8', margin: '0 0 25px' }}>{c.courseComponents.slice(2).join(', ')}.</p>
+                <div className="font-body" style={{ display: 'flex', gap: '28px', color: '#e8b85b', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', flexWrap: 'wrap' }}>
+                  <span>{c.courseComponents.length} components</span>
+                  <span>Under development</span>
+                </div>
+                <div className="font-body" style={{ marginTop: '30px', borderTop: '1px solid rgba(243,234,216,0.18)', paddingTop: '22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#e3d5c2', fontSize: '13px', flexWrap: 'wrap', gap: '8px' }}>
+                  <span>What a complete course includes</span>
+                  <strong style={{ color: '#e8b85b', fontWeight: 400 }}>{c.courseComponents.length} components</strong>
+                </div>
+              </div>
+            </motion.article>
+          </div>
+        </section>
 
-      {/* Institutional */}
-      <PageSection eyebrow={c.institutionsEyebrow} heading={c.institutionsHeading}>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          {c.institutionsBody}
-        </p>
-        <Link
-          to="/contact?inquiry=university-or-institutional-partnership"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#D4A12A', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(212,161,42,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-        >
-          {c.discussPartnership} →
-        </Link>
-      </PageSection>
+        {/* Open Learning / Progress */}
+        <section id="progress" style={{ position: 'relative', padding: '76px clamp(1.5rem,6vw,88px)', background: '#e9dcc5', overflow: 'hidden' }}>
+          <div aria-hidden style={{ position: 'absolute', right: 0, top: 0, width: '47%', height: '100%', background: `linear-gradient(90deg, #e9dcc5 0%, rgba(233,220,197,0.7) 28%, rgba(233,220,197,0.15)), url(${PROGRESS_IMG}) center/cover`, opacity: 0.75 }} />
+          <div style={{ position: 'relative', maxWidth: '520px' }}>
+            <span className="font-body" style={eyebrowStyle('#b97827')}>{c.openLearningEyebrow}</span>
+            <h2 className="font-heading" style={{ fontWeight: 400, fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, margin: '12px 0 19px', color: '#39251b' }}>{c.openLearningHeading}</h2>
+            <p className="font-body" style={{ fontSize: '15px', lineHeight: 1.75, color: '#806b58', margin: '0 0 1.75rem' }}>{c.openLearningBody}</p>
+            <div style={{ display: 'flex', gap: '48px', margin: '33px 0', flexWrap: 'wrap' }}>
+              <div>
+                <strong className="font-heading" style={{ display: 'block', fontSize: '38px', fontWeight: 400, color: '#a8671e' }}>{String(c.courseAreas.length).padStart(2, '0')}</strong>
+                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Learning Areas</span>
+              </div>
+              <div>
+                <strong className="font-heading" style={{ display: 'block', fontSize: '38px', fontWeight: 400, color: '#a8671e' }}>{String(c.courseComponents.length).padStart(2, '0')}</strong>
+                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Course Components</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+              <Link to="/videos" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.watchVideos} →</Link>
+              <Link to="/articles" className="tamu-journey-secondary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.readArticles} →</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Course Components grid */}
+        <section style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#faf6ec', color: '#39251b' }}>
+          <div style={{ marginBottom: '37px' }}>
+            <span className="font-body" style={eyebrowStyle('#b97827')}>{c.courseDesignEyebrow}</span>
+            <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#39251b' }}>Course Components</h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+            {c.courseComponents.map((comp, ci) => (
+              <div key={ci} className="font-body" style={{ border: '1px solid #dcc8a8', padding: '18px 20px', color: '#725a46', fontSize: '14px', background: '#fffaf1' }}>{comp}</div>
+            ))}
+          </div>
+        </section>
+
+        {/* Institutions / Final */}
+        <section style={{ padding: '80px clamp(1.5rem,6vw,88px)', background: '#24150f', textAlign: 'center' }}>
+          <span className="font-body" style={{ ...eyebrowStyle('#e8b85b'), display: 'block', marginBottom: '1rem' }}>{c.institutionsEyebrow}</span>
+          <h2 className="font-heading" style={{ fontSize: 'clamp(2rem,4vw,47px)', fontWeight: 400, margin: '0 0 18px', color: '#f8f0df' }}>{c.institutionsHeading}</h2>
+          <p className="font-body" style={{ maxWidth: '600px', margin: '0 auto 28px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7 }}>{c.institutionsBody}</p>
+          <Link to="/contact?inquiry=university-or-institutional-partnership" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.discussPartnership} →</Link>
+        </section>
+
+      </main>
+      <SiteFooter />
       <TamuGuideWidget />
-    </PageLayout>
+    </div>
   );
 }

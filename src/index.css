@@ -33,6 +33,46 @@ html {
   opacity: 1 !important;
 }
 
+/* Learner journey (Courses page) */
+.tamu-journey-primary {
+  background: #d99b37;
+  color: #24150f;
+  border: 1px solid #d99b37;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+.tamu-journey-primary:hover {
+  background: #efbb5f;
+  box-shadow: 0 8px 22px rgba(217,155,55,0.22);
+}
+.tamu-journey-secondary {
+  border: 1px solid rgba(232,184,91,0.55);
+  color: #e8b85b;
+  background: transparent;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+.tamu-journey-secondary:hover {
+  background: rgba(232,184,91,0.12);
+  color: #f8f0df;
+}
+.tamu-journey-primary:focus-visible,
+.tamu-journey-secondary:focus-visible {
+  outline: 2px solid #e8b85b;
+  outline-offset: 4px;
+}
+.tamu-course-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tamu-course-card:hover {
+  transform: translateY(-4px);
+  border-color: #c18a36;
+  box-shadow: 0 14px 28px rgba(79,49,27,0.12);
+}
+@media (max-width: 760px) {
+  .tamu-lesson-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
