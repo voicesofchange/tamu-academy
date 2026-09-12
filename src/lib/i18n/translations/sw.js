@@ -16,6 +16,7 @@ export default {
     privacy: 'Faragha',
     stories: 'Hadithi',
     insights: 'Maarifa',
+    explore: 'Chunguza',
     signIn: 'Ingia',
     signOut: 'Toka',
     createAccount: 'Fungua Akaunti',

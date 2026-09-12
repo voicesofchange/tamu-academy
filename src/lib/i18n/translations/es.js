@@ -16,6 +16,7 @@ export default {
     privacy: 'Privacidad',
     stories: 'Historias',
     insights: 'Análisis',
+    explore: 'Explorar',
     signIn: 'Iniciar Sesión',
     signOut: 'Cerrar Sesión',
     createAccount: 'Crear Cuenta',
