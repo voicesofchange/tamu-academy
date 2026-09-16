@@ -15,7 +15,8 @@
       "title": "Message Type",
       "enum": [
         "announcement",
-        "follow_up"
+        "follow_up",
+        "learner_welcome"
       ]
     },
     "sent_at": {

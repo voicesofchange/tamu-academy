@@ -2,8 +2,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 
 // Public site URL used in the email body.
 const SITE_URL = 'https://tamuacademy.org';
-// Tracking pixel endpoint (function URL on the published app).
-const TRACKING_PIXEL_BASE = 'https://tamu-learn-global.base44.app/functions/trackEmailOpen';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_RECIPIENTS = 200;
 const SEND_BATCH = 10;
@@ -77,38 +75,7 @@ const parseEmails = (raw) => {
   return result;
 };
 
-const utf8Base64 = (str) => {
-  const bytes = new TextEncoder().encode(str);
-  let binary = '';
-  for (const b of bytes) binary += String.fromCharCode(b);
-  return btoa(binary);
-};
-
-// Build a raw MIME message addressed to a single recipient (per-recipient tracking).
-const buildRawMime = (fromEmail, toEmail, subject, text, html) => {
-  const boundary = 'tamu_boundary_' + Math.random().toString(36).slice(2);
-  const mime = [
-    `From: Tamu Academy <${fromEmail}>`,
-    `To: ${toEmail}`,
-    `Subject: ${subject}`,
-    `MIME-Version: 1.0`,
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
-    '',
-    `--${boundary}`,
-    `Content-Type: text/plain; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
-    '',
-    utf8Base64(text),
-    `--${boundary}`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
-    '',
-    utf8Base64(html),
-    `--${boundary}--`,
-    '',
-  ].join('\r\n');
-  return btoa(mime).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-};
+import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
 
 export default async function (req) {
   try {
@@ -161,9 +128,8 @@ export default async function (req) {
     await base44.asServiceRole.entities.EmailOpenEvent.bulkCreate(records);
 
     const sendOne = async (email, token) => {
-      const pixel = `<img src="${TRACKING_PIXEL_BASE}?t=${token}" width="1" height="1" alt="" style="display:none;border:0;outline:none;" />`;
-      const html = message.html + pixel;
-      const raw = buildRawMime(fromEmail, email, message.subject, message.text, html);
+      const html = message.html + trackingPixel(token);
+      const raw = buildRawMime('Tamu Academy', fromEmail, email, message.subject, message.text, html);
       try {
         const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',
