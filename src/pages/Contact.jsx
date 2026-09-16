@@ -51,7 +51,7 @@ export default function Contact() {
       />
 
       <PageSection>
-        <p className="font-body" style={bodyText}>{c.introP}</p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>{c.introP}</p>
       </PageSection>
 
       {/* Who we hear from */}

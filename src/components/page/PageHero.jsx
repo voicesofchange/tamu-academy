@@ -38,7 +38,7 @@ export default function PageHero({ eyebrow, heading, subheading }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
             className="font-heading"
-            style={{ color: 'rgba(232,184,91,0.9)', fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: 0, maxWidth: '680px' }}
+            style={{ color: 'rgba(232,184,91,0.9)', fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: '0 auto', maxWidth: '680px', textAlign: 'center' }}
           >
             {subheading}
           </motion.p>

@@ -46,8 +46,8 @@ export default function Resources() {
 
       {/* Introductory content */}
       <PageSection>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>{c.introP1}</p>
-        <p className="font-body" style={bodyText}>{c.introP2}</p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: '0 auto 1.25rem', textAlign: 'center' }}>{c.introP1}</p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>{c.introP2}</p>
       </PageSection>
 
       {/* Anchor navigation to resource areas */}

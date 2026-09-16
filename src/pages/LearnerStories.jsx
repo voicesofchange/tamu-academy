@@ -22,7 +22,7 @@ export default function LearnerStories() {
         eyebrow={t('stories.eyebrow')}
         heading={t('stories.heading')}
       >
-        <p style={{ color: 'rgba(243,234,216,0.7)', fontFamily: "'DM Sans', sans-serif", fontSize: '1rem', lineHeight: 1.7, maxWidth: '640px' }}>
+        <p style={{ color: 'rgba(243,234,216,0.7)', fontFamily: "'DM Sans', sans-serif", fontSize: '1rem', lineHeight: 1.7, maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>
           {t('stories.intro')}
         </p>
       </PageSection>
@@ -32,7 +32,7 @@ export default function LearnerStories() {
       </PageSection>
 
       <PageSection heading={t('stories.submitHeading')}>
-        <p style={{ color: 'rgba(243,234,216,0.6)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.92rem', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '640px' }}>
+        <p style={{ color: 'rgba(243,234,216,0.6)', fontFamily: "'DM Sans', sans-serif", fontSize: '0.92rem', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '640px', margin: '0 auto 2rem', textAlign: 'center' }}>
           {t('stories.submitIntro')}
         </p>
         <LearnerStoryForm />
