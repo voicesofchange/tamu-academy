@@ -200,12 +200,9 @@ export default function TopNav() {
               style={{
                 ...linkBaseStyle,
                 color: exploreActive ? '#e8b85b' : 'rgba(243,234,216,0.78)',
-                borderBottom: exploreActive ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
                 background: 'none',
                 border: 'none',
-                borderBottomWidth: '1px',
-                borderBottomStyle: 'solid',
-                borderBottomColor: exploreActive ? 'rgba(232,184,91,0.5)' : 'transparent',
+                borderBottom: exploreActive ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -222,9 +219,9 @@ export default function TopNav() {
                 style={{
                   position: 'absolute',
                   top: '100%',
-                  right: 0,
+                  left: 0,
                   marginTop: '0.6rem',
-                  minWidth: '180px',
+                  minWidth: '200px',
                   backgroundColor: 'rgba(20,14,10,0.96)',
                   backdropFilter: 'blur(12px)',
                   border: '1px solid rgba(232,184,91,0.18)',
@@ -243,13 +240,15 @@ export default function TopNav() {
                       className="tamu-nav-link"
                       style={{
                         display: 'block',
+                        textAlign: 'left',
+                        boxSizing: 'border-box',
                         color: active ? '#e8b85b' : 'rgba(243,234,216,0.75)',
                         fontSize: '0.68rem',
                         letterSpacing: '0.15em',
                         textTransform: 'uppercase',
                         fontWeight: 500,
                         textDecoration: 'none',
-                        padding: '0.6rem 1.1rem',
+                        padding: '0.6rem 1.2rem',
                         borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
                         transition: 'background-color 0.2s ease, color 0.2s ease',
                       }}
