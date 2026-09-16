@@ -32,8 +32,8 @@ const CONTENT = {
     title: a.title,
     description: a.description,
     category: a.category,
-    status: a.status,
-  })),
+    status: a.status
+  }))
 };
 
 export default function Articles() {
@@ -48,7 +48,7 @@ export default function Articles() {
   // Merge translated article text with original article data
   const translatedArticles = ARTICLES.map((article, i) => ({
     ...article,
-    ...(c.articles?.[i] || {}),
+    ...(c.articles?.[i] || {})
   }));
 
   return (
@@ -56,8 +56,8 @@ export default function Articles() {
       <PageMeta
         title="Articles | Tamu Academy"
         description="Read Tamu Academy articles expanding on episodes about wellbeing, public policy, economics, institutions, culture, and global systems."
-        path="/articles"
-      />
+        path="/articles" />
+      
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Articles' }]} />
@@ -65,29 +65,29 @@ export default function Articles() {
       <PageHero
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
-        subheading={c.heroSubheading}
-      />
+        subheading={c.heroSubheading} />
+      
 
       {/* ── Hero CTAs ─────────────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.5 }}
-        style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '4rem' }}
-      >
+        style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '4rem' }} className="px-64">
+        
         <a
           href="#article-collection"
           onClick={handleBrowse}
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-        >
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}>
+          
           {c.browseArticles}
         </a>
         <Link
           to="/videos"
           className="font-body"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-        >
+          style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}>
+          
           {c.watchEpisodes}
         </Link>
       </motion.div>
@@ -106,9 +106,9 @@ export default function Articles() {
             backgroundColor: 'rgba(232,184,91,0.025)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.75rem',
-          }}
-        >
+            gap: '0.75rem'
+          }}>
+          
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
             {c.welcomeEpisodeLabel}
           </span>
@@ -121,8 +121,8 @@ export default function Articles() {
           <Link
             to="/videos"
             className="font-body"
-            style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginTop: '0.25rem' }}
-          >
+            style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginTop: '0.25rem' }}>
+            
             {c.watchWelcomeEpisode}
           </Link>
         </motion.div>
@@ -136,17 +136,17 @@ export default function Articles() {
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {translatedArticles.map((article, i) => (
-              <motion.div
-                key={article.slug}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.06 }}
-              >
+            {translatedArticles.map((article, i) =>
+            <motion.div
+              key={article.slug}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.06 }}>
+              
                 <ArticleCard article={article} />
               </motion.div>
-            ))}
+            )}
           </div>
         </PageSection>
       </div>
@@ -157,8 +157,8 @@ export default function Articles() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{ marginBottom: '2rem', padding: '2rem 2.5rem', border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', textAlign: 'center' }}
-      >
+        style={{ marginBottom: '2rem', padding: '2rem 2.5rem', border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', textAlign: 'center' }}>
+        
         <p className="font-heading" style={{ color: 'rgba(243,234,216,0.55)', fontSize: 'clamp(0.95rem, 1.8vw, 1.2rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.7, margin: '0 0 1.5rem' }}>
           {c.progressionNote}
         </p>
@@ -166,19 +166,19 @@ export default function Articles() {
           <Link
             to="/videos"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-          >
+            style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}>
+            
             {c.watchEpisodes}
           </Link>
           <Link
             to="/resources"
             className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(243,234,216,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-          >
+            style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(243,234,216,0.18)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}>
+            
             {c.exploreResources}
           </Link>
         </div>
       </motion.div>
-    </PageLayout>
-  );
+    </PageLayout>);
+
 }
