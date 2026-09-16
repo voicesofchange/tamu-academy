@@ -21,6 +21,15 @@ export function utf8Base64(str) {
 }
 
 /**
+ * RFC 2047 encode a header value if it contains non-ASCII characters.
+ */
+function encodeHeader(value) {
+  const hasNonAscii = [...value].some((ch) => ch.charCodeAt(0) > 127);
+  if (!hasNonAscii) return value;
+  return `=?UTF-8?B?${utf8Base64(value)}?=`;
+}
+
+/**
  * Build a raw RFC 2822 MIME message (URL-safe base64) addressed to a
  * single recipient, with multipart/alternative text + HTML bodies.
  */
@@ -29,7 +38,7 @@ export function buildRawMime(fromName, fromEmail, toEmail, subject, text, html) 
   const mime = [
     `From: "${fromName}" <${fromEmail}>`,
     `To: ${toEmail}`,
-    `Subject: ${subject}`,
+    `Subject: ${encodeHeader(subject)}`,
     `MIME-Version: 1.0`,
     `Content-Type: multipart/alternative; boundary="${boundary}"`,
     '',
