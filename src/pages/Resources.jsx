@@ -51,7 +51,7 @@ export default function Resources() {
       </PageSection>
 
       {/* Anchor navigation to resource areas */}
-      <PageSection heading={c.areasHeading}>
+      <PageSection heading={c.areasHeading} tone="tinted">
         <nav aria-label="Jump to resource area" style={{ marginBottom: '3.5rem' }}>
           <ul
             style={{

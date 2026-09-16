@@ -376,7 +376,7 @@ export default function Videos() {
       </PageSection>
 
       {/* ── Browse by Topic ───────────────────────────────────────────────── */}
-      <PageSection id="topics" eyebrow={c.topicsEyebrow} heading={c.topicsHeading}>
+      <PageSection id="topics" eyebrow={c.topicsEyebrow} heading={c.topicsHeading} tone="tinted">
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '1.75rem' }}>
           {c.topicsIntro}
         </p>

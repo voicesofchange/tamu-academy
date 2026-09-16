@@ -27,7 +27,7 @@ export default function LearnerStories() {
         </p>
       </PageSection>
 
-      <PageSection heading={t('stories.featuredHeading')}>
+      <PageSection heading={t('stories.featuredHeading')} tone="tinted">
         <FeaturedStories />
       </PageSection>
 

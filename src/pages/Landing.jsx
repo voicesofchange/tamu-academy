@@ -2,16 +2,15 @@ import React from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import TopNav from '@/components/landing/TopNav';
 import Hero from '@/components/landing/Hero';
-import HomePurpose from '@/components/landing/HomePurpose';
-import LivingKnowledgeMap from '@/components/landing/LivingKnowledgeMap';
-import CourseTracks from '@/components/landing/CourseTracks';
-import Approach from '@/components/landing/Approach';
-import HomeVideoPreview from '@/components/landing/HomeVideoPreview';
-import HomeCurrentStage from '@/components/landing/HomeCurrentStage';
-import HomeArticlesPreview from '@/components/landing/HomeArticlesPreview';
-import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
+import HomeRoleEntry from '@/components/landing/HomeRoleEntry';
 import HowTamuWorks from '@/components/landing/HowTamuWorks';
-import HomeInstitutionalLearning from '@/components/landing/HomeInstitutionalLearning';
+import HomeProofStats from '@/components/landing/HomeProofStats';
+import CourseTracks from '@/components/landing/CourseTracks';
+import LivingKnowledgeMap from '@/components/landing/LivingKnowledgeMap';
+import HomeLearnerVoices from '@/components/landing/HomeLearnerVoices';
+import HomePurpose from '@/components/landing/HomePurpose';
+import HomeGoDeeper from '@/components/landing/HomeGoDeeper';
+import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
 import SiteFooter from '@/components/landing/SiteFooter';
 
 // Temporary public front door. While the academy and its first learning
@@ -43,27 +42,25 @@ export default function Landing() {
       />
       <TopNav />
       <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
-        {/* 1. Hero */}
+        {/* 1. Hero — mission-first promise */}
         <Hero />
-        {/* 2. Purpose + Why Interdisciplinary */}
-        <HomePurpose />
-        {/* 3. Living Knowledge Map */}
-        <LivingKnowledgeMap />
-        {/* 4. Learning Areas preview */}
-        <CourseTracks />
-        {/* 5. How Tamu Academy Works */}
+        {/* 2. Role-based entry — "Begin as a…" */}
+        <HomeRoleEntry />
+        {/* 3. How it works — 4 numbered steps */}
         <HowTamuWorks />
-        {/* 6. Learning Model */}
-        <Approach />
-        {/* 7. Video Series preview */}
-        <HomeVideoPreview />
-        {/* 8. Articles Preview */}
-        <HomeArticlesPreview />
-        {/* 9. Institutional Learning */}
-        <HomeInstitutionalLearning />
-        {/* 10. Current Stage */}
-        <HomeCurrentStage />
-        {/* 11. Final CTA */}
+        {/* 4. Proof stats — clean stat row */}
+        <HomeProofStats />
+        {/* 5. Learning areas */}
+        <CourseTracks />
+        {/* 6. Knowledge connections */}
+        <LivingKnowledgeMap />
+        {/* 7. Learner voices */}
+        <HomeLearnerVoices />
+        {/* 8. Values — mission & interdisciplinary purpose */}
+        <HomePurpose />
+        {/* 9. Go deeper — articles, videos, resources */}
+        <HomeGoDeeper />
+        {/* 10. Final CTA */}
         <HomeFinalCTA />
       </main>
       <SiteFooter />

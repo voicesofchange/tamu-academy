@@ -55,7 +55,7 @@ export default function Contact() {
       </PageSection>
 
       {/* Who we hear from */}
-      <PageSection heading={c.whoHeading}>
+      <PageSection heading={c.whoHeading} tone="tinted">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>{c.whoP1}</p>
         <p className="font-body" style={mutedText}>
           {c.whoP2Prefix} <em>{c.whoP2Em}</em> {c.whoP2Suffix}
@@ -78,7 +78,7 @@ export default function Contact() {
       </PageSection>
 
       {/* Community note — preserved */}
-      <PageSection heading={c.communityHeading}>
+      <PageSection heading={c.communityHeading} tone="tinted">
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>{c.communityP1}</p>
         <p className="font-body" style={bodyText}>{c.communityP2}</p>
       </PageSection>

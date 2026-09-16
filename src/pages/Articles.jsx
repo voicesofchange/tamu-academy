@@ -130,7 +130,7 @@ export default function Articles() {
 
       {/* ── Article Collection ────────────────────────────────────────────── */}
       <div id="article-collection" ref={collectionRef} style={{ scrollMarginTop: '90px' }}>
-        <PageSection eyebrow={c.articlesEyebrow} heading={c.articlesHeading}>
+        <PageSection eyebrow={c.articlesEyebrow} heading={c.articlesHeading} tone="tinted">
           <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.93rem', lineHeight: 1.8, fontWeight: 300, marginBottom: '2rem' }}>
             {c.articlesIntro}
           </p>

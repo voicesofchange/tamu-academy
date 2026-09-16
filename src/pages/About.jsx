@@ -89,7 +89,7 @@ export default function About() {
       </PageSection>
 
       {/* Three Pillars */}
-      <PageSection heading={c.pillarsHeading}>
+      <PageSection heading={c.pillarsHeading} tone="tinted">
         <p className={bodyTextClass} style={bodyText}>{c.pillarsIntro}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', margin: '1.5rem 0 1.5rem' }}>
           {c.pillars.map((pillar) => (
@@ -112,7 +112,7 @@ export default function About() {
       </PageSection>
 
       {/* Vision */}
-      <PageSection eyebrow={c.visionEyebrow}>
+      <PageSection eyebrow={c.visionEyebrow} tone="tinted">
         <blockquote style={{ borderLeft: '2px solid rgba(232,184,91,0.45)', paddingLeft: '1.5rem', margin: '0' }}>
           <p className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.7, margin: 0 }}>
             "{c.visionQuote}"
@@ -140,7 +140,7 @@ export default function About() {
       </PageSection>
 
       {/* Our Approach */}
-      <PageSection heading={c.approachHeading}>
+      <PageSection heading={c.approachHeading} tone="tinted">
         <p className={bodyTextClass} style={bodyText}>{c.approachIntro}</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '0.5rem' }}>
           {c.approachMethods.map((m) => (
@@ -157,7 +157,7 @@ export default function About() {
       </PageSection>
 
       {/* Current Learning */}
-      <PageSection heading={c.currentHeading}>
+      <PageSection heading={c.currentHeading} tone="tinted">
         <p className={bodyTextClass} style={bodyText}>{c.currentP1}</p>
         <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem', marginBottom: '1.25rem' }}>{c.currentP2}</p>
         <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>{c.ctaWatch}</Link>

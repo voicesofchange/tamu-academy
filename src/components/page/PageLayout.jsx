@@ -13,7 +13,7 @@ export default function PageLayout({ children }) {
       <main
         id="tamu-main"
         tabIndex={-1}
-        style={{ maxWidth: '900px', margin: '0 auto', padding: '8rem clamp(1.5rem, 6vw, 4rem) 6rem', outline: 'none' }}
+        style={{ outline: 'none' }}
       >
         {children}
       </main>
