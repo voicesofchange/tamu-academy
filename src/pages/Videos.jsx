@@ -316,7 +316,7 @@ export default function Videos() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.45 }}
         className="font-body"
-        style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', marginBottom: '1.25rem' }}
+        style={{ color: 'rgba(243,234,216,0.65)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, maxWidth: '640px', margin: '0 auto 1.25rem', textAlign: 'center' }}
       >
         {c.introP1}
       </motion.p>
@@ -326,7 +326,7 @@ export default function Videos() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut', delay: 0.55 }}
         className="font-body"
-        style={{ color: 'rgba(243,234,216,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', marginBottom: '4rem', fontStyle: 'italic' }}
+        style={{ color: 'rgba(243,234,216,0.52)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, maxWidth: '640px', margin: '0 auto 4rem', textAlign: 'center', fontStyle: 'italic' }}
       >
         {c.introP2}
       </motion.p>
