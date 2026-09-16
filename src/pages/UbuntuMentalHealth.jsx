@@ -18,6 +18,8 @@ const CONTENT = {
   courseEyebrow: 'Course',
   overviewEyebrow: 'Overview',
   overviewHeading: 'Course Description',
+  audienceEyebrow: 'Audience',
+  audienceHeading: 'Who This Course Is For',
   outcomesEyebrow: 'Learning Outcomes',
   outcomesHeading: 'Competencies You Will Develop',
   pathEyebrow: 'Learning Path',
@@ -88,6 +90,11 @@ export default function UbuntuMentalHealth() {
             </div>
           ))}
         </div>
+      </CourseOverviewSection>
+
+      {/* Audience */}
+      <CourseOverviewSection surface="light" eyebrow={c.audienceEyebrow} heading={c.audienceHeading}>
+        <p className="font-body" style={{ ...lightBody, margin: 0 }}>{course.whoThisCourseIsFor}</p>
       </CourseOverviewSection>
 
       {/* Outcomes */}

@@ -5,6 +5,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -77,6 +78,10 @@ export default function MhModuleShell({ course, module: mod }) {
         course={course.title}
         coursePath={coursePath}
         moduleLabel={mod.number}
+      />
+      <ModuleProgressBar
+        current={moduleIndex + 1}
+        total={course.modules.length}
       />
 
       <header style={{ marginBottom: '2.5rem' }}>
