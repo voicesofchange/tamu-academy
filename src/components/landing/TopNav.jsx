@@ -219,15 +219,16 @@ export default function TopNav() {
                 style={{
                   position: 'absolute',
                   top: '100%',
-                  left: 0,
-                  marginTop: '0.6rem',
+                  right: 0,
+                  marginTop: '0.4rem',
                   minWidth: '200px',
                   backgroundColor: 'rgba(20,14,10,0.96)',
                   backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(232,184,91,0.18)',
+                  border: '1px solid rgba(232,184,91,0.2)',
                   borderRadius: '4px',
-                  padding: '0.4rem 0',
-                  boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
+                  overflow: 'hidden',
+                  zIndex: 100,
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
                 }}
               >
                 {EXPLORE_LINKS.map(({ key, to }) => {
@@ -240,6 +241,7 @@ export default function TopNav() {
                       className="tamu-nav-link"
                       style={{
                         display: 'block',
+                        width: '100%',
                         textAlign: 'left',
                         boxSizing: 'border-box',
                         color: active ? '#e8b85b' : 'rgba(243,234,216,0.75)',
@@ -248,8 +250,9 @@ export default function TopNav() {
                         textTransform: 'uppercase',
                         fontWeight: 500,
                         textDecoration: 'none',
-                        padding: '0.6rem 1.2rem',
+                        padding: '0.65rem 1rem',
                         borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
+                        borderBottom: '1px solid rgba(232,184,91,0.08)',
                         transition: 'background-color 0.2s ease, color 0.2s ease',
                       }}
                     >
