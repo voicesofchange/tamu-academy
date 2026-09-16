@@ -13,6 +13,14 @@ import { SITE_URL } from '../../shared/linkedin-posting-config.js';
 export default async function(req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Admin-only: this function is triggered by the learner story featured
+    // workflow. Reject any direct call from non-admin or anonymous callers.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = await req.json().catch(() => ({}));
     const storyId = body.story_id || body.entity_id;
     if (!storyId) {

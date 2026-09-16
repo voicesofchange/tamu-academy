@@ -15,11 +15,19 @@ import { SITE_URL, CERTIFICATE_MILESTONES } from '../../shared/linkedin-posting-
 export default async function(req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Admin-only: this function is triggered by the certificate milestone
+    // workflow. Reject any direct call from non-admin or anonymous callers.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = await req.json().catch(() => ({}));
     const certificateId = body.certificate_id || body.entity_id;
 
-    // Count all valid certificates (service role bypasses RLS).
-    const certs = await base44.entities.CourseCertificate.filter({ status: 'valid' }).catch(() => []);
+    // Count all valid certificates (service role bypasses RLS for a global count).
+    const certs = await base44.asServiceRole.entities.CourseCertificate.filter({ status: 'valid' }).catch(() => []);
     const count = Array.isArray(certs) ? certs.length : 0;
 
     if (!CERTIFICATE_MILESTONES.includes(count)) {

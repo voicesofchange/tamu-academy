@@ -64,18 +64,26 @@ function buildModuleList() {
 export default async function(req: Request): Promise<Response> {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Admin-only: this function is triggered by a scheduled workflow.
+    // Reject any direct call from non-admin or anonymous callers.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const modules = buildModuleList();
     const publishedModules = modules.filter((m) => m.published);
 
     // First-run seeding: if no 'module_live' announcements exist at all,
     // seed all currently-published modules as 'seeded' (no posts).
-    const existing = await base44.entities.LinkedInAnnouncement.filter({ event_type: 'module_live' }).catch(() => []);
+    const existing = await base44.asServiceRole.entities.LinkedInAnnouncement.filter({ event_type: 'module_live' }).catch(() => []);
     const isFirstRun = !Array.isArray(existing) || existing.length === 0;
 
     if (isFirstRun && publishedModules.length > 0) {
       for (const m of publishedModules) {
         try {
-          await base44.entities.LinkedInAnnouncement.create({
+          await base44.asServiceRole.entities.LinkedInAnnouncement.create({
             event_type: 'module_live',
             ref_id: m.module_slug,
             org_urn: '',

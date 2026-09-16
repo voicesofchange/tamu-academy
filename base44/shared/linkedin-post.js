@@ -26,7 +26,7 @@ export async function postToLinkedInOrgs(base44, { message, event_type, ref_id }
 
   // Dedup: skip if already announced (posted or seeded).
   try {
-    const existing = await base44.entities.LinkedInAnnouncement.filter({ event_type, ref_id });
+    const existing = await base44.asServiceRole.entities.LinkedInAnnouncement.filter({ event_type, ref_id });
     if (Array.isArray(existing) && existing.length > 0) {
       return { skipped: true, reason: 'already_announced' };
     }
@@ -73,7 +73,7 @@ export async function postToLinkedInOrgs(base44, { message, event_type, ref_id }
 
       const status = res.ok ? 'posted' : 'failed';
       try {
-        await base44.entities.LinkedInAnnouncement.create({
+        await base44.asServiceRole.entities.LinkedInAnnouncement.create({
           event_type,
           ref_id,
           org_urn: orgUrn,
@@ -89,7 +89,7 @@ export async function postToLinkedInOrgs(base44, { message, event_type, ref_id }
       results.push({ org_urn: orgUrn, status, post_id: postId, error: errorText });
     } catch (err) {
       try {
-        await base44.entities.LinkedInAnnouncement.create({
+        await base44.asServiceRole.entities.LinkedInAnnouncement.create({
           event_type,
           ref_id,
           org_urn: orgUrn,
