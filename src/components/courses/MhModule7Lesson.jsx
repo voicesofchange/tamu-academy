@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import PageMeta from '@/components/seo/PageMeta';
+import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
+import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
+import StatusBadge from '@/components/page/StatusBadge';
+import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import MhMwangazaScenario from '@/components/courses/MhMwangazaScenario';
 import MhStoryLab from '@/components/courses/MhStoryLab';
 import MhModule7KnowledgeCheck from '@/components/courses/MhModule7KnowledgeCheck';
 import MhModule7Progress from '@/components/courses/MhModule7Progress';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
 
-const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
+const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
-const headingStyle = { color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' };
-const sectionStyle = { marginBottom: '2.5rem' };
-const boxStyle = { padding: '1.3rem 1.5rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
+const termHeading = { color: '#f8f0df', fontSize: 'clamp(1.05rem, 2.2vw, 1.3rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.55rem' };
+const competencyBoxStyle = { padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', marginTop: '1.5rem' };
+const disclaimerBoxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.28)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)', marginTop: '1.5rem' };
+const boxStyle = { padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', marginBottom: '1.5rem' };
 const linkStyle = { color: '#e8b85b', textDecoration: 'none', borderBottom: '1px dotted rgba(232,184,91,0.5)' };
 
 function renderRichText(text) {
@@ -23,13 +33,23 @@ function renderRichText(text) {
   });
 }
 
-export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) {
+function renderParagraphs(paragraphs) {
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0) return null;
+  return paragraphs.map((p, i) => (
+    <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{renderRichText(p)}</p>
+  ));
+}
+
+export default function MhModule7Lesson({ course, module: mod, lesson }) {
+  const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
+  const coursePath = `/courses/${course.slug}`;
+  const modulePath = `${coursePath}/${mod.route}`;
+  const moduleSlug = mod.route;
+
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [mediaReviewed, setMediaReviewed] = useState({});
   const [mediaAckPending, setMediaAckPending] = useState(false);
   const [mediaAckError, setMediaAckError] = useState(false);
-  const courseSlug = 'mental-health-community-and-culture';
-  const moduleSlug = 'module-7';
 
   function toggleMediaSession(key) {
     setMediaReviewed((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -42,7 +62,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
     setMediaAckPending(true); setMediaAckError(false);
     try {
       await base44.functions.invoke('updateMentalHealthProgress', {
-        courseSlug, moduleRoute: moduleSlug, action: 'acknowledge_module7_requirement', requirementKey: 'core-media-reviewed',
+        courseSlug: course.slug, moduleRoute: moduleSlug, action: 'acknowledge_module7_requirement', requirementKey: 'core-media-reviewed',
       });
       setRefreshTrigger((t) => t + 1);
     } catch (err) {
@@ -55,12 +75,12 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
   function renderExplanationSection(section) {
     return (
       <div key={section.sectionId} id={section.sectionId} style={{ marginBottom: '1.75rem' }}>
-        <h3 className="font-heading" style={{ ...headingStyle, fontSize: '1.15rem' }}>{section.heading}</h3>
+        <h3 className="font-heading" style={{ ...termHeading, fontSize: '1.15rem' }}>{section.heading}</h3>
         {section.paragraphs && section.paragraphs.map((p, i) => (
           <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{renderRichText(p)}</p>
         ))}
         {section.numberedItems && (
-          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '0.85rem' }}>
+          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.4rem', marginBottom: '0.85rem' }}>
             {section.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{renderRichText(item)}</li>)}
           </ol>
         )}
@@ -68,7 +88,7 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
           <div key={bi} style={{ marginTop: '0.85rem' }}>
             {block.label && <p className="font-body" style={{ ...bodyText, fontWeight: 400, marginBottom: '0.5rem' }}>{renderRichText(block.label)}</p>}
             {block.numberedItems && (
-              <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '0.85rem' }}>
+              <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.4rem', marginBottom: '0.85rem' }}>
                 {block.numberedItems.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{renderRichText(item)}</li>)}
               </ol>
             )}
@@ -81,11 +101,11 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
     );
   }
 
-  function renderMediaSession(session, idx) {
+  function renderMediaSession(session) {
     const isReviewed = !!mediaReviewed[session.key];
     return (
       <div key={session.key} style={{ marginBottom: '1.75rem' }}>
-        <h3 className="font-heading" style={{ ...headingStyle, fontSize: '1.1rem' }}>{session.title}</h3>
+        <h3 className="font-heading" style={{ ...termHeading, fontSize: '1.1rem' }}>{session.title}</h3>
         <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
           <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Hosts:</strong> {session.hosts} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Publisher:</strong> {session.publisher} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Length:</strong> {session.approximateLength}
         </p>
@@ -109,179 +129,197 @@ export default function MhModule7Lesson({ course, module: moduleMeta, lesson }) 
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#24150f', padding: '2rem 1.5rem 4rem' }}>
-      <div style={{ maxWidth: '780px', margin: '0 auto' }}>
+    <ModuleLessonLayout>
+      <PageMeta
+        title={`${mod.number}: ${mod.title} | Tamu Academy`}
+        description={mod.description}
+        path={modulePath}
+        noindex
+      />
+
+      <ModuleBreadcrumbs
+        pillar={course.learningArea}
+        track={course.title}
+        course={course.title}
+        coursePath={coursePath}
+        moduleLabel={mod.number}
+      />
+      <ModuleProgressBar
+        current={course.modules.findIndex((m) => m.route === mod.route) + 1}
+        total={course.modules.length}
+      />
+
+      <header style={{ marginBottom: '3rem' }}>
         <ModuleEmblem />
-        <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{course.title}</p>
-        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.75rem', fontWeight: 400, lineHeight: 1.2, marginBottom: '0.5rem' }}>Roots of Resilience: Storytelling, Survival, and Collective Healing</h1>
-        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '2rem' }}>{moduleMeta.estimatedTime}</p>
-        <GoldDivider width="220px" margin="0 0 2rem" />
-
-        {/* Module Overview */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Module Overview</h2>
-          {lesson.moduleOverview.paragraphs.map((p, i) => (
-            <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{p}</p>
-          ))}
-          <div style={boxStyle}>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Core competency</span>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.moduleOverview.competency}</p>
-          </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
+          <StatusBadge label={mod.number} />
+          <StatusBadge label={mod.status} />
         </div>
+        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
+          {mod.title}
+        </h1>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
+          {c.learningArea}: {course.learningArea}
+        </p>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
+          {c.estimatedTime}: {mod.estimatedTime}
+        </p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
+          aria-hidden="true"
+        >
+          <GoldDivider width="220px" />
+        </motion.div>
+      </header>
 
-        {/* Learning Objectives */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Learning Objectives</h2>
-          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem' }}>
-            {lesson.learningObjectives.objectives.map((obj, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{obj}</li>)}
-          </ol>
-          <div style={boxStyle}>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Required educational disclaimer</span>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.learningObjectives.earlyDisclaimer}</p>
-          </div>
+      {/* 1. Module Overview */}
+      <ModuleLessonSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.moduleOverviewHeadingAlt}>
+        {renderParagraphs(lesson.moduleOverview.paragraphs)}
+        <div style={competencyBoxStyle}>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.moduleCompetency}</span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.moduleOverview.competency}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Content Safety Note */}
+      {/* 2. Learning Objectives */}
+      <ModuleLessonSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.learningObjectives.objectives.map((obj, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{obj}</li>)}
+        </ol>
+        <div style={disclaimerBoxStyle} aria-label={c.disclaimerLabel}>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.learningObjectives.earlyDisclaimer}</p>
+        </div>
+      </ModuleLessonSection>
+
+      {/* 3. Content Safety Note */}
+      <ModuleLessonSection id="content-safety-note" eyebrow={c.contentSafetyNote} heading={c.contentSafetyNote}>
         <div style={boxStyle}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Content safety note</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.contentSafetyNote}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Organizational Attribution */}
+      {/* 4. Organizational Attribution */}
+      <ModuleLessonSection id="organizational-attribution" eyebrow="Organizational attribution" heading="Organizational Attribution">
         <div style={boxStyle}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Organizational attribution</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.organizationalAttribution}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Core Media */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Anchor Media</h2>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
-          {lesson.coreMedia.sessions.map((session, idx) => renderMediaSession(session, idx))}
-          {allMediaReviewed && (
-            <div style={{ marginTop: '1rem' }}>
-              <button type="button" disabled={mediaAckPending} onClick={handleMarkMediaReviewed} className="font-body"
-                style={{ color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
-                {mediaAckPending ? 'Saving...' : 'Mark all media reviewed'}
-              </button>
-              {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>We could not save your progress. Please try again.</p>}
-            </div>
-          )}
-        </div>
+      {/* 5. Core Media — Anchor Media with review checkboxes */}
+      <ModuleLessonSection id="core-media" eyebrow={c.coreMediaEyebrow} heading="Anchor Media">
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
+        {lesson.coreMedia.sessions.map((session) => renderMediaSession(session))}
+        {allMediaReviewed && (
+          <div style={{ marginTop: '1rem' }}>
+            <button type="button" disabled={mediaAckPending} onClick={handleMarkMediaReviewed} className="font-body"
+              style={{ color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
+              {mediaAckPending ? 'Saving...' : 'Mark all media reviewed'}
+            </button>
+            {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>We could not save your progress. Please try again.</p>}
+          </div>
+        )}
+      </ModuleLessonSection>
 
-        {/* Questions to Consider */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Questions to Consider While Listening</h2>
-          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem' }}>
-            {lesson.questionsToConsider.map((q, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{q}</li>)}
-          </ol>
-        </div>
+      {/* 6. Questions to Consider */}
+      <ModuleLessonSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading="Questions to Consider While Listening">
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.questionsToConsider.map((q, i) => <li key={i} style={{ marginBottom: '0.85rem' }}>{q}</li>)}
+        </ol>
+      </ModuleLessonSection>
 
-        {/* Tamu Introduction */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Original Tamu Academy Introduction</h2>
-          {lesson.tamuIntroduction.paragraphs.map((p, i) => (
-            <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{p}</p>
-          ))}
-        </div>
+      {/* 7. Original Tamu Academy Introduction */}
+      <ModuleLessonSection id="tamu-introduction" eyebrow={c.introEyebrow} heading={c.introHeading}>
+        {renderParagraphs(lesson.tamuIntroduction.paragraphs)}
+      </ModuleLessonSection>
 
-        {/* Explanation Sections */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Explanation</h2>
-          {lesson.explanation.map(renderExplanationSection)}
-        </div>
+      {/* 8. Explanation */}
+      <ModuleLessonSection id="explanation" eyebrow={c.explanationEyebrow} heading="Explanation">
+        {lesson.explanation.map(renderExplanationSection)}
+      </ModuleLessonSection>
 
-        {/* Scenario Safety Note */}
+      {/* 9. Scenario Safety Note */}
+      <ModuleLessonSection id="scenario-safety-note" eyebrow="Before the scenario and STORY Lab" heading="Before the Scenario and STORY Lab">
         <div style={boxStyle}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Before the scenario and STORY Lab</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.scenarioSafetyNote}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Interactive Scenario */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>Interactive Scenario: {lesson.interactiveScenario.title}</h2>
-          <MhMwangazaScenario courseSlug={courseSlug} moduleSlug={moduleSlug} scenario={lesson.interactiveScenario} />
+      {/* 10. Interactive Scenario */}
+      <ModuleLessonSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={`Interactive Scenario: ${lesson.interactiveScenario.title}`}>
+        <MhMwangazaScenario courseSlug={course.slug} moduleSlug={moduleSlug} scenario={lesson.interactiveScenario} />
+      </ModuleLessonSection>
+
+      {/* 11. STORY Lab */}
+      <ModuleLessonSection id="story-lab" eyebrow={lesson.storyLab.eyebrow} heading={lesson.storyLab.title}>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.storyLab.subtitle}</p>
+        <MhStoryLab courseSlug={course.slug} moduleRoute={moduleSlug} lab={lesson.storyLab} onCompleted={() => setRefreshTrigger((t) => t + 1)} />
+      </ModuleLessonSection>
+
+      {/* 12. Private Reflection */}
+      <ModuleLessonSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{lesson.privateReflection.prompt}</p>
+        <div style={disclaimerBoxStyle} aria-label="Privacy notice">
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.privacy}</span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{lesson.privateReflection.privacyNotice}</p>
         </div>
+        <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', marginTop: '1rem', marginBottom: 0 }}>{lesson.privateReflection.optionalNote}</p>
+      </ModuleLessonSection>
 
-        {/* STORY Lab */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.storyLab.title}</h2>
-          <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>{lesson.storyLab.eyebrow}</p>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.storyLab.subtitle}</p>
-          <MhStoryLab courseSlug={courseSlug} moduleRoute={moduleSlug} lab={lesson.storyLab} onCompleted={() => setRefreshTrigger((t) => t + 1)} />
+      {/* 13. Knowledge Check */}
+      <ModuleLessonSection id="knowledge-check" eyebrow={c.knowledgeCheckEyebrow} heading={lesson.knowledgeCheck.heading}>
+        <MhModule7KnowledgeCheck courseSlug={course.slug} moduleSlug={moduleSlug} quiz={lesson.knowledgeCheck} onGraded={() => setRefreshTrigger((t) => t + 1)} />
+      </ModuleLessonSection>
+
+      {/* 14. Module Closing */}
+      <ModuleLessonSection id="closing-section" eyebrow={c.closingEyebrow} heading={lesson.closing.heading}>
+        {renderParagraphs(lesson.closing.paragraphs)}
+        <div style={disclaimerBoxStyle} aria-label={c.disclaimerLabel}>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.closing.finalDisclaimer}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Private Reflection */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.privateReflection.heading}</h2>
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{lesson.privateReflection.prompt}</p>
-          <div style={boxStyle}>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Privacy notice</span>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{lesson.privateReflection.privacyNotice}</p>
-          </div>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem' }}>{lesson.privateReflection.optionalNote}</p>
+      {/* 15. Completion Requirements */}
+      <ModuleLessonSection id="completion-requirements" eyebrow={c.requirementsEyebrow} heading={lesson.completionRequirements.heading}>
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.completionRequirements.items.map((item, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>)}
+        </ol>
+        <MhModule7Progress courseSlug={course.slug} moduleRoute={moduleSlug} completionRequirements={lesson.completionRequirements} progressTracking={lesson.progressTracking} refreshTrigger={refreshTrigger} />
+      </ModuleLessonSection>
+
+      {/* 16. Optional Extended Assignment */}
+      <ModuleLessonSection id="optional-extended-assignment" eyebrow={lesson.optionalExtendedAssignment.label} heading={lesson.optionalExtendedAssignment.heading}>
+        <p className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{lesson.optionalExtendedAssignment.instruction}</p>
+        <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
+          {lesson.optionalExtendedAssignment.requirements.map((req, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{req}</li>)}
+        </ol>
+        <div style={disclaimerBoxStyle} aria-label={c.personalDisclosure}>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.personalDisclosure}</span>
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
         </div>
+      </ModuleLessonSection>
 
-        {/* Knowledge Check */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.knowledgeCheck.heading}</h2>
-          <MhModule7KnowledgeCheck courseSlug={courseSlug} moduleSlug={moduleSlug} quiz={lesson.knowledgeCheck} onGraded={() => setRefreshTrigger((t) => t + 1)} />
-        </div>
-
-        {/* Closing */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.closing.heading}</h2>
-          {lesson.closing.paragraphs.map((p, i) => (
-            <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{p}</p>
+      {/* 17. Sources and Further Learning */}
+      <ModuleLessonSection id="sources-further-learning" eyebrow={c.sourcesEyebrow} heading={lesson.sourcesFurtherLearning.heading}>
+        <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem', listStyle: 'none' }}>
+          {lesson.sourcesFurtherLearning.items.map((src, i) => (
+            <li key={i} style={{ marginBottom: '0.85rem' }}>
+              <span style={{ display: 'block', marginBottom: '0.35rem' }}>{src.citation}</span>
+              {src.url && <a href={src.url} target="_blank" rel="noopener noreferrer" style={{ ...linkStyle, overflowWrap: 'anywhere', wordBreak: 'break-all' }}>{src.url}</a>}
+            </li>
           ))}
-          <div style={boxStyle}>
-            <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.closing.finalDisclaimer}</p>
-          </div>
-        </div>
+        </ul>
+        {lesson.sourcesFurtherLearning.reviewNote && (
+          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginTop: '1.5rem', marginBottom: 0 }}>{lesson.sourcesFurtherLearning.reviewNote}</p>
+        )}
+      </ModuleLessonSection>
 
-        {/* Completion Requirements */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.completionRequirements.heading}</h2>
-          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem' }}>
-            {lesson.completionRequirements.items.map((item, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{item}</li>)}
-          </ol>
-        </div>
-
-        {/* Optional Extended Assignment */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.optionalExtendedAssignment.heading}</h2>
-          <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>{lesson.optionalExtendedAssignment.label}</p>
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{lesson.optionalExtendedAssignment.instruction}</p>
-          <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1rem' }}>
-            {lesson.optionalExtendedAssignment.requirements.map((req, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{req}</li>)}
-          </ol>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem' }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
-        </div>
-
-        {/* Sources */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.sourcesFurtherLearning.heading}</h2>
-          <ul className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', listStyle: 'none' }}>
-            {lesson.sourcesFurtherLearning.items.map((src, i) => (
-              <li key={i} style={{ marginBottom: '0.6rem' }}>
-                {src.citation} {src.url && <a href={src.url} target="_blank" rel="noopener noreferrer" style={linkStyle}>Source</a>}
-              </li>
-            ))}
-          </ul>
-          <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem' }}>{lesson.sourcesFurtherLearning.reviewNote}</p>
-        </div>
-
-        {/* Progress Tracking */}
-        <div style={sectionStyle}>
-          <h2 className="font-heading" style={headingStyle}>{lesson.progressTracking.heading}</h2>
-          <MhModule7Progress courseSlug={courseSlug} moduleRoute={moduleSlug} completionRequirements={lesson.completionRequirements} progressTracking={lesson.progressTracking} refreshTrigger={refreshTrigger} />
-        </div>
-
-        <GoldDivider width="260px" margin="0 0 2rem" />
-
-        {/* Navigation */}
-        <MhModuleNav course={course} module={moduleMeta} courseSlug={courseSlug} />
-      </div>
-    </div>
+      {/* 18. Previous and next module navigation */}
+      <GoldDivider width="260px" margin="0 0 2rem" />
+      <MhModuleNav course={course} module={mod} courseSlug={course.slug} />
+    </ModuleLessonLayout>
   );
 }
