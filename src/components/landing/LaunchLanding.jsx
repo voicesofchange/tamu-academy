@@ -9,8 +9,8 @@ const CONTENT = {
   navAttr: 'A Waiyaki House learning venture',
   exploreAcademy: 'Explore the Academy',
   joinEarlyAccess: 'Join Early Access',
-  headline1: 'Learn the systems shaping Africa.',
-  headline2: 'Build what comes next.',
+  headline1: "Tamu — 'Sweet' learning",
+  headline2: 'for a connected world.',
   supportingCopy: 'Culturally grounded learning in economics, governance, technology, wellbeing, history, and global affairs.',
   formHeading: 'Join Early Access',
   formDescription: 'Receive course-launch updates and early-access information.',
@@ -121,7 +121,7 @@ export default function LaunchLanding() {
       }}
     >
       <PageMeta
-        title="Tamu Academy — Learn the Systems Shaping Africa"
+        title="Tamu Academy | Tamu 'Sweet' learning for a connected world"
         description="Tamu Academy is a learning venture of Waiyaki House, developing practical, culturally grounded learning in economics, governance, public policy, global affairs, and social change. Join the early-access list for launch updates."
         path="/"
       />

@@ -36,7 +36,7 @@ export default function Landing() {
       }}
     >
       <PageMeta
-        title="Tamu Academy | Diaspora-Rooted Expert-Led Online Courses"
+        title="Tamu Academy | Tamu 'Sweet' learning for a connected world"
         description="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses in mental health, economics, AI, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
         path="/"
       />
