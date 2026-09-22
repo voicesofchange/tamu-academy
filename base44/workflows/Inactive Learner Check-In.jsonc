@@ -1,0 +1,45 @@
+{
+  "description": "Sends a motivational check-in email to learners who have been inactive for more than 7 days. Runs daily at 9am Pacific.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "America/Los_Angeles",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "name": "Inactive Learner Check-In",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "inactive_learner_check_in",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_check_ins": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sendInactiveLearnerCheckIn",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send check-in emails to inactive learners",
+            "description": "Finds learners inactive 7+ days and emails them"
+          }
+        }
+      }
+    ]
+  }
+}

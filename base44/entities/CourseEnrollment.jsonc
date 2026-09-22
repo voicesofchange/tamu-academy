@@ -45,6 +45,11 @@
       "title": "Certificate Eligible",
       "default": false
     },
+    "last_check_in_sent_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Last Motivational Check-In Sent At"
+    },
     "updated_at": {
       "type": "string",
       "format": "date-time",
