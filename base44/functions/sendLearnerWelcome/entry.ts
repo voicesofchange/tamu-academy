@@ -144,30 +144,11 @@ export default async function (req: Request): Promise<Response> {
     const targetLearnerId = body.learner_id || null;
 
     // --- Authentication / Authorization ---
-    let user = null;
-    try {
-      user = await base44.auth.me();
-    } catch (_) {
-      user = null;
-    }
-
-    if (user) {
-      // Authenticated direct call — admin only.
-      if (user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
-    } else {
-      // Unauthenticated call (workflow path) — must pass a data integrity
-      // check: a CourseEnrollment record must exist for the given learner.
-      if (!targetLearnerId) {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
-      const enrollments = await base44.asServiceRole.entities.CourseEnrollment.filter({
-        learner_id: targetLearnerId,
-      }).catch(() => []);
-      if (!enrollments || enrollments.length === 0) {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
+    // Admin-only: this function is triggered by a workflow that injects admin
+    // auth. Reject any direct call from non-admin or anonymous callers.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // --- Gmail connection ---

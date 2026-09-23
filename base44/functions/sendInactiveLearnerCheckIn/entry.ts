@@ -95,16 +95,12 @@ export default async function (req: Request): Promise<Response> {
     const dryRun = body.dry_run === true;
 
     // --- Authentication / Authorization ---
-    let user = null;
-    try {
-      user = await base44.auth.me();
-    } catch (_) {
-      user = null;
-    }
-    if (user && user.role !== 'admin') {
+    // Admin-only: this function is triggered by a scheduled workflow that
+    // injects admin auth. Reject any direct call from non-admin or anonymous callers.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
-    // Unauthenticated (workflow) path is allowed to proceed.
 
     // --- Gmail connection ---
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
