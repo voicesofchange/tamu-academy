@@ -155,6 +155,44 @@ export default async function(req: Request): Promise<Response> {
       completion_statement: courseConfig.completionStatement,
     });
 
+    // Email the learner a notification with a link to view and download
+    // their certificate. Only sent when a new certificate is created
+    // (not on idempotent re-calls). Failures are logged but never block
+    // the certificate creation response.
+    try {
+      const learner = await base44.asServiceRole.entities.User.get(learnerId);
+      const learnerEmail = learner?.email;
+      if (learnerEmail) {
+        const certUrl = `https://tamuacademy.org/courses/${courseSlug}/certificate`;
+        const firstName = learnerName ? learnerName.split(' ')[0] : 'there';
+        const subject = `Your Tamu Academy Certificate — ${courseTitle}`;
+        const textBody =
+          `Dear ${firstName},\n\n` +
+          `Congratulations on completing ${courseTitle}! Your certificate of completion is now ready.\n\n` +
+          `View and download your certificate here:\n${certUrl}\n\n` +
+          `You can also access it anytime from My Courses after signing in.\n\n` +
+          `Asante for learning with us,\n` +
+          `Tex Wambui, MPA\nTamu Academy\nhttps://tamuacademy.org`;
+        const htmlBody =
+          `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">` +
+          `<p>Dear ${firstName},</p>` +
+          `<p>Congratulations on completing <strong>${courseTitle}</strong>! Your certificate of completion is now ready.</p>` +
+          `<p><a href="${certUrl}" style="color:#D4A12A;">View and download your certificate</a></p>` +
+          `<p style="color:#4a3a2a;">You can also access it anytime from My Courses after signing in.</p>` +
+          `<p>Asante for learning with us,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>` +
+          `<a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>` +
+          `</div>`;
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: learnerEmail,
+          subject,
+          body: textBody,
+          html: htmlBody,
+        });
+      }
+    } catch (emailErr) {
+      console.warn('[issueCourseCertificate] Certificate email failed:', emailErr && emailErr.message);
+    }
+
     // Only return the verification_code to authenticated callers (the
     // learner or an admin). Unauthenticated callers (the internal workflow)
     // do not need it — the workflow does not use the return value — and

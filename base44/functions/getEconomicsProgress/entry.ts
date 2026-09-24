@@ -81,7 +81,7 @@ export default async function(req: Request): Promise<Response> {
       const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
         learner_id: user.id,
         course_slug: courseSlug,
-        status: 'active',
+        status: { $in: ['active', 'completed'] },
       });
       eligibleToSave = !!(enrollmentRows && enrollmentRows.length > 0);
     }
