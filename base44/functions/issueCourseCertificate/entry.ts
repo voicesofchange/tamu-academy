@@ -185,7 +185,7 @@ export default async function(req: Request): Promise<Response> {
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: learnerEmail,
           subject,
-          body: textBody,
+          text: textBody,
           html: htmlBody,
         });
       }
