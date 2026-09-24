@@ -7,8 +7,8 @@ import SkipLink from '@/components/a11y/SkipLink';
 import StructuredData from '@/components/seo/StructuredData';
 import TopNav from '@/components/landing/TopNav';
 import SiteFooter from '@/components/landing/SiteFooter';
-import JourneyCourseCard from '@/components/courses/journey/JourneyCourseCard';
 import JourneyTrackCard from '@/components/courses/journey/JourneyTrackCard';
+import CoursePreviewCard from '@/components/courses/journey/CoursePreviewCard';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
@@ -51,6 +51,15 @@ const CONTENT = {
           status: 'Available',
           description:
             'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
+          visual: {
+            icon: 'Heart',
+            accent: 'rgba(197,90,56,0.28)',
+            meta: [
+              { icon: 'Layers', label: '7 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
+              { icon: 'BarChart', label: 'Introductory' },
+            ],
+          },
         },
       ],
       extra: null,
@@ -66,6 +75,15 @@ const CONTENT = {
           status: 'Available',
           description:
             "A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa's position within the global economy.",
+          visual: {
+            icon: 'TrendingUp',
+            accent: 'rgba(217,155,55,0.30)',
+            meta: [
+              { icon: 'Layers', label: '6 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
+              { icon: 'BarChart', label: 'Introductory' },
+            ],
+          },
         },
       ],
       extra: null,
@@ -80,6 +98,14 @@ const CONTENT = {
           status: 'In Development',
           description:
             'A practical and critical introduction to generative AI, responsible use, bias, digital citizenship, work, governance, and technological change.',
+          visual: {
+            icon: 'Cpu',
+            accent: 'rgba(86,128,138,0.26)',
+            meta: [
+              { icon: 'Clock', label: 'In development' },
+              { icon: 'BarChart', label: 'Applied' },
+            ],
+          },
         },
       ],
       extra: null,
@@ -94,6 +120,14 @@ const CONTENT = {
           status: 'In Development',
           description:
             'A course exploring public policy, institutions, implementation, accountability, community participation, policy analysis, and writing for public decision-making.',
+          visual: {
+            icon: 'Landmark',
+            accent: 'rgba(122,90,56,0.28)',
+            meta: [
+              { icon: 'Clock', label: 'In development' },
+              { icon: 'BarChart', label: 'Applied' },
+            ],
+          },
         },
       ],
       extra: {
@@ -124,6 +158,14 @@ const CONTENT = {
           status: 'In Development',
           description:
             'A research- and memory-based course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
+          visual: {
+            icon: 'Scroll',
+            accent: 'rgba(197,130,50,0.26)',
+            meta: [
+              { icon: 'Clock', label: 'In development' },
+              { icon: 'BarChart', label: 'Research-based' },
+            ],
+          },
         },
       ],
       extra: null,
@@ -221,7 +263,7 @@ export default function Courses() {
               )}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
                 {area.courses.map((course, ci) => (
-                  <JourneyCourseCard key={course.title} number={area.number} course={course} status={statusFor(course)} exploreLabel={c.exploreCourse} index={ci} />
+                  <CoursePreviewCard key={course.title} number={area.number} course={course} status={statusFor(course)} exploreLabel={c.exploreCourse} visual={course.visual} index={ci} />
                 ))}
               </div>
               {area.id === 'economics-and-development' && (
