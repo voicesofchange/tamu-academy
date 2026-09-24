@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
-import { getCourseConfig } from '../../shared/course-registry.js';
+import { getCourseConfig, getRequiredModuleRoutes } from '../../shared/course-registry.js';
+import { generateCertificatePdfBase64 } from '../../shared/certificate-pdf.js';
 
 /**
  * issueCourseCertificate — workflow-facing backend function.
@@ -155,38 +156,50 @@ export default async function(req: Request): Promise<Response> {
       completion_statement: courseConfig.completionStatement,
     });
 
-    // Email the learner a notification with a link to view and download
-    // their certificate. Only sent when a new certificate is created
-    // (not on idempotent re-calls). Failures are logged but never block
-    // the certificate creation response.
+    // Email the learner a notification with the certificate attached as a
+    // PDF so they can view it without logging in. Only sent when a new
+    // certificate is created (not on idempotent re-calls). Failures are
+    // logged but never block the certificate creation response.
     try {
       const learner = await base44.asServiceRole.entities.User.get(learnerId);
       const learnerEmail = learner?.email;
       if (learnerEmail) {
-        const certUrl = `https://tamuacademy.org/courses/${courseSlug}/certificate`;
         const firstName = learnerName ? learnerName.split(' ')[0] : 'there';
         const subject = `Your Tamu Academy Certificate — ${courseTitle}`;
         const textBody =
           `Dear ${firstName},\n\n` +
-          `Congratulations on completing ${courseTitle}! Your certificate of completion is now ready.\n\n` +
-          `View and download your certificate here:\n${certUrl}\n\n` +
-          `You can also access it anytime from My Courses after signing in.\n\n` +
+          `Congratulations on completing ${courseTitle}! Your certificate of completion is attached to this email as a PDF.\n\n` +
+          `You can also access it anytime from My Courses after signing in at https://tamuacademy.org\n\n` +
           `Asante for learning with us,\n` +
           `Tex Wambui, MPA\nTamu Academy\nhttps://tamuacademy.org`;
         const htmlBody =
           `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">` +
           `<p>Dear ${firstName},</p>` +
-          `<p>Congratulations on completing <strong>${courseTitle}</strong>! Your certificate of completion is now ready.</p>` +
-          `<p><a href="${certUrl}" style="color:#D4A12A;">View and download your certificate</a></p>` +
-          `<p style="color:#4a3a2a;">You can also access it anytime from My Courses after signing in.</p>` +
+          `<p>Congratulations on completing <strong>${courseTitle}</strong>! Your certificate of completion is attached to this email as a PDF.</p>` +
+          `<p style="color:#4a3a2a;">You can also access it anytime from My Courses after signing in at <a href="https://tamuacademy.org" style="color:#D4A12A;">tamuacademy.org</a>.</p>` +
           `<p>Asante for learning with us,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>` +
           `<a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>` +
           `</div>`;
+
+        // Generate the certificate PDF as base64 for attachment.
+        const moduleCount = getRequiredModuleRoutes(courseSlug).length || 6;
+        const pdfBase64 = await generateCertificatePdfBase64(
+          {
+            learnerName,
+            courseTitle,
+            completedAt: completedAtValue,
+            completionStatement: courseConfig.completionStatement,
+            certificateId,
+          },
+          moduleCount
+        );
+
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: learnerEmail,
           subject,
           text: textBody,
           html: htmlBody,
+          attachments: [{ filename: 'Tamu-Academy-Certificate.pdf', content: pdfBase64 }],
         });
       }
     } catch (emailErr) {
