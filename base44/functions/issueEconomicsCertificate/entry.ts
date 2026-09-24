@@ -106,7 +106,7 @@ export default async function(req: Request): Promise<Response> {
     const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
       learner_id: user.id,
       course_slug: courseSlug,
-      status: 'active',
+      status: { $in: ['active', 'completed'] },
     });
     if (!enrollmentRows || enrollmentRows.length === 0) {
       return Response.json({ error: 'Forbidden' }, { status: 403 });

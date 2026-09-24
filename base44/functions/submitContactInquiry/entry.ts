@@ -137,7 +137,7 @@ Deno.serve(async (req) => {
 
     const emailBody = `New contact inquiry received on Tamu Academy.\n\nName: ${escName}\nEmail: ${escEmail}\nCountry: ${escCountry}${escCity ? '\nCity/Community: ' + escCity : ''}${escOrg ? '\nOrganization: ' + escOrg : ''}${escRole ? '\nRole: ' + escRole : ''}\nInquiry Type: ${inquiry_type}${programme_interest ? '\nProgramme Interest: ' + programme_interest : ''}\n\nMessage:\n${escMessage}${referral_source ? '\n\nReferral Source: ' + referral_source : ''}\nUpdates Consent: ${record.updates_consent ? 'Yes' : 'No'}`;
     await base44.asServiceRole.integrations.Core.SendEmail({
-      to: 'info@sustainthevoices.org',
+      to: 'sustainthevoices@gmail.com',
       subject: `New Inquiry: ${inquiry_type} — ${escName}`,
       body: emailBody,
     }).catch((err) => console.warn('[submitContactInquiry] Email notification failed:', err.message));
