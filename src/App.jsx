@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import { LanguageProvider } from '@/lib/i18n';
+import { DisplayModeProvider } from '@/lib/display-mode';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import SoftLaunchGate from '@/components/SoftLaunchGate';
@@ -185,6 +186,7 @@ function App() {
 
   return (
     <LanguageProvider>
+    <DisplayModeProvider>
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <MotionConfig reducedMotion="user">
@@ -196,6 +198,7 @@ function App() {
         </MotionConfig>
       </QueryClientProvider>
     </AuthProvider>
+    </DisplayModeProvider>
     </LanguageProvider>
   )
 }

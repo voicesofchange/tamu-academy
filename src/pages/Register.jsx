@@ -11,6 +11,7 @@ import PageMeta from "@/components/seo/PageMeta";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 import { safeReturnTo } from "@/lib/authReturnTo";
+import { LEARNER_CATEGORIES } from "@/lib/learner-profile";
 import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 
 const CONTENT = {
@@ -20,6 +21,10 @@ const CONTENT = {
   footerLink: "Log in",
   google: "Continue with Google",
   or: "or",
+  learnerCategory: "I am a",
+  categoryHint: "Choose the learner group that describes you. You can change it later in your profile.",
+  categoryError: "Please choose the learner group that describes you.",
+  selectOption: "Select your learner group…",
   email: "Email",
   emailPlaceholder: "you@example.com",
   password: "Password",
@@ -42,6 +47,7 @@ const CONTENT = {
 
 export default function Register() {
   const { content: c } = useTranslatedContent("register", CONTENT);
+  const [learnerCategory, setLearnerCategory] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -53,6 +59,10 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!learnerCategory) {
+      setError(c.categoryError);
+      return;
+    }
     if (password !== confirmPassword) {
       setError(c.passwordMismatch);
       return;
@@ -75,6 +85,13 @@ export default function Register() {
       const result = await base44.auth.verifyOtp({ email, otpCode });
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
+      }
+      // Record the learner group chosen at sign-up before the learner reaches
+      // the app, so email sign-ups never see the first-login prompt.
+      try {
+        await base44.auth.updateMe({ learner_category: learnerCategory });
+      } catch (_) {
+        /* If this does not save, the first-login prompt asks again. */
       }
       base44.analytics.track({ eventName: "user_registered", properties: { method: "email" } });
       const returnTo = safeReturnTo();
@@ -210,6 +227,25 @@ export default function Register() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="learnerCategory">
+            {c.learnerCategory} <span aria-hidden="true" className="text-primary">*</span>
+          </Label>
+          <select
+            id="learnerCategory"
+            value={learnerCategory}
+            onChange={(e) => setLearnerCategory(e.target.value)}
+            required
+            aria-required="true"
+            className="flex h-12 w-full rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <option value="">{c.selectOption}</option>
+            {LEARNER_CATEGORIES.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+          <p className="text-xs text-muted-foreground leading-relaxed">{c.categoryHint}</p>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="email">{c.email}</Label>
           <div className="relative">

@@ -5,12 +5,17 @@ import {
   AGE_RANGES,
   EDUCATION_LEVELS,
   LANGUAGE_OPTIONS,
+  LEARNER_CATEGORIES,
   getProfile,
   getPreferredName,
 } from '@/lib/learner-profile';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
+  learnerCategory: 'Learner group',
+  learnerCategoryHint:
+    'This helps us shape the dashboard you see when you sign in. Choose the group that describes you best.',
+  errCategory: 'Please choose the learner group that describes you.',
   nameLabel: 'Your full name, written the way you want it',
   nameHint: 'This is the name that will appear on your Tamu Academy certificates.',
   namePlaceholder: 'e.g. Caroline Tracy Wanjiki Kariuki',
@@ -70,6 +75,7 @@ export default function ProfileForm({ onSaved }) {
   const existing = getProfile(user);
 
   const [form, setForm] = useState({
+    learner_category: existing.learner_category || '',
     preferred_full_name: existing.preferred_full_name || getPreferredName(user) || '',
     country: existing.country || '',
     city_or_community: existing.city_or_community || '',
@@ -91,6 +97,10 @@ export default function ProfileForm({ onSaved }) {
     e.preventDefault();
 
     const name = form.preferred_full_name.trim().replace(/\s+/g, ' ');
+    if (!form.learner_category) {
+      setError(c.errCategory);
+      return;
+    }
     if (!name) {
       setError(c.errName);
       return;
@@ -104,6 +114,7 @@ export default function ProfileForm({ onSaved }) {
     setError('');
     try {
       await base44.auth.updateMe({
+        learner_category: form.learner_category,
         preferred_full_name: name,
         country: form.country.trim(),
         city_or_community: form.city_or_community.trim(),
@@ -143,6 +154,26 @@ export default function ProfileForm({ onSaved }) {
           </p>
         </div>
       )}
+
+      <div style={fieldWrap}>
+        <label htmlFor="field-learner_category" style={labelStyle}>
+          {c.learnerCategory} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
+          <span className="sr-only"> (required)</span>
+        </label>
+        <select
+          id="field-learner_category"
+          value={form.learner_category}
+          onChange={set('learner_category')}
+          aria-required="true"
+          style={{ ...inputStyle, cursor: 'pointer' }}
+        >
+          <option value="">{c.selectOption}</option>
+          {LEARNER_CATEGORIES.map((option) => <option key={option} value={option}>{option}</option>)}
+        </select>
+        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.76rem', lineHeight: 1.6, margin: '0.4rem 0 0', fontWeight: 300 }}>
+          {c.learnerCategoryHint}
+        </p>
+      </div>
 
       <div style={fieldWrap}>
         <label htmlFor="field-preferred_full_name" style={labelStyle}>

@@ -26,6 +26,7 @@ export default function EconomicsLessonHeader({ module, competencyLabel, estimat
         initial={{ opacity: 0, scaleX: 0.4 }}
         animate={{ opacity: 1, scaleX: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+        data-tamu-decorative="true"
         aria-hidden="true"
         style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #e8b85b 50%, #e8b85b 65%, transparent)', marginBottom: '1.75rem', transformOrigin: 'left' }}
       />

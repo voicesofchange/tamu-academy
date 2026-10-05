@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import LearnerCategoryPrompt from '@/components/display/LearnerCategoryPrompt';
 
 const DefaultFallback = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -45,5 +46,13 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
     return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
   }
 
-  return <Outlet />;
+  // The learner-group prompt rides along with every signed-in route, so a
+  // learner whose profile has no category yet is asked on their first visit
+  // wherever they land. It renders nothing once the category is saved.
+  return (
+    <>
+      <Outlet />
+      <LearnerCategoryPrompt />
+    </>
+  );
 }

@@ -10,6 +10,16 @@
         "user"
       ]
     },
+    "learner_category": {
+      "type": "string",
+      "title": "Learner Group",
+      "description": "The learner group this person identifies with. Profile metadata only \u2014 it tailors the learner's own experience and never grants or removes permissions.",
+      "enum": [
+        "Diaspora Learner",
+        "Remote Learner",
+        "Soko Peer Facilitator"
+      ]
+    },
     "preferred_full_name": {
       "type": "string",
       "title": "Preferred Full Name",

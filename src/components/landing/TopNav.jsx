@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import DisplayModeToggle from '@/components/display/DisplayModeToggle';
 
 // Primary, always-visible destinations
 const PRIMARY_LINKS = [
@@ -314,6 +315,7 @@ export default function TopNav() {
               </Link>
             </>
           )}
+          <DisplayModeToggle />
           <LanguageSwitcher />
         </nav>
 
@@ -480,6 +482,8 @@ export default function TopNav() {
             </Link>
           </>
         )}
+        {/* Global Standard / Data-Saver preference — applies across the whole app */}
+        <DisplayModeToggle variant="row" />
       </nav>
 
       {/* Responsive style injection */}

@@ -12,6 +12,8 @@ import MhStoryLab from '@/components/courses/MhStoryLab';
 import MhModule7KnowledgeCheck from '@/components/courses/MhModule7KnowledgeCheck';
 import MhModule7Progress from '@/components/courses/MhModule7Progress';
 import MhModuleNav from '@/components/courses/MhModuleNav';
+import SaverMediaBlock from '@/components/display/SaverMediaBlock';
+import { useDisplayMode } from '@/lib/display-mode';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
@@ -42,6 +44,7 @@ function renderParagraphs(paragraphs) {
 
 export default function MhModule7Lesson({ course, module: mod, lesson }) {
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
+  const { isDataSaver } = useDisplayMode();
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleSlug = mod.route;
@@ -109,9 +112,25 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
         <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
           <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Hosts:</strong> {session.hosts} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Publisher:</strong> {session.publisher} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Length:</strong> {session.approximateLength}
         </p>
-        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
-          <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
-        </div>
+        {isDataSaver ? (
+          /* Data-Saver: the session player stays closed until the learner asks
+             for it. The written alternative and direct links below still work. */
+          <SaverMediaBlock
+            title={session.title}
+            meta={`${session.hosts} · ${session.publisher} · ${session.approximateLength}`}
+            loadLabel="Load this session"
+            alternativeHref={`#${session.writtenAlternativeSectionId}`}
+            alternativeLabel="Read the written alternative"
+          >
+            <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
+              <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+            </div>
+          </SaverMediaBlock>
+        ) : (
+          <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
+            <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+          </div>
+        )}
         <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', marginBottom: '0.4rem' }}>
           Direct link: <a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>Open on YouTube</a>
           {' · '}

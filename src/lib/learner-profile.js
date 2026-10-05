@@ -29,6 +29,17 @@ export const EDUCATION_LEVELS = [
   'Prefer not to say',
 ];
 
+/**
+ * The learner groups a profile can identify with. These are profile metadata
+ * only — they drive what a learner sees on their own dashboard and never
+ * change a learner's permissions.
+ */
+export const LEARNER_CATEGORIES = [
+  'Diaspora Learner',
+  'Remote Learner',
+  'Soko Peer Facilitator',
+];
+
 export const LANGUAGE_OPTIONS = [
   { value: 'en', label: 'English' },
   { value: 'es', label: 'Español' },
@@ -36,6 +47,7 @@ export const LANGUAGE_OPTIONS = [
 ];
 
 export const PROFILE_FIELDS = [
+  'learner_category',
   'preferred_full_name',
   'country',
   'city_or_community',
@@ -79,4 +91,13 @@ export function getPreferredName(user) {
 /** A profile counts as set up once the learner has chosen how their name is written. */
 export function hasCompletedProfile(user) {
   return getProfile(user).preferred_full_name.trim().length > 0 && Boolean(getProfile(user).profile_completed_at);
+}
+
+/**
+ * Whether the learner still needs to choose a learner group. Administrators
+ * are never prompted — the category describes learners, not app permissions.
+ */
+export function needsLearnerCategory(user) {
+  if (!user || user.role === 'admin') return false;
+  return getProfile(user).learner_category.trim().length === 0;
 }

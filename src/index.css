@@ -484,22 +484,61 @@ html {
    so both themes resolve to the same espresso-and-gold colours. */
 .dark {
   --background: 17 41% 10%;
-  --foreground: 41 64% 92%;
-  --card: 24 32% 14%;
-  --card-foreground: 41 64% 92%;
-  --popover: 24 32% 13%;
-  --popover-foreground: 41 64% 92%;
-  --primary: 40 75% 63%;
-  --primary-foreground: 17 41% 10%;
-  --secondary: 25 22% 18%;
-  --secondary-foreground: 41 64% 92%;
-  --muted: 25 22% 18%;
-  --muted-foreground: 39 30% 72%;
-  --accent: 38 30% 20%;
-  --accent-foreground: 40 75% 72%;
-  --destructive: 0 70% 60%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 33 22% 22%;
-  --input: 33 22% 28%;
+...
   --ring: 40 75% 63%;
+}
+
+/* ── Data-Saver mode ───────────────────────────────────────────────────────
+   The learner's global Standard / Data-Saver choice writes data-display-mode
+   on <html>. Data-Saver switches the whole app to a system font stack, lifts
+   the body text to a single high-contrast reading colour, drops decorative
+   motifs and never shows imagery. Lesson recordings are not covered here: the
+   lesson components themselves mount a player only after an explicit tap.
+
+   Wrapped in @media screen so printed certificates and workbooks keep their
+   own black-on-white styling untouched. */
+@media screen {
+  html[data-display-mode="data-saver"] {
+    font-size: 17px;
+    --font-heading: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-display: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-guide-heading: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-guide-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  html[data-display-mode="data-saver"] #tamu-main img,
+  html[data-display-mode="data-saver"] #tamu-main video,
+  html[data-display-mode="data-saver"] [data-tamu-decorative] {
+    display: none !important;
+  }
+
+  html[data-display-mode="data-saver"] #tamu-main p,
+  html[data-display-mode="data-saver"] #tamu-main li {
+    color: rgba(255, 250, 240, 0.94) !important;
+  }
+
+  html[data-display-mode="data-saver"] .tamu-card:hover {
+    transform: none;
+  }
+
+  html[data-display-mode="data-saver"] .tamu-bg,
+  html[data-display-mode="data-saver"] .tamu-logo,
+  html[data-display-mode="data-saver"] .tamu-divider,
+  html[data-display-mode="data-saver"] .tamu-descriptor,
+  html[data-display-mode="data-saver"] .tamu-footer {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.tamu-mode-toggle:focus-visible {
+  outline: 2px solid #e8b85b;
+  outline-offset: 3px;
+}
+
+select option {
+  background-color: #2a1f17;
+  color: #f8f0df;
 }

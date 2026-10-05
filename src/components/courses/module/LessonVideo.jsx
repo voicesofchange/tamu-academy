@@ -1,5 +1,7 @@
 import React from 'react';
 import VideoSourceCard from '@/components/courses/module/VideoSourceCard';
+import SaverMediaBlock from '@/components/display/SaverMediaBlock';
+import { useDisplayMode } from '@/lib/display-mode';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
@@ -7,10 +9,14 @@ const CONTENT = {
   lessonVideo: 'Lesson video',
   directLink: 'Direct link',
   openOnYouTube: 'Open on YouTube',
+  loadRecording: 'Load recorded lesson',
+  publisherLabel: 'Original publisher',
+  saverNote: 'Data-Saver mode keeps the player closed until you ask for it, so this lesson opens without the video loading.',
 };
 
 export default function LessonVideo({ video, fallbackText }) {
   const { content: c } = useTranslatedContent('lesson-video', CONTENT);
+  const { isDataSaver } = useDisplayMode();
 
   if (!video) {
     return (
@@ -30,9 +36,10 @@ export default function LessonVideo({ video, fallbackText }) {
   }
 
   const title = (video.source && video.source.title) || c.lessonVideo;
+  const publisher = video.source && video.source.publisher;
 
-  return (
-    <div style={{ marginBottom: '2rem' }}>
+  const embed = (
+    <>
       <div
         style={{
           position: 'relative',
@@ -73,6 +80,25 @@ export default function LessonVideo({ video, fallbackText }) {
           {c.openOnYouTube}
         </a>
       </p>
+    </>
+  );
+
+  return (
+    <div style={{ marginBottom: '2rem' }}>
+      {isDataSaver ? (
+        <SaverMediaBlock
+          title={title}
+          meta={publisher ? `${c.publisherLabel}: ${publisher}` : null}
+          note={c.saverNote}
+          loadLabel={c.loadRecording}
+          alternativeHref={video.watchUrl}
+          alternativeLabel={c.openOnYouTube}
+        >
+          {embed}
+        </SaverMediaBlock>
+      ) : (
+        embed
+      )}
       <VideoSourceCard source={video.source} attributionLabel={video.attributionLabel} />
     </div>
   );

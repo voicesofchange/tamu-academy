@@ -14,7 +14,7 @@ const GOLD = '#e8b85b';
 // Mirrors the certificate's GoldDivider motif.
 export function GoldDivider({ width = '160px', margin = '0 auto' }) {
   return (
-    <div aria-hidden="true" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', margin, width }}>
+    <div data-tamu-decorative="true" aria-hidden="true" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', margin, width }}>
       <span style={{ flex: 1, height: '1px', background: `linear-gradient(to right, transparent, ${GOLD})` }} />
       <svg width="10" height="10" viewBox="0 0 10 10"><path d="M 5 0 L 10 5 L 5 10 L 0 5 Z" fill={GOLD} /></svg>
       <span style={{ flex: 1, height: '1px', background: `linear-gradient(to left, transparent, ${GOLD})` }} />
@@ -27,7 +27,7 @@ export function GoldDivider({ width = '160px', margin = '0 auto' }) {
 export function ModuleEmblem({ size = 40 }) {
   const rays = [0, 45, 90, 135, 180, 225, 270, 315];
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={{ display: 'block', margin: '0 auto 1rem' }}>
+    <svg data-tamu-decorative="true" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" style={{ display: 'block', margin: '0 auto 1rem' }}>
       <g stroke={GOLD} fill="none">
         <circle cx="32" cy="32" r="24" strokeWidth="1" />
         <circle cx="32" cy="32" r="17" strokeWidth="0.5" opacity="0.6" />
