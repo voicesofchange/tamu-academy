@@ -51,7 +51,7 @@ export default function LearnerCategoryPrompt() {
       await base44.auth.updateMe({ learner_category: category });
       await checkUserAuth();
       setStatus('idle');
-    } catch (_) {
+    } catch {
       setStatus('idle');
       setError(c.error);
     }

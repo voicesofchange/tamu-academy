@@ -90,7 +90,7 @@ export default function Register() {
       // the app, so email sign-ups never see the first-login prompt.
       try {
         await base44.auth.updateMe({ learner_category: learnerCategory });
-      } catch (_) {
+      } catch {
         /* If this does not save, the first-login prompt asks again. */
       }
       base44.analytics.track({ eventName: "user_registered", properties: { method: "email" } });

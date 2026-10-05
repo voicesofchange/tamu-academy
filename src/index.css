@@ -484,7 +484,23 @@ html {
    so both themes resolve to the same espresso-and-gold colours. */
 .dark {
   --background: 17 41% 10%;
-...
+  --foreground: 41 64% 92%;
+  --card: 24 32% 14%;
+  --card-foreground: 41 64% 92%;
+  --popover: 24 32% 13%;
+  --popover-foreground: 41 64% 92%;
+  --primary: 40 75% 63%;
+  --primary-foreground: 17 41% 10%;
+  --secondary: 25 22% 18%;
+  --secondary-foreground: 41 64% 92%;
+  --muted: 25 22% 18%;
+  --muted-foreground: 39 30% 72%;
+  --accent: 38 30% 20%;
+  --accent-foreground: 40 75% 72%;
+  --destructive: 0 70% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 33 22% 22%;
+  --input: 33 22% 28%;
   --ring: 40 75% 63%;
 }
 
