@@ -7,7 +7,7 @@ import KiooRatingForm from './KiooRatingForm';
 import KiooComparison from './KiooComparison';
 import SavedIndicator from './SavedIndicator';
 import { useAuth } from '@/lib/AuthContext';
-import { averageRating, formatAttemptDate, loadKiooAttempts, saveKiooAttempt, splitAttempts } from '@/lib/guide/kioo';
+import { averageRating, formatAttemptDate, loadKiooAttempts, ratingsOf, saveKiooAttempt, splitAttempts } from '@/lib/guide/kioo';
 import { useGuideSection } from '@/lib/guide/useGuideSection';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';

@@ -17,8 +17,8 @@ export default function GuideSectionCard({ section, status = 'not_started' }) {
       style={{ display: 'block', padding: '1.3rem 1.4rem', textDecoration: 'none' }}
     >
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.65rem' }}>
-        <span aria-hidden className="font-guide-heading" style={{ fontSize: '1.4rem', fontWeight: 600, color: '#8A650B', lineHeight: 1 }}>
-          {section.number || '·'}
+        <span aria-hidden className="font-guide-heading" style={{ fontSize: '1.4rem', fontWeight: 600, color: section.number ? '#8A650B' : '#b9a68c', lineHeight: 1 }}>
+          {section.number || '—'}
         </span>
         <span
           className="font-guide-body"
