@@ -38,6 +38,14 @@ export const ECONOMICS_MODULE_CONTENT = {
         'Economics is not limited to money, banks, businesses, or financial markets. It examines how people, households, communities, businesses, and governments make choices when time, income, land, labour, information, and other resources are limited.',
         'This lesson introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between personal decisions and the wider economy.',
       ],
+      learningObjectives: [
+        'Explain why economics extends beyond money, banks, businesses, and financial markets.',
+        'Define scarcity, trade-off, and opportunity cost, and distinguish opportunity cost from the full list of rejected alternatives.',
+        'Identify the limited resources — time, income, land, labour, information, and public funding — that shape a household, community, or government decision.',
+        'Explain how formal and informal incentives encourage or discourage particular economic choices.',
+        'Describe how formal and informal institutions, culture, and social relationships shape which choices are available and who carries the cost or risk.',
+        'Apply the lesson framework to one everyday economic decision by setting out the resources, alternatives, opportunity cost, incentives, and institutions involved.',
+      ],
       keyConcepts: [
         {
           term: 'Scarcity',

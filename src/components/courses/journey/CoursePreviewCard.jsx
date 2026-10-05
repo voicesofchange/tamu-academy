@@ -99,26 +99,28 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
         >
           {number}
         </span>
-        <span
-          className="font-body"
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '14px',
-            color: '#f8f0df',
-            border: '1px solid rgba(232,184,91,0.45)',
-            borderRadius: '20px',
-            padding: '5px 11px',
-            fontSize: '9.5px',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            background: 'rgba(36,21,15,0.55)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-          }}
-        >
-          {status}
-        </span>
+        {status && (
+          <span
+            className="font-body"
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '14px',
+              color: '#f8f0df',
+              border: '1px solid rgba(232,184,91,0.45)',
+              borderRadius: '20px',
+              padding: '5px 11px',
+              fontSize: '9.5px',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              background: 'rgba(36,21,15,0.55)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            {status}
+          </span>
+        )}
       </div>
 
       {/* Content */}

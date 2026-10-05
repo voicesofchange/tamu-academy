@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import ModulePageTemplate from '@/components/courses/ModulePageTemplate';
-import ModuleExpandedTemplate from '@/components/courses/module/ModuleExpandedTemplate';
+import EconomicsLessonTemplate from '@/components/courses/module/EconomicsLessonTemplate';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
 import { getEconomicsModule } from '@/lib/economics-tracks';
 import { useTranslation } from '@/lib/i18n';
@@ -88,9 +87,7 @@ export default function ModuleRoutePage({ moduleRoute }) {
     return <ModuleDevelopmentState course={found.course} module={found.module} />;
   }
 
-  if (module && module.formatVersion === 'expanded') {
-    return <ModuleExpandedTemplate course={found.course} module={module} />;
-  }
-
-  return <ModulePageTemplate course={found.course} module={module} />;
+  // Every module renders through one shared lesson structure, whatever shape
+  // its recorded content takes.
+  return <EconomicsLessonTemplate course={found.course} module={module} />;
 }

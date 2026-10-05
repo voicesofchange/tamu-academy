@@ -129,7 +129,9 @@ export default function MyCourses() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
             {ALL_COURSES.map((course) => (
               <Link key={course.slug} to={`/courses/${course.slug}`} style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', textDecoration: 'none', display: 'block' }}>
-                <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{pubStatus[course.slug]?.isLive ? 'Available Now' : 'In Development'}</span>
+                {pubStatus[course.slug]?.isLive && (
+                  <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{c.nowAvailable}</span>
+                )}
                 <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, lineHeight: 1.3, display: 'block' }}>{course.title}</span>
               </Link>
             ))}
@@ -193,7 +195,7 @@ export default function MyCourses() {
                 ? `/courses/${enr.slug}/${firstIncomplete.route}`
                 : `/courses/${enr.slug}/completion`;
               const resumeLabel = firstIncomplete ? `${c.resumeAt} ${firstIncomplete.number}` : c.reviewCompletion;
-              const statusLabel = pubStatus[enr.slug]?.isLive ? c.nowAvailable : c.inDevelopment;
+              const statusLabel = pubStatus[enr.slug]?.isLive ? c.nowAvailable : null;
               return (
                 <motion.div
                   key={enr.slug}
@@ -203,9 +205,11 @@ export default function MyCourses() {
                   transition={{ duration: 0.6, ease: 'easeOut' }}
                   style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', marginBottom: '1.25rem' }}
                 >
-                  <div style={{ marginBottom: '0.85rem' }}>
-                    <StatusBadge label={statusLabel} />
-                  </div>
+                  {statusLabel && (
+                    <div style={{ marginBottom: '0.85rem' }}>
+                      <StatusBadge label={statusLabel} />
+                    </div>
+                  )}
                   <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' }}>
                     {meta?.title}
                   </h3>

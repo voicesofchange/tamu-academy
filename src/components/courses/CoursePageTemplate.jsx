@@ -43,7 +43,7 @@ export default function CoursePageTemplate({ course, progressSlot, children }) {
       heroSubtitle={course.subtitle}
       heroBadges={
         <>
-          <StatusBadge label={course.status} />
+          {course.status && <StatusBadge label={course.status} />}
           <StatusBadge label={course.access} />
         </>
       }

@@ -27,7 +27,6 @@ export const SAUTI_ZA_SOKO_COURSE = {
   level: 'Applied',
   format: 'Self-paced, with an optional peer discussion',
   modulesCount: 7,
-  status: 'In Development',
   estimatedCompletion: 'Approximately 6\u20138 hours',
   certificate: 'Available upon completion',
   access: 'Open',
