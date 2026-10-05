@@ -81,6 +81,12 @@ export const DASHBOARD_GROUPS = [
       'Your dashboard leads with text-first pathways, printable material and the settings that keep every page light.',
     learning: [
       {
+        title: 'The Remote Learner pathway',
+        body: 'Every step in one place, from setting your learner group to a printable certificate, with what is saved online and what you can carry offline.',
+        to: '/remote-pathway',
+        cta: 'Open the pathway',
+      },
+      {
         title: 'Sauti za Soko: Markets, Climate and Community Power',
         body: 'Seven modules, each opening with a short lesson and a saved action plan rather than video.',
         to: '/courses/sauti-za-soko',

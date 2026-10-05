@@ -480,6 +480,26 @@ html {
   }
 }
 
+/* ── Remote Learner study plan ─────────────────────────────────────────────
+   The plan is carried on paper, so it prints as writing space on white: the
+   cream card chrome comes off and no block is split across a page break. */
+@media print {
+  .tamu-print-area.tamu-print-plan {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .tamu-print-plan .plan-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .tamu-print-plan .plan-line {
+    border-top-color: #555555 !important;
+  }
+}
+
 /* Dark mode mirrors the brand palette one-to-one: Tamu Academy is dark-native,
    so both themes resolve to the same espresso-and-gold colours. */
 .dark {

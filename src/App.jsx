@@ -15,6 +15,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import LearnersGuide from './pages/LearnersGuide';
+import RemotePathway from './pages/RemotePathway';
 import GuideSection from './pages/GuideSection';
 import GuideInsights from './pages/GuideInsights';
 import GuideCredits from './pages/GuideCredits';
@@ -157,6 +158,8 @@ const AuthenticatedApp = () => {
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />
       <Route path="/programmes/intercultural-ai-leadership-lab" element={<InterculturalAILeadershipLab />} />
       <Route path="/resources" element={<Resources />} />
+      {/* The Remote Learner journey — text-first study, offline material, and the pathway to a certificate */}
+      <Route path="/remote-pathway" element={<RemotePathway />} />
       <Route path="/stories" element={<LearnerStories />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
