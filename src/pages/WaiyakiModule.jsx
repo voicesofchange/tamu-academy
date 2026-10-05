@@ -76,8 +76,7 @@ export default function WaiyakiModule() {
   );
   const completedKeys = currentModuleProgress?.completedKeys || [];
   const moduleCompleted = !!currentModuleProgress?.completed;
-  const hasEnrollment = !!progress?.hasEnrollment;
-  const canSave = user?.role === 'admin' ? false : hasEnrollment;
+  const canSave = !!progress?.hasEnrollment;
 
   async function acknowledge(action, mode) {
     if (saving) return;
@@ -173,9 +172,7 @@ export default function WaiyakiModule() {
       saving={saving}
       onAcknowledgeLesson={() => acknowledge('acknowledge_lesson')}
       onAcknowledgeSource={() => acknowledge('acknowledge_source_analysis')}
-      onAcknowledgeReflection={(notes) =>
-        acknowledge('acknowledge_reflection', notes && notes.trim() ? 'notes' : 'private')
-      }
+      onAcknowledgeReflection={() => acknowledge('acknowledge_reflection', 'private')}
       onComplete={handleComplete}
       message={message}
     />

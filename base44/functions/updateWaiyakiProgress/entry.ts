@@ -29,7 +29,8 @@ import {
  *     completed_at, activity_acknowledged_at or attempt_number is refused.
  *   - status:'completed' and completed_at are NEVER set here.
  */
-const ALLOWED_REFLECTION_MODES = new Set(['private', 'notes']);
+// Must stay within the ModuleProgress.reflection_completion_mode enum.
+const ALLOWED_REFLECTION_MODES = new Set(['private', 'fictional']);
 
 const PROTECTED_BODY_FIELDS = new Set([
   'learner_id',

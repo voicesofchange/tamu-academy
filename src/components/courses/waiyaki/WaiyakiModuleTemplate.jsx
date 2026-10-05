@@ -40,6 +40,7 @@ export default function WaiyakiModuleTemplate({
   saving,
   onAcknowledgeSource,
   onAcknowledgeReflection,
+  onAcknowledgeLesson,
   onComplete,
   message,
 }) {
@@ -196,6 +197,7 @@ export default function WaiyakiModuleTemplate({
         totalModules={moduleCount}
         canSave={canSave}
         saving={saving}
+        onAcknowledgeLesson={onAcknowledgeLesson}
         onComplete={onComplete}
         message={message}
       />
