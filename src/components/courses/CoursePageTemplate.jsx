@@ -142,9 +142,19 @@ export default function CoursePageTemplate({ course, progressSlot, children }) {
 
       {/* Access */}
       <CourseOverviewSection surface="dark" eyebrow={t('course.access')} heading={t('common.beginLearning')}>
-        <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '11px 22px' }}>
-          {t('common.backToCourses')} &rarr;
-        </Link>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+          <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '11px 22px' }}>
+            {t('common.backToCourses')} &rarr;
+          </Link>
+          {isAuthenticated && (
+            <Link to="/learners-guide" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '11px 22px' }}>
+              Open your Learner's Guide &rarr;
+            </Link>
+          )}
+        </div>
+        <p className="font-body" style={{ ...darkBody, fontSize: '13px', marginTop: '1rem' }}>
+          Safari ya Utu is a private companion workbook you can use alongside this course, or on its own. Your answers stay with you.
+        </p>
       </CourseOverviewSection>
 
       {children}

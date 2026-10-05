@@ -1,0 +1,54 @@
+{
+  "name": "GuideResponse",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "section_id": {
+      "type": "string",
+      "title": "Guide Section",
+      "description": "Identifier of the Safari ya Utu section this answer belongs to."
+    },
+    "exercise_id": {
+      "type": "string",
+      "title": "Exercise"
+    },
+    "field_id": {
+      "type": "string",
+      "title": "Answer Field"
+    },
+    "value": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Answer",
+      "description": "The learner's answer. Plain text for written answers, or a JSON string for structured answers (table cells, ratings, frequency responses)."
+    },
+    "updated_date": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Answer Last Updated"
+    }
+  },
+  "required": [
+    "learner_id",
+    "section_id",
+    "exercise_id",
+    "field_id"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

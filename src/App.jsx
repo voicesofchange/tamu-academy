@@ -13,6 +13,10 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
+import LearnersGuide from './pages/LearnersGuide';
+import GuideSection from './pages/GuideSection';
+import GuideInsights from './pages/GuideInsights';
+import GuideCredits from './pages/GuideCredits';
 import About from './pages/About';
 import Courses from './pages/Courses';
 import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
@@ -140,6 +144,11 @@ const AuthenticatedApp = () => {
         <Route path="/courses/sauti-za-soko/certificate" element={<SokoLabelsProvider><SokoCertificate /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/peer-facilitator/certificate" element={<SokoLabelsProvider><SokoCertificate courseSlug="sauti-za-soko-peer-facilitator" /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/:moduleRoute" element={<SokoLabelsProvider><SokoModule /></SokoLabelsProvider>} />
+        {/* Safari ya Utu Learner's Guide — private to the signed-in learner */}
+        <Route path="/learners-guide" element={<LearnersGuide />} />
+        <Route path="/learners-guide/insights" element={<GuideInsights />} />
+        <Route path="/learners-guide/credits" element={<GuideCredits />} />
+        <Route path="/learners-guide/:sectionId" element={<GuideSection />} />
       </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />

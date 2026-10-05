@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -98,6 +98,8 @@ html {
     --font-heading: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-guide-heading: 'Lora', Georgia, serif;
+    --font-guide-body: 'Poppins', ui-sans-serif, system-ui, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -293,5 +295,125 @@ html {
   .tamu-certificate-print h1,
   .tamu-certificate-print span {
     color: inherit !important;
+  }
+}
+
+/* ── Safari ya Utu — Learner's Guide ─────────────────────────────────────── */
+:root {
+  --guide-brown: #33241A;
+  --guide-gold: #C9961A;
+  --guide-gold-text: #8A650B;
+  --guide-amber: #D9822B;
+  --guide-cream: #FBF5E8;
+  --guide-ink: #2A2119;
+}
+
+.guide-card {
+  background-color: var(--guide-cream);
+  border: 1px solid #e3d5ba;
+  border-radius: 3px;
+}
+
+.guide-input {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #fffdf7;
+  border: 1px solid #d9c8a6;
+  border-radius: 3px;
+  color: var(--guide-ink);
+  font-family: var(--font-guide-body);
+  font-size: 0.94rem;
+  font-weight: 300;
+  line-height: 1.75;
+  padding: 0.85rem 1rem;
+  resize: vertical;
+}
+
+.guide-input::placeholder {
+  color: #a8977f;
+}
+
+.guide-input:focus-visible {
+  outline: 2px solid var(--guide-gold);
+  outline-offset: 1px;
+  border-color: var(--guide-gold);
+}
+
+.guide-input--cell {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  min-height: 3.6rem;
+}
+
+.guide-choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.3rem 0.7rem;
+  background-color: #fffdf7;
+  border: 1px solid #d9c8a6;
+  border-radius: 3px;
+  color: #6b5744;
+  font-family: var(--font-guide-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.guide-choice:hover {
+  border-color: var(--guide-gold);
+  color: var(--guide-brown);
+}
+
+.guide-choice[aria-checked="true"] {
+  background-color: var(--guide-gold);
+  border-color: var(--guide-gold);
+  color: #24150f;
+  font-weight: 500;
+}
+
+.guide-choice:focus-visible {
+  outline: 2px solid var(--guide-amber);
+  outline-offset: 2px;
+}
+
+.guide-table-desktop {
+  display: block;
+}
+
+.guide-table-mobile {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .guide-table-desktop {
+    display: none;
+  }
+  .guide-table-mobile {
+    display: block;
+  }
+}
+
+.guide-moved-up {
+  background-color: rgba(201, 150, 26, 0.14);
+}
+
+.guide-link {
+  color: var(--guide-gold-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guide-link:hover {
+  color: var(--guide-amber);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-choice {
+    transition: none;
   }
 }

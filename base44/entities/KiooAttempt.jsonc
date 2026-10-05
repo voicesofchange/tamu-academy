@@ -1,0 +1,108 @@
+{
+  "name": "KiooAttempt",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "attempt_type": {
+      "type": "string",
+      "title": "Attempt Type",
+      "enum": [
+        "first",
+        "return"
+      ]
+    },
+    "attempt_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Attempt Date"
+    },
+    "r1": {
+      "type": "integer",
+      "title": "Statement 1",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r2": {
+      "type": "integer",
+      "title": "Statement 2",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r3": {
+      "type": "integer",
+      "title": "Statement 3",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r4": {
+      "type": "integer",
+      "title": "Statement 4",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r5": {
+      "type": "integer",
+      "title": "Statement 5",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r6": {
+      "type": "integer",
+      "title": "Statement 6",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r7": {
+      "type": "integer",
+      "title": "Statement 7",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r8": {
+      "type": "integer",
+      "title": "Statement 8",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r9": {
+      "type": "integer",
+      "title": "Statement 9",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "r10": {
+      "type": "integer",
+      "title": "Statement 10",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "note": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Reflection Note",
+      "description": "The learner's own note written with this attempt."
+    }
+  },
+  "required": [
+    "learner_id",
+    "attempt_type",
+    "attempt_date"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

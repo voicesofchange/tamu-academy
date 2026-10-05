@@ -13,6 +13,7 @@ export default {
     resources: 'Resources',
     contact: 'Contact',
     myCourses: 'My Courses',
+    learnersGuide: "Learner's Guide",
     myProfile: 'My Profile',
     privacy: 'Privacy',
     stories: 'Stories',

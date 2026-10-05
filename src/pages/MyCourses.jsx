@@ -12,6 +12,7 @@ import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
+import GuideContinueCard from '@/components/guide/GuideContinueCard';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -115,6 +116,12 @@ export default function MyCourses() {
         heading={c.heroHeading}
         subheading={c.heroSubheading}
       />
+
+      <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <GuideContinueCard />
+        </div>
+      </div>
 
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>

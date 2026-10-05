@@ -1,0 +1,58 @@
+{
+  "name": "SectionProgress",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "section_id": {
+      "type": "string",
+      "title": "Guide Section"
+    },
+    "status": {
+      "type": "string",
+      "title": "Section Status",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "done"
+      ],
+      "default": "not_started"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Started At"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Marked Done At"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "section_id",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

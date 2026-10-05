@@ -13,6 +13,7 @@ const PRIMARY_LINKS = [
 // Learner-only destinations shown when authenticated
 const AUTH_LINKS = [
   { key: 'nav.myCourses', to: '/my-courses' },
+  { key: 'nav.learnersGuide', to: '/learners-guide' },
   { key: 'nav.myProfile', to: '/profile' },
 ];
 
