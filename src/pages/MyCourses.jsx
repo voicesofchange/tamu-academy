@@ -13,6 +13,14 @@ import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import GuideContinueCard from '@/components/guide/GuideContinueCard';
+import DashboardGroupFilter from '@/components/dashboard/DashboardGroupFilter';
+import DashboardFocusPanel from '@/components/dashboard/DashboardFocusPanel';
+import DashboardRecommendations from '@/components/dashboard/DashboardRecommendations';
+import DashboardThemeSection from '@/components/dashboard/DashboardThemeSection';
+import { useAuth } from '@/lib/AuthContext';
+import { useDisplayMode } from '@/lib/display-mode';
+import { getProfile } from '@/lib/learner-profile';
+import { DASHBOARD_GROUPS, DASHBOARD_FALLBACK, getDashboardGroup } from '@/lib/learner-dashboard';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -60,10 +68,47 @@ const CONTENT = {
   viewCertificate: 'View Certificate',
   nowAvailable: 'Available now',
   inDevelopment: 'In development',
+  filterLabel: 'Dashboard view',
+  filterNote: 'Switching the view only changes what this page emphasises. Your saved learner group, course access and progress stay exactly the same.',
+  backToMyGroup: 'Back to my group',
+  tailoredFor: 'Tailored for',
+  previewing: 'Previewing',
+  anchorLearning: 'Learning next steps',
+  anchorCommunity: 'Community pathways',
+  anchorImpact: 'Career and impact',
+  setGroup: 'Set your learner group',
+  recommendationsEyebrow: 'Next Steps',
+  recommendationsHeading: 'Your next learning steps',
+  resumeRecommendation: 'Resume learning',
+  quickLinksLabel: 'Also in your dashboard:',
+  dataSaverTitle: 'Reading on a slow connection?',
+  dataSaverBody: 'Data-Saver keeps pages light: system text, no decorative media, and recordings load only when you press play.',
+  dataSaverOn: 'Turn on Data-Saver',
+  dataSaverOff: 'Turn off Data-Saver',
+  communityEyebrow: 'Community',
+  communityHeading: 'Community pathways',
+  impactEyebrow: 'What Comes Next',
+  impactHeading: 'Career and impact',
 };
 
 export default function MyCourses() {
   const { content: c } = useTranslatedContent('my-courses', CONTENT);
+  const { user } = useAuth();
+  const { isDataSaver, toggleMode } = useDisplayMode();
+  // The saved learner group decides the opening view. The filter below can
+  // preview another group without ever writing this field back.
+  const savedGroup = getDashboardGroup(getProfile(user).learner_category);
+  const [viewGroupId, setViewGroupId] = useState(null);
+  const activeGroup = DASHBOARD_GROUPS.find((group) => group.id === viewGroupId) || savedGroup || DASHBOARD_FALLBACK;
+  const isPreviewing = Boolean(viewGroupId) && viewGroupId !== savedGroup?.id;
+  const focusLabels = {
+    previewing: c.previewing,
+    tailoredFor: c.tailoredFor,
+    learning: c.anchorLearning,
+    community: c.anchorCommunity,
+    impact: c.anchorImpact,
+    setGroup: c.setGroup,
+  };
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [pubStatus, setPubStatus] = useState({});
@@ -120,6 +165,20 @@ export default function MyCourses() {
       <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           <GuideContinueCard />
+        </div>
+      </div>
+
+      <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)', marginBottom: '3.5rem' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <DashboardGroupFilter
+            groups={DASHBOARD_GROUPS}
+            activeId={activeGroup.id}
+            isPreviewing={isPreviewing}
+            onSelect={(id) => setViewGroupId(id === savedGroup?.id ? null : id)}
+            onReset={() => setViewGroupId(null)}
+            labels={{ label: c.filterLabel, note: c.filterNote, backToMyGroup: c.backToMyGroup }}
+          />
+          <DashboardFocusPanel group={activeGroup} isPreviewing={isPreviewing} labels={focusLabels} />
         </div>
       </div>
 
@@ -259,6 +318,33 @@ export default function MyCourses() {
           </PageSection>
         </>
       )}
+
+      <DashboardRecommendations
+        id="dashboard-learning"
+        eyebrow={c.recommendationsEyebrow}
+        heading={c.recommendationsHeading}
+        resume={resumeTarget ? {
+          title: `${resumeTarget.firstIncomplete.number}: ${resumeTarget.firstIncomplete.title}`,
+          body: resumeTarget.meta?.title,
+          to: `/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`,
+        } : null}
+        items={activeGroup.learning}
+        quickLinks={[...activeGroup.community, ...activeGroup.impact]}
+        quickLinksLabel={c.quickLinksLabel}
+        labels={{
+          resume: c.resumeRecommendation,
+          dataSaverTitle: c.dataSaverTitle,
+          dataSaverBody: c.dataSaverBody,
+          dataSaverOn: c.dataSaverOn,
+          dataSaverOff: c.dataSaverOff,
+        }}
+        isDataSaver={isDataSaver}
+        onToggleDataSaver={toggleMode}
+      />
+
+      <DashboardThemeSection id="dashboard-community" eyebrow={c.communityEyebrow} heading={c.communityHeading} items={activeGroup.community} />
+      <DashboardThemeSection id="dashboard-impact" eyebrow={c.impactEyebrow} heading={c.impactHeading} items={activeGroup.impact} />
+
       <TamuGuideWidget />
     </PageLayout>
   );
