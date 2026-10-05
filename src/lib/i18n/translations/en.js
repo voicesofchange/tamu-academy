@@ -26,9 +26,9 @@ export default {
   },
   hero: {
     eyebrow: 'Sweet Learning for a Better World',
-    heading: 'Diaspora-rooted learning led by knowledge, experience, and community',
+    heading: 'Grounded in community, open to the world',
     description:
-      'Tamu Academy develops expert-led online courses exploring mental health, economics, artificial intelligence, public policy, culture, history, and the wider world.',
+      'Join a global learning community exploring mental health, economics, artificial intelligence, public policy, culture, and history through expert-led courses and perspectives from across the world.',
     ctaExplore: 'Explore Courses',
     ctaOpenLearning: 'Start with Open Learning',
     explore: 'Explore',

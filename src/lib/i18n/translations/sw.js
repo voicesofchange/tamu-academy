@@ -26,9 +26,9 @@ export default {
   },
   hero: {
     eyebrow: 'Kujifunza Tamu kwa Ulimwengu Bora',
-    heading: 'Elimu inayotokana na diaspora inayoongozwa na maarifa, uzoefu, na jamii',
+    heading: 'Imara katika jamii, wazi kwa ulimwengu',
     description:
-      'Tamu Academy hutoa kozi mtandaoni zinazoongozwa na wataalam zinazochunguza afya ya akili, uchumi, akili bandia, sera za umma, utamaduni, historia, na ulimwengu mpana.',
+      'Jiunge na jamii ya kujifunza ya kimataifa inayochunguza afya ya akili, uchumi, akili bandia, sera za umma, utamaduni, na historia kupitia kozi zinazoongozwa na wataalam na mitazamo kutoka kote ulimwenguni.',
     ctaExplore: 'Chunguza Kozi',
     ctaOpenLearning: 'Anza na Kujifunza Wazi',
     explore: 'Chunguza',
