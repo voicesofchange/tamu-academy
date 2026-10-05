@@ -11,6 +11,7 @@ export default {
     videos: 'Videos',
     articles: 'Artículos',
     resources: 'Recursos',
+    remotePathway: 'Ruta Remota',
     contact: 'Contacto',
     myCourses: 'Mis Cursos',
     learnersGuide: 'Guía del Estudiante',

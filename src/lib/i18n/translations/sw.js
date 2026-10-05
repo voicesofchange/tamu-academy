@@ -11,6 +11,7 @@ export default {
     videos: 'Video',
     articles: 'Makala',
     resources: 'Rasilimali',
+    remotePathway: 'Njia ya Mbali',
     contact: 'Wasiliana',
     myCourses: 'Kozi Zangu',
     learnersGuide: 'Mwongozo wa Mwanafunzi',
