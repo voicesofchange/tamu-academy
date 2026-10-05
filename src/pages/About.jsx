@@ -177,7 +177,7 @@ export default function About() {
           {c.currentStageP}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-          <Link to="/contact?inquiry=university-or-institutional-partnership" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaPartnership}</Link>
+          <Link to="/contact?type=partnership" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaPartnership}</Link>
           <Link to="/contact" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaGetInTouch}</Link>
         </div>
       </motion.div>

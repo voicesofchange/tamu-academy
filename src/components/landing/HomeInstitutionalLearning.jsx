@@ -41,7 +41,7 @@ export default function HomeInstitutionalLearning() {
             Tamu Academy is developing course packages for universities, youth organizations, nonprofits, public institutions, and community programmes.
           </p>
           <Link
-            to="/contact?inquiry=university-or-institutional-partnership"
+            to="/contact?type=partnership"
             className="font-body"
             style={{
               display: 'inline-flex', alignItems: 'center',
