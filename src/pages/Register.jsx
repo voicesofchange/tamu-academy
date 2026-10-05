@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { UserPlus, Mail, Lock, Loader2 } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import AuthLayout from "@/components/AuthLayout";
+import PageMeta from "@/components/seo/PageMeta";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 import { safeReturnTo } from "@/lib/authReturnTo";
@@ -111,6 +112,12 @@ export default function Register() {
         title={c.verifyTitle}
         subtitle={`${c.verifySubtitle} ${email}`}
       >
+        <PageMeta
+          title="Verify your email | Tamu Academy"
+          description="Enter the verification code we sent to finish creating your Tamu Academy account."
+          path="/register"
+        />
+
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
             {error}
@@ -172,6 +179,12 @@ export default function Register() {
         </>
       }
     >
+      <PageMeta
+        title="Create your account | Tamu Academy"
+        description="Join Tamu Academy for culturally grounded courses in economics, wellbeing, governance and global affairs."
+        path="/register"
+      />
+
       <Button
         variant="outline"
         className="w-full h-12 text-sm font-medium mb-6"

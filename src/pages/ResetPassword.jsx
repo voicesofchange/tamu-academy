@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Loader2, AlertTriangle } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
+import PageMeta from "@/components/seo/PageMeta";
 import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 
 const CONTENT = {
@@ -63,6 +64,13 @@ export default function ResetPassword() {
           </Link>
         }
       >
+        <PageMeta
+          title="Reset your password | Tamu Academy"
+          description="Set a new password for your Tamu Academy account."
+          path="/reset-password"
+          noindex
+        />
+
         <p className="text-sm text-foreground text-center">
           {c.invalidMessage}
         </p>
@@ -76,6 +84,13 @@ export default function ResetPassword() {
       title={c.title}
       subtitle={c.subtitle}
     >
+      <PageMeta
+        title="Set a new password | Tamu Academy"
+        description="Choose a new password for your Tamu Academy account."
+        path="/reset-password"
+        noindex
+      />
+
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
           {error}

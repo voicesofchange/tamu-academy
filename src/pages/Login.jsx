@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
+import PageMeta from "@/components/seo/PageMeta";
 import GoogleIcon from "@/components/GoogleIcon";
 import { safeReturnTo } from "@/lib/authReturnTo";
 import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
@@ -65,6 +66,12 @@ export default function Login() {
         </>
       }
     >
+      <PageMeta
+        title="Log in to your account | Tamu Academy"
+        description="Log in to your Tamu Academy account to continue your courses, track your progress, and access your certificates."
+        path="/login"
+      />
+
       <Button
         variant="outline"
         className="w-full h-12 text-sm font-medium mb-6"

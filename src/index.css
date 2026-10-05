@@ -75,26 +75,39 @@ html {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    /* ── Tamu Academy brand palette ──────────────────────────────────────
+       These theme tokens carry the brand's espresso-and-gold identity, so
+       every token-based surface (auth screens, buttons, inputs, dialogs,
+       toasts) inherits Tamu's palette instead of default neutral greys.
+         espresso ground  #24150f  → --background
+         raised surface   #2f2118  → --card / --muted
+         brand gold       #e8b85b  → --primary / --ring
+         parchment text   #f8f0df  → --foreground
+         muted cream      #c9bda3  → --muted-foreground
+       Radii stay in the brand's 2–4px band: --radius (4px) drives inputs and
+       buttons, --radius-brand (3px) drives cards and icon plates.
+       ──────────────────────────────────────────────────────────────────── */
+    --background: 17 41% 10%;
+    --foreground: 41 64% 92%;
+    --card: 24 32% 14%;
+    --card-foreground: 41 64% 92%;
+    --popover: 24 32% 13%;
+    --popover-foreground: 41 64% 92%;
+    --primary: 40 75% 63%;
+    --primary-foreground: 17 41% 10%;
+    --secondary: 25 22% 18%;
+    --secondary-foreground: 41 64% 92%;
+    --muted: 25 22% 18%;
+    --muted-foreground: 39 30% 72%;
+    --accent: 38 30% 20%;
+    --accent-foreground: 40 75% 72%;
+    --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    --border: 33 22% 22%;
+    --input: 33 22% 28%;
+    --ring: 40 75% 63%;
+    --radius: 4px;
+    --radius-brand: 3px;
     --font-heading: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -446,4 +459,28 @@ html {
   .tamu-print-area table {
     width: 100% !important;
   }
+}
+
+/* Dark mode mirrors the brand palette one-to-one: Tamu Academy is dark-native,
+   so both themes resolve to the same espresso-and-gold colours. */
+.dark {
+  --background: 17 41% 10%;
+  --foreground: 41 64% 92%;
+  --card: 24 32% 14%;
+  --card-foreground: 41 64% 92%;
+  --popover: 24 32% 13%;
+  --popover-foreground: 41 64% 92%;
+  --primary: 40 75% 63%;
+  --primary-foreground: 17 41% 10%;
+  --secondary: 25 22% 18%;
+  --secondary-foreground: 41 64% 92%;
+  --muted: 25 22% 18%;
+  --muted-foreground: 39 30% 72%;
+  --accent: 38 30% 20%;
+  --accent-foreground: 40 75% 72%;
+  --destructive: 0 70% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 33 22% 22%;
+  --input: 33 22% 28%;
+  --ring: 40 75% 63%;
 }

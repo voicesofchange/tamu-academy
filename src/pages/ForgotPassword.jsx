@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, ArrowLeft, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
+import PageMeta from "@/components/seo/PageMeta";
 import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 
 const CONTENT = {
@@ -49,6 +50,13 @@ export default function ForgotPassword() {
         </Link>
       }
     >
+      <PageMeta
+        title="Reset your password | Tamu Academy"
+        description="Request a password reset link for your Tamu Academy account."
+        path="/forgot-password"
+        noindex
+      />
+
       {sent ? (
         <p className="text-sm text-foreground text-center">
           {c.sentMessage}
