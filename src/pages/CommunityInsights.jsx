@@ -17,6 +17,7 @@ import CertificateCorrection from '@/components/insights/CertificateCorrection';
 import OutreachSenderCard from '@/components/insights/OutreachSenderCard';
 import SokoContentReviewPanel from '@/components/insights/SokoContentReviewPanel';
 import SokoFacilitatorReviewPanel from '@/components/insights/SokoFacilitatorReviewPanel';
+import QaReviewPanel from '@/components/insights/QaReviewPanel';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
 
@@ -132,6 +133,10 @@ export default function CommunityInsights() {
 
           <PageSection heading="Sauti za Soko Peer Facilitator Review">
             <SokoFacilitatorReviewPanel />
+          </PageSection>
+
+          <PageSection heading="Course Journey and Quality Assurance">
+            <QaReviewPanel />
           </PageSection>
         </>
       )}
