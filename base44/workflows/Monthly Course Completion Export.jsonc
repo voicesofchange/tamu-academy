@@ -1,0 +1,45 @@
+{
+  "name": "Monthly Course Completion Export",
+  "description": "Runs on the first day of each month and refreshes a Google Sheet in the connected account with every learner's course enrollment, progress, and completion details.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "monthly_course_completion_export",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "export_completions": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "exportCourseCompletionsToSheet",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Refresh the completion spreadsheet",
+            "description": "Writes the latest learner progress and completion data to the Google Sheet"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 7 1 * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  }
+}

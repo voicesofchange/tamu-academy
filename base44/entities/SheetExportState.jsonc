@@ -1,0 +1,57 @@
+{
+  "name": "SheetExportState",
+  "type": "object",
+  "properties": {
+    "state_key": {
+      "type": "string",
+      "title": "State Key",
+      "description": "Identifier for the export this state record belongs to."
+    },
+    "spreadsheet_id": {
+      "type": "string",
+      "title": "Google Spreadsheet ID"
+    },
+    "spreadsheet_url": {
+      "type": "string",
+      "title": "Google Spreadsheet URL"
+    },
+    "sheet_name": {
+      "type": "string",
+      "title": "Worksheet Tab Name"
+    },
+    "last_exported_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Last Exported At"
+    },
+    "last_row_count": {
+      "type": "integer",
+      "title": "Rows Exported in Last Run"
+    }
+  },
+  "required": [
+    "state_key"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
