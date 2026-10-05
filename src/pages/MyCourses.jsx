@@ -14,6 +14,7 @@ import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import GuideContinueCard from '@/components/guide/GuideContinueCard';
+import DashboardLearnerTools from '@/components/dashboard/DashboardLearnerTools';
 import DashboardGroupFilter from '@/components/dashboard/DashboardGroupFilter';
 import DashboardFocusPanel from '@/components/dashboard/DashboardFocusPanel';
 import DashboardRecommendations from '@/components/dashboard/DashboardRecommendations';
@@ -169,6 +170,7 @@ export default function MyCourses() {
       <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           <GuideContinueCard />
+          <DashboardLearnerTools />
         </div>
       </div>
 

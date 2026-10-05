@@ -16,6 +16,7 @@ import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
 import CertificateCorrection from '@/components/insights/CertificateCorrection';
 import OutreachSenderCard from '@/components/insights/OutreachSenderCard';
 import SokoContentReviewPanel from '@/components/insights/SokoContentReviewPanel';
+import ModuleProgressExportCard from '@/components/insights/ModuleProgressExportCard';
 import SokoFacilitatorReviewPanel from '@/components/insights/SokoFacilitatorReviewPanel';
 import QaReviewPanel from '@/components/insights/QaReviewPanel';
 import { useTranslation } from '@/lib/i18n';
@@ -75,6 +76,10 @@ export default function CommunityInsights() {
         <>
           <PageSection>
             <FollowUpInquiries />
+          </PageSection>
+
+          <PageSection>
+            <ModuleProgressExportCard />
           </PageSection>
 
           <PageSection>

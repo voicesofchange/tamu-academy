@@ -77,6 +77,8 @@ import WaiyakiWaHinga from './pages/WaiyakiWaHinga';
 import WaiyakiModule from './pages/WaiyakiModule';
 import WaiyakiCourseCompletion from './pages/WaiyakiCourseCompletion';
 import WaiyakiCertificate from './pages/WaiyakiCertificate';
+import ProgressDashboard from './pages/ProgressDashboard';
+import LearningHub from './pages/LearningHub';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -128,6 +130,8 @@ const AuthenticatedApp = () => {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/my-progress" element={<ProgressDashboard />} />
+        <Route path="/learning-hub" element={<LearningHub />} />
         <Route path="/motivation-coach" element={<MotivationCoach />} />
         <Route path="/insights" element={<CommunityInsights />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
