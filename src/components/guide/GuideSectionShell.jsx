@@ -23,7 +23,7 @@ export default function GuideSectionShell({ section }) {
         </h2>
         <p className="font-guide-body" style={{ ...creamText.body, margin: 0 }}>
           {section.preparedNote ||
-            `The framework, exercises, takeaways and closing reflection for ${section.swahili} (${section.english}) will appear here once the section content is added.`}
+            `The framework, exercises, takeaways and closing reflection for ${section.english} (${section.swahili}) will appear here once the section content is added.`}
         </p>
       </section>
       <SectionFooterNav section={section} status="not_started" hideMarkDone />

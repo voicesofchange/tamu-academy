@@ -47,8 +47,8 @@ export default function GuideSection() {
   return (
     <PageLayout>
       <PageMeta
-        title={`${section.swahili} — Safari ya Utu | Tamu Academy`}
-        description={`${section.swahili} (${section.english}) — a section of the Safari ya Utu Learner's Guide.`}
+        title={`${section.english} (${section.swahili}) — Safari ya Utu | Tamu Academy`}
+        description={`${section.english} — ${section.swahili}. A section of the Safari ya Utu Learner's Guide.`}
         path={`/learners-guide/${section.id}`}
         noindex
       />

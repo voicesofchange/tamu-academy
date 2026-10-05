@@ -71,7 +71,7 @@ export default function GuideCredits() {
             {proverbs.map((section) => (
               <li key={section.id} style={{ marginBottom: '0.85rem' }}>
                 <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block' }}>
-                  {section.number ? `${section.number} · ` : ''}{section.swahili}
+                  {section.number ? `${section.number} · ` : ''}{section.english} ({section.swahili})
                 </span>
                 <span className="font-guide-heading" style={{ ...creamText.heading, fontStyle: 'italic', fontSize: '0.98rem', display: 'block' }}>
                   {section.proverb.sw}

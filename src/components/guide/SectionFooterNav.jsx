@@ -62,7 +62,7 @@ export default function SectionFooterNav({ section, status, onMarkDone, busy, hi
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'space-between' }}>
         {previous ? (
           <Link to={`/learners-guide/${previous.id}`} className="font-guide-body" style={navLinkStyle}>
-            &larr; {previous.number ? `${previous.number} · ` : ''}{previous.swahili}
+            &larr; {previous.number ? `${previous.number} · ` : ''}{previous.english}
           </Link>
         ) : (
           <Link to="/learners-guide" className="font-guide-body" style={navLinkStyle}>
@@ -71,7 +71,7 @@ export default function SectionFooterNav({ section, status, onMarkDone, busy, hi
         )}
         {next ? (
           <Link to={`/learners-guide/${next.id}`} className="font-guide-body" style={navLinkStyle}>
-            {next.number ? `${next.number} · ` : ''}{next.swahili} &rarr;
+            {next.number ? `${next.number} · ` : ''}{next.english} &rarr;
           </Link>
         ) : (
           <Link to="/learners-guide" className="font-guide-body" style={navLinkStyle}>

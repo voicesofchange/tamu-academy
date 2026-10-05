@@ -124,14 +124,14 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
 
       <div style={{ padding: '22px 24px 24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <h3 className="font-guide-heading" style={{ fontWeight: 600, fontSize: '22px', lineHeight: 1.2, margin: '0 0 4px', color: '#33241A' }}>
-          {section.swahili}
+          {section.english}
         </h3>
         <p className="font-guide-body" style={{ fontSize: '12.5px', letterSpacing: '0.03em', color: '#8a7860', margin: '0 0 12px' }}>
-          {section.english}
+          {section.swahili} · Kiswahili
         </p>
-        {section.proverb?.sw && (
+        {section.proverb?.en && (
           <p className="font-guide-heading" style={{ fontSize: '0.95rem', fontStyle: 'italic', color: '#8A650B', lineHeight: 1.5, margin: '0 0 18px', flex: 1 }}>
-            {section.proverb.sw}
+            {section.proverb.en}
           </p>
         )}
 

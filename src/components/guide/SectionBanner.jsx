@@ -32,10 +32,10 @@ export default function SectionBanner({ section }) {
               {section.number ? `Section ${section.number}` : "Learner's Guide"}
             </span>
             <h1 className="font-guide-heading" style={{ fontSize: 'clamp(1.9rem, 5vw, 2.9rem)', fontWeight: 600, lineHeight: 1.05, margin: '0.45rem 0 0.35rem', color: '#24150f' }}>
-              {section.swahili}
+              {section.english}
             </h1>
             <p className="font-guide-body" style={{ fontSize: '0.95rem', fontWeight: 400, margin: 0, color: 'rgba(36,21,15,0.82)' }}>
-              {section.english}
+              {section.swahili} · Kiswahili
             </p>
           </div>
           {section.number && (
