@@ -1,0 +1,49 @@
+{
+  "name": "RateLimitEvent",
+  "type": "object",
+  "properties": {
+    "scope": {
+      "type": "string",
+      "title": "Scope",
+      "description": "Which public endpoint this hit belongs to, e.g. contact_inquiry or page_translation."
+    },
+    "limit_key": {
+      "type": "string",
+      "title": "Limit Key",
+      "description": "The hashed client identifier the limit applies to, or 'global' for the aggregate cap. Raw IP addresses are never stored."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Expires At",
+      "description": "When this hit stops counting toward its window and becomes eligible for cleanup."
+    }
+  },
+  "required": [
+    "scope",
+    "limit_key",
+    "expires_at"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

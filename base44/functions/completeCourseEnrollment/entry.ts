@@ -23,15 +23,17 @@ import {
  * the workflow.
  *
  * SECURITY:
- *   - Authenticated callers (direct HTTP): must be the owner of the
- *     learner_id or an admin. Returns 403 otherwise.
- *   - Unauthenticated callers (internal workflow): must pass a data
- *     integrity check — EVERY required module for the course must
- *     have a ModuleProgress row with status "completed". This prevents
- *     unauthenticated attackers from arbitrarily completing enrollments.
- *   - The learner_name (PII) is ONLY returned to authenticated callers
- *     (the learner or an admin). Unauthenticated callers receive null,
- *     preventing full-name exposure to anonymous HTTP requests.
+ *   - Admin-only. This function performs service-role writes that finalize
+ *     a learner's enrollment, so it must never be callable by an arbitrary
+ *     public request. Every backend function has its own public URL; this
+ *     gate is what stops a stranger from completing someone else's course.
+ *     Returns 403 for any non-admin caller. Workflows inject admin auth
+ *     (the same authority the app's other workflow-triggered functions
+ *     require), so the internal workflow path keeps working.
+ *   - Completion is still data-verified: EVERY required module for the
+ *     course must have a ModuleProgress row with status "completed", and
+ *     any course-level requirements must pass. Admin authority does not
+ *     bypass the integrity checks.
  *
  * Returns:
  *   {
@@ -70,22 +72,13 @@ export default async function(req: Request): Promise<Response> {
     }
 
     // --- Authentication / Authorization ---
-    // Authenticated callers must own the learner_id or be an admin.
-    // Unauthenticated callers (internal workflow) must pass a data
-    // integrity check: every required module must have a completed
-    // ModuleProgress record for this learner.
-    let user: { id: string; role?: string } | null = null;
-    try {
-      user = await base44.auth.me();
-    } catch (_) {
-      user = null;
-    }
-
-    if (user) {
-      // Authenticated direct call — verify ownership or admin.
-      if (user.id !== learnerId && user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
+    // Admin-only. Every backend function has its own public URL, so this
+    // gate is what stops an unauthenticated stranger from finalizing a
+    // learner's enrollment. Workflows inject admin auth — the same
+    // authority the app's other workflow-triggered functions require.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Always verify ALL required modules are genuinely completed before
@@ -164,22 +157,19 @@ export default async function(req: Request): Promise<Response> {
     // Look up the learner's display name for the certificate.
     let learnerName: string | null = null;
     try {
-      const user = await base44.asServiceRole.entities.User.get(learnerId);
-      learnerName = user?.full_name || null;
+      const learnerRecord = await base44.asServiceRole.entities.User.get(learnerId);
+      learnerName = learnerRecord?.full_name || null;
     } catch (_) {
       learnerName = null;
     }
 
-    // Only return the learner's full name to authenticated callers (the
-    // learner or an admin). Unauthenticated callers (the internal workflow)
-    // receive null — issueCourseCertificate derives the name server-side
-    // from the User entity, so the workflow does not need it here, and
-    // returning it would expose PII to anonymous HTTP callers.
+    // The caller is a verified admin or the internal workflow, so the
+    // learner's display name may be returned for the certificate step.
     return Response.json({
       enrollment_id: enrollment.id,
       certificate_exists: certificateExists,
       existing_certificate_id: certificateExists ? existingCerts[0].certificate_id : null,
-      learner_name: user ? learnerName : null,
+      learner_name: learnerName,
       course_title: courseConfig.title,
       completed_at: nowIso,
       learner_id: learnerId,

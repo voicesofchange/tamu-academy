@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { clientKeyFromRequest, allowRequestWithinLimits } from '../../shared/rate-limit.js';
 
 const INQUIRY_TYPES = [
   'Early Access Signup',
@@ -49,6 +50,23 @@ Deno.serve(async (req) => {
     if (body.honeypot) {
       console.log('[submitContactInquiry] Honeypot triggered — discarding submission');
       return Response.json({ success: true });
+    }
+
+    // Abuse controls. This endpoint is public by design (visitors are not
+    // signed in), so it is limited server-side before anything is written
+    // or emailed: per client and in aggregate, using durable storage that
+    // is shared across requests and function instances.
+    const clientKey = await clientKeyFromRequest(req);
+    const withinLimits = await allowRequestWithinLimits(base44, 'contact_inquiry', [
+      { key: `client:${clientKey}`, limit: 5, windowMs: 15 * 60 * 1000 },
+      { key: 'global', limit: 60, windowMs: 60 * 60 * 1000 },
+    ]);
+    if (!withinLimits) {
+      console.warn('[submitContactInquiry] Rate limit reached — request rejected');
+      return Response.json(
+        { success: false, error: 'Too many requests. Please try again a little later.' },
+        { status: 429 }
+      );
     }
 
     // Normalise and extract only expected inputs

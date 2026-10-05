@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { translateTextBatch } from '../../shared/translate-content.js';
+import { clientKeyFromRequest, allowRequestWithinLimits } from '../../shared/rate-limit.js';
 
 /**
  * translatePageContent — batch-translates a page's text content object.
@@ -47,6 +48,20 @@ export default async function(req) {
       if (totalChars > MAX_TOTAL_CHARS) {
         return Response.json({ error: 'content too large' }, { status: 413 });
       }
+    }
+
+    // Abuse control. Public pages are translated for signed-out visitors,
+    // so the endpoint stays open but is limited server-side before the
+    // LLM call: per client and in aggregate, using durable shared storage.
+    // A rejected request returns an error and the page falls back to its
+    // original English text, so the visitor is never blocked.
+    const clientKey = await clientKeyFromRequest(req);
+    const withinLimits = await allowRequestWithinLimits(base44, 'page_translation', [
+      { key: `client:${clientKey}`, limit: 25, windowMs: 10 * 60 * 1000 },
+      { key: 'global', limit: 400, windowMs: 60 * 60 * 1000 },
+    ]);
+    if (!withinLimits) {
+      return Response.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     const translations = await translateTextBatch(base44, texts, language);

@@ -26,24 +26,24 @@ import { resolvePreferredName } from '../../shared/learner-name.js';
  * the workflow.
  *
  * SECURITY:
- *   - Authenticated callers (direct HTTP): must be the owner of the
- *     learner_id or an admin. Returns 403 otherwise.
- *   - Unauthenticated callers (internal workflow): must pass a data
- *     integrity check — the CourseEnrollment record for this learner
- *     + course must exist with status "completed". This prevents
- *     unauthenticated attackers from forging certificates for
- *     incomplete or nonexistent enrollments.
- *   - The verification_code is ONLY returned to authenticated callers
- *     (the learner or an admin). Unauthenticated callers receive the
- *     certificate_id but not the verification_code, preventing
- *     credential exposure to anonymous HTTP requests.
+ *   - Admin-only. Issuing a certificate records a credential and emails
+ *     the learner a PDF, so it must never be callable by an arbitrary
+ *     public request. Every backend function has its own public URL; this
+ *     gate is what stops a stranger from forging certificates. Returns 403
+ *     for any non-admin caller. Workflows inject admin auth (the same
+ *     authority the app's other workflow-triggered functions require), so
+ *     the internal workflow path keeps working.
+ *   - Issuance is still data-verified: the CourseEnrollment for this
+ *     learner + course must exist with status "completed", and every field
+ *     on the certificate is derived from server-side records rather than
+ *     the request body. Admin authority does not bypass that check.
  *
  * Returns:
  *   {
  *     certificate_created: boolean,
  *     certificate_already_existed: boolean,
  *     certificate_id: string,
- *     verification_code: string (only for authenticated callers, when newly created)
+ *     verification_code: string (when a new certificate was created)
  *   }
  */
 export default async function(req: Request): Promise<Response> {
@@ -70,29 +70,18 @@ export default async function(req: Request): Promise<Response> {
     }
 
     // --- Authentication / Authorization ---
-    // Authenticated callers must own the learner_id or be an admin.
-    // All callers (authenticated or internal workflow) must pass a data
-    // integrity check: the CourseEnrollment record must exist with
-    // status "completed" for this learner + course. Client-supplied
-    // learner_name, course_title, completed_at, and enrollment_id are
-    // NOT trusted — they are derived from server-side records below.
-    let user: { id: string; role?: string } | null = null;
-    try {
-      user = await base44.auth.me();
-    } catch (_) {
-      user = null;
+    // Admin-only. Every backend function has its own public URL, so this
+    // gate is what stops an unauthenticated stranger from issuing a
+    // certificate. Workflows inject admin auth — the same authority the
+    // app's other workflow-triggered functions require.
+    const user = await base44.auth.me().catch(() => null);
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    if (user) {
-      // Authenticated direct call — verify ownership or admin.
-      if (user.id !== learnerId && user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
-    }
-
-    // Always verify the enrollment is genuinely completed before issuing
-    // a certificate. Applies to both authenticated direct callers and
-    // the internal workflow path.
+    // Certificate fields are never taken from the request body — they are
+    // derived from server-side records below. The enrollment must also
+    // genuinely be completed before a certificate is issued.
     const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
       learner_id: learnerId,
       course_slug: courseSlug,
@@ -207,19 +196,14 @@ export default async function(req: Request): Promise<Response> {
       console.warn('[issueCourseCertificate] Certificate email failed:', emailErr && emailErr.message);
     }
 
-    // Only return the verification_code to authenticated callers (the
-    // learner or an admin). Unauthenticated callers (the internal workflow)
-    // do not need it — the workflow does not use the return value — and
-    // returning it would expose a credential to anonymous HTTP callers.
-    const response: Record<string, unknown> = {
+    // The caller is a verified admin or the internal workflow, so the
+    // verification_code may be returned with the new certificate.
+    return Response.json({
       certificate_created: true,
       certificate_already_existed: false,
       certificate_id: created?.certificate_id || certificateId,
-    };
-    if (user) {
-      response.verification_code = created?.verification_code || verificationCode;
-    }
-    return Response.json(response);
+      verification_code: created?.verification_code || verificationCode,
+    });
   } catch (error) {
     console.error('[issueCourseCertificate] Error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });
