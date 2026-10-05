@@ -17,6 +17,7 @@ import LearnersGuide from './pages/LearnersGuide';
 import GuideSection from './pages/GuideSection';
 import GuideInsights from './pages/GuideInsights';
 import GuideCredits from './pages/GuideCredits';
+import GuidePrint from './pages/GuidePrint';
 import About from './pages/About';
 import Courses from './pages/Courses';
 import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
@@ -148,6 +149,7 @@ const AuthenticatedApp = () => {
         <Route path="/learners-guide" element={<LearnersGuide />} />
         <Route path="/learners-guide/insights" element={<GuideInsights />} />
         <Route path="/learners-guide/credits" element={<GuideCredits />} />
+        <Route path="/learners-guide/print" element={<GuidePrint />} />
         <Route path="/learners-guide/:sectionId" element={<GuideSection />} />
       </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}

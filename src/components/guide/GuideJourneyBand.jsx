@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { GUIDE_PRIVACY_NOTE, HOW_TO_USE } from '@/lib/guide/sections';
-import { GUIDE_PDF_URL } from '@/lib/guide/guide-pdf';
+import { Link } from 'react-router-dom';
+import { GUIDE_PRINT_PATH } from '@/lib/guide/guide-pdf';
 
 const eyebrow = { color: '#e8b85b', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' };
 
@@ -90,25 +91,14 @@ export default function GuideJourneyBand({ started = 0, done = 0, total = 0 }) {
             </div>
 
             <div style={{ borderTop: '1px solid rgba(243,234,216,0.18)', paddingTop: '22px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px' }}>
-              {GUIDE_PDF_URL ? (
-                <a
-                  href={GUIDE_PDF_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="tamu-journey-primary font-guide-body"
-                  style={{ padding: '13px 20px', borderRadius: '3px', textDecoration: 'none', fontSize: '11.5px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <Download size={14} strokeWidth={1.8} />
-                  Download the printable PDF
-                </a>
-              ) : (
-                <span
-                  className="font-guide-body"
-                  style={{ padding: '13px 20px', borderRadius: '3px', fontSize: '11.5px', letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(251,245,232,0.6)', border: '1px solid rgba(201,150,26,0.3)' }}
-                >
-                  Printable PDF — link to be added
-                </span>
-              )}
+              <Link
+                to={GUIDE_PRINT_PATH}
+                className="tamu-journey-primary font-guide-body"
+                style={{ padding: '13px 20px', borderRadius: '3px', textDecoration: 'none', fontSize: '11.5px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                <Download size={14} strokeWidth={1.8} />
+                Download the printable PDF
+              </Link>
               <p className="font-guide-body" style={{ color: '#c6b59e', fontSize: '12.5px', lineHeight: 1.7, margin: 0, maxWidth: '420px' }}>
                 {GUIDE_PRIVACY_NOTE}
               </p>

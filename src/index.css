@@ -417,3 +417,37 @@ html {
     transition: none;
   }
 }
+
+/* ── Safari ya Utu printable workbook ───────────────────────────────────────
+   The workbook page reuses .tamu-print-area for the visibility switch above;
+   these rules give it one guide section per printed page and keep small blocks
+   from being split across a page break. */
+@media print {
+  .tamu-workbook {
+    max-width: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+  .tamu-print-area .tamu-print-section {
+    break-after: page;
+    page-break-after: always;
+  }
+  .tamu-print-area .tamu-print-section:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  .tamu-print-area .workbook-block,
+  .tamu-print-area tr,
+  .tamu-print-area table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .tamu-print-area table {
+    width: 100% !important;
+  }
+  .tamu-print-area,
+  .tamu-print-area * {
+    background: transparent !important;
+  }
+}

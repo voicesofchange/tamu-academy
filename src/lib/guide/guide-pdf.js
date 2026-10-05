@@ -1,8 +1,9 @@
 /**
- * The printable Safari ya Utu companion workbook.
+ * The printable edition of Safari ya Utu.
  *
- * Upload the finished PDF through Base44, then paste the file URL between the
- * quotes below. Until then the download button on the guide home stays
- * visible but unlinked, so nothing points at a broken file.
+ * The workbook is not a stored file: it renders from the live guide content at
+ * /learners-guide/print, so the printed edition can never fall behind the
+ * sections. Learners open it, then print it or save it as a PDF from the print
+ * dialog (the browser names the file after the page title).
  */
-export const GUIDE_PDF_URL = '';
+export const GUIDE_PRINT_PATH = '/learners-guide/print';

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { GUIDE_PRIVACY_NOTE, GUIDE_PROVERB, GUIDE_SUBTITLE, GUIDE_TITLE } from '@/lib/guide/sections';
-import { GUIDE_PDF_URL } from '@/lib/guide/guide-pdf';
+import { GUIDE_PRINT_PATH } from '@/lib/guide/guide-pdf';
 import { creamText, darkText } from '@/lib/guide/styles';
 
 const rise = (delay = 0) => ({
@@ -68,19 +68,10 @@ export default function GuideHomeHero({ started = 0, total = 0 }) {
           <Link to="/learners-guide/karibu" className="tamu-journey-primary font-guide-body" style={ctaStyle}>
             Begin with Karibu →
           </Link>
-          {GUIDE_PDF_URL ? (
-            <a href={GUIDE_PDF_URL} target="_blank" rel="noreferrer" className="tamu-journey-secondary font-guide-body" style={ctaStyle}>
-              <Download size={14} strokeWidth={1.8} />
-              Printable PDF
-            </a>
-          ) : (
-            <span
-              className="font-guide-body"
-              style={{ ...ctaStyle, color: 'rgba(251,245,232,0.6)', border: '1px solid rgba(201,150,26,0.3)' }}
-            >
-              Printable PDF — link to be added
-            </span>
-          )}
+          <Link to={GUIDE_PRINT_PATH} className="tamu-journey-secondary font-guide-body" style={ctaStyle}>
+            <Download size={14} strokeWidth={1.8} />
+            Printable PDF
+          </Link>
         </div>
 
         <p className="font-guide-body" style={{ ...darkText.body, fontSize: '0.86rem', marginTop: '24px', maxWidth: '40rem' }}>
