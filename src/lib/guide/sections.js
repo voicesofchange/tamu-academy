@@ -257,8 +257,76 @@ export const GUIDE_SECTIONS = [
     number: '03',
     swahili: 'Uthabiti',
     english: 'Resilience',
-    available: false,
-    proverb: { sw: 'Pole pole ndio mwendo.', en: 'Slowly is the way.' },
+    available: true,
+    proverb: { sw: 'Penye nia pana njia.', en: 'Where there is a will, there is a way.' },
+    intro: [
+      'Resilience is not only something you hold alone. It is something you inherit from the people who came through hard times before you, and something you share with those around you.',
+      'Waiyaki wa Hinga stood for his people\u2019s land and paid a heavy price; generations later, his stand still gives others strength. Your family has stories like this too. When something feels too hard, the Mizizi questions turn you back to your roots: what your people have done, who stands with you, and what you can give.',
+    ],
+    framework: {
+      eyebrow: 'Tamu framework',
+      heading: 'Mizizi · the roots questions',
+      cards: [
+        { label: '1 · Kumbuka', title: 'Remember', body: 'When did my family or community come through something like this? What did they do?' },
+        { label: '2 · Tegemea', title: 'Lean on', body: 'Who can I lean on now, and have I asked them?' },
+        { label: '3 · Rudisha', title: 'Give back', body: 'What can I offer someone else facing the same thing?' },
+      ],
+    },
+    exercises: [
+      {
+        id: '3.1',
+        number: 'Exercise 3.1',
+        title: 'Interview an elder',
+        instructions: 'Ask a parent, grandparent or community elder about a hardship your family came through.',
+        fields: [
+          { id: 'what_happened', type: 'text', label: 'What happened, and how did they get through it?', rows: 4 },
+          { id: 'proverb_lesson', type: 'text', label: 'What proverb, saying or lesson do they carry from it?', rows: 4 },
+        ],
+      },
+      {
+        id: '3.2',
+        number: 'Exercise 3.2',
+        title: 'Mizizi in practice',
+        instructions: 'Think of one challenge you face right now.',
+        fields: [
+          { id: 'challenge', type: 'text', label: 'My challenge', rows: 2 },
+          {
+            id: 'mizizi_table',
+            type: 'table',
+            label: 'Walk the challenge through the three roots questions',
+            rows: ['Kumbuka — What has my family or community done before?', 'Tegemea — Who can I lean on?', 'Rudisha — What can I give?'],
+            columns: [{ id: 'answer', label: 'My answer' }],
+          },
+        ],
+      },
+      {
+        id: '3.3',
+        number: 'Exercise 3.3',
+        title: 'A habit with a partner',
+        instructions: 'Small habits kept with others last longer than big plans made alone.',
+        fields: [
+          { id: 'habit', type: 'text', label: 'One small learning habit I will build', rows: 2 },
+          { id: 'reminder', type: 'text', label: 'What will remind me to do it (a time, a place, an alarm)?', rows: 2 },
+          { id: 'checkin', type: 'text', label: 'Who will I check in with each week?', rows: 2 },
+          {
+            id: 'weekly_tracker',
+            type: 'table',
+            label: 'Track it for four weeks',
+            rows: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            columns: [{ id: 'note', label: 'Did I keep it?' }],
+          },
+          { id: 'celebrate', type: 'text', label: 'How will I celebrate keeping it?', rows: 2 },
+        ],
+      },
+    ],
+    takeaways: [
+      'Resilience is shared: you do not have to carry everything alone.',
+      'Your history is a resource, not only a weight.',
+      'Small habits, kept with others, change the most.',
+    ],
+    closingReflection: {
+      prompt: 'What will you carry forward from this section?',
+    },
   },
 
   {
