@@ -651,3 +651,34 @@ select option {
 .tamu-waiyaki-centered :is(input, textarea) {
   text-align: left !important;
 }
+
+/* ── Waiyaki wa Hinga course overview — centred layout ─────────────────────
+   The same centred treatment the modules use, applied to the overview page.
+   It is scoped to the sections inside the page's main landmark, so the
+   floating Tamu Guide widget — which shares the page but renders outside
+   those sections — keeps its own alignment. */
+.tamu-waiyaki-overview #tamu-main section,
+.tamu-waiyaki-overview #tamu-main section * {
+  text-align: center !important;
+}
+
+.tamu-waiyaki-overview #tamu-main section :is(div, nav, ul, ol, li, p, form) {
+  justify-content: center !important;
+}
+
+/* Rows that used to push their two ends out to the page edges now sit as one
+   centred group, with room between the parts. */
+.tamu-waiyaki-overview #tamu-main section [style*="space-between"] {
+  gap: 1rem !important;
+}
+
+.tamu-waiyaki-overview #tamu-main section [style*="space-between"] > * {
+  flex: 0 1 auto !important;
+}
+
+/* Blocks and rules that carry their own width centre themselves. */
+.tamu-waiyaki-overview #tamu-main section [style*="max-width"],
+.tamu-waiyaki-overview #tamu-main section h2 + div[aria-hidden="true"] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

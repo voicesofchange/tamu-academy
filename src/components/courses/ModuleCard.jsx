@@ -9,8 +9,10 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
 /**
  * Module card with numbered journey visual and Coursera-style metadata strip.
  * Modules are non-interactive until learning materials are ready (no route = no Link).
+ * An optional `footer` (for example a course's sources link) renders under the
+ * card, outside its own link, since a link cannot be nested inside a link.
  */
-export default function ModuleCard({ module, to }) {
+export default function ModuleCard({ module, to, footer }) {
   const card = (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -71,9 +73,16 @@ export default function ModuleCard({ module, to }) {
       </div>
     </motion.div>
   );
-  return to ? (
+  const cardBody = to ? (
     <Link to={to} style={{ textDecoration: 'none', display: 'block' }}>
       {card}
     </Link>
   ) : card;
+
+  return footer ? (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {cardBody}
+      <div style={{ marginTop: '0.75rem' }}>{footer}</div>
+    </div>
+  ) : cardBody;
 }
