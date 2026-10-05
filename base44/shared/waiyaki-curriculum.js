@@ -940,35 +940,38 @@ export const WAIYAKI_PROJECT_OPTIONS = [
 // Sources
 // ---------------------------------------------------------------------------
 
+// Each record carries a verified destination URL where an online copy or record
+// exists. Two records stay as plain citations because no online copy could be
+// verified: the 1922 Times piece and the 1998 Sunday Times report.
 export const WAIYAKI_FURTHER_READING = {
   primarySources: [
-    'Lugard, F.D. The Rise of Our East African Empire. Edinburgh: Blackwood, 1893.',
-    'Perham, M. (ed.). The Diaries of Lord Lugard. London: Faber, 1959.',
-    'Macdonald, J.R.L. Soldiering and Surveying in British East Africa, 1891\u20131894. London: Arnold, 1897.',
-    'Austin, H.H. \u201cThe Passing of Waiyaki.\u201d The Times, November 1922.',
-    'Kenyatta, J. Facing Mount Kenya. London: Secker & Warburg, 1938.',
+    { text: 'Lugard, F.D. The Rise of Our East African Empire. Edinburgh: Blackwood, 1893.', url: 'https://archive.org/details/riseofoureastafr01luga' },
+    { text: 'Perham, M. (ed.). The Diaries of Lord Lugard. London: Faber, 1959.', url: 'https://archive.org/details/diariesoflordlug0002luga' },
+    { text: 'Macdonald, J.R.L. Soldiering and Surveying in British East Africa, 1891\u20131894. London: Arnold, 1897.', url: 'https://archive.org/details/soldieringsurvey00macd' },
+    { text: 'Austin, H.H. \u201cThe Passing of Waiyaki.\u201d The Times, November 1922.' },
+    { text: 'Kenyatta, J. Facing Mount Kenya. London: Secker & Warburg, 1938.', url: 'https://archive.org/details/facingmountkenya00keny' },
   ],
   scholarship: [
-    'Berman, B., and J. Lonsdale. Unhappy Valley: Conflict in Kenya and Africa. London: James Currey, 1992.',
-    'Muriuki, G. A History of the Kikuyu, 1500\u20131900. Nairobi: Oxford University Press, 1974.',
-    'Food and Agriculture Organization. \u201cThe Evolution of Kikuyu Land Tenure.\u201d In Land Tenure in Kenya (FAO study), chapter 3.',
-    'Leakey, L.S.B. The Southern Kikuyu before 1903. London: Academic Press, 1977.',
-    'Rogers, P. \u201cThe British and the Kikuyu 1890\u20131905: A Reassessment.\u201d Journal of African History 20, no. 2 (1979): 255\u201369.',
-    'Lonsdale, J. \u201cThe Prayers of Waiyaki: Political Uses of the Kikuyu Past.\u201d In Revealing Prophets, 1995.',
-    'Oxford Reference, \u201cWaiyaki wa Hinga,\u201d Dictionary of African Biography.',
+    { text: 'Berman, B., and J. Lonsdale. Unhappy Valley: Conflict in Kenya and Africa. London: James Currey, 1992.', url: 'https://www.ohioswallow.com/9780821410172/unhappy-valley-book-one/' },
+    { text: 'Muriuki, G. A History of the Kikuyu, 1500\u20131900. Nairobi: Oxford University Press, 1974.', url: 'https://archive.org/details/historyofkikuyu10000godf' },
+    { text: 'Food and Agriculture Organization. \u201cThe Evolution of Kikuyu Land Tenure.\u201d In Land Tenure in Kenya (FAO study), chapter 3.', url: 'https://www.fao.org/4/u8995e/u8995e06.htm' },
+    { text: 'Leakey, L.S.B. The Southern Kikuyu before 1903. London: Academic Press, 1977.', url: 'https://openlibrary.org/books/OL4560775M/The_southern_Kikuyu_before_1903' },
+    { text: 'Rogers, P. \u201cThe British and the Kikuyu 1890\u20131905: A Reassessment.\u201d Journal of African History 20, no. 2 (1979): 255\u201369.', url: 'https://www.jstor.org/stable/181517' },
+    { text: 'Lonsdale, J. \u201cThe Prayers of Waiyaki: Political Uses of the Kikuyu Past.\u201d In Revealing Prophets, 1995.', url: 'https://archive.org/details/revealingprophet0000unse' },
+    { text: 'Oxford Reference, \u201cWaiyaki wa Hinga,\u201d Dictionary of African Biography.', url: 'https://www.oxfordreference.com/display/10.1093/acref/9780195382075.001.0001/acref-9780195382075' },
   ],
   familyAndCommunity: [
-    'Otieno, W.W. Mau Mau\u2019s Daughter: A Life History. Boulder: Lynne Rienner, 1998.',
-    'Regeru, N. Muthamaki Waiyaki wa Hinga: The Untold Story. Nairobi: Regsco Holdings, 2016.',
-    'Mituka, B. \u201cScribe discovers Waiyaki\u2019s grave.\u201d Sunday Times (Kenya), 2 August 1998.',
+    { text: 'Otieno, W.W. Mau Mau\u2019s Daughter: A Life History. Boulder: Lynne Rienner, 1998.', url: 'https://www.rienner.com/title/Mau_Mau_s_Daughter_A_Life_History' },
+    { text: 'Regeru, N. Muthamaki Waiyaki wa Hinga: The Untold Story. Nairobi: Regsco Holdings, 2016.', url: 'https://prestigebookshop.com/product/muthamaki-waiyaki-wa-hinga-the-untold-story/' },
+    { text: 'Mituka, B. \u201cScribe discovers Waiyaki\u2019s grave.\u201d Sunday Times (Kenya), 2 August 1998.' },
   ],
   officialRecords: [
-    'National Heroes Council. 2023 Mashujaa Day Heroes and Heroines Citations. heroes.go.ke.',
-    'Republic of Kenya. Speech by President Uhuru Kenyatta, 11th Mashujaa Day, 20 October 2020. president.go.ke.',
-    'Daily Nation, \u201c122 years later, family seeks hero\u2019s burial for Waiyaki wa Hinga,\u201d 4 September 2014.',
-    'Business Daily, \u201cOldest edifice of colonial era left to rot in Kikuyu.\u201d',
-    'The Standard, \u201cMashujaa: Five heroes whose resting places might never be known.\u201d',
-    'Ng\u0169g\u0129 wa Thiong\u2019o. The River Between (1965); A Grain of Wheat (1967).',
+    { text: 'National Heroes Council. 2023 Mashujaa Day Heroes and Heroines Citations. heroes.go.ke.', url: 'https://heroes.go.ke/' },
+    { text: 'Republic of Kenya. Speech by President Uhuru Kenyatta, 11th Mashujaa Day, 20 October 2020. president.go.ke.', url: 'https://repository.kippra.or.ke/items/2c5c5934-7512-4e72-9517-2f0726375bfb' },
+    { text: 'Daily Nation, \u201c122 years later, family seeks hero\u2019s burial for Waiyaki wa Hinga,\u201d 4 September 2014.', url: 'https://nation.africa/kenya/life-and-style/dn2/122-years-later-family-seeks-hero-s-burial-for-waiyaki-wa-hinga-1020822' },
+    { text: 'Business Daily, \u201cOldest edifice of colonial era left to rot in Kikuyu.\u201d', url: 'https://www.businessdailyafrica.com/bd/lifestyle/society/oldest-edifice-of-colonial-era-left-to-rot-in-kikuyu-2195894' },
+    { text: 'The Standard, \u201cMashujaa: Five heroes whose resting places might never be known.\u201d', url: 'https://www.standardmedia.co.ke/entertainment/article/2001299749/mashujaa-five-heroes-whose-resting-places-might-never-be-known' },
+    { text: 'Ng\u0169g\u0129 wa Thiong\u2019o. The River Between (1965); A Grain of Wheat (1967).', url: 'https://archive.org/details/riverbetween00ngug' },
   ],
   note:
     'This collection reflects research current to October 2026. It includes only claims that can be verified; where oral tradition is cited, it is identified as tradition. Precise coordinates for burial sites circulate in research notes but have not been confirmed by survey or excavation \u2014 treat any coordinates as orientation only. Family testimony and new evidence are welcomed for future revisions.',
