@@ -7,6 +7,8 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useAuth } from '@/lib/AuthContext';
+import { hasCompletedProfile } from '@/lib/learner-profile';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -67,6 +69,8 @@ const ICON_MAP = {
 
 export default function Welcome() {
   const { content: c } = useTranslatedContent('welcome', CONTENT);
+  const { user } = useAuth();
+  const needsProfile = Boolean(user) && !hasCompletedProfile(user);
 
   return (
     <PageLayout>
@@ -80,6 +84,18 @@ export default function Welcome() {
         heading={c.heroHeading}
         subheading={c.heroSubheading}
       />
+
+      {needsProfile && (
+        <PageSection eyebrow="Your Profile" heading="Set up your profile">
+          <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
+            Add the name you would like written on your certificate, plus as much or as little as you want to
+            share about where you are learning from. You can change it any time.
+          </p>
+          <Link to="/profile" className="font-body" style={primaryButtonStyle}>
+            Set up my profile &rarr;
+          </Link>
+        </PageSection>
+      )}
 
       <PageSection eyebrow={c.gettingStartedEyebrow} heading={c.gettingStartedHeading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '2rem' }}>

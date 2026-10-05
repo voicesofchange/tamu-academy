@@ -13,6 +13,7 @@ export default {
     resources: 'Rasilimali',
     contact: 'Wasiliana',
     myCourses: 'Kozi Zangu',
+    myProfile: 'Wasifu Wangu',
     privacy: 'Faragha',
     stories: 'Hadithi',
     insights: 'Maarifa',

@@ -52,6 +52,21 @@
     "completion_statement": {
       "type": "string",
       "title": "Completion Statement"
+    },
+    "previous_learner_name": {
+      "type": "string",
+      "title": "Previous Learner Name",
+      "description": "The name on the certificate before an administrator corrected it, retained for audit."
+    },
+    "corrected_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Name Corrected At"
+    },
+    "corrected_by": {
+      "type": "string",
+      "title": "Corrected By",
+      "description": "The administrator who made the correction."
     }
   },
   "required": [

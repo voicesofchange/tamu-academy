@@ -13,6 +13,7 @@ import FollowUpInquiries from '@/components/insights/FollowUpInquiries';
 import VoicesOfChangeAnnouncement from '@/components/insights/VoicesOfChangeAnnouncement';
 import LearnerWelcomeSender from '@/components/insights/LearnerWelcomeSender';
 import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
+import CertificateCorrection from '@/components/insights/CertificateCorrection';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
 
@@ -82,6 +83,10 @@ export default function CommunityInsights() {
 
           <PageSection>
             <VoicesOpenTracking />
+          </PageSection>
+
+          <PageSection heading="Certificate Corrections">
+            <CertificateCorrection />
           </PageSection>
         </>
       )}

@@ -6,6 +6,7 @@ import {
   ECONOMICS_CERTIFICATE_MODULE_ROUTES,
   isEconomicsModulePublished,
 } from '../../shared/economics-course-config.js';
+import { resolvePreferredName } from '../../shared/learner-name.js';
 
 /**
  * issueEconomicsCertificate — authenticated endpoint that issues or
@@ -153,8 +154,8 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Course not completed', incompleteModules }, { status: 403 });
     }
 
-    // Verify learner has a profile name.
-    const learnerName = user.full_name;
+    // Verify learner has a profile name (their preferred name if they set one).
+    const learnerName = resolvePreferredName(user);
     if (!learnerName || typeof learnerName !== 'string' || learnerName.trim().length === 0) {
       return Response.json({
         error: 'Profile name required',

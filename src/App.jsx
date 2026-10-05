@@ -55,6 +55,7 @@ import EconomicsCertificate from './pages/EconomicsCertificate';
 import MyCourses from './pages/MyCourses';
 import MotivationCoach from './pages/MotivationCoach';
 import Welcome from './pages/Welcome';
+import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -101,6 +102,7 @@ const AuthenticatedApp = () => {
       {/* Protected Routes — login required for module content, progress, and certificates */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/motivation-coach" element={<MotivationCoach />} />
         <Route path="/insights" element={<CommunityInsights />} />

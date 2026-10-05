@@ -77,7 +77,7 @@ export default function Register() {
       }
       base44.analytics.track({ eventName: "user_registered", properties: { method: "email" } });
       const returnTo = safeReturnTo();
-      window.location.href = returnTo === "/" ? "/welcome" : returnTo;
+      window.location.href = returnTo === "/" ? "/profile?onboarding=1" : returnTo;
     } catch (err) {
       setError(err.message || c.invalidCode);
     } finally {

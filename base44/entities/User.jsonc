@@ -1,4 +1,6 @@
 {
+  "name": "User",
+  "type": "object",
   "properties": {
     "role": {
       "type": "string",
@@ -7,11 +9,69 @@
         "admin",
         "user"
       ]
+    },
+    "preferred_full_name": {
+      "type": "string",
+      "title": "Preferred Full Name",
+      "description": "The learner's name written exactly as they want it to appear on certificates and in correspondence."
+    },
+    "country": {
+      "type": "string",
+      "title": "Country"
+    },
+    "city_or_community": {
+      "type": "string",
+      "title": "City or Community"
+    },
+    "age_range": {
+      "type": "string",
+      "title": "Age Range",
+      "enum": [
+        "Under 18",
+        "18-24",
+        "25-34",
+        "35-44",
+        "45-54",
+        "55-64",
+        "65+",
+        "Prefer not to say"
+      ]
+    },
+    "preferred_language": {
+      "type": "string",
+      "title": "Preferred Language",
+      "enum": [
+        "en",
+        "es",
+        "sw"
+      ]
+    },
+    "education_level": {
+      "type": "string",
+      "title": "Education Level",
+      "enum": [
+        "Secondary school",
+        "Undergraduate degree",
+        "Postgraduate degree",
+        "Doctorate",
+        "Professional or vocational training",
+        "Other",
+        "Prefer not to say"
+      ]
+    },
+    "self_described_identity": {
+      "type": "string",
+      "title": "Self-Described Identity",
+      "format": "textarea",
+      "description": "Optional. Shared only with Tamu Academy administrators and never shown on certificates or in emails."
+    },
+    "profile_completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Profile Completed At"
     }
   },
   "required": [
     "role"
-  ],
-  "name": "User",
-  "type": "object"
+  ]
 }

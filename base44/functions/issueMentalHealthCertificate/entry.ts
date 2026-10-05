@@ -10,6 +10,7 @@ import {
   MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG,
   MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES,
 } from '../../shared/mental-health-certificate.js';
+import { resolvePreferredName } from '../../shared/learner-name.js';
 
 /**
  * issueMentalHealthCertificate — authenticated endpoint that issues
@@ -190,8 +191,8 @@ export default async function(req: Request): Promise<Response> {
       }, { status: 403 });
     }
 
-    // --- Verify learner has a profile name ---
-    const learnerName = user.full_name;
+    // --- Verify learner has a profile name (their preferred name if set) ---
+    const learnerName = resolvePreferredName(user);
     if (!learnerName || typeof learnerName !== 'string' || learnerName.trim().length === 0) {
       return Response.json({
         error: 'Profile name required',

@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { getCourseConfig, getRequiredModuleRoutes } from '../../shared/course-registry.js';
 import { generateCertificatePdfBase64 } from '../../shared/certificate-pdf.js';
+import { resolvePreferredName } from '../../shared/learner-name.js';
 
 /**
  * issueCourseCertificate — workflow-facing backend function.
@@ -123,7 +124,7 @@ export default async function(req: Request): Promise<Response> {
     let learnerName: string | null = null;
     try {
       const learner = await base44.asServiceRole.entities.User.get(learnerId);
-      learnerName = learner?.full_name || null;
+      learnerName = resolvePreferredName(learner);
     } catch (_) {
       learnerName = null;
     }
