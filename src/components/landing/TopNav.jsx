@@ -386,7 +386,7 @@ export default function TopNav() {
               {showExploreLabel && (
                 <span
                   style={{
-                    color: 'rgba(232,184,91,0.5)',
+                    color: 'rgba(232,184,91,0.72)',
                     fontSize: '0.58rem',
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',

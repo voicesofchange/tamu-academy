@@ -91,7 +91,7 @@ export default function HowTamuWorks() {
                     <Icon size={18} style={{ color: '#e8b85b' }} strokeWidth={1.5} />
                   </span>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span className="font-body" style={{ color: 'rgba(232,184,91,0.5)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, lineHeight: 1 }}>
+                    <span className="font-body" style={{ color: 'rgba(232,184,91,0.72)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, lineHeight: 1 }}>
                       Step {i + 1}
                     </span>
                     <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.2rem', fontWeight: 500, margin: 0, lineHeight: 1.2 }}>

@@ -135,6 +135,30 @@ html {
   }
 }
 
+/* ── Visible keyboard focus ───────────────────────────────────────────────
+   Several controls (form fields, icon buttons) suppress the browser's default
+   focus ring with an inline `outline: none` and no replacement, leaving
+   keyboard users with no visible focus. This restores one brand-consistent
+   indicator for keyboard focus only, so pointer users see no change. The
+   `!important` is deliberate: it outranks those inline declarations.
+   tabindex="-1" landmarks (e.g. the main content target) are excluded — they
+   are focused programmatically, not tabbed to. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--tamu-gold) !important;
+  outline-offset: 2px;
+}
+
+/* The skip link sits on a gold pill, so its own darker ring is kept. */
+a.tamu-skip-link:focus-visible {
+  outline: 2px solid #24150f !important;
+}
+
 /* Tamu Academy Animations */
 @keyframes fadeInUp {
   from {

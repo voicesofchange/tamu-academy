@@ -139,7 +139,7 @@ export default function ArticlePageTemplate({ article }) {
           {a.updatedDate && <span>Updated {a.updatedDate}</span>}
           {a.readingTime && <span>{a.readingTime} min read</span>}
           {a.status === 'in-development' && (
-            <span style={{ color: 'rgba(232,184,91,0.5)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
+            <span style={{ color: 'rgba(232,184,91,0.72)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
               In development
             </span>
           )}
@@ -354,7 +354,7 @@ export default function ArticlePageTemplate({ article }) {
             {a.sources.map((s, i) => (
               <li key={i} className="font-body" style={{ color: 'rgba(243,234,216,0.38)', fontSize: '0.8rem', lineHeight: 1.65, fontWeight: 300 }}>
                 {s.url ? (
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,184,91,0.55)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,184,91,0.72)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                     {s.citation} <ExternalLink size={10} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '2px' }} aria-label="(external link)" />
                   </a>
                 ) : s.citation}
