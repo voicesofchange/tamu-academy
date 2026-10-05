@@ -7,6 +7,7 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import PartnershipPathway from '@/components/partnerships/PartnershipPathway';
 
 const CONTENT = {
   heroEyebrow: 'About Tamu Academy',
@@ -162,6 +163,11 @@ export default function About() {
         <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem', marginBottom: '1.25rem' }}>{c.currentP2}</p>
         <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>{c.ctaWatch}</Link>
         <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaExplore}</Link>
+      </PageSection>
+
+      {/* Partnerships — educators and institutions */}
+      <PageSection id="partnerships">
+        <PartnershipPathway />
       </PageSection>
 
       {/* Current Stage */}

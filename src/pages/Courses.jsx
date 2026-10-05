@@ -13,6 +13,7 @@ import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { normalizeStatus } from '@/lib/course-status';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
+import PartnershipPathway from '@/components/partnerships/PartnershipPathway';
 
 const HERO_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c5d7236bd_generated_12fdce95.jpg';
 const LESSON_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/43088212a_generated_88d7dc5c.jpg';
@@ -36,10 +37,6 @@ const CONTENT = {
   openLearningBody: 'Begin with freely available Tamu Academy videos and articles exploring wellbeing, public policy, economics, institutions, culture, and global systems.',
   watchVideos: 'Watch Videos',
   readArticles: 'Read Articles',
-  institutionsEyebrow: 'Institutions',
-  institutionsHeading: 'Learning for Institutions',
-  institutionsBody: 'Tamu Academy is developing course packages for universities, youth organizations, nonprofits, public institutions, and community programmes.',
-  discussPartnership: 'Discuss a Partnership',
   courseAreas: [
     {
       id: 'mind-and-wellbeing',
@@ -393,12 +390,9 @@ export default function Courses() {
           </div>
         </section>
 
-        {/* Institutions / Final */}
-        <section style={{ padding: '80px clamp(1.5rem,6vw,88px)', background: '#24150f', textAlign: 'center' }}>
-          <span className="font-body" style={{ ...eyebrowStyle('#e8b85b'), display: 'block', marginBottom: '1rem' }}>{c.institutionsEyebrow}</span>
-          <h2 className="font-heading" style={{ fontSize: 'clamp(2rem,4vw,47px)', fontWeight: 400, margin: '0 0 18px', color: '#f8f0df' }}>{c.institutionsHeading}</h2>
-          <p className="font-body" style={{ maxWidth: '600px', margin: '0 auto 28px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7 }}>{c.institutionsBody}</p>
-          <Link to="/contact?type=partnership" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.discussPartnership} →</Link>
+        {/* Educators and Institutions — the partnership pathway */}
+        <section id="partnerships" style={{ padding: '80px clamp(1.5rem,6vw,88px)', background: '#24150f', scrollMarginTop: '90px' }}>
+          <PartnershipPathway />
         </section>
 
       </main>
