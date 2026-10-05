@@ -22,7 +22,7 @@ const PROGRESS_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e28
 const CONTENT = {
   heroEyebrow: 'Courses',
   heroHeading: 'Courses Designed for Learning, Reflection and Application',
-  heroSubheading: 'Three Tamu Academy courses are open for enrollment now, with more in development. Every course is built with subject-matter experts, educators, researchers, and knowledge holders, and combines recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning.',
+  heroSubheading: 'Four Tamu Academy courses are open for enrollment now, with more in development. Every course is built with subject-matter experts, educators, researchers, and knowledge holders, and combines recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning.',
   heritageLabel: 'Heritage and Leadership Collection',
   learningAreaLabel: 'Learning Area',
   heritageNote: 'A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.',
@@ -169,14 +169,16 @@ const CONTENT = {
       courses: [
         {
           title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
-          status: 'In development',
+          slug: 'waiyaki-wa-hinga',
+          status: 'Available now',
           description:
-            'A research- and memory-based course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
+            'A five-module research and memory course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
           visual: {
             icon: 'Scroll',
             accent: 'rgba(197,130,50,0.26)',
             meta: [
-              { icon: 'Clock', label: 'In development' },
+              { icon: 'Layers', label: '5 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
               { icon: 'BarChart', label: 'Research-based' },
             ],
           },
@@ -237,7 +239,7 @@ export default function Courses() {
     <div style={{ background: '#24150f', minHeight: '100vh', overflowX: 'hidden' }}>
       <PageMeta
         title="Courses | Tamu Academy"
-        description="Explore Tamu Academy's open courses in mental health and economics, and the courses in development across artificial intelligence, public policy, and the Waiyaki wa Hinga Heritage and Leadership Collection."
+        description="Explore Tamu Academy's open courses in mental health, economics, markets and heritage, and the courses in development across artificial intelligence and public policy."
         path="/courses"
       />
       <SkipLink />

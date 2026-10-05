@@ -10,6 +10,7 @@ import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
+import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import GuideContinueCard from '@/components/guide/GuideContinueCard';
@@ -28,9 +29,10 @@ const COURSE_META = {
   [MENTAL_HEALTH_COURSE.slug]: MENTAL_HEALTH_COURSE,
   [ECONOMICS_COURSE.slug]: ECONOMICS_COURSE,
   [SAUTI_ZA_SOKO_COURSE_SLUG]: SAUTI_ZA_SOKO_COURSE,
+  [WAIYAKI_COURSE_SLUG]: WAIYAKI_COURSE,
 };
 
-const ALL_COURSES = [MENTAL_HEALTH_COURSE, ECONOMICS_COURSE, SAUTI_ZA_SOKO_COURSE];
+const ALL_COURSES = [MENTAL_HEALTH_COURSE, ECONOMICS_COURSE, SAUTI_ZA_SOKO_COURSE, WAIYAKI_COURSE];
 
 const primaryButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
@@ -117,10 +119,11 @@ export default function MyCourses() {
     let cancelled = false;
     (async () => {
       try {
-        const [mhRes, econRes, sokoRes, pubRes] = await Promise.all([
+        const [mhRes, econRes, sokoRes, waiyakiRes, pubRes] = await Promise.all([
           base44.functions.invoke('getMentalHealthCourseCompletion', { courseSlug: MENTAL_HEALTH_COURSE.slug }),
           base44.functions.invoke('getEconomicsCourseCompletion', { courseSlug: ECONOMICS_COURSE.slug }),
           base44.functions.invoke('getSokoCourseCompletion', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG }),
+          base44.functions.invoke('getWaiyakiCourseCompletion', { courseSlug: WAIYAKI_COURSE_SLUG }),
           base44.functions.invoke('getPublicationStatus', {}),
         ]);
         if (cancelled) return;
@@ -129,6 +132,7 @@ export default function MyCourses() {
         if (mhRes?.data?.hasEnrollment) enrolled.push({ slug: MENTAL_HEALTH_COURSE.slug, completion: mhRes.data });
         if (econRes?.data?.hasEnrollment) enrolled.push({ slug: ECONOMICS_COURSE.slug, completion: econRes.data });
         if (sokoRes?.data?.hasEnrollment) enrolled.push({ slug: SAUTI_ZA_SOKO_COURSE_SLUG, completion: sokoRes.data });
+        if (waiyakiRes?.data?.hasEnrollment) enrolled.push({ slug: WAIYAKI_COURSE_SLUG, completion: waiyakiRes.data });
         setCourses(enrolled);
       } catch (err) {
         // Not authenticated or error — empty state handles it.

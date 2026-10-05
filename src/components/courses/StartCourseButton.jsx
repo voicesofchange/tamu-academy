@@ -68,6 +68,7 @@ const ENROLLMENT_FUNCTION_BY_SLUG = {
   'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
   'sauti-za-soko': 'enrollSokoCourse',
   'sauti-za-soko-peer-facilitator': 'enrollSokoCourse',
+  'waiyaki-wa-hinga': 'enrollWaiyakiCourse',
 };
 
 export default function StartCourseButton({ courseSlug, firstModuleRoute = 'module-1' }) {

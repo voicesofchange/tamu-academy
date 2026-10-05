@@ -1,0 +1,84 @@
+{
+  "name": "WaiyakiProject",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "project_format": {
+      "type": "string",
+      "title": "Project Format",
+      "description": "Which of the guide's four final-project choices the learner selected.",
+      "enum": [
+        "memory_map",
+        "oral_history_interview",
+        "monument_proposal",
+        "comparative_essay"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "title": "Project Title"
+    },
+    "content": {
+      "type": "string",
+      "title": "Written Project",
+      "format": "textarea"
+    },
+    "word_count": {
+      "type": "integer",
+      "title": "Word Count",
+      "description": "Word count of the submitted work, computed server-side."
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "First Submitted At"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "project_format",
+    "content"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.learner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

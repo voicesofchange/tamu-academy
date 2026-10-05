@@ -32,6 +32,12 @@ import {
   isSokoEnrollmentOpen,
   isSokoModulePublished,
 } from '../../shared/sauti-za-soko-config.js';
+import {
+  WAIYAKI_COURSE_SLUG,
+  WAIYAKI_MODULE_ROUTES,
+  isWaiyakiEnrollmentOpen,
+  isWaiyakiModulePublished,
+} from '../../shared/waiyaki-config.js';
 
 export default async function(req: Request): Promise<Response> {
   try {
@@ -64,6 +70,13 @@ export default async function(req: Request): Promise<Response> {
     ).length;
     const sokoPeerIsLive = sokoEnrollmentOpen && sokoPeerPublishedCount > 0;
 
+    // Waiyaki wa Hinga — Heritage and Leadership Collection
+    const waiyakiPublishedCount = WAIYAKI_MODULE_ROUTES.filter(
+      (r) => isWaiyakiModulePublished(WAIYAKI_COURSE_SLUG, r)
+    ).length;
+    const waiyakiEnrollmentOpen = isWaiyakiEnrollmentOpen();
+    const waiyakiIsLive = waiyakiEnrollmentOpen && waiyakiPublishedCount > 0;
+
     return Response.json({
       courses: {
         [MENTAL_HEALTH_COURSE_SLUG]: {
@@ -89,6 +102,12 @@ export default async function(req: Request): Promise<Response> {
           publishedModuleCount: sokoPeerPublishedCount,
           totalModules: SOKO_PEER_MODULE_ROUTES.length,
           isLive: sokoPeerIsLive,
+        },
+        [WAIYAKI_COURSE_SLUG]: {
+          enrollmentOpen: waiyakiEnrollmentOpen,
+          publishedModuleCount: waiyakiPublishedCount,
+          totalModules: WAIYAKI_MODULE_ROUTES.length,
+          isLive: waiyakiIsLive,
         },
       },
     });

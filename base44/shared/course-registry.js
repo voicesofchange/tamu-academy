@@ -33,6 +33,13 @@ import {
   SOKO_PEER_MODULE_ROUTES,
   checkSokoCourseCompletionRequirements,
 } from './sauti-za-soko-config.js';
+import {
+  WAIYAKI_CERTIFICATE_COURSE_SLUG,
+  WAIYAKI_CERTIFICATE_COURSE_TITLE,
+  WAIYAKI_CERTIFICATE_STATEMENT,
+  WAIYAKI_CERTIFICATE_MODULE_ROUTES,
+  checkWaiyakiCourseCompletionRequirements,
+} from './waiyaki-config.js';
 
 export const COURSE_REGISTRY = {
   [MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG]: {
@@ -60,6 +67,15 @@ export const COURSE_REGISTRY = {
     title: SOKO_PEER_COURSE_TITLE,
     completionStatement: SOKO_PEER_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: SOKO_PEER_MODULE_ROUTES,
+  },
+  // The Waiyaki wa Hinga Heritage and Leadership Collection course. Its
+  // completion needs the five modules AND the final assessment AND the
+  // written project, which checkExtraCompletionRequirements enforces below.
+  [WAIYAKI_CERTIFICATE_COURSE_SLUG]: {
+    slug: WAIYAKI_CERTIFICATE_COURSE_SLUG,
+    title: WAIYAKI_CERTIFICATE_COURSE_TITLE,
+    completionStatement: WAIYAKI_CERTIFICATE_STATEMENT,
+    requiredModuleRoutes: WAIYAKI_CERTIFICATE_MODULE_ROUTES,
   },
 };
 
@@ -98,6 +114,11 @@ export function isFinalModule(courseSlug, moduleRoute) {
 export async function checkExtraCompletionRequirements(base44, learnerId, courseSlug) {
   if (courseSlug === SOKO_COURSE_SLUG || courseSlug === SOKO_PEER_COURSE_SLUG) {
     return checkSokoCourseCompletionRequirements(base44, learnerId, courseSlug);
+  }
+  // Waiyaki wa Hinga requires the final assessment to be passed and the
+  // written final project to be submitted, on top of the five modules.
+  if (courseSlug === WAIYAKI_CERTIFICATE_COURSE_SLUG) {
+    return checkWaiyakiCourseCompletionRequirements(base44, learnerId, courseSlug);
   }
   return { ok: true, missing: [] };
 }

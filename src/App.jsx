@@ -73,6 +73,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import WaiyakiWaHinga from './pages/WaiyakiWaHinga';
+import WaiyakiModule from './pages/WaiyakiModule';
+import WaiyakiCourseCompletion from './pages/WaiyakiCourseCompletion';
+import WaiyakiCertificate from './pages/WaiyakiCertificate';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -112,6 +116,9 @@ const AuthenticatedApp = () => {
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
       <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
+      {/* Waiyaki wa Hinga — Heritage and Leadership Collection. The overview is public;
+          the modules, the completion room and the certificate require signing in. */}
+      <Route path="/courses/waiyaki-wa-hinga" element={<WaiyakiWaHinga />} />
       {/* Sauti za Soko — wrapped in SokoLabelsProvider so the pathway renders
           in the learner's selected language, including the lesson interface. */}
       <Route path="/courses/sauti-za-soko" element={<SokoLabelsProvider><SautiZaSoko /></SokoLabelsProvider>} />
@@ -147,6 +154,11 @@ const AuthenticatedApp = () => {
         <Route path="/courses/sauti-za-soko/certificate" element={<SokoLabelsProvider><SokoCertificate /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/peer-facilitator/certificate" element={<SokoLabelsProvider><SokoCertificate courseSlug="sauti-za-soko-peer-facilitator" /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/:moduleRoute" element={<SokoLabelsProvider><SokoModule /></SokoLabelsProvider>} />
+        {/* Waiyaki wa Hinga — the five modules, the completion room and the certificate.
+            The static routes are declared before the module route so they always win. */}
+        <Route path="/courses/waiyaki-wa-hinga/completion" element={<WaiyakiCourseCompletion />} />
+        <Route path="/courses/waiyaki-wa-hinga/certificate" element={<WaiyakiCertificate />} />
+        <Route path="/courses/waiyaki-wa-hinga/:moduleRoute" element={<WaiyakiModule />} />
         {/* Safari ya Utu Learner's Guide — private to the signed-in learner */}
         <Route path="/learners-guide" element={<LearnersGuide />} />
         <Route path="/learners-guide/insights" element={<GuideInsights />} />
