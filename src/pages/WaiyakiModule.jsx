@@ -141,7 +141,11 @@ export default function WaiyakiModule() {
   }
 
   if (status === 'denied') {
-    return <ModuleDevelopmentState course={preview.course} module={preview.module} />;
+    return (
+      <div className="tamu-waiyaki-centered">
+        <ModuleDevelopmentState course={preview.course} module={preview.module} />
+      </div>
+    );
   }
 
   const modules = WAIYAKI_COURSE.modules;

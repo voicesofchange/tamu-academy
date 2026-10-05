@@ -80,6 +80,7 @@ export default function WaiyakiModuleTemplate({
 
   return (
     <ModuleLessonLayout>
+      <div className="tamu-waiyaki-centered">
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={module.lead ? module.lead.slice(0, 155) : WAIYAKI_COURSE.description}
@@ -190,6 +191,7 @@ export default function WaiyakiModuleTemplate({
         nextLabel={nextLabel}
         endOfCourse={endOfCourse}
       />
+      </div>
     </ModuleLessonLayout>
   );
 }

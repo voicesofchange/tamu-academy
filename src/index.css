@@ -602,3 +602,52 @@ select option {
   background-color: #2a1f17;
   color: #f8f0df;
 }
+
+/* ── Waiyaki wa Hinga modules — centred reading layout ─────────────────────
+   The learner reads these modules as one centred column instead of text
+   pinned to the left edge. The lesson is assembled from shared components
+   whose alignment is set inline, so the centring is applied here and scoped
+   to .tamu-waiyaki-centered — a wrapper only the Waiyaki module template
+   renders — so every other course keeps its own layout untouched.
+   Writing fields are the one exception: their text stays left-aligned, since
+   centred prose in a long textarea is hard to read. */
+.tamu-waiyaki-centered,
+.tamu-waiyaki-centered * {
+  text-align: center !important;
+}
+
+.tamu-waiyaki-centered :is(header, section, nav, div, aside, ul, ol, dl, li, p, form) {
+  justify-content: center !important;
+}
+
+/* Rows that used to push their two ends out to the page edges now sit as one
+   centred group, with room between the parts. */
+.tamu-waiyaki-centered [style*="space-between"] {
+  gap: 1.25rem !important;
+}
+
+.tamu-waiyaki-centered [style*="space-between"] > * {
+  flex: 0 1 auto !important;
+}
+
+/* Blocks that carry their own measure keep that width and centre themselves. */
+.tamu-waiyaki-centered [style*="max-width"],
+.tamu-waiyaki-centered [data-tamu-decorative] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* The rule under a heading grows out from its middle once it is centred. */
+.tamu-waiyaki-centered [data-tamu-decorative] {
+  transform-origin: center !important;
+}
+
+/* The callout's left accent bar becomes a frame that matches its other sides. */
+.tamu-waiyaki-centered aside {
+  border-left: 1px solid rgba(232,184,91,0.28) !important;
+}
+
+/* Writing fields keep their text left-aligned inside the centred frame. */
+.tamu-waiyaki-centered :is(input, textarea) {
+  text-align: left !important;
+}
