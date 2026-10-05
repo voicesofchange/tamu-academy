@@ -15,6 +15,8 @@ import LearnerWelcomeSender from '@/components/insights/LearnerWelcomeSender';
 import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
 import CertificateCorrection from '@/components/insights/CertificateCorrection';
 import OutreachSenderCard from '@/components/insights/OutreachSenderCard';
+import SokoContentReviewPanel from '@/components/insights/SokoContentReviewPanel';
+import SokoFacilitatorReviewPanel from '@/components/insights/SokoFacilitatorReviewPanel';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
 
@@ -122,6 +124,14 @@ export default function CommunityInsights() {
 
           <PageSection heading="Certificate Corrections">
             <CertificateCorrection />
+          </PageSection>
+
+          <PageSection heading="Sauti za Soko Content Review">
+            <SokoContentReviewPanel />
+          </PageSection>
+
+          <PageSection heading="Sauti za Soko Peer Facilitator Review">
+            <SokoFacilitatorReviewPanel />
           </PageSection>
         </>
       )}

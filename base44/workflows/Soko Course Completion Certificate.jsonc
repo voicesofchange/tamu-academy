@@ -1,0 +1,41 @@
+{
+  "name": "Soko Course Completion Certificate",
+  "description": "When a Sauti za Soko enrollment is marked completed, issues the course certificate through the shared certificate function. Sauti za Soko is excluded from the generic module-completion workflow because its courses require more than module completion: every My Soko Action Plan section, one peer discussion and the final reflection for the core course, or a reviewer-approved vendor-circle submission for the Peer Facilitator track. Those requirements are verified server-side before the enrollment can be marked completed, so reaching this trigger means the learner has genuinely finished the course. The certificate function is idempotent, so a duplicate trigger creates nothing.",
+  "trigger": {
+    "config": {
+      "trigger_type": "entity",
+      "entity_name": "CourseEnrollment",
+      "events": [
+        "update"
+      ]
+    },
+    "condition": "${ .trigger.data.status == \"completed\" and .trigger.old_data.status != \"completed\" and (.trigger.data.course_slug | IN(\"sauti-za-soko\", \"sauti-za-soko-peer-facilitator\")) }"
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "soko_course_completion_certificate",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "issue_certificate": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "issueCourseCertificate",
+            "args": {
+              "learner_id": "${ .trigger.data.learner_id }",
+              "course_slug": "${ .trigger.data.course_slug }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Issue certificate",
+            "description": "Creates the certificate and emails it as a PDF if one does not already exist"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -16,6 +16,11 @@ import Landing from './pages/Landing';
 import About from './pages/About';
 import Courses from './pages/Courses';
 import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
+import SautiZaSoko from './pages/SautiZaSoko';
+import SokoModule from './pages/SokoModule';
+import SokoCourseCompletion from './pages/SokoCourseCompletion';
+import SokoCertificate from './pages/SokoCertificate';
+import SokoPeerFacilitator from './pages/SokoPeerFacilitator';
 import Module1Economics from './pages/Module1Economics';
 import Module2Economics from './pages/Module2Economics';
 import Module3Economics from './pages/Module3Economics';
@@ -99,6 +104,7 @@ const AuthenticatedApp = () => {
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
       <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
+      <Route path="/courses/sauti-za-soko" element={<SautiZaSoko />} />
       {/* Protected Routes — login required for module content, progress, and certificates */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/welcome" element={<Welcome />} />
@@ -124,6 +130,13 @@ const AuthenticatedApp = () => {
         <Route path="/courses/mental-health-community-and-culture/completion" element={<MhCourseCompletion />} />
         <Route path="/courses/mental-health-community-and-culture/certificate" element={<MhCertificate />} />
         <Route path="/courses/mental-health-community-and-culture/insights" element={<MhInsights />} />
+        {/* Sauti za Soko — completion, certificate and the optional Peer Facilitator track.
+            These static routes are declared before the module route so they always win. */}
+        <Route path="/courses/sauti-za-soko/completion" element={<SokoCourseCompletion />} />
+        <Route path="/courses/sauti-za-soko/certificate" element={<SokoCertificate />} />
+        <Route path="/courses/sauti-za-soko/peer-facilitator" element={<SokoPeerFacilitator />} />
+        <Route path="/courses/sauti-za-soko/peer-facilitator/certificate" element={<SokoCertificate courseSlug="sauti-za-soko-peer-facilitator" />} />
+        <Route path="/courses/sauti-za-soko/:moduleRoute" element={<SokoModule />} />
       </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />

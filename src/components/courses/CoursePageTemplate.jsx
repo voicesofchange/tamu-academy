@@ -20,7 +20,7 @@ const darkBody = { color: '#d9cbb8', fontSize: '15px', lineHeight: 1.75, fontWei
  * (structured in src/lib/economics-tracks.js) and renders it through
  * the warm parchment-and-gold course overview layout.
  */
-export default function CoursePageTemplate({ course, progressSlot }) {
+export default function CoursePageTemplate({ course, progressSlot, children }) {
   const { t } = useTranslation();
   const { isAuthenticated, user } = useAuth();
   const allowDevModules = canViewInDevelopment({ isAuthenticated, role: user?.role });
@@ -146,6 +146,8 @@ export default function CoursePageTemplate({ course, progressSlot }) {
           {t('common.backToCourses')} &rarr;
         </Link>
       </CourseOverviewSection>
+
+      {children}
 
       <TamuGuideWidget />
     </CourseOverviewLayout>
