@@ -101,6 +101,18 @@ export default function CommunityInsights() {
           </PageSection>
 
           <PageSection>
+            <OutreachSenderCard
+              label="Historical course invitation"
+              heading="Reconnect with everyone we wrote to before"
+              description="Reaches the people who were told about the two courses before they were complete and never enrolled: everyone previously emailed about them, plus early access signups who asked to hear from us. Registered learners are left out because the streams above already write to them, and nobody receives this invitation twice. Sends in batches of 40, so a large list drains over several reviewed sends."
+              functionName="sendHistoricalCourseInvitation"
+              sendVerb="this invitation"
+              recipientNoun="contact"
+              sentNote="Each contact is recorded once sent, so they will never receive this invitation again."
+            />
+          </PageSection>
+
+          <PageSection>
             <VoicesOfChangeAnnouncement />
           </PageSection>
 

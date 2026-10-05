@@ -40,15 +40,25 @@ const btnPrimary = { ...btnBase, backgroundColor: accent, color: '#24150f', bord
 const btnGhost = { ...btnBase, backgroundColor: 'transparent', color: '#f8f0df' };
 
 /**
- * Shared preview-then-send control for the automated learner outreach
- * streams. Preview always runs the function in dry-run mode first, so an
- * admin sees exactly who would be written to before anything is sent.
+ * Shared preview-then-send control for the outreach streams. Preview always
+ * runs the function in dry-run mode first, so an admin sees exactly who
+ * would be written to before anything is sent.
  */
-export default function OutreachSenderCard({ label, heading, description, functionName, sendVerb, sentNote }) {
+export default function OutreachSenderCard({
+  label,
+  heading,
+  description,
+  functionName,
+  sendVerb,
+  sentNote,
+  recipientNoun = 'learner',
+}) {
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState('');
+
+  const plural = (n) => (n === 1 ? recipientNoun : `${recipientNoun}s`);
 
   const runPreview = async () => {
     setBusy('preview');
@@ -68,7 +78,7 @@ export default function OutreachSenderCard({ label, heading, description, functi
     if (!preview || preview.eligible_count === 0) return;
     const count = preview.eligible_count;
     const ok = window.confirm(
-      `Send ${sendVerb} to ${count} learner${count === 1 ? '' : 's'}? This cannot be undone.`
+      `Send ${sendVerb} to ${count} ${plural(count)}? This cannot be undone.`
     );
     if (!ok) return;
     setBusy('send');
@@ -110,9 +120,15 @@ export default function OutreachSenderCard({ label, heading, description, functi
         <div style={{ marginTop: '1.25rem' }}>
           <p style={{ ...bodyText, marginBottom: '0.5rem' }}>
             {preview.eligible_count === 0
-              ? 'Nobody is due this message right now.'
-              : `${preview.eligible_count} learner${preview.eligible_count === 1 ? '' : 's'} will receive this message.`}
+              ? `Nobody is due this message right now.`
+              : `${preview.eligible_count} ${plural(preview.eligible_count)} will receive this message.`}
           </p>
+          {preview.audience_total > preview.eligible_count && (
+            <p style={{ ...bodyText, marginBottom: '0.5rem' }}>
+              {preview.audience_total} are on the list altogether, so this send covers the first{' '}
+              {preview.eligible_count}. Run the preview again afterwards to reach the rest.
+            </p>
+          )}
           {preview.sender && (
             <p style={{ ...bodyText, marginBottom: 0 }}>
               Sending from <span style={{ color: accent }}>{preview.sender}</span> as "Tex Wambui | Tamu Academy".
@@ -121,7 +137,7 @@ export default function OutreachSenderCard({ label, heading, description, functi
           {preview.targets && preview.targets.length > 0 && (
             <ul style={{ ...bodyText, marginTop: '0.75rem', paddingLeft: '1.25rem', fontSize: '0.82rem' }}>
               {preview.targets.slice(0, 12).map((t) => (
-                <li key={t.learner_id} style={{ marginBottom: '0.35rem' }}>
+                <li key={t.learner_id || t.email} style={{ marginBottom: '0.35rem' }}>
                   {t.name || t.email} — <span style={{ color: 'rgba(243,234,216,0.5)' }}>{t.email}</span>
                   {t.detail && (
                     <span style={{ color: 'rgba(243,234,216,0.45)', display: 'block', fontSize: '0.78rem' }}>{t.detail}</span>
@@ -147,6 +163,11 @@ export default function OutreachSenderCard({ label, heading, description, functi
             )}
             {result.sender ? ` from ${result.sender}` : ''}.
           </p>
+          {typeof result.remaining_after === 'number' && result.remaining_after > 0 && (
+            <p style={{ ...bodyText, fontSize: '0.85rem', marginTop: '0.5rem', color: accent }}>
+              {result.remaining_after} still waiting. Preview again to reach them.
+            </p>
+          )}
           {sentNote && (
             <p style={{ ...bodyText, fontSize: '0.78rem', marginTop: '0.5rem', color: 'rgba(243,234,216,0.5)' }}>{sentNote}</p>
           )}

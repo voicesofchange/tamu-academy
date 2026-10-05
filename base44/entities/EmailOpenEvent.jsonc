@@ -18,7 +18,8 @@
         "follow_up",
         "learner_welcome",
         "course_reminder",
-        "completion_followup"
+        "completion_followup",
+        "course_invitation"
       ]
     },
     "sent_at": {
