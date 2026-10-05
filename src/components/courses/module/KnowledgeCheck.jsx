@@ -40,7 +40,13 @@ const CONTENT = {
   serverError: 'We could not grade your responses right now. Please try again.',
 };
 
-export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed }) {
+export default function KnowledgeCheck({
+  courseSlug,
+  moduleRoute,
+  quiz,
+  onPassed,
+  graderFunction = 'checkEconomicsKnowledgeCheck',
+}) {
   const { content: c } = useTranslatedContent('knowledge-check', CONTENT);
   const [answers, setAnswers] = useState(() => quiz.questions.map((q) => (q.written ? '' : null)));
   const [pending, setPending] = useState(false);
@@ -100,7 +106,7 @@ export default function KnowledgeCheck({ courseSlug, moduleRoute, quiz, onPassed
 
     setPending(true);
     try {
-      const res = await base44.functions.invoke('checkEconomicsKnowledgeCheck', {
+      const res = await base44.functions.invoke(graderFunction, {
         courseSlug,
         moduleSlug: moduleRoute,
         answers: answersPayload,

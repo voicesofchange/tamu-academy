@@ -66,6 +66,8 @@ const CONTENT = {
 const ENROLLMENT_FUNCTION_BY_SLUG = {
   'mental-health-community-and-culture': 'enrollMentalHealth',
   'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
+  'sauti-za-soko': 'enrollSokoCourse',
+  'sauti-za-soko-peer-facilitator': 'enrollSokoCourse',
 };
 
 export default function StartCourseButton({ courseSlug, firstModuleRoute = 'module-1' }) {

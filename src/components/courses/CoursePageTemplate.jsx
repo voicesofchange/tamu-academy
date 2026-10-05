@@ -20,7 +20,7 @@ const darkBody = { color: '#d9cbb8', fontSize: '15px', lineHeight: 1.75, fontWei
  * (structured in src/lib/economics-tracks.js) and renders it through
  * the warm parchment-and-gold course overview layout.
  */
-export default function CoursePageTemplate({ course }) {
+export default function CoursePageTemplate({ course, progressSlot }) {
   const { t } = useTranslation();
   const { isAuthenticated, user } = useAuth();
   const allowDevModules = canViewInDevelopment({ isAuthenticated, role: user?.role });
@@ -137,7 +137,7 @@ export default function CoursePageTemplate({ course }) {
 
       {/* Progress */}
       <CourseOverviewSection surface="darker" eyebrow={t('course.yourProgress')} heading={t('course.progress')}>
-        <EconomicsCourseProgress courseSlug={course.slug} />
+        {progressSlot || <EconomicsCourseProgress courseSlug={course.slug} />}
       </CourseOverviewSection>
 
       {/* Access */}

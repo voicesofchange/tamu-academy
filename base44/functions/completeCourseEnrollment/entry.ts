@@ -2,6 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import {
   getCourseConfig,
   getRequiredModuleRoutes,
+  checkExtraCompletionRequirements,
 } from '../../shared/course-registry.js';
 
 /**
@@ -109,6 +110,23 @@ export default async function(req: Request): Promise<Response> {
     );
     if (!allModulesComplete) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Some courses require more than module completion. Sauti za Soko
+    // requires every My Soko Action Plan section, at least one peer
+    // discussion and the final reflection (or a reviewer-approved
+    // vendor-circle submission for the Peer Facilitator track). Courses
+    // without extra requirements pass this check immediately.
+    const extraRequirements = await checkExtraCompletionRequirements(
+      base44,
+      learnerId,
+      courseSlug,
+    );
+    if (!extraRequirements.ok) {
+      return Response.json({
+        error: 'Course requirements outstanding',
+        missing: extraRequirements.missing,
+      }, { status: 409 });
     }
 
     // Find the enrollment record.

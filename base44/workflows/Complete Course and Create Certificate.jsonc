@@ -1,6 +1,6 @@
 {
   "name": "Complete Course and Create Certificate",
-  "description": "When a learner's ModuleProgress record transitions to completed, checks whether the completed module is the final required module for the course. If it is, verifies that every required module is complete, marks the CourseEnrollment as completed, and issues a CourseCertificate if one does not already exist. Required modules are derived from the course registry, so this workflow works for any Tamu Academy course.",
+  "description": "When a learner's ModuleProgress record transitions to completed, checks whether the completed module is the final required module for the course. If it is, verifies that every required module is complete, marks the CourseEnrollment as completed, and issues a CourseCertificate if one does not already exist. Required modules are derived from the course registry, so this workflow works for any Tamu Academy course. The Sauti za Soko courses are excluded here on purpose: their completion requires extra work beyond the modules (every My Soko Action Plan section, one peer discussion and the final reflection, or a reviewer-approved vendor-circle submission), so they complete through finalizeSokoCourse and the Soko Course Completion Certificate workflow instead.",
   "trigger": {
     "config": {
       "trigger_type": "entity",
@@ -9,7 +9,7 @@
         "update"
       ]
     },
-    "condition": "${ .trigger.data.status == \"completed\" and .trigger.old_data.status != \"completed\" }"
+    "condition": "${ .trigger.data.status == \"completed\" and .trigger.old_data.status != \"completed\" and .trigger.data.course_slug != \"sauti-za-soko\" and .trigger.data.course_slug != \"sauti-za-soko-peer-facilitator\" }"
   },
   "definition": {
     "document": {

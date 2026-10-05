@@ -9,6 +9,7 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
+import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
@@ -17,7 +18,10 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
 const COURSE_META = {
   [MENTAL_HEALTH_COURSE.slug]: MENTAL_HEALTH_COURSE,
   [ECONOMICS_COURSE.slug]: ECONOMICS_COURSE,
+  [SAUTI_ZA_SOKO_COURSE_SLUG]: SAUTI_ZA_SOKO_COURSE,
 };
+
+const ALL_COURSES = [MENTAL_HEALTH_COURSE, ECONOMICS_COURSE, SAUTI_ZA_SOKO_COURSE];
 
 const primaryButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
@@ -67,9 +71,10 @@ export default function MyCourses() {
     let cancelled = false;
     (async () => {
       try {
-        const [mhRes, econRes, pubRes] = await Promise.all([
+        const [mhRes, econRes, sokoRes, pubRes] = await Promise.all([
           base44.functions.invoke('getMentalHealthCourseCompletion', { courseSlug: MENTAL_HEALTH_COURSE.slug }),
           base44.functions.invoke('getEconomicsCourseCompletion', { courseSlug: ECONOMICS_COURSE.slug }),
+          base44.functions.invoke('getSokoCourseCompletion', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG }),
           base44.functions.invoke('getPublicationStatus', {}),
         ]);
         if (cancelled) return;
@@ -77,6 +82,7 @@ export default function MyCourses() {
         const enrolled = [];
         if (mhRes?.data?.hasEnrollment) enrolled.push({ slug: MENTAL_HEALTH_COURSE.slug, completion: mhRes.data });
         if (econRes?.data?.hasEnrollment) enrolled.push({ slug: ECONOMICS_COURSE.slug, completion: econRes.data });
+        if (sokoRes?.data?.hasEnrollment) enrolled.push({ slug: SAUTI_ZA_SOKO_COURSE_SLUG, completion: sokoRes.data });
         setCourses(enrolled);
       } catch (err) {
         // Not authenticated or error — empty state handles it.
@@ -121,7 +127,7 @@ export default function MyCourses() {
             {c.emptyBody}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
-            {[MENTAL_HEALTH_COURSE, ECONOMICS_COURSE].map((course) => (
+            {ALL_COURSES.map((course) => (
               <Link key={course.slug} to={`/courses/${course.slug}`} style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', textDecoration: 'none', display: 'block' }}>
                 <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{pubStatus[course.slug]?.isLive ? 'Available Now' : 'In Development'}</span>
                 <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, lineHeight: 1.3, display: 'block' }}>{course.title}</span>

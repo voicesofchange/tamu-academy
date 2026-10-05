@@ -85,6 +85,22 @@ const CONTENT = {
             ],
           },
         },
+        {
+          title: 'Sauti za Soko: Markets, Climate and Community Power',
+          slug: 'sauti-za-soko',
+          status: 'In Development',
+          description:
+            'A seven-module course built with young market vendors in Kiambu: markets as economies, cash and credit, weather risk, county decisions, collective action, and a plan that lasts.',
+          visual: {
+            icon: 'Store',
+            accent: 'rgba(217,155,55,0.30)',
+            meta: [
+              { icon: 'Layers', label: '7 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
+              { icon: 'BarChart', label: 'Applied' },
+            ],
+          },
+        },
       ],
       extra: null,
     },
