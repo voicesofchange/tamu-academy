@@ -33,6 +33,21 @@ export default function SokoModuleRoute({ moduleRoute }) {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      // A translated module is deterministic for a given language, and the
+      // server translates it on first request. Caching it for the session
+      // keeps revisits and later modules instant on slow connections.
+      const cacheKey = `tamu_soko_module_${moduleRoute}_${language}`;
+      try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          setModule(JSON.parse(cached));
+          setStatus('ready');
+          return;
+        }
+      } catch (_) {
+        // sessionStorage may be unavailable — fall through to the fetch.
+      }
+
       try {
         const res = await base44.functions.invoke('getSokoModule', {
           courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -44,6 +59,11 @@ export default function SokoModuleRoute({ moduleRoute }) {
         if (data && data.module) {
           setModule(data.module);
           setStatus('ready');
+          try {
+            sessionStorage.setItem(cacheKey, JSON.stringify(data.module));
+          } catch (_) {
+            // Ignore storage errors — the module is already rendered.
+          }
         } else {
           setStatus('denied');
         }

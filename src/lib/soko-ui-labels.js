@@ -3,15 +3,22 @@
  *
  * These are the words AROUND the curriculum — section headings, activity
  * instructions, progress states, completion and certificate copy. The
- * curriculum itself is translated server-side in getSokoModule; this object
+ * curriculum itself is translated server-side in getSokoModule; this file
  * covers the interface so a learner who selects a language reads the whole
  * pathway in it, not only the lesson text.
  *
- * The object must be a stable module-level reference: SokoLabelsProvider
- * passes it to useTranslatedContent, which translates it once per language
- * and caches the result in sessionStorage for the rest of the session.
+ * The set is split in two because translatePageContent caps a request at 100
+ * keys. SOKO_MODULE_LABELS carries the module route, its activities and its
+ * progress block; SOKO_PAGE_LABELS carries the course overview, completion
+ * and certificate screens. SokoLabelsProvider translates both and merges
+ * them, and SOKO_UI_LABELS is the merged English default so any Soko
+ * component rendered outside a provider still reads correctly.
+ *
+ * Both objects must stay stable module-level references: they are passed to
+ * useTranslatedContent, which translates each once per language and caches
+ * the result in sessionStorage for the rest of the session.
  */
-export const SOKO_UI_LABELS = {
+export const SOKO_MODULE_LABELS = {
   // --- Module route: section framing ---
   breadcrumbModule: 'Module',
   estimatedTimeLabel: 'Estimated time',
@@ -80,8 +87,7 @@ export const SOKO_UI_LABELS = {
   actionError: 'We could not save your answers right now. Please try again.',
   actionLoading: 'Loading your saved section\u2026',
   actionSectionsAnswered: 'sections answered',
-  actionUnavailable:
-    'Saving is available once your enrollment is active.',
+  actionUnavailable: 'Saving is available once your enrollment is active.',
 
   // --- Kiswahili discussion prompt ---
   discussionBadge: 'Mazungumzo \u00b7 Discussion',
@@ -117,7 +123,9 @@ export const SOKO_UI_LABELS = {
     'We could not complete this module right now. Please try again.',
   progressModePrivate: 'Private',
   progressModeFictional: 'Fictional alternative',
+};
 
+export const SOKO_PAGE_LABELS = {
   // --- Course overview progress block ---
   courseProgressLoading: 'Loading your progress\u2026',
   courseOverallProgress: 'Overall progress',
@@ -131,7 +139,7 @@ export const SOKO_UI_LABELS = {
   courseEnroll: 'Enroll in this course',
   courseEnrolling: 'Enrolling\u2026',
   courseEnrollError:
-    'We could not enroll you right now. Please try again, or sign in first and try again.',
+    'We could not enroll you right now. Please try again, and make sure you are signed in.',
   courseSignIn:
     'Sign in or create an account to track your progress through the seven modules and your My Soko Action Plan.',
   courseCertificateReady:
@@ -187,15 +195,13 @@ export const SOKO_UI_LABELS = {
   reflectionSaved: 'Your final reflection has been saved.',
   reflectionError: 'We could not save your reflection right now. Please try again.',
   reflectionLoading: 'Loading your reflection\u2026',
-  reflectionUnavailable:
-    'Saving becomes available once your enrollment is active.',
+  reflectionUnavailable: 'Saving becomes available once your enrollment is active.',
 
   // --- Certificate ---
   certBackToProgress: 'Back to course progress',
   certPrint: 'Print Certificate',
   certDownload: 'Download PDF',
-  certPreviewNotice:
-    'Administrator preview: no certificate record created',
+  certPreviewNotice: 'Administrator preview: no certificate record created',
   certReturnToCourse: 'Return to Course',
   certHeadingNotYetCore: 'Certificate Not Yet Available',
   certHeadingNotYetPeer: 'Peer Facilitator Certificate Not Yet Available',
@@ -213,3 +219,6 @@ export const SOKO_UI_LABELS = {
   certBodyUnavailable:
     'We could not load your certificate at this time. Please try again later.',
 };
+
+/** Merged English default — the value used outside a SokoLabelsProvider. */
+export const SOKO_UI_LABELS = { ...SOKO_MODULE_LABELS, ...SOKO_PAGE_LABELS };
