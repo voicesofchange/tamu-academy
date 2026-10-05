@@ -8,6 +8,14 @@
  * original English content is returned so the learner is never blocked.
  */
 
+import { allowRequest } from './rate-limit.js';
+
+// The model is only asked to translate strings that are not already cached.
+// New strings are capped per hour so the cost of the translation endpoint is
+// bounded no matter who calls it; already-cached text keeps being served.
+const NEW_TRANSLATION_LIMIT = 300;
+const NEW_TRANSLATION_WINDOW_MS = 60 * 60 * 1000;
+
 const LANGUAGE_NAMES = {
   sw: 'Swahili (Kiswahili)',
   es: 'Spanish (Español)',
@@ -46,6 +54,97 @@ export async function translateTextBatch(base44, texts, language) {
   if (!languageName) return texts;
   if (!texts || typeof texts !== 'object' || Object.keys(texts).length === 0) return texts;
 
+  const keys = Object.keys(texts);
+
+  // Anything already translated for this language is served from the cache,
+  // so a page is translated once and repeated views never reach the model.
+  const cached = await readTranslationCache(base44, texts, keys, language);
+  const missing = {};
+  for (const key of keys) {
+    if (cached[key] === undefined) missing[key] = texts[key];
+  }
+  if (Object.keys(missing).length === 0) {
+    return { ...texts, ...cached };
+  }
+
+  // Bound the model's cost regardless of who calls this endpoint: once the
+  // hourly budget for genuinely new strings is spent, the endpoint keeps
+  // serving cache hits and falls back to the original English text.
+  const mayTranslate = await allowRequest(base44, {
+    scope: 'page_translation_llm',
+    key: 'global',
+    limit: NEW_TRANSLATION_LIMIT,
+    windowMs: NEW_TRANSLATION_WINDOW_MS,
+  });
+  if (!mayTranslate) {
+    console.warn('[translateTextBatch] New-translation budget reached — serving cached text only');
+    return { ...texts, ...cached };
+  }
+
+  const fresh = await callTranslator(base44, missing, languageName);
+  await storeTranslations(base44, missing, fresh, language);
+  return { ...texts, ...cached, ...fresh };
+}
+
+/** Hash a source string so a translation can be matched without duplicating the English. */
+async function hashSource(text) {
+  const bytes = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** Look up previously stored translations for this batch. Best effort only. */
+async function readTranslationCache(base44, texts, keys, language) {
+  const found = {};
+  try {
+    const hashes = {};
+    for (const key of keys) hashes[key] = await hashSource(String(texts[key]));
+    const unique = [...new Set(Object.values(hashes))];
+    const rows = [];
+    for (let i = 0; i < unique.length; i += 40) {
+      const page = await base44.asServiceRole.entities.TranslationCache.filter({
+        language,
+        source_hash: { $in: unique.slice(i, i + 40) },
+      });
+      if (Array.isArray(page)) rows.push(...page);
+    }
+    const byHash = new Map(rows.map((row) => [row.source_hash, row.translated_text]));
+    for (const key of keys) {
+      const value = byHash.get(hashes[key]);
+      if (typeof value === 'string' && value.length > 0) found[key] = value;
+    }
+  } catch (err) {
+    console.warn('[translateTextBatch] Cache read failed:', err && err.message);
+  }
+  return found;
+}
+
+/** Persist newly translated strings. Best effort — a failure never blocks the page. */
+async function storeTranslations(base44, sources, translated, language) {
+  try {
+    const seen = new Set();
+    const rows = [];
+    for (const [key, value] of Object.entries(translated)) {
+      const source = sources[key];
+      if (typeof source !== 'string' || source.length === 0) continue;
+      // A result identical to the source means it was not translated —
+      // caching that would serve English forever.
+      if (typeof value !== 'string' || value.length === 0 || value === source) continue;
+      const hash = await hashSource(source);
+      if (seen.has(hash)) continue;
+      seen.add(hash);
+      rows.push({ language, source_hash: hash, translated_text: value });
+    }
+    if (rows.length > 0) {
+      await base44.asServiceRole.entities.TranslationCache.bulkCreate(rows);
+    }
+  } catch (err) {
+    console.warn('[translateTextBatch] Cache write failed:', err && err.message);
+  }
+}
+
+/** Send one batch to the model. Returns only the keys it actually translated. */
+async function callTranslator(base44, texts, languageName) {
   try {
     const prompt = [
       `You are a professional translator for an educational platform.`,
@@ -59,15 +158,12 @@ export async function translateTextBatch(base44, texts, language) {
       JSON.stringify(texts),
     ].join('\n');
 
-    const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
-      prompt,
-    });
+    const result = await base44.asServiceRole.integrations.Core.InvokeLLM({ prompt });
 
     let translatedObj = null;
     if (typeof result === 'string') {
       try {
-        const jsonStr = stripCodeFences(result);
-        translatedObj = JSON.parse(jsonStr);
+        translatedObj = JSON.parse(stripCodeFences(result));
       } catch (parseErr) {
         console.error('[translateTextBatch] JSON parse failed:', parseErr && parseErr.message);
       }
@@ -75,23 +171,17 @@ export async function translateTextBatch(base44, texts, language) {
       translatedObj = result;
     }
 
-    if (
-      translatedObj &&
-      typeof translatedObj === 'object' &&
-      !translatedObj.error &&
-      Object.keys(translatedObj).length > 0
-    ) {
-      const originalKeys = Object.keys(texts);
-      const translatedKeys = Object.keys(translatedObj);
-      const matchingKeys = translatedKeys.filter((k) => originalKeys.includes(k));
-      if (matchingKeys.length > 0) {
-        return { ...texts, ...translatedObj };
-      }
+    if (!translatedObj || typeof translatedObj !== 'object' || translatedObj.error) return {};
+
+    const allowed = new Set(Object.keys(texts));
+    const out = {};
+    for (const [key, value] of Object.entries(translatedObj)) {
+      if (allowed.has(key) && typeof value === 'string' && value.length > 0) out[key] = value;
     }
-    return texts;
+    return out;
   } catch (err) {
     console.error('[translateTextBatch] Translation failed:', err && err.message);
-    return texts;
+    return {};
   }
 }
 

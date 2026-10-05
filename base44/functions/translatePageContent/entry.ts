@@ -54,7 +54,9 @@ export default async function(req) {
     // so the endpoint stays open but is limited server-side before the
     // LLM call: per client and in aggregate, using durable shared storage.
     // A rejected request returns an error and the page falls back to its
-    // original English text, so the visitor is never blocked.
+    // original English text, so the visitor is never blocked. Translations
+    // are cached and the model is only asked for genuinely new strings, so
+    // repeat traffic costs nothing and the AI budget stays bounded.
     const clientKey = await clientKeyFromRequest(req);
     const withinLimits = await allowRequestWithinLimits(base44, 'page_translation', [
       { key: `client:${clientKey}`, limit: 25, windowMs: 10 * 60 * 1000 },

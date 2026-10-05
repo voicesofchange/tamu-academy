@@ -21,13 +21,10 @@ import {
  * (preventing workflow loops).
  *
  * SECURITY:
- *   - Authenticated callers (direct HTTP): must be the owner of the
- *     learner_id or an admin. Returns 403 otherwise.
- *   - Unauthenticated callers (internal workflow): must pass a data
- *     integrity check — the ModuleProgress record for the given
- *     learner + course + module must exist with status "completed".
- *     This prevents arbitrary enumeration of learner enrollment data
- *     by unauthenticated attackers.
+ *   - Callers must be authenticated: either the owner of the learner_id
+ *     or an admin (which covers the internal workflow that triggers this
+ *     function). Everyone else gets 403 before any record is read, so the
+ *     function cannot be used to probe arbitrary learner ids.
  *
  * Returns:
  *   {
@@ -65,10 +62,11 @@ export default async function(req: Request): Promise<Response> {
     }
 
     // --- Authentication / Authorization ---
-    // Authenticated callers must own the learner_id or be an admin.
-    // Unauthenticated callers (internal workflow) must pass a data
-    // integrity check: the ModuleProgress record must exist with
-    // status "completed" for this learner + course + module.
+    // Every backend function has its own public URL, so the caller must be
+    // identified before any learner record is read — otherwise anyone on the
+    // internet could probe learner ids and learn whether that learner's
+    // modules are complete. Only the learner themselves or an admin (which
+    // covers the internal workflow that triggers this function) may ask.
     let user: { id: string; role?: string } | null = null;
     try {
       user = await base44.auth.me();
@@ -76,24 +74,11 @@ export default async function(req: Request): Promise<Response> {
       user = null;
     }
 
-    const isAuthenticated = !!user;
-    if (user) {
-      // Authenticated direct call — verify ownership or admin.
-      if (user.id !== learnerId && user.role !== 'admin') {
-        return Response.json({ error: 'Forbidden' }, { status: 403 });
-      }
-    } else {
-      // Unauthenticated call (internal workflow path) — verify data
-      // integrity: the ModuleProgress record must exist and be completed.
-      const triggerRows = await base44.asServiceRole.entities.ModuleProgress.filter({
-        learner_id: learnerId,
-        course_slug: courseSlug,
-        module_slug: moduleSlug,
-        status: 'completed',
-      });
-      if (!triggerRows || triggerRows.length === 0) {
-        return Response.json({ error: 'Unauthorized' }, { status: 401 });
-      }
+    if (!user) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (user.id !== learnerId && user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const finalModule = isFinalModule(courseSlug, moduleSlug);
@@ -138,18 +123,13 @@ export default async function(req: Request): Promise<Response> {
     const allComplete = incompleteModules.length === 0;
 
     // Find the enrollment record for this learner + course.
-    // Only return the enrollment id to authenticated callers; the
-    // internal workflow does not need it and unauthenticated callers
-    // must not enumerate other learners' enrollment identifiers.
     let enrollmentId: string | null = null;
-    if (isAuthenticated) {
-      const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
-        learner_id: learnerId,
-        course_slug: courseSlug,
-      });
-      if (Array.isArray(enrollmentRows) && enrollmentRows.length > 0) {
-        enrollmentId = enrollmentRows[0].id || null;
-      }
+    const enrollmentRows = await base44.asServiceRole.entities.CourseEnrollment.filter({
+      learner_id: learnerId,
+      course_slug: courseSlug,
+    });
+    if (Array.isArray(enrollmentRows) && enrollmentRows.length > 0) {
+      enrollmentId = enrollmentRows[0].id || null;
     }
 
     return Response.json({
@@ -159,9 +139,7 @@ export default async function(req: Request): Promise<Response> {
       course_slug: courseSlug,
       final_module_slug: moduleSlug,
       enrollment_id: enrollmentId,
-      // Only return the incomplete-module list to authenticated callers;
-      // unauthenticated callers get only the boolean the workflow needs.
-      incomplete_modules: isAuthenticated ? (allComplete ? [] : incompleteModules) : [],
+      incomplete_modules: allComplete ? [] : incompleteModules,
     });
   } catch (error) {
     console.error('[evaluateCourseCompletion] Error:', error && error.message);

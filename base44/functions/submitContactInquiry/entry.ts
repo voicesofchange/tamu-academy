@@ -126,6 +126,14 @@ Deno.serve(async (req) => {
       console.warn('[submitContactInquiry] analytics.track failed:', err && err.message);
     }
 
+    // Notification budget. The submission is stored either way, but the team
+    // notification is skipped once the hourly cap is reached, so this public
+    // endpoint cannot be used to flood the team inbox or spend the app's
+    // email quota.
+    const mayNotify = await allowRequestWithinLimits(base44, 'contact_notify', [
+      { key: 'global', limit: 20, windowMs: 60 * 60 * 1000 },
+    ]);
+
     // Send notification email. Free-text inputs are HTML-escaped before being
     // inserted into the notification body/subject so a malicious submission
     // cannot inject markup into the administrator's email client. Enum
@@ -154,11 +162,15 @@ Deno.serve(async (req) => {
     const escMessage = escapeEmail(record.message);
 
     const emailBody = `New contact inquiry received on Tamu Academy.\n\nName: ${escName}\nEmail: ${escEmail}\nCountry: ${escCountry}${escCity ? '\nCity/Community: ' + escCity : ''}${escOrg ? '\nOrganization: ' + escOrg : ''}${escRole ? '\nRole: ' + escRole : ''}\nInquiry Type: ${inquiry_type}${programme_interest ? '\nProgramme Interest: ' + programme_interest : ''}\n\nMessage:\n${escMessage}${referral_source ? '\n\nReferral Source: ' + referral_source : ''}\nUpdates Consent: ${record.updates_consent ? 'Yes' : 'No'}`;
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: 'sustainthevoices@gmail.com',
-      subject: `New Inquiry: ${inquiry_type} — ${escName}`,
-      body: emailBody,
-    }).catch((err) => console.warn('[submitContactInquiry] Email notification failed:', err.message));
+    if (mayNotify) {
+      await base44.asServiceRole.integrations.Core.SendEmail({
+        to: 'sustainthevoices@gmail.com',
+        subject: `New Inquiry: ${inquiry_type} — ${escName}`,
+        body: emailBody,
+      }).catch((err) => console.warn('[submitContactInquiry] Email notification failed:', err.message));
+    } else {
+      console.warn('[submitContactInquiry] Notification budget reached — stored without emailing the team');
+    }
 
     // Return only success — never the stored record or internal fields
     return Response.json({ success: true });
