@@ -6,6 +6,10 @@ const GROUPS = [
   { key: 'scholarship', label: 'Scholarship and secondary works' },
   { key: 'familyAndCommunity', label: 'Family and community accounts' },
   { key: 'officialRecords', label: 'Official records, media and literature' },
+  { key: 'voicesOfChange', label: 'Voices of Change' },
+  { key: 'lawAndPolicy', label: 'Law and policy' },
+  { key: 'researchOnManguo', label: 'Research and reporting on Manguo' },
+  { key: 'theHighway', label: 'The highway' },
 ];
 
 const groupLabel = {

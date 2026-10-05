@@ -973,6 +973,25 @@ export const WAIYAKI_FURTHER_READING = {
     { text: 'The Standard, \u201cMashujaa: Five heroes whose resting places might never be known.\u201d', url: 'https://www.standardmedia.co.ke/entertainment/article/2001299749/mashujaa-five-heroes-whose-resting-places-might-never-be-known' },
     { text: 'Ng\u0169g\u0129 wa Thiong\u2019o. The River Between (1965); A Grain of Wheat (1967).', url: 'https://archive.org/details/riverbetween00ngug' },
   ],
+  voicesOfChange: [
+    { text: 'Voices of Change. sustainthevoices.org.', url: 'https://sustainthevoices.org' },
+    { text: 'Hussein Waiyaki, \u201cThe diminishing wetland of Manguo in Limuru.\u201d Voices of Change.', url: 'https://sustainthevoices.org/insights/news/the-diminishing-wetland-of-manguo-in-limuru-what-needs-to-be-done' },
+    { text: 'Youth4Climate, \u201cProtecting and Restoring Manguo Wetlands\u201d (event page).', url: 'https://community.youth4climate.info/event/protecting-and-restoring-manguo-wetlands' },
+  ],
+  lawAndPolicy: [
+    { text: 'Kenya Law, Legal Notice 106 of 2023 (the order in force).', url: 'https://new.kenyalaw.org/akn/ke/act/ln/2023/106/eng@2023-07-26' },
+    { text: 'ECOLEX, Legal Notice 221 of 2022 (the earlier order).', url: 'https://www.ecolex.org/details/legislation/the-manguo-swamp-groundwater-area-order-legal-notice-no-221-of-2022-lex-faoc215800/' },
+  ],
+  researchOnManguo: [
+    { text: 'National Museums of Kenya study of Manguo and Ondiri.', url: 'https://www.researchgate.net/publication/233109310_Management_of_highland_wetlands_in_central_Kenya_The_importance_of_community_education_awareness_and_eco-tourism_in_biodiversity_conservation' },
+    { text: 'Mongabay, April 2023, on the drying of the wetlands.', url: 'https://news.mongabay.com/2023/04/drying-wetlands-and-drought-threaten-water-supplies-in-kenyas-kiambu-county/' },
+    { text: 'Cranes in Kenya, on habitat protection.', url: 'https://cranesinkenya.wordpress.com/2017/07/04/welcome/' },
+    { text: 'Moon Lion Safaris, 2018, \u201cThe Happy Herons of Manguo Swamp.\u201d', url: 'https://moonlionsafaris.org/2018/03/31/the-happy-herons-of-manguo-swamp/' },
+  ],
+  theHighway: [
+    { text: 'The Standard, on the launch, 29 November 2025.', url: 'https://www.standardmedia.co.ke/rift-valley/article/2001535285/all-you-need-to-know-about-rironi-mau-summit-project-after-ruto-launch' },
+    { text: 'The Standard, on preparations at Manguo, 27 November 2025.', url: 'https://www.standardmedia.co.ke/rift-valley/article/2001535191/rironi-nakuru-mau-summit-highway-no-longer-a-dream-as-ruto-set-to-launch-the-project' },
+  ],
   note:
     'This collection reflects research current to October 2026. It includes only claims that can be verified; where oral tradition is cited, it is identified as tradition. Precise coordinates for burial sites circulate in research notes but have not been confirmed by survey or excavation \u2014 treat any coordinates as orientation only. Family testimony and new evidence are welcomed for future revisions.',
 };
