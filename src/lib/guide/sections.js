@@ -424,3 +424,34 @@ export function getSectionNeighbours(sectionId) {
 }
 
 export const TOTAL_SECTIONS = GUIDE_SECTIONS.length;
+
+/**
+ * The guide's pathway, grouped the way the course pages group their learning
+ * areas: an opening phase, the working sections, and the return.
+ */
+export const GUIDE_PHASES = [
+  {
+    id: 'phase-karibu',
+    number: '01',
+    eyebrow: 'Karibu · the beginning',
+    title: 'Begin where you are',
+    intro: 'Start here if the guide is new to you. Three sections set the ground: a welcome, your own journey, and the first look in the mirror.',
+    sectionIds: ['karibu', 'safari-yako', 'kioo'],
+  },
+  {
+    id: 'phase-njia',
+    number: '02',
+    eyebrow: 'Njia · the path',
+    title: 'Practise the skills',
+    intro: 'The working sections of the guide: resilience, problem solving, communicating through relationship, well-being, money and community, and digital essentials.',
+    sectionIds: ['uthabiti', 'kutatua', 'sauti', 'utu', 'ujima', 'kidijitali'],
+  },
+  {
+    id: 'phase-kurudi',
+    number: '03',
+    eyebrow: 'Kurudi · the return',
+    title: 'Return to the mirror',
+    intro: 'Come back when a course ends or a season of life closes, and hold your latest reflection beside the one you began with.',
+    sectionIds: ['kurudi'],
+  },
+];

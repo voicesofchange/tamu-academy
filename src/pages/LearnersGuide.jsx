@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
 import GuideHomeHero from '@/components/guide/GuideHomeHero';
-import GuideHowToUse from '@/components/guide/GuideHowToUse';
-import GuideSectionCard from '@/components/guide/GuideSectionCard';
+import GuidePhaseSection from '@/components/guide/GuidePhaseSection';
+import GuideJourneyBand from '@/components/guide/GuideJourneyBand';
+import GuideClosingSection from '@/components/guide/GuideClosingSection';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import { useAuth } from '@/lib/AuthContext';
-import { GUIDE_SECTIONS } from '@/lib/guide/sections';
-import { loadProgressMap } from '@/lib/guide/guideProgress';
-import { darkText } from '@/lib/guide/styles';
+import { GUIDE_PHASES, TOTAL_SECTIONS } from '@/lib/guide/sections';
+import { countStarted, loadProgressMap } from '@/lib/guide/guideProgress';
 
 /**
- * LearnersGuide — the guide home: hero, how to use it, and the ten section
- * cards with the learner's own progress. Private to the signed-in learner.
+ * LearnersGuide — the guide home, laid out like the Courses page: a hero, the
+ * pathway of sections grouped in phases, a band showing how far the learner
+ * has walked, and a closing call to the courses. Private to the signed-in
+ * learner.
  */
 export default function LearnersGuide() {
   const { user } = useAuth();
@@ -32,6 +33,9 @@ export default function LearnersGuide() {
     };
   }, [user?.id]);
 
+  const started = countStarted(progressMap);
+  const done = Object.values(progressMap).filter((status) => status === 'done').length;
+
   return (
     <PageLayout>
       <PageMeta
@@ -40,35 +44,31 @@ export default function LearnersGuide() {
         path="/learners-guide"
         noindex
       />
-      <div style={{ padding: 'clamp(7rem, 12vw, 9rem) clamp(1.25rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem)', maxWidth: '1100px', margin: '0 auto' }}>
-        <GuideHomeHero />
-        <GuideHowToUse />
 
-        <section style={{ marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
-          <span className="font-guide-body" style={{ ...darkText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
+      <GuideHomeHero started={started} total={TOTAL_SECTIONS} />
+
+      {/* The pathway — the guide's sections, grouped in phases */}
+      <section id="section-pathway" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#F1E7D3', color: '#33241A', scrollMarginTop: '90px' }}>
+        <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 3.5rem)', maxWidth: '720px' }}>
+          <span className="font-guide-body" style={{ color: '#8A650B', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             The sections
           </span>
-          <h2 className="font-guide-heading" style={{ ...darkText.heading, fontSize: 'clamp(1.35rem, 3vw, 1.85rem)', lineHeight: 1.25, margin: '0 0 1.25rem' }}>
+          <h2 className="font-guide-heading" style={{ color: '#33241A', fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.1, fontWeight: 600, margin: '10px 0 0.8rem' }}>
             Ten sections, one journey
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(215px, 1fr))', gap: '1rem' }}>
-            {GUIDE_SECTIONS.map((section) => (
-              <GuideSectionCard key={section.id} section={section} status={progressMap[section.id] || 'not_started'} />
-            ))}
-          </div>
-        </section>
-
-        <div style={{ borderTop: darkText.rule, paddingTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
-          <Link to="/learners-guide/credits" className="font-guide-body" style={{ ...darkText.eyebrow, textDecoration: 'none' }}>
-            Further reading and credits
-          </Link>
-          {user?.role === 'admin' && (
-            <Link to="/learners-guide/insights" className="font-guide-body" style={{ ...darkText.eyebrow, textDecoration: 'none' }}>
-              Guide insights (admin)
-            </Link>
-          )}
+          <p className="font-guide-body" style={{ color: '#6b5744', fontSize: '15px', lineHeight: 1.75, margin: 0 }}>
+            The guide runs in three phases. You can follow them in order, or step into whichever section meets you where you are.
+          </p>
         </div>
-      </div>
+
+        {GUIDE_PHASES.map((phase, index) => (
+          <GuidePhaseSection key={phase.id} phase={phase} progressMap={progressMap} isFirst={index === 0} />
+        ))}
+      </section>
+
+      <GuideJourneyBand started={started} done={done} total={TOTAL_SECTIONS} />
+      <GuideClosingSection isAdmin={user?.role === 'admin'} />
+
       <TamuGuideWidget />
     </PageLayout>
   );
