@@ -1,0 +1,72 @@
+{
+  "name": "SokoContentReview",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "title": "Review Domain",
+      "description": "Identifier of the review domain being signed off, e.g. county-governance or kiswahili."
+    },
+    "label": {
+      "type": "string",
+      "title": "Domain Label"
+    },
+    "status": {
+      "type": "string",
+      "title": "Review Status",
+      "enum": [
+        "pending",
+        "validated"
+      ],
+      "default": "pending"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "title": "Reviewer Name"
+    },
+    "reviewer_role": {
+      "type": "string",
+      "title": "Reviewer Role or Expertise"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Review Notes or Required Changes",
+      "format": "textarea"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Reviewed At"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "title": "Recorded By"
+    }
+  },
+  "required": [
+    "domain",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

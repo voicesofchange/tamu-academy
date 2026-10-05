@@ -1,0 +1,76 @@
+{
+  "name": "SokoActionPlan",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "module_slug": {
+      "type": "string",
+      "title": "Module Slug",
+      "description": "The module whose My Soko Action Plan section this record holds."
+    },
+    "content": {
+      "type": "string",
+      "title": "Section Content",
+      "format": "textarea",
+      "description": "The learner's answers to the module's action-plan sections, stored as a JSON object of field id to response."
+    },
+    "filled_count": {
+      "type": "integer",
+      "title": "Answered Sections",
+      "default": 0,
+      "description": "How many action-plan sections the learner has answered. Bounded server-side."
+    },
+    "saved_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "First Saved At"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "module_slug",
+    "content"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.learner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

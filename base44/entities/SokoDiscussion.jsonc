@@ -1,0 +1,85 @@
+{
+  "name": "SokoDiscussion",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "module_slug": {
+      "type": "string",
+      "title": "Module Slug"
+    },
+    "prompt_ref": {
+      "type": "string",
+      "title": "Discussion Prompt Reference",
+      "description": "Identifier of the Kiswahili discussion prompt the learner responded to."
+    },
+    "response": {
+      "type": "string",
+      "title": "Response",
+      "format": "textarea"
+    },
+    "language": {
+      "type": "string",
+      "title": "Response Language",
+      "enum": [
+        "sw",
+        "en",
+        "mixed"
+      ],
+      "default": "sw"
+    },
+    "share_consent": {
+      "type": "boolean",
+      "title": "Consent to Share with the Vendor Circle",
+      "default": false,
+      "description": "Whether the learner consents to their response being shared with other learners. Never shared without this consent."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Submitted At"
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "module_slug",
+    "prompt_ref",
+    "response"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.learner_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
