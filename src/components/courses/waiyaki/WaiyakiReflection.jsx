@@ -9,31 +9,18 @@ const bodyText = {
 
 /**
  * WaiyakiReflection — the module's reflection prompts, grouped exactly as the
- * guide groups them (by module part), with a private writing space and an
- * acknowledgment that saves progress.
+ * guide groups them (by module part), with a private writing space.
  *
  * The learner's writing is theirs: it stays on the page and is not stored on
- * the platform. Only the acknowledgment is saved, so the module can be
- * completed without the learner's private thinking leaving their screen.
+ * the platform. Responding to the prompts is marked complete from the module's
+ * completion requirements, exactly as every other Tamu Academy course does it.
  */
-export default function WaiyakiReflection({ reflection, acknowledged, canSave, onAcknowledge, saving }) {
+export default function WaiyakiReflection({ reflection, acknowledged, canSave }) {
   const [notes, setNotes] = useState('');
   if (!reflection || !reflection.groups || reflection.groups.length === 0) return null;
 
   return (
-    <section style={{ marginBottom: '2.75rem' }}>
-      <h2
-        className="font-heading"
-        style={{
-          color: '#f8f0df',
-          fontSize: 'clamp(1.35rem, 3vw, 1.85rem)',
-          fontWeight: 400,
-          margin: '0 0 1.25rem',
-        }}
-      >
-        Reflection
-      </h2>
-
+    <div>
       {reflection.groups.map((group) => (
         <div key={group.heading} style={{ marginBottom: '1.75rem' }}>
           <h3
@@ -51,11 +38,7 @@ export default function WaiyakiReflection({ reflection, acknowledged, canSave, o
           </h3>
           <ol style={{ margin: 0, paddingLeft: '1.25rem' }}>
             {group.prompts.map((prompt) => (
-              <li
-                key={prompt}
-                className="font-body"
-                style={{ ...bodyText, marginBottom: '0.7rem' }}
-              >
+              <li key={prompt} className="font-body" style={{ ...bodyText, marginBottom: '0.7rem' }}>
                 {prompt}
               </li>
             ))}
@@ -120,47 +103,24 @@ export default function WaiyakiReflection({ reflection, acknowledged, canSave, o
                 fontWeight: 300,
                 padding: '0.9rem 1rem',
                 resize: 'vertical',
-                marginBottom: '1rem',
+                marginBottom: '0.9rem',
               }}
             />
-            <button
-              type="button"
-              onClick={() => onAcknowledge(notes)}
-              disabled={saving}
-              className="font-body"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                color: '#24150f',
-                backgroundColor: '#e8b85b',
-                border: 'none',
-                borderRadius: '2px',
-                padding: '0.7rem 1.5rem',
-                fontSize: '0.76rem',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                cursor: saving ? 'wait' : 'pointer',
-                opacity: saving ? 0.6 : 1,
-              }}
-            >
-              {saving ? 'Saving...' : 'I have responded'}
-            </button>
             <p
               className="font-body"
               style={{
                 ...bodyText,
                 fontSize: '0.8rem',
                 color: 'rgba(243,234,216,0.5)',
-                margin: '0.9rem 0 0',
+                margin: 0,
               }}
             >
               Your reflection is private. What you write is not stored on the platform and is never
-              shared or graded.
+              shared or graded. Mark this exercise complete in the completion requirements below.
             </p>
           </div>
         )
       )}
-    </section>
+    </div>
   );
 }

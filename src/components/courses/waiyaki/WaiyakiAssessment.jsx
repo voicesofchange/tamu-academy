@@ -17,7 +17,7 @@ const bodyText = {
  * the learner sees their score, which questions they got right, and the
  * reasoning behind each answer. They may retake it.
  */
-export default function WaiyakiAssessment({ assessment, attempt, canSave, onGraded }) {
+export default function WaiyakiAssessment({ assessment, attempt, passRequired, canSave, onGraded }) {
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
@@ -160,8 +160,8 @@ export default function WaiyakiAssessment({ assessment, attempt, canSave, onGrad
           Assessment passed
         </p>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-          You answered {attempt.bestScore} of 5 correctly, meeting the requirement of{' '}
-          {assessment.passRequired || 4}. This requirement is complete.
+          You answered {attempt.bestScore} of {questions.length} correctly, meeting the requirement
+          of {passRequired || 4}. This requirement is complete.
         </p>
         <button
           type="button"

@@ -33,7 +33,7 @@ export const WAIYAKI_COURSE_SUBTITLE =
 export const WAIYAKI_MODULES = {
   'module-1': {
     route: 'module-1',
-    number: 'Module 01',
+    number: 'Module 1',
     title: 'Who Was Waiyaki wa Hinga?',
     subtitle: 'The story in brief \u00b7 Reading the sources',
     estimatedTime: '35\u201345 minutes',
@@ -191,7 +191,7 @@ export const WAIYAKI_MODULES = {
 
   'module-2': {
     route: 'module-2',
-    number: 'Module 02',
+    number: 'Module 2',
     title: 'Land, People and Power',
     subtitle:
       'A name with two worlds \u00b7 Not a king, not a chief \u00b7 Kabete, the caravans\u2019 Cape Town',
@@ -316,7 +316,7 @@ export const WAIYAKI_MODULES = {
 
   'module-3': {
     route: 'module-3',
-    number: 'Module 03',
+    number: 'Module 3',
     title: 'From Alliance to Arrest',
     subtitle: 'Blood brothers, 1890 \u00b7 From friendship to fire, 1891 \u00b7 The row at Fort Smith, 1892',
     estimatedTime: '45\u201360 minutes',
@@ -542,7 +542,7 @@ export const WAIYAKI_MODULES = {
 
   'module-4': {
     route: 'module-4',
-    number: 'Module 04',
+    number: 'Module 4',
     title: 'Kibwezi: Two Stories of One Death',
     subtitle: 'The record, the tradition, and the search for the grave',
     estimatedTime: '40\u201350 minutes',
@@ -639,7 +639,7 @@ export const WAIYAKI_MODULES = {
 
   'module-5': {
     route: 'module-5',
-    number: 'Module 05',
+    number: 'Module 5',
     title: 'Memory, Family and a Nation',
     subtitle: 'The House of Hinga \u00b7 From contested figure to national hero \u00b7 Epilogue',
     estimatedTime: '45\u201355 minutes',

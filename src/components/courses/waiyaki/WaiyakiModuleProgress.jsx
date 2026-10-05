@@ -1,201 +1,233 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-/**
- * WaiyakiModuleProgress — the module's own progress panel.
- *
- * A module is complete when all three keys are satisfied on the learner's
- * progress row: the narrative read, the source analysis worked through, and
- * the reflection prompts answered. The final step becomes available only when
- * the server reports the three keys, so the button can never assert
- * completion on its own.
- */
+const bodyText = {
+  color: 'rgba(243,234,216,0.78)',
+  fontSize: '0.88rem',
+  lineHeight: 1.7,
+  fontWeight: 300,
+};
+
 const REQUIREMENTS = [
-  { key: 'lesson_reviewed', label: 'Read the module narrative and key terms' },
-  { key: 'source_analysis_acknowledged', label: 'Work through the source-analysis exercise' },
-  { key: 'reflection_acknowledged', label: 'Respond to the reflection prompts' },
+  { key: 'lesson_reviewed', label: 'Read the module narrative and key terms', action: 'acknowledge_lesson' },
+  {
+    key: 'source_analysis_acknowledged',
+    label: 'Work through the source-analysis exercise',
+    action: 'acknowledge_source_analysis',
+  },
+  {
+    key: 'reflection_acknowledged',
+    label: 'Respond to the reflection prompts',
+    action: 'acknowledge_reflection',
+  },
 ];
 
+const requirementRowBase = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '1rem',
+  padding: '0.7rem 1rem',
+  borderRadius: '4px',
+  flexWrap: 'wrap',
+};
+
+const markButtonBase = {
+  color: '#e8b85b',
+  backgroundColor: 'transparent',
+  border: '1px solid rgba(232,184,91,0.4)',
+  padding: '0.4rem 0.9rem',
+  fontSize: '0.72rem',
+  fontWeight: 500,
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  borderRadius: '2px',
+  whiteSpace: 'nowrap',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+};
+
+const statusLabelStyle = {
+  color: '#e8b85b',
+  fontSize: '0.72rem',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  fontWeight: 500,
+  whiteSpace: 'nowrap',
+};
+
+/**
+ * WaiyakiModuleProgress — the module's completion requirements, presented in
+ * the same row-and-mark-complete form as every other Tamu Academy course.
+ *
+ * A module is complete when all three requirements are satisfied on the
+ * learner's progress row. The final button becomes available only when the
+ * server reports all three, so it can never assert completion on its own.
+ */
 export default function WaiyakiModuleProgress({
   completedKeys,
   moduleCompleted,
-  completedCount,
-  totalModules,
   canSave,
-  saving,
+  savingKey,
+  completing,
+  onAcknowledge,
   onComplete,
-  onAcknowledgeLesson,
+  completionPath,
   message,
 }) {
   const keys = completedKeys || [];
   const allDone = REQUIREMENTS.every((item) => keys.includes(item.key));
-  const progressPct = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
 
   return (
-    <section
-      style={{
-        padding: '1.75rem 2rem',
-        border: '1px solid rgba(232,184,91,0.28)',
-        borderRadius: '4px',
-        backgroundColor: 'rgba(232,184,91,0.03)',
-        marginBottom: '2.5rem',
-      }}
-    >
-      <div style={{ marginBottom: '1.25rem' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            marginBottom: '0.6rem',
-            gap: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
-          <span
-            className="font-body"
-            style={{
-              color: '#e8b85b',
-              fontSize: '0.6rem',
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              fontWeight: 600,
-            }}
-          >
-            Course progress
-          </span>
-          <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.92rem', fontWeight: 500 }}>
-            {completedCount} of {totalModules} modules complete
-          </span>
-        </div>
-        <div
-          role="progressbar"
-          aria-valuenow={progressPct}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="Course completion progress"
-          style={{
-            width: '100%',
-            height: '6px',
-            backgroundColor: 'rgba(243,234,216,0.08)',
-            borderRadius: '3px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              width: `${progressPct}%`,
-              height: '100%',
-              backgroundColor: '#e8b85b',
-              borderRadius: '3px',
-              transition: 'width 0.6s ease',
-            }}
-          />
-        </div>
-      </div>
-
-      <h2
-        className="font-heading"
-        style={{ color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1rem' }}
+    <div aria-live="polite" role="status">
+      <p
+        className="font-body"
+        style={{
+          ...bodyText,
+          fontStyle: 'italic',
+          color: 'rgba(243,234,216,0.6)',
+          fontSize: '0.85rem',
+          marginBottom: '1.25rem',
+        }}
       >
-        This module is complete when
-      </h2>
-      <ul style={{ listStyle: 'none', margin: '0 0 1.5rem', padding: 0 }}>
-        {REQUIREMENTS.map((item) => {
-          const done = keys.includes(item.key);
-          return (
-            <li
-              key={item.key}
-              className="font-body"
-              style={{
-                display: 'flex',
-                gap: '0.75rem',
-                alignItems: 'flex-start',
-                padding: '0.6rem 0',
-                borderTop: '1px solid rgba(232,184,91,0.14)',
-                color: done ? '#e8b85b' : 'rgba(243,234,216,0.78)',
-                fontSize: '0.94rem',
-                fontWeight: 300,
-                lineHeight: 1.7,
-              }}
-            >
-              <span aria-hidden="true" style={{ minWidth: '1rem' }}>
-                {done ? '\u2713' : '\u25CB'}
-              </span>
-              <span>{item.label}</span>
-            </li>
-          );
-        })}
-      </ul>
+        Mark each requirement complete as you finish it. No personal reflections or written answers
+        are stored on the platform; only your progress is saved.
+      </p>
 
-      {!keys.includes('lesson_reviewed') && canSave && (
-        <div style={{ marginBottom: '1.25rem' }}>
-          <button
-            type="button"
-            onClick={onAcknowledgeLesson}
-            disabled={saving}
-            className="font-body"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              color: '#e8b85b',
-              backgroundColor: 'transparent',
-              border: '1px solid rgba(232,184,91,0.5)',
-              borderRadius: '2px',
-              padding: '0.6rem 1.2rem',
-              fontSize: '0.74rem',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              fontWeight: 500,
-              cursor: saving ? 'wait' : 'pointer',
-              opacity: saving ? 0.6 : 1,
-            }}
-          >
-            I have read this module
-          </button>
-        </div>
-      )}
+      {canSave ? (
+        <>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            {REQUIREMENTS.map((item) => {
+              const isCompleted = keys.includes(item.key);
+              const isSaving = savingKey === item.key;
+              return (
+                <div
+                  key={item.key}
+                  style={{
+                    ...requirementRowBase,
+                    border: `1px solid ${
+                      isCompleted ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.12)'
+                    }`,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, flexWrap: 'wrap' }}>
+                    <span
+                      style={{
+                        color: isCompleted ? '#e8b85b' : 'rgba(243,234,216,0.4)',
+                        fontSize: '0.9rem',
+                        fontWeight: 500,
+                      }}
+                      aria-hidden="true"
+                    >
+                      {isCompleted ? '\u2713' : '\u25CB'}
+                    </span>
+                    <span className="font-body" style={{ ...bodyText, margin: 0 }}>
+                      {item.label}
+                    </span>
+                  </div>
+                  {isCompleted ? (
+                    <span className="font-body" style={statusLabelStyle}>
+                      Completed
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={isSaving || !!savingKey}
+                      onClick={() => onAcknowledge(item.key, item.action)}
+                      className="font-body"
+                      style={{
+                        ...markButtonBase,
+                        cursor: isSaving ? 'wait' : 'pointer',
+                        opacity: isSaving || savingKey ? 0.6 : 1,
+                      }}
+                    >
+                      {isSaving ? 'Saving...' : 'Mark complete'}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-      {moduleCompleted ? (
-        <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.92rem', margin: 0 }}>
-          Module complete. Continue to the next module below.
-        </p>
-      ) : canSave ? (
-        <button
-          type="button"
-          onClick={onComplete}
-          disabled={saving || !allDone}
-          className="font-body"
+          <div style={{ marginTop: '1.5rem' }}>
+            {moduleCompleted ? (
+              <>
+                <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.9rem', fontStyle: 'italic', margin: 0 }}>
+                  Module complete. Your progress has been saved.
+                </p>
+                {completionPath && (
+                  <p style={{ margin: '1rem 0 0' }}>
+                    <Link
+                      to={completionPath}
+                      className="font-body"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        color: '#24150f',
+                        backgroundColor: '#e8b85b',
+                        fontSize: '0.82rem',
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                        borderRadius: '2px',
+                        padding: '0.85rem 1.75rem',
+                      }}
+                    >
+                      Final assessment and your written project &rarr;
+                    </Link>
+                  </p>
+                )}
+              </>
+            ) : (
+              <button
+                type="button"
+                disabled={!allDone || completing}
+                onClick={onComplete}
+                className="font-body"
+                style={{
+                  border: 'none',
+                  padding: '0.7rem 1.7rem',
+                  fontSize: '0.82rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  borderRadius: '2px',
+                  fontFamily: 'inherit',
+                  color: allDone && !completing ? '#24150f' : 'rgba(243,234,216,0.4)',
+                  backgroundColor: allDone && !completing ? '#e8b85b' : 'rgba(232,184,91,0.15)',
+                  cursor: allDone && !completing ? 'pointer' : 'not-allowed',
+                }}
+              >
+                {completing ? 'Saving...' : 'Complete module'}
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        <div
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            color: allDone ? '#24150f' : 'rgba(243,234,216,0.45)',
-            backgroundColor: allDone ? '#e8b85b' : 'rgba(243,234,216,0.06)',
-            border: allDone ? 'none' : '1px solid rgba(243,234,216,0.15)',
-            borderRadius: '2px',
-            padding: '0.75rem 1.6rem',
-            fontSize: '0.76rem',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            fontWeight: 600,
-            cursor: saving ? 'wait' : allDone ? 'pointer' : 'not-allowed',
-            opacity: saving ? 0.6 : 1,
+            padding: '1.1rem 1.35rem',
+            border: '1px solid rgba(232,184,91,0.22)',
+            borderRadius: '4px',
+            backgroundColor: 'rgba(232,184,91,0.04)',
           }}
         >
-          {saving ? 'Saving...' : 'Mark this module complete'}
-        </button>
-      ) : (
-        <p
-          className="font-body"
-          style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.88rem', margin: 0, fontStyle: 'italic' }}
-        >
-          Enroll in the course to save your progress and complete this module.
-        </p>
+          <p
+            className="font-body"
+            style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.6)' }}
+          >
+            Your progress for this module will appear here once you are enrolled in the course and
+            signed in.
+          </p>
+        </div>
       )}
 
       {message && (
         <p
           className="font-body"
-          role="status"
+          role="alert"
           style={{
             margin: '1rem 0 0',
             fontSize: '0.88rem',
@@ -205,6 +237,6 @@ export default function WaiyakiModuleProgress({
           {message.text}
         </p>
       )}
-    </section>
+    </div>
   );
 }

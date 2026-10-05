@@ -1,58 +1,90 @@
 import React from 'react';
 import PageMeta from '@/components/seo/PageMeta';
-import PageLayout from '@/components/page/PageLayout';
+import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
+import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
+import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
+import ModuleNav from '@/components/courses/module/ModuleNav';
+import EconomicsLessonHeader from '@/components/courses/module/EconomicsLessonHeader';
 import WaiyakiModuleBody from '@/components/courses/waiyaki/WaiyakiModuleBody';
 import WaiyakiKeyTerms from '@/components/courses/waiyaki/WaiyakiKeyTerms';
 import WaiyakiSourceAnalysis from '@/components/courses/waiyaki/WaiyakiSourceAnalysis';
 import WaiyakiReflection from '@/components/courses/waiyaki/WaiyakiReflection';
 import WaiyakiModuleProgress from '@/components/courses/waiyaki/WaiyakiModuleProgress';
-import WaiyakiModuleNav from '@/components/courses/waiyaki/WaiyakiModuleNav';
 import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
 
-const bodyText = {
-  color: 'rgba(243,234,216,0.82)',
-  fontSize: '1rem',
-  lineHeight: 1.85,
-  fontWeight: 300,
+const CONTENT = {
+  moduleFocus: 'Module Focus',
+  estimatedTime: 'Estimated time',
+  objectivesEyebrow: 'Objectives',
+  objectivesHeading: 'Learning Objectives',
+  introEyebrow: 'Introduction',
+  introHeading: 'Lesson Introduction',
+  mediaEyebrow: 'Recorded Lessons',
+  mediaHeading: 'Recorded Lessons',
+  mediaIntro:
+    'The companion recording supports this module. It is not played here, so the module reads completely without it on a slow connection. The written lesson follows.',
+  lessonEyebrow: 'Lesson',
+  conceptsEyebrow: 'Concepts',
+  conceptsHeading: 'Key Terms',
+  sourcesEyebrow: 'Sources',
+  sourcesHeading: 'Working with the Sources',
+  reflectEyebrow: 'Reflect',
+  reflectHeading: 'Reflection Questions',
+  requirementsEyebrow: 'Requirements',
+  requirementsHeading: 'Completion Requirements',
+  closingEyebrow: 'Closing',
+  closingHeading: 'Module Closing',
+  closingText:
+    'Every claim in this module carries the guide\u2019s evidence label: documented, tradition or contested. Where the record and the oral tradition disagree, the course sets both before you rather than choosing for you.',
 };
 
 /**
- * WaiyakiModuleTemplate — the reading page for one module of the course.
+ * WaiyakiModuleTemplate — the lesson page for one module of the course.
  *
- * Text-first by design: the narrative, key terms, source analysis and
- * reflection render as text with no images and nothing to download. The
- * companion video is named as text only, so on a slow connection the module is
- * complete without it.
+ * It renders through the same shared lesson shell and the same fixed section
+ * order as every other Tamu Academy course: header, objectives, introduction,
+ * recorded lessons, written lesson, key terms, source work, reflection,
+ * completion requirements, module closing, then navigation. Waiyaki-specific
+ * material — the evidence labels, the source-analysis exercise and the
+ * reflection prompts — sits inside that shared structure rather than replacing
+ * it.
+ *
+ * Text-first by design: nothing is embedded and nothing needs downloading, so
+ * the module is complete on a slow connection.
  */
 export default function WaiyakiModuleTemplate({
   module,
   moduleRoute,
   moduleIndex,
   moduleCount,
-  prevPath,
-  nextPath,
+  prevModule,
+  nextModule,
   nextLabel,
+  endOfCourse,
   completedKeys,
   moduleCompleted,
   completedCount,
   canSave,
-  saving,
-  onAcknowledgeSource,
-  onAcknowledgeReflection,
-  onAcknowledgeLesson,
+  savingKey,
+  completing,
+  onAcknowledge,
   onComplete,
   message,
 }) {
   const coursePath = `/courses/${WAIYAKI_COURSE.slug}`;
   const keys = completedKeys || [];
+  const sections = module.sections || [];
+  const isLastModule = moduleIndex === moduleCount - 1;
 
   return (
-    <PageLayout>
+    <ModuleLessonLayout>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={module.lead ? module.lead.slice(0, 155) : WAIYAKI_COURSE.description}
         path={`${coursePath}/${moduleRoute}`}
+        noindex
       />
 
       <ModuleBreadcrumbs
@@ -60,164 +92,104 @@ export default function WaiyakiModuleTemplate({
         track={WAIYAKI_COURSE.track}
         course={WAIYAKI_COURSE.title}
         coursePath={coursePath}
-        moduleLabel={module.title}
+        moduleLabel={module.number}
       />
 
-      <header style={{ marginBottom: '3rem' }}>
-        <span
-          className="font-body"
-          style={{
-            color: '#e8b85b',
-            fontSize: '0.66rem',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            fontWeight: 600,
-            display: 'block',
-            marginBottom: '0.75rem',
-          }}
-        >
-          {module.number} of {String(moduleCount).padStart(2, '0')}
-        </span>
-        <h1
-          className="font-heading"
-          style={{
-            color: '#f8f0df',
-            fontSize: 'clamp(1.9rem, 5vw, 3rem)',
-            fontWeight: 400,
-            lineHeight: 1.12,
-            letterSpacing: '-0.02em',
-            margin: '0 0 0.9rem',
-          }}
-        >
-          {module.title}
-        </h1>
-        {module.subtitle && (
-          <p
-            className="font-body"
-            style={{ ...bodyText, color: 'rgba(232,184,91,0.85)', fontStyle: 'italic', marginBottom: '1.25rem' }}
-          >
-            {module.subtitle}
-          </p>
-        )}
-        <div
-          className="font-body"
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '1.25rem',
-            color: 'rgba(243,234,216,0.6)',
-            fontSize: '0.8rem',
-            letterSpacing: '0.04em',
-          }}
-        >
-          {module.estimatedTime && <span>{module.estimatedTime}</span>}
-          {module.companionVideo && <span>Companion recording: {module.companionVideo}</span>}
-          <span>
-            Module {moduleIndex + 1} of {moduleCount}
-          </span>
-        </div>
-      </header>
+      <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} completed={completedCount} />
 
-      {module.lead && (
-        <p
-          className="font-heading"
-          style={{
-            color: 'rgba(248,240,223,0.92)',
-            fontSize: 'clamp(1.1rem, 2.2vw, 1.35rem)',
-            fontWeight: 400,
-            lineHeight: 1.65,
-            margin: '0 0 2.5rem',
-            maxWidth: '70ch',
-          }}
+      <EconomicsLessonHeader
+        module={{ ...module, competency: module.subtitle }}
+        competencyLabel={CONTENT.moduleFocus}
+        estimatedTimeLabel={CONTENT.estimatedTime}
+      />
+
+      <ModuleTextSection
+        eyebrow={CONTENT.objectivesEyebrow}
+        heading={CONTENT.objectivesHeading}
+        items={module.learningObjectives}
+      />
+
+      <ModuleTextSection
+        eyebrow={CONTENT.introEyebrow}
+        heading={CONTENT.introHeading}
+        paragraphs={module.lead ? [module.lead] : undefined}
+      />
+
+      <ModuleTextSection
+        eyebrow={CONTENT.mediaEyebrow}
+        heading={CONTENT.mediaHeading}
+        intro={CONTENT.mediaIntro}
+        items={module.companionVideo ? [`Companion recording: ${module.companionVideo}`] : undefined}
+        ordered={false}
+      />
+
+      {sections.map((section, i) => (
+        <ModuleLessonSection
+          key={section.heading}
+          eyebrow={i === 0 ? CONTENT.lessonEyebrow : undefined}
+          heading={section.heading}
         >
-          {module.lead}
-        </p>
+          <WaiyakiModuleBody section={section} />
+        </ModuleLessonSection>
+      ))}
+
+      {Array.isArray(module.keyTerms) && module.keyTerms.length > 0 && (
+        <ModuleLessonSection eyebrow={CONTENT.conceptsEyebrow} heading={CONTENT.conceptsHeading}>
+          <WaiyakiKeyTerms terms={module.keyTerms} />
+        </ModuleLessonSection>
       )}
 
-      {module.learningObjectives && module.learningObjectives.length > 0 && (
-        <section
-          style={{
-            marginBottom: '3rem',
-            padding: '1.5rem 1.75rem',
-            border: '1px solid rgba(232,184,91,0.2)',
-            borderRadius: '4px',
-            backgroundColor: 'rgba(243,234,216,0.015)',
-          }}
+      {module.sourceAnalysis && (
+        <ModuleLessonSection
+          eyebrow={CONTENT.sourcesEyebrow}
+          heading={module.sourceAnalysis.heading || CONTENT.sourcesHeading}
         >
-          <h2
-            className="font-body"
-            style={{
-              color: '#e8b85b',
-              fontSize: '0.62rem',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              fontWeight: 600,
-              margin: '0 0 0.9rem',
-            }}
-          >
-            By the end of this module you will be able to
-          </h2>
-          <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
-            {module.learningObjectives.map((objective) => (
-              <li key={objective} className="font-body" style={{ ...bodyText, fontSize: '0.94rem', marginBottom: '0.45rem' }}>
-                {objective}
-              </li>
-            ))}
-          </ul>
-        </section>
+          <WaiyakiSourceAnalysis
+            analysis={module.sourceAnalysis}
+            acknowledged={keys.includes('source_analysis_acknowledged')}
+            canSave={canSave}
+          />
+        </ModuleLessonSection>
       )}
 
-      {module.sections &&
-        module.sections.map((section) => (
-          <WaiyakiModuleBody key={section.heading} section={section} />
-        ))}
+      {module.reflection && module.reflection.groups && module.reflection.groups.length > 0 && (
+        <ModuleLessonSection eyebrow={CONTENT.reflectEyebrow} heading={CONTENT.reflectHeading}>
+          <WaiyakiReflection
+            reflection={module.reflection}
+            acknowledged={keys.includes('reflection_acknowledged')}
+            canSave={canSave}
+          />
+        </ModuleLessonSection>
+      )}
 
-      <WaiyakiKeyTerms terms={module.keyTerms} />
+      <ModuleLessonSection eyebrow={CONTENT.requirementsEyebrow} heading={CONTENT.requirementsHeading}>
+        <WaiyakiModuleProgress
+          completedKeys={keys}
+          moduleCompleted={moduleCompleted}
+          canSave={canSave}
+          savingKey={savingKey}
+          completing={completing}
+          onAcknowledge={onAcknowledge}
+          onComplete={onComplete}
+          completionPath={isLastModule ? `${coursePath}/completion` : null}
+          message={message}
+        />
+      </ModuleLessonSection>
 
-      <WaiyakiSourceAnalysis
-        analysis={module.sourceAnalysis}
-        acknowledged={keys.includes('source_analysis_acknowledged')}
-        canSave={canSave}
-        saving={saving}
-        onAcknowledge={onAcknowledgeSource}
+      <ModuleTextSection
+        eyebrow={CONTENT.closingEyebrow}
+        heading={CONTENT.closingHeading}
+        paragraphs={[CONTENT.closingText]}
       />
 
-      <WaiyakiReflection
-        reflection={module.reflection}
-        acknowledged={keys.includes('reflection_acknowledged')}
-        canSave={canSave}
-        saving={saving}
-        onAcknowledge={onAcknowledgeReflection}
+      <ModuleNav
+        coursePath={coursePath}
+        courseSlug={WAIYAKI_COURSE.slug}
+        prevModule={prevModule}
+        nextModule={nextModule}
+        nextLabel={nextLabel}
+        endOfCourse={endOfCourse}
       />
-
-      <WaiyakiModuleProgress
-        completedKeys={keys}
-        moduleCompleted={moduleCompleted}
-        completedCount={completedCount}
-        totalModules={moduleCount}
-        canSave={canSave}
-        saving={saving}
-        onAcknowledgeLesson={onAcknowledgeLesson}
-        onComplete={onComplete}
-        message={message}
-      />
-
-      <WaiyakiModuleNav prevPath={prevPath} nextPath={nextPath} nextLabel={nextLabel} />
-
-      <p
-        className="font-body"
-        style={{
-          ...bodyText,
-          fontSize: '0.84rem',
-          color: 'rgba(243,234,216,0.5)',
-          marginTop: '2rem',
-          fontStyle: 'italic',
-        }}
-      >
-        Every claim in this module carries the guide&rsquo;s evidence label: documented, tradition or
-        contested. Where the record and the oral tradition disagree, the course sets both before you
-        rather than choosing for you.
-      </p>
-    </PageLayout>
+    </ModuleLessonLayout>
   );
 }

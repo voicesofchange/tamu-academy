@@ -13,34 +13,25 @@ const bodyText = {
  * of source, what each can and cannot tell us, and the questions to ask of
  * every source.
  *
- * The learner writes their own reading of the evidence in a private space and
- * then records that they have worked through it. The writing stays on the page
- * and is not stored on the platform; what is saved is the acknowledgment, so
- * the module can be completed.
+ * The learner writes their own reading of the evidence in a private space.
+ * The writing stays on the page and is not stored on the platform; working
+ * through the exercise is marked complete from the module's completion
+ * requirements, exactly as every other Tamu Academy course does it.
  */
-export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave, onAcknowledge, saving }) {
+export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave }) {
   const [notes, setNotes] = useState('');
   if (!analysis) return null;
 
   return (
-    <section style={{ marginBottom: '2.75rem' }}>
-      <h2
-        className="font-heading"
-        style={{
-          color: '#f8f0df',
-          fontSize: 'clamp(1.35rem, 3vw, 1.85rem)',
-          fontWeight: 400,
-          margin: '0 0 1rem',
-        }}
-      >
-        {analysis.heading}
-      </h2>
-      <p
-        className="font-body"
-        style={{ ...bodyText, color: 'rgba(243,234,216,0.68)', fontStyle: 'italic' }}
-      >
-        {analysis.intro}
-      </p>
+    <div>
+      {analysis.intro && (
+        <p
+          className="font-body"
+          style={{ ...bodyText, color: 'rgba(243,234,216,0.68)', fontStyle: 'italic' }}
+        >
+          {analysis.intro}
+        </p>
+      )}
 
       <div
         style={{
@@ -229,48 +220,24 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave,
                 fontWeight: 300,
                 padding: '0.9rem 1rem',
                 resize: 'vertical',
-                marginBottom: '1rem',
+                marginBottom: '0.9rem',
               }}
             />
-            <button
-              type="button"
-              onClick={() => onAcknowledge(notes)}
-              disabled={saving}
-              className="font-body"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                color: '#24150f',
-                backgroundColor: '#e8b85b',
-                border: 'none',
-                borderRadius: '2px',
-                padding: '0.7rem 1.5rem',
-                fontSize: '0.76rem',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                cursor: saving ? 'wait' : 'pointer',
-                opacity: saving ? 0.6 : 1,
-              }}
-            >
-              {saving ? 'Saving...' : 'I have worked through this'}
-            </button>
             <p
               className="font-body"
               style={{
                 ...bodyText,
                 fontSize: '0.8rem',
                 color: 'rgba(243,234,216,0.5)',
-                margin: '0.9rem 0 0',
+                margin: 0,
               }}
             >
-              What you write here stays on this page and is not stored on the platform. Only the fact
-              that you completed the exercise is saved.
+              What you write here stays on this page and is not stored on the platform. Mark this
+              exercise complete in the completion requirements below when you have worked through it.
             </p>
           </div>
         )
       )}
-    </section>
+    </div>
   );
 }
