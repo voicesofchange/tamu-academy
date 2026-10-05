@@ -446,8 +446,4 @@ html {
   .tamu-print-area table {
     width: 100% !important;
   }
-  .tamu-print-area,
-  .tamu-print-area * {
-    background: transparent !important;
-  }
 }
