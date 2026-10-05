@@ -30,14 +30,6 @@ const record = {
   marginBottom: '0.6rem',
 };
 
-const note = {
-  color: '#8a6f58',
-  fontSize: '13px',
-  lineHeight: 1.7,
-  fontStyle: 'italic',
-  margin: 0,
-};
-
 const recordLink = {
   color: '#9b5d1d',
   textDecoration: 'underline',
@@ -93,10 +85,6 @@ export default function WaiyakiSources({ sources }) {
           </div>
         );
       })}
-
-      {sources && sources.note && (
-        <p className="font-body" style={note}>{sources.note}</p>
-      )}
     </CourseOverviewSection>
   );
 }

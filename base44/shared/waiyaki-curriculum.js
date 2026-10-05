@@ -992,6 +992,4 @@ export const WAIYAKI_FURTHER_READING = {
     { text: 'The Standard, on the launch, 29 November 2025.', url: 'https://www.standardmedia.co.ke/rift-valley/article/2001535285/all-you-need-to-know-about-rironi-mau-summit-project-after-ruto-launch' },
     { text: 'The Standard, on preparations at Manguo, 27 November 2025.', url: 'https://www.standardmedia.co.ke/rift-valley/article/2001535191/rironi-nakuru-mau-summit-highway-no-longer-a-dream-as-ruto-set-to-launch-the-project' },
   ],
-  note:
-    'This collection reflects research current to October 2026. It includes only claims that can be verified; where oral tradition is cited, it is identified as tradition. Precise coordinates for burial sites circulate in research notes but have not been confirmed by survey or excavation \u2014 treat any coordinates as orientation only. Family testimony and new evidence are welcomed for future revisions.',
 };
