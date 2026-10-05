@@ -1,5 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  Home,
+  GraduationCap,
+  LayoutDashboard,
+  BookOpen,
+  User,
+  Compass,
+  Video,
+  FileText,
+  FolderOpen,
+  Wifi,
+  Quote,
+  Info,
+  Mail,
+  LogOut,
+  LogIn,
+  UserPlus,
+} from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -7,37 +25,73 @@ import DisplayModeToggle from '@/components/display/DisplayModeToggle';
 
 // Primary, always-visible destinations
 const PRIMARY_LINKS = [
-  { key: 'nav.home', to: '/' },
-  { key: 'nav.courses', to: '/courses' },
+  { key: 'nav.home', to: '/', icon: Home },
+  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
 ];
 
 // Learner-only destinations shown when authenticated
 const AUTH_LINKS = [
-  { key: 'nav.myCourses', to: '/my-courses' },
-  { key: 'nav.learnersGuide', to: '/learners-guide' },
-  { key: 'nav.myProfile', to: '/profile' },
+  { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
+  { key: 'nav.learnersGuide', to: '/learners-guide', icon: BookOpen },
+  { key: 'nav.myProfile', to: '/profile', icon: User },
 ];
 
 // Secondary content grouped under "Explore"
 const EXPLORE_LINKS = [
-  { key: 'nav.videos', to: '/videos' },
-  { key: 'nav.articles', to: '/articles' },
-  { key: 'nav.resources', to: '/resources' },
-  { key: 'nav.remotePathway', to: '/remote-pathway' },
-  { key: 'nav.stories', to: '/stories' },
-  { key: 'nav.about', to: '/about' },
-  { key: 'nav.contact', to: '/contact' },
+  { key: 'nav.videos', to: '/videos', icon: Video },
+  { key: 'nav.articles', to: '/articles', icon: FileText },
+  { key: 'nav.resources', to: '/resources', icon: FolderOpen },
+  { key: 'nav.remotePathway', to: '/remote-pathway', icon: Wifi },
+  { key: 'nav.stories', to: '/stories', icon: Quote },
+  { key: 'nav.about', to: '/about', icon: Info },
+  { key: 'nav.contact', to: '/contact', icon: Mail },
 ];
 
 const linkBaseStyle = {
-  fontSize: '0.68rem',
-  letterSpacing: '0.15em',
+  fontSize: '0.64rem',
+  letterSpacing: '0.1em',
   textTransform: 'uppercase',
   fontWeight: 500,
   whiteSpace: 'nowrap',
   textDecoration: 'none',
-  paddingBottom: '2px',
 };
+
+// One icon per tab, so every destination is recognisable at a glance.
+const NavIcon = ({ icon: Icon, active = false, size = 15 }) => (
+  <Icon size={size} strokeWidth={active ? 2.1 : 1.75} aria-hidden="true" style={{ flexShrink: 0 }} />
+);
+
+// Desktop tab: icon + label, with the current destination filled in brand gold.
+const desktopTabStyle = (active) => ({
+  ...linkBaseStyle,
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.35rem',
+  borderRadius: '999px',
+  padding: '0.38rem 0.62rem',
+  color: active ? '#24150f' : 'rgba(243,234,216,0.78)',
+  backgroundColor: active ? '#e8b85b' : 'transparent',
+  border: `1px solid ${active ? '#e8b85b' : 'transparent'}`,
+});
+
+// Mobile tab row: icon + label, with the current destination tinted and accented.
+const mobileTabStyle = (active) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.7rem',
+  color: active ? '#e8b85b' : 'rgba(243,234,216,0.82)',
+  backgroundColor: active ? 'rgba(232,184,91,0.09)' : 'transparent',
+  fontSize: '0.8rem',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  fontWeight: 500,
+  padding: '0.85rem 0.7rem',
+  borderTop: '1px solid transparent',
+  borderRight: '1px solid transparent',
+  borderBottom: '1px solid rgba(232,184,91,0.07)',
+  borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
+});
 
 export default function TopNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -153,43 +207,37 @@ export default function TopNav() {
         </Link>
 
         {/* Desktop nav */}
-        <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.65rem, 1.8vw, 1.5rem)' }} className="tamu-desktop-nav">
+        <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.9vw, 0.7rem)' }} className="tamu-desktop-nav">
           {/* Primary links */}
-          {PRIMARY_LINKS.map(({ key, to }) => {
+          {PRIMARY_LINKS.map(({ key, to, icon }) => {
             const active = isActive(to);
             return (
               <Link
                 key={key}
                 to={to}
-                className="tamu-nav-link"
+                className="tamu-nav-tab"
                 aria-current={active ? 'page' : undefined}
-                style={{
-                  ...linkBaseStyle,
-                  color: active ? '#e8b85b' : 'rgba(243,234,216,0.78)',
-                  borderBottom: active ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
-                }}
+                style={desktopTabStyle(active)}
               >
-                {t(key)}
+                <NavIcon icon={icon} active={active} />
+                <span>{t(key)}</span>
               </Link>
             );
           })}
 
           {/* Auth-only links */}
-          {isAuthenticated && AUTH_LINKS.map(({ key, to }) => {
+          {isAuthenticated && AUTH_LINKS.map(({ key, to, icon }) => {
             const active = isActive(to);
             return (
               <Link
                 key={key}
                 to={to}
-                className="tamu-nav-link"
+                className="tamu-nav-tab"
                 aria-current={active ? 'page' : undefined}
-                style={{
-                  ...linkBaseStyle,
-                  color: active ? '#e8b85b' : 'rgba(243,234,216,0.78)',
-                  borderBottom: active ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
-                }}
+                style={desktopTabStyle(active)}
               >
-                {t(key)}
+                <NavIcon icon={icon} active={active} />
+                <span>{t(key)}</span>
               </Link>
             );
           })}
@@ -200,21 +248,16 @@ export default function TopNav() {
               onClick={() => setExploreOpen((v) => !v)}
               aria-expanded={exploreOpen}
               aria-haspopup="true"
-              className="tamu-nav-link"
+              aria-current={exploreActive ? 'true' : undefined}
+              className="tamu-nav-tab"
               style={{
-                ...linkBaseStyle,
-                color: exploreActive ? '#e8b85b' : 'rgba(243,234,216,0.78)',
-                background: 'none',
-                border: 'none',
-                borderBottom: exploreActive ? '1px solid rgba(232,184,91,0.5)' : '1px solid transparent',
+                ...desktopTabStyle(exploreActive),
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.3rem',
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
-              {t('nav.explore')}
+              <NavIcon icon={Compass} active={exploreActive} />
+              <span>{t('nav.explore')}</span>
               <span style={{ fontSize: '0.5rem', lineHeight: 1, transition: 'transform 0.2s ease', transform: exploreOpen ? 'rotate(180deg)' : 'none' }}>▾</span>
             </button>
             {exploreOpen && (
@@ -235,32 +278,36 @@ export default function TopNav() {
                   boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
                 }}
               >
-                {EXPLORE_LINKS.map(({ key, to }) => {
+                {EXPLORE_LINKS.map(({ key, to, icon }) => {
                   const active = isActive(to);
                   return (
                     <Link
                       key={key}
                       to={to}
                       role="menuitem"
-                      className="tamu-nav-link"
+                      aria-current={active ? 'page' : undefined}
+                      className="tamu-explore-item"
                       style={{
-                        display: 'block',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
                         width: '100%',
-                        textAlign: 'left',
                         boxSizing: 'border-box',
                         color: active ? '#e8b85b' : 'rgba(243,234,216,0.75)',
+                        backgroundColor: active ? 'rgba(232,184,91,0.09)' : 'transparent',
                         fontSize: '0.68rem',
-                        letterSpacing: '0.15em',
+                        letterSpacing: '0.13em',
                         textTransform: 'uppercase',
                         fontWeight: 500,
                         textDecoration: 'none',
-                        padding: '0.65rem 1rem',
+                        padding: '0.7rem 1rem',
                         borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
                         borderBottom: '1px solid rgba(232,184,91,0.08)',
                         transition: 'background-color 0.2s ease, color 0.2s ease',
                       }}
                     >
-                      {t(key)}
+                      <NavIcon icon={icon} active={active} />
+                      <span>{t(key)}</span>
                     </Link>
                   );
                 })}
@@ -272,47 +319,42 @@ export default function TopNav() {
           {isAuthenticated ? (
             <button
               onClick={handleSignOut}
-              className="tamu-nav-link"
+              className="tamu-nav-tab"
               style={{
-                ...linkBaseStyle,
-                color: 'rgba(243,234,216,0.78)',
-                background: 'none',
-                border: 'none',
+                ...desktopTabStyle(false),
                 cursor: 'pointer',
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
-              {t('nav.signOut')}
+              <NavIcon icon={LogOut} />
+              <span>{t('nav.signOut')}</span>
             </button>
           ) : (
             <>
               <Link
                 to="/login"
-                className="tamu-nav-link"
-                style={{
-                  ...linkBaseStyle,
-                  color: 'rgba(243,234,216,0.78)',
-                }}
+                className="tamu-nav-tab"
+                style={desktopTabStyle(false)}
               >
-                {t('nav.signIn')}
+                <NavIcon icon={LogIn} />
+                <span>{t('nav.signIn')}</span>
               </Link>
               <Link
                 to="/register"
                 style={{
+                  ...linkBaseStyle,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
                   color: '#24150f',
                   backgroundColor: '#e8b85b',
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                  fontWeight: 500,
-                  whiteSpace: 'nowrap',
                   border: '1px solid #e8b85b',
-                  borderRadius: '2px',
-                  padding: '0.35rem 0.85rem',
+                  borderRadius: '999px',
+                  padding: '0.42rem 0.9rem',
                 }}
               >
-                {t('nav.createAccount')}
+                <NavIcon icon={UserPlus} />
+                <span>{t('nav.createAccount')}</span>
               </Link>
             </>
           )}
@@ -377,7 +419,7 @@ export default function TopNav() {
           gap: '0',
         }}
       >
-        {mobileLinks.map(({ key, to }, idx) => {
+        {mobileLinks.map(({ key, to, icon }, idx) => {
           const active = isActive(to);
           // Insert a section label before the first Explore link
           const showExploreLabel = idx === PRIMARY_LINKS.length + (isAuthenticated ? AUTH_LINKS.length : 0);
@@ -400,21 +442,12 @@ export default function TopNav() {
               )}
               <Link
                 to={to}
-                className="tamu-nav-link"
+                className="tamu-tab-mobile"
                 aria-current={active ? 'page' : undefined}
-                style={{
-                  color: active ? '#e8b85b' : 'rgba(243,234,216,0.82)',
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                  fontWeight: 500,
-                  padding: '0.85rem 0',
-                  borderBottom: '1px solid rgba(232,184,91,0.07)',
-                  display: 'block',
-                }}
+                style={mobileTabStyle(active)}
               >
-                {t(key)}
+                <NavIcon icon={icon} active={active} size={16} />
+                <span>{t(key)}</span>
               </Link>
             </React.Fragment>
           );
@@ -423,63 +456,31 @@ export default function TopNav() {
         {isAuthenticated ? (
           <button
             onClick={handleSignOut}
-            className="tamu-nav-link"
+            className="tamu-tab-mobile"
             style={{
-              color: 'rgba(243,234,216,0.82)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              fontWeight: 500,
-              padding: '0.85rem 0',
-              borderBottom: '1px solid rgba(232,184,91,0.07)',
-              display: 'block',
+              ...mobileTabStyle(false),
               width: '100%',
               textAlign: 'left',
-              background: 'none',
-              border: 'none',
-              borderBottomWidth: '1px',
-              borderBottomStyle: 'solid',
-              borderBottomColor: 'rgba(232,184,91,0.07)',
-              fontFamily: "'DM Sans', sans-serif",
               cursor: 'pointer',
+              fontFamily: "'DM Sans', sans-serif",
             }}
           >
-            {t('nav.signOut')}
+            <NavIcon icon={LogOut} size={16} />
+            <span>{t('nav.signOut')}</span>
           </button>
         ) : (
           <>
-            <Link
-              to="/login"
-              className="tamu-nav-link"
-              style={{
-                color: 'rgba(243,234,216,0.82)',
-                fontSize: '0.8rem',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                fontWeight: 500,
-                padding: '0.85rem 0',
-                borderBottom: '1px solid rgba(232,184,91,0.07)',
-                display: 'block',
-              }}
-            >
-              {t('nav.signIn')}
+            <Link to="/login" className="tamu-tab-mobile" style={mobileTabStyle(false)}>
+              <NavIcon icon={LogIn} size={16} />
+              <span>{t('nav.signIn')}</span>
             </Link>
             <Link
               to="/register"
-              className="tamu-nav-link"
-              style={{
-                color: '#e8b85b',
-                fontSize: '0.8rem',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                fontWeight: 500,
-                padding: '0.85rem 0',
-                display: 'block',
-              }}
+              className="tamu-tab-mobile"
+              style={{ ...mobileTabStyle(false), color: '#e8b85b' }}
             >
-              {t('nav.createAccount')}
+              <NavIcon icon={UserPlus} size={16} />
+              <span>{t('nav.createAccount')}</span>
             </Link>
           </>
         )}
@@ -501,6 +502,32 @@ export default function TopNav() {
           outline: 2px solid #e8b85b;
           outline-offset: 4px;
           border-radius: 2px;
+        }
+        /* Active tab fills with brand gold; inactive tabs warm slightly on hover. */
+        .tamu-nav-tab {
+          transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+        .tamu-nav-tab:not([aria-current]):hover {
+          background-color: rgba(232,184,91,0.16) !important;
+          border-color: rgba(232,184,91,0.35) !important;
+          color: #f8f0df !important;
+        }
+        .tamu-nav-tab[aria-current]:hover {
+          background-color: #f0c674 !important;
+          border-color: #f0c674 !important;
+          color: #24150f !important;
+        }
+        /* Mobile rows: active row is accented and tinted. */
+        .tamu-tab-mobile:not([aria-current]):hover {
+          background-color: rgba(232,184,91,0.08) !important;
+          color: #f8f0df !important;
+        }
+        .tamu-tab-mobile[aria-current]:hover {
+          background-color: rgba(232,184,91,0.14) !important;
+        }
+        .tamu-explore-item:not([aria-current]):hover {
+          background-color: rgba(232,184,91,0.08) !important;
+          color: #f8f0df !important;
         }
       `}</style>
     </header>
