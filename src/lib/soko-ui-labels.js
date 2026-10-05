@@ -220,5 +220,47 @@ export const SOKO_PAGE_LABELS = {
     'We could not load your certificate at this time. Please try again later.',
 };
 
+/**
+ * Peer Facilitator vendor-circle record (Module 8). It gets its own set so
+ * neither of the other two grows past the 100-key request cap.
+ */
+export const SOKO_FACILITATOR_LABELS = {
+  facilitatorLoading: 'Loading your record\u2026',
+  facilitatorStatusLabel: 'Review status',
+  facilitatorStatusDraft: 'Draft',
+  facilitatorStatusSubmitted: 'Submitted \u2014 awaiting review',
+  facilitatorStatusApproved: 'Approved',
+  facilitatorStatusReturned: 'Returned for revision',
+  facilitatorFeedbackLabel: 'Reviewer feedback',
+  facilitatorApprovedNotice:
+    'Your vendor-circle record has been approved. You can now complete Module 8 and claim your Peer Facilitator certificate.',
+  facilitatorSessionPlanLabel: 'Vendor circle session plan',
+  facilitatorSessionPlanHelper:
+    'Purpose, timing, your three or four questions, and how you will close the session.',
+  facilitatorDiscussionLabel: 'Discussion summary',
+  facilitatorDiscussionHelper:
+    'What the group discussed and what people agreed to try. No names, no stall numbers, no identifying amounts.',
+  facilitatorReflectionLabel: 'Facilitator reflection',
+  facilitatorReflectionHelper:
+    'What went well, what did not go to plan, and what you will change next time.',
+  facilitatorConsent:
+    'I confirm that participants gave their informed consent, that the discussion was voluntary, and that no individual participant is identifiable in my summary.',
+  facilitatorSaveDraft: 'Save draft',
+  facilitatorSaving: 'Saving\u2026',
+  facilitatorSubmit: 'Submit for review',
+  facilitatorSubmitting: 'Submitting\u2026',
+  facilitatorUnavailable:
+    'Saving becomes available once your enrollment in the Peer Facilitator track is active and the module is published.',
+  facilitatorSavedDraft:
+    'Your draft has been saved. You can keep working and submit when you are ready.',
+  facilitatorSavedSubmit:
+    'Your record has been submitted. A reviewer will read it and respond.',
+  facilitatorError: 'We could not save your record right now. Please try again.',
+};
+
 /** Merged English default — the value used outside a SokoLabelsProvider. */
-export const SOKO_UI_LABELS = { ...SOKO_MODULE_LABELS, ...SOKO_PAGE_LABELS };
+export const SOKO_UI_LABELS = {
+  ...SOKO_MODULE_LABELS,
+  ...SOKO_PAGE_LABELS,
+  ...SOKO_FACILITATOR_LABELS,
+};

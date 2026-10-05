@@ -38,6 +38,8 @@ const CONTENT = {
   failWrittenMsg: 'You answered {score} of {mcTotal} graded questions correctly. Answer at least four of the five questions correctly to pass. You can retry; your written response will be kept.',
   tryAgain: 'Try Again',
   serverError: 'We could not grade your responses right now. Please try again.',
+  formLabel: 'Knowledge check',
+  writtenResponseLabel: 'Written response for question {number}',
 };
 
 export default function KnowledgeCheck({
@@ -134,7 +136,7 @@ export default function KnowledgeCheck({
   );
 
   return (
-    <form onSubmit={handleSubmit} aria-label="Knowledge check">
+    <form onSubmit={handleSubmit} aria-label={c.formLabel}>
       {quiz.questions.map((q, qi) => {
         const fb = findFeedback(q.id);
         return (
@@ -153,7 +155,7 @@ export default function KnowledgeCheck({
                   onChange={(e) => setWritten(qi, e.target.value)}
                   disabled={locked}
                   rows={6}
-                  aria-label={`Written response for question ${qi + 1}`}
+                  aria-label={tpl(c.writtenResponseLabel, { number: qi + 1 })}
                   style={{ width: '100%', marginTop: '0.85rem', padding: '0.7rem 0.85rem', background: 'rgba(243,234,216,0.02)', color: 'rgba(243,234,216,0.85)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '3px', fontSize: '0.9rem', lineHeight: 1.7, fontFamily: 'inherit', resize: 'vertical' }}
                 />
                 {fb && (

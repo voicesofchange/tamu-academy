@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { SAUTI_ZA_SOKO_PEER_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300 };
 
@@ -28,17 +29,32 @@ const buttonStyle = {
   fontFamily: 'inherit',
 };
 
-const STATUS_LABELS = {
-  draft: 'Draft',
-  submitted: 'Submitted — awaiting review',
-  approved: 'Approved',
-  returned: 'Returned for revision',
+const STATUS_KEYS = {
+  draft: 'facilitatorStatusDraft',
+  submitted: 'facilitatorStatusSubmitted',
+  approved: 'facilitatorStatusApproved',
+  returned: 'facilitatorStatusReturned',
 };
 
-const SECTIONS = [
-  { id: 'sessionPlan', label: 'Vendor circle session plan', helper: 'Purpose, timing, your three or four questions, and how you will close the session.', rows: 6 },
-  { id: 'discussionSummary', label: 'Discussion summary', helper: 'What the group discussed and what people agreed to try. No names, no stall numbers, no identifying amounts.', rows: 6 },
-  { id: 'reflection', label: 'Facilitator reflection', helper: 'What went well, what did not go to plan, and what you will change next time.', rows: 6 },
+const SECTION_FIELDS = [
+  {
+    id: 'sessionPlan',
+    labelKey: 'facilitatorSessionPlanLabel',
+    helperKey: 'facilitatorSessionPlanHelper',
+    rows: 6,
+  },
+  {
+    id: 'discussionSummary',
+    labelKey: 'facilitatorDiscussionLabel',
+    helperKey: 'facilitatorDiscussionHelper',
+    rows: 6,
+  },
+  {
+    id: 'reflection',
+    labelKey: 'facilitatorReflectionLabel',
+    helperKey: 'facilitatorReflectionHelper',
+    rows: 6,
+  },
 ];
 
 /**
@@ -47,8 +63,12 @@ const SECTIONS = [
  * circle, writes a privacy-protecting summary and a reflection, then
  * submits the record for review. Module 8 cannot be completed until a
  * reviewer approves it.
+ *
+ * Every label, instruction and action reads from the pathway label set, so
+ * the record is written in the learner's selected language.
  */
 export default function SokoFacilitatorPanel({ canSave }) {
+  const labels = useSokoLabels();
   const [form, setForm] = useState({ sessionPlan: '', discussionSummary: '', reflection: '' });
   const [consentConfirmed, setConsentConfirmed] = useState(false);
   const [status, setStatus] = useState(null);
@@ -98,12 +118,10 @@ export default function SokoFacilitatorPanel({ canSave }) {
       setStatus(nextStatus);
       setMessage({
         type: 'success',
-        text: action === 'submit'
-          ? 'Your record has been submitted. A reviewer will read it and respond.'
-          : 'Your draft has been saved. You can keep working and submit when you are ready.',
+        text: action === 'submit' ? labels.facilitatorSavedSubmit : labels.facilitatorSavedDraft,
       });
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not save your record right now. Please try again.' });
+      setMessage({ type: 'error', text: labels.facilitatorError });
     } finally {
       setBusy(null);
     }
@@ -117,7 +135,7 @@ export default function SokoFacilitatorPanel({ canSave }) {
   if (loading) {
     return (
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
-        Loading your record…
+        {labels.facilitatorLoading}
       </p>
     );
   }
@@ -126,17 +144,17 @@ export default function SokoFacilitatorPanel({ canSave }) {
     <div aria-live="polite">
       <div style={{ marginBottom: '1.5rem' }}>
         <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.35rem' }}>
-          Review status
+          {labels.facilitatorStatusLabel}
         </span>
         <span className="font-body" style={{ ...bodyText, color: '#f8f0df', fontSize: '0.95rem', margin: 0 }}>
-          {STATUS_LABELS[status] || 'Draft'}
+          {labels[STATUS_KEYS[status]] || labels.facilitatorStatusDraft}
         </span>
       </div>
 
       {status === 'returned' && feedback && (
         <div style={{ padding: '1.1rem 1.35rem', border: '1px solid rgba(232,149,92,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,149,92,0.05)', marginBottom: '1.75rem' }}>
           <span className="font-body" style={{ color: '#e8955c', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
-            Reviewer feedback
+            {labels.facilitatorFeedbackLabel}
           </span>
           <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.92rem' }}>{feedback}</p>
         </div>
@@ -145,20 +163,19 @@ export default function SokoFacilitatorPanel({ canSave }) {
       {approved && (
         <div style={{ padding: '1.1rem 1.35rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)', marginBottom: '1.75rem' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.92rem' }}>
-            Your vendor-circle record has been approved. You can now complete Module 8 and claim your Peer
-            Facilitator certificate.
+            {labels.facilitatorApprovedNotice}
           </p>
         </div>
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {SECTIONS.map((section) => (
+        {SECTION_FIELDS.map((section) => (
           <div key={section.id}>
             <label htmlFor={`soko-${section.id}`} className="font-body" style={{ display: 'block', color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.3rem' }}>
-              {section.label}
+              {labels[section.labelKey]}
             </label>
             <p className="font-body" style={{ ...bodyText, fontSize: '0.84rem', color: 'rgba(243,234,216,0.55)', margin: '0 0 0.5rem' }}>
-              {section.helper}
+              {labels[section.helperKey]}
             </p>
             <textarea
               id={`soko-${section.id}`}
@@ -181,10 +198,7 @@ export default function SokoFacilitatorPanel({ canSave }) {
           disabled={!canSave || !!busy || approved}
           style={{ marginTop: '0.3rem', accentColor: '#e8b85b' }}
         />
-        <span>
-          I confirm that participants gave their informed consent, that the discussion was voluntary, and that no
-          individual participant is identifiable in my summary.
-        </span>
+        <span>{labels.facilitatorConsent}</span>
       </label>
 
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
@@ -202,7 +216,7 @@ export default function SokoFacilitatorPanel({ canSave }) {
             cursor: busy ? 'wait' : (canSave && !approved ? 'pointer' : 'not-allowed'),
           }}
         >
-          {busy === 'save_draft' ? 'Saving…' : 'Save draft'}
+          {busy === 'save_draft' ? labels.facilitatorSaving : labels.facilitatorSaveDraft}
         </button>
         <button
           type="button"
@@ -217,13 +231,13 @@ export default function SokoFacilitatorPanel({ canSave }) {
             cursor: busy ? 'wait' : (canSave && !approved ? 'pointer' : 'not-allowed'),
           }}
         >
-          {busy === 'submit' ? 'Submitting…' : 'Submit for review'}
+          {busy === 'submit' ? labels.facilitatorSubmitting : labels.facilitatorSubmit}
         </button>
       </div>
 
       {!canSave && (
         <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', marginTop: '0.85rem' }}>
-          Saving becomes available once your enrollment in the Peer Facilitator track is active and the module is published.
+          {labels.facilitatorUnavailable}
         </p>
       )}
 
