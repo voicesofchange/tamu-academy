@@ -14,6 +14,7 @@ import VoicesOfChangeAnnouncement from '@/components/insights/VoicesOfChangeAnno
 import LearnerWelcomeSender from '@/components/insights/LearnerWelcomeSender';
 import VoicesOpenTracking from '@/components/insights/VoicesOpenTracking';
 import CertificateCorrection from '@/components/insights/CertificateCorrection';
+import OutreachSenderCard from '@/components/insights/OutreachSenderCard';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
 
@@ -75,6 +76,28 @@ export default function CommunityInsights() {
 
           <PageSection>
             <LearnerWelcomeSender />
+          </PageSection>
+
+          <PageSection>
+            <OutreachSenderCard
+              label="Course progress reminders"
+              heading="Encourage learners who are partway through"
+              description="Reaches learners who have finished at least one module of a course they are still working on, and links them straight to their next module. Runs automatically every Monday morning, and no learner hears from this stream or the check-in stream more than once a fortnight."
+              functionName="sendCourseProgressReminder"
+              sendVerb="a progress reminder"
+              sentNote="Each recipient's next reminder is held off for a fortnight. Future reminders go out automatically."
+            />
+          </PageSection>
+
+          <PageSection>
+            <OutreachSenderCard
+              label="Completion follow-up"
+              heading="Follow up with learners who have finished"
+              description="A separate note for learners who completed a course, thanking them, linking their certificate, and inviting them to share their experience or start the other course. Sent once per course, at least three days after completion so it never lands with the certificate email."
+              functionName="sendCompletionFollowUp"
+              sendVerb="a completion follow-up"
+              sentNote="This is sent once per completed course. Future completions are followed up automatically."
+            />
           </PageSection>
 
           <PageSection>

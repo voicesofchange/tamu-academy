@@ -147,6 +147,12 @@ export default async function (req: Request): Promise<Response> {
         continue;
       }
 
+      // Share one fortnightly cooldown with the progress-reminder stream so
+      // the same learner never receives both messages close together.
+      if (e.last_reminder_sent_at && new Date(e.last_reminder_sent_at).getTime() > cooldownThreshold) {
+        continue;
+      }
+
       const learner = userMap[e.learner_id];
       if (!learner || !learner.email) continue;
 

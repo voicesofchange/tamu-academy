@@ -1,0 +1,45 @@
+{
+  "name": "Course Progress Reminders",
+  "description": "Every Monday morning at 10am Pacific, emails learners who are still working through a course a short progress reminder linking them to their next module.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 10 * * 1",
+      "one_time_date": null,
+      "timezone": "America/Los_Angeles",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "course_progress_reminders",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_progress_reminders": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sendCourseProgressReminder",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send progress reminders",
+            "description": "Learners partway through a course, active in the last 30 days"
+          }
+        }
+      }
+    ]
+  }
+}

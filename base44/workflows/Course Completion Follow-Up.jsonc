@@ -1,0 +1,45 @@
+{
+  "name": "Course Completion Follow-Up",
+  "description": "Every morning at 11am Pacific, emails learners who finished a course at least three days ago a follow-up with their certificate and next steps.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 11 * * *",
+      "one_time_date": null,
+      "timezone": "America/Los_Angeles",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "course_completion_follow_up",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "send_completion_followups": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "sendCompletionFollowUp",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send completion follow-ups",
+            "description": "Learners who finished a course three or more days ago"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -16,7 +16,9 @@
       "enum": [
         "announcement",
         "follow_up",
-        "learner_welcome"
+        "learner_welcome",
+        "course_reminder",
+        "completion_followup"
       ]
     },
     "sent_at": {
