@@ -1,0 +1,47 @@
+{
+  "name": "TranslationCache",
+  "type": "object",
+  "properties": {
+    "language": {
+      "type": "string",
+      "title": "Language"
+    },
+    "source_hash": {
+      "type": "string",
+      "title": "Source Text Hash",
+      "description": "SHA-256 hash of the original English string, so identical text is translated only once per language."
+    },
+    "translated_text": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Translated Text"
+    }
+  },
+  "required": [
+    "language",
+    "source_hash",
+    "translated_text"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

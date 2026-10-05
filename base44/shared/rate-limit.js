@@ -14,7 +14,35 @@
  * RLS keeps them invisible to app users.
  */
 
-const HASH_SALT = 'tamu-rate-limit';
+import { secrets } from 'base44:runtime';
+
+let resolvedSalt = null;
+
+/**
+ * The salt used when hashing client identifiers.
+ *
+ * It is read from the platform's secret store and is never written into
+ * this file, so the stored keys cannot be reversed by anyone who reads the
+ * source. BASE44_APP_ID is a per-app platform value, used only when no
+ * dedicated RATE_LIMIT_SALT has been configured.
+ */
+function hashSalt() {
+  if (resolvedSalt) return resolvedSalt;
+  for (const name of ['RATE_LIMIT_SALT', 'BASE44_APP_ID']) {
+    try {
+      const value = secrets.get(name);
+      if (value) {
+        resolvedSalt = String(value);
+        return resolvedSalt;
+      }
+    } catch (_) {
+      // Secret not configured — fall through to the next source.
+    }
+  }
+  // Last resort: a per-instance random value. Never a committed literal.
+  resolvedSalt = crypto.randomUUID();
+  return resolvedSalt;
+}
 
 /**
  * Derive a stable, non-reversible key for the calling client.
@@ -33,7 +61,7 @@ export async function clientKeyFromRequest(req) {
   }
   const value = ip || 'unknown';
   try {
-    const bytes = new TextEncoder().encode(`${HASH_SALT}:${value}`);
+    const bytes = new TextEncoder().encode(`${hashSalt()}:${value}`);
     const digest = await crypto.subtle.digest('SHA-256', bytes);
     return Array.from(new Uint8Array(digest))
       .map((b) => b.toString(16).padStart(2, '0'))
