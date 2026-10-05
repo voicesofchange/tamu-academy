@@ -1,105 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Home,
-  GraduationCap,
-  LayoutDashboard,
-  BookOpen,
-  User,
-  Compass,
-  Video,
-  FileText,
-  FolderOpen,
-  Wifi,
-  Quote,
-  Info,
-  Mail,
-  LogOut,
-  LogIn,
-  UserPlus,
-} from 'lucide-react';
+import { LogOut, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import DisplayModeToggle from '@/components/display/DisplayModeToggle';
-
-// Primary, always-visible destinations
-const PRIMARY_LINKS = [
-  { key: 'nav.home', to: '/', icon: Home },
-  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
-];
-
-// Learner-only destinations shown when authenticated
-const AUTH_LINKS = [
-  { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
-  { key: 'nav.learnersGuide', to: '/learners-guide', icon: BookOpen },
-  { key: 'nav.myProfile', to: '/profile', icon: User },
-];
-
-// Secondary content grouped under "Explore"
-const EXPLORE_LINKS = [
-  { key: 'nav.videos', to: '/videos', icon: Video },
-  { key: 'nav.articles', to: '/articles', icon: FileText },
-  { key: 'nav.resources', to: '/resources', icon: FolderOpen },
-  { key: 'nav.remotePathway', to: '/remote-pathway', icon: Wifi },
-  { key: 'nav.stories', to: '/stories', icon: Quote },
-  { key: 'nav.about', to: '/about', icon: Info },
-  { key: 'nav.contact', to: '/contact', icon: Mail },
-];
-
-const linkBaseStyle = {
-  fontSize: '0.64rem',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  fontWeight: 500,
-  whiteSpace: 'nowrap',
-  textDecoration: 'none',
-};
-
-// One icon per tab, so every destination is recognisable at a glance.
-const NavIcon = ({ icon: Icon, active = false, size = 15 }) => (
-  <Icon size={size} strokeWidth={active ? 2.1 : 1.75} aria-hidden="true" style={{ flexShrink: 0 }} />
-);
-
-// Desktop tab: icon + label, with the current destination filled in brand gold.
-const desktopTabStyle = (active) => ({
-  ...linkBaseStyle,
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.35rem',
-  borderRadius: '999px',
-  padding: '0.38rem 0.62rem',
-  color: active ? '#24150f' : 'rgba(243,234,216,0.78)',
-  backgroundColor: active ? '#e8b85b' : 'transparent',
-  border: `1px solid ${active ? '#e8b85b' : 'transparent'}`,
-});
-
-// Mobile tab row: icon + label, with the current destination tinted and accented.
-const mobileTabStyle = (active) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.7rem',
-  color: active ? '#e8b85b' : 'rgba(243,234,216,0.82)',
-  backgroundColor: active ? 'rgba(232,184,91,0.09)' : 'transparent',
-  fontSize: '0.8rem',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  fontWeight: 500,
-  padding: '0.85rem 0.7rem',
-  borderTop: '1px solid transparent',
-  borderRight: '1px solid transparent',
-  borderBottom: '1px solid rgba(232,184,91,0.07)',
-  borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
-});
+import {
+  PRIMARY_LINKS,
+  AUTH_LINKS,
+  CONTENT_LINKS,
+  NavIcon,
+  desktopTabStyle,
+  mobileTabStyle,
+  linkBaseStyle,
+} from '@/components/landing/nav-links';
 
 export default function TopNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [exploreOpen, setExploreOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef(null);
-  const exploreRef = useRef(null);
   const { isAuthenticated, logout } = useAuth();
   const { t } = useTranslation();
 
@@ -109,13 +29,12 @@ export default function TopNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menus on route change
+  // Close the mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
-    setExploreOpen(false);
   }, [location.pathname]);
 
-  // Close mobile menu on outside click
+  // Close the mobile menu on outside click
   useEffect(() => {
     if (!menuOpen) return;
     const handleClick = (e) => {
@@ -127,30 +46,15 @@ export default function TopNav() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [menuOpen]);
 
-  // Close explore dropdown on outside click
+  // Close the mobile menu on Escape
   useEffect(() => {
-    if (!exploreOpen) return;
-    const handleClick = (e) => {
-      if (exploreRef.current && !exploreRef.current.contains(e.target)) {
-        setExploreOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [exploreOpen]);
-
-  // Close menus on Escape key
-  useEffect(() => {
-    if (!menuOpen && !exploreOpen) return;
+    if (!menuOpen) return;
     const handleKey = (e) => {
-      if (e.key === 'Escape') {
-        setMenuOpen(false);
-        setExploreOpen(false);
-      }
+      if (e.key === 'Escape') setMenuOpen(false);
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
-  }, [menuOpen, exploreOpen]);
+  }, [menuOpen]);
 
   const handleSignOut = () => {
     setMenuOpen(false);
@@ -160,14 +64,26 @@ export default function TopNav() {
   const isActive = (to) =>
     location.pathname === to || (to !== '/' && location.pathname.startsWith(to + '/'));
 
-  const exploreActive = EXPLORE_LINKS.some(({ to }) => isActive(to));
+  // Every destination is a tab: the fixed pages, the learner pages once signed
+  // in, then the reading and programme pages.
+  const mainTabs = [...PRIMARY_LINKS, ...(isAuthenticated ? AUTH_LINKS : [])];
+  const mobileLinks = [...mainTabs, ...CONTENT_LINKS];
 
-  // Full link list for mobile menu
-  const mobileLinks = [
-    ...PRIMARY_LINKS,
-    ...(isAuthenticated ? AUTH_LINKS : []),
-    ...EXPLORE_LINKS,
-  ];
+  const renderTab = ({ key, to, icon }, size) => {
+    const active = isActive(to);
+    return (
+      <Link
+        key={key}
+        to={to}
+        className="tamu-nav-tab"
+        aria-current={active ? 'page' : undefined}
+        style={desktopTabStyle(active)}
+      >
+        <NavIcon icon={icon} active={active} size={size} />
+        <span>{t(key)}</span>
+      </Link>
+    );
+  };
 
   return (
     <header
@@ -184,13 +100,15 @@ export default function TopNav() {
         transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease',
       }}
     >
-      {/* Main bar */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '1rem clamp(1.25rem, 5vw, 3.5rem)',
-      }}>
+      {/* Utility bar — wordmark, account actions, display and language controls */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0.85rem clamp(1.25rem, 5vw, 3.5rem)',
+        }}
+      >
         {/* Logo / wordmark */}
         <Link
           to="/"
@@ -206,206 +124,122 @@ export default function TopNav() {
           Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.25rem, 0.9vw, 0.7rem)' }} className="tamu-desktop-nav">
-          {/* Primary links */}
-          {PRIMARY_LINKS.map(({ key, to, icon }) => {
-            const active = isActive(to);
-            return (
-              <Link
-                key={key}
-                to={to}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
+          {/* Desktop account actions and controls */}
+          <div
+            className="tamu-desktop-nav"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}
+          >
+            {isAuthenticated ? (
+              <button
+                onClick={handleSignOut}
                 className="tamu-nav-tab"
-                aria-current={active ? 'page' : undefined}
-                style={desktopTabStyle(active)}
+                style={{ ...desktopTabStyle(false), cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}
               >
-                <NavIcon icon={icon} active={active} />
-                <span>{t(key)}</span>
-              </Link>
-            );
-          })}
-
-          {/* Auth-only links */}
-          {isAuthenticated && AUTH_LINKS.map(({ key, to, icon }) => {
-            const active = isActive(to);
-            return (
-              <Link
-                key={key}
-                to={to}
-                className="tamu-nav-tab"
-                aria-current={active ? 'page' : undefined}
-                style={desktopTabStyle(active)}
-              >
-                <NavIcon icon={icon} active={active} />
-                <span>{t(key)}</span>
-              </Link>
-            );
-          })}
-
-          {/* Explore dropdown */}
-          <div ref={exploreRef} style={{ position: 'relative' }}>
-            <button
-              onClick={() => setExploreOpen((v) => !v)}
-              aria-expanded={exploreOpen}
-              aria-haspopup="true"
-              aria-current={exploreActive ? 'true' : undefined}
-              className="tamu-nav-tab"
-              style={{
-                ...desktopTabStyle(exploreActive),
-                cursor: 'pointer',
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              <NavIcon icon={Compass} active={exploreActive} />
-              <span>{t('nav.explore')}</span>
-              <span style={{ fontSize: '0.5rem', lineHeight: 1, transition: 'transform 0.2s ease', transform: exploreOpen ? 'rotate(180deg)' : 'none' }}>▾</span>
-            </button>
-            {exploreOpen && (
-              <div
-                role="menu"
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  marginTop: '0.4rem',
-                  minWidth: '200px',
-                  backgroundColor: 'rgba(20,14,10,0.96)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(232,184,91,0.2)',
-                  borderRadius: '4px',
-                  overflow: 'hidden',
-                  zIndex: 100,
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-                }}
-              >
-                {EXPLORE_LINKS.map(({ key, to, icon }) => {
-                  const active = isActive(to);
-                  return (
-                    <Link
-                      key={key}
-                      to={to}
-                      role="menuitem"
-                      aria-current={active ? 'page' : undefined}
-                      className="tamu-explore-item"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.6rem',
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        color: active ? '#e8b85b' : 'rgba(243,234,216,0.75)',
-                        backgroundColor: active ? 'rgba(232,184,91,0.09)' : 'transparent',
-                        fontSize: '0.68rem',
-                        letterSpacing: '0.13em',
-                        textTransform: 'uppercase',
-                        fontWeight: 500,
-                        textDecoration: 'none',
-                        padding: '0.7rem 1rem',
-                        borderLeft: active ? '2px solid #e8b85b' : '2px solid transparent',
-                        borderBottom: '1px solid rgba(232,184,91,0.08)',
-                        transition: 'background-color 0.2s ease, color 0.2s ease',
-                      }}
-                    >
-                      <NavIcon icon={icon} active={active} />
-                      <span>{t(key)}</span>
-                    </Link>
-                  );
-                })}
-              </div>
+                <NavIcon icon={LogOut} />
+                <span>{t('nav.signOut')}</span>
+              </button>
+            ) : (
+              <>
+                <Link to="/login" className="tamu-nav-tab" style={desktopTabStyle(false)}>
+                  <NavIcon icon={LogIn} />
+                  <span>{t('nav.signIn')}</span>
+                </Link>
+                <Link
+                  to="/register"
+                  style={{
+                    ...linkBaseStyle,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    color: '#24150f',
+                    backgroundColor: '#e8b85b',
+                    border: '1px solid #e8b85b',
+                    borderRadius: '999px',
+                    padding: '0.42rem 0.9rem',
+                  }}
+                >
+                  <NavIcon icon={UserPlus} />
+                  <span>{t('nav.createAccount')}</span>
+                </Link>
+              </>
             )}
+            <DisplayModeToggle />
+            <LanguageSwitcher />
           </div>
 
-          {/* Auth actions */}
-          {isAuthenticated ? (
+          {/* Compact controls — mobile utility bar */}
+          <div className="tamu-mobile-utils" style={{ display: 'none', alignItems: 'center', gap: '0.5rem' }}>
+            <LanguageSwitcher variant="icon" />
             <button
-              onClick={handleSignOut}
-              className="tamu-nav-tab"
+              aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={menuOpen}
+              aria-controls="tamu-mobile-menu"
+              onClick={() => setMenuOpen((v) => !v)}
+              className="tamu-mobile-menu-btn"
               style={{
-                ...desktopTabStyle(false),
+                background: 'none',
+                border: 'none',
                 cursor: 'pointer',
-                fontFamily: "'DM Sans', sans-serif",
+                padding: '0.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px',
+                outline: 'none',
               }}
             >
-              <NavIcon icon={LogOut} />
-              <span>{t('nav.signOut')}</span>
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: 'block',
+                    width: '22px',
+                    height: '1.5px',
+                    backgroundColor: '#e8b85b',
+                    borderRadius: '2px',
+                    transition: 'transform 0.25s ease, opacity 0.25s ease',
+                    transform: menuOpen
+                      ? i === 0 ? 'translateY(6.5px) rotate(45deg)'
+                      : i === 1 ? 'opacity: 0'
+                      : 'translateY(-6.5px) rotate(-45deg)'
+                      : 'none',
+                    opacity: menuOpen && i === 1 ? 0 : 1,
+                  }}
+                />
+              ))}
             </button>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="tamu-nav-tab"
-                style={desktopTabStyle(false)}
-              >
-                <NavIcon icon={LogIn} />
-                <span>{t('nav.signIn')}</span>
-              </Link>
-              <Link
-                to="/register"
-                style={{
-                  ...linkBaseStyle,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  color: '#24150f',
-                  backgroundColor: '#e8b85b',
-                  border: '1px solid #e8b85b',
-                  borderRadius: '999px',
-                  padding: '0.42rem 0.9rem',
-                }}
-              >
-                <NavIcon icon={UserPlus} />
-                <span>{t('nav.createAccount')}</span>
-              </Link>
-            </>
-          )}
-          <DisplayModeToggle />
-          <LanguageSwitcher />
-        </nav>
-
-        {/* Compact language switcher — mobile header bar */}
-        <div className="tamu-mobile-lang" style={{ display: 'none' }}>
-          <LanguageSwitcher variant="icon" />
+          </div>
         </div>
-
-        {/* Mobile hamburger */}
-        <button
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={menuOpen}
-          aria-controls="tamu-mobile-menu"
-          onClick={() => setMenuOpen((v) => !v)}
-          className="tamu-mobile-menu-btn"
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '0.5rem',
-            display: 'none',
-            flexDirection: 'column',
-            gap: '5px',
-            outline: 'none',
-          }}
-        >
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                display: 'block',
-                width: '22px',
-                height: '1.5px',
-                backgroundColor: '#e8b85b',
-                borderRadius: '2px',
-                transition: 'transform 0.25s ease, opacity 0.25s ease',
-                transform: menuOpen
-                  ? i === 0 ? 'translateY(6.5px) rotate(45deg)'
-                  : i === 1 ? 'opacity: 0'
-                  : 'translateY(-6.5px) rotate(-45deg)'
-                  : 'none',
-                opacity: menuOpen && i === 1 ? 0 : 1,
-              }}
-            />
-          ))}
-        </button>
       </div>
+
+      {/* Tab bar — every destination, side by side */}
+      <nav
+        aria-label="Primary"
+        className="tamu-tab-row"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.35rem',
+          padding: '0.4rem clamp(1.25rem, 5vw, 3.5rem) 0.55rem',
+          overflowX: 'auto',
+        }}
+      >
+        {mainTabs.map((link) => renderTab(link))}
+
+        <span
+          aria-hidden="true"
+          style={{
+            width: '1px',
+            alignSelf: 'stretch',
+            minHeight: '16px',
+            backgroundColor: 'rgba(232,184,91,0.22)',
+            margin: '0 0.5rem',
+            flexShrink: 0,
+          }}
+        />
+
+        {CONTENT_LINKS.map((link) => renderTab(link))}
+      </nav>
 
       {/* Mobile dropdown menu */}
       <nav
@@ -421,11 +255,11 @@ export default function TopNav() {
       >
         {mobileLinks.map(({ key, to, icon }, idx) => {
           const active = isActive(to);
-          // Insert a section label before the first Explore link
-          const showExploreLabel = idx === PRIMARY_LINKS.length + (isAuthenticated ? AUTH_LINKS.length : 0);
+          // Insert a section label before the first reading destination
+          const showContentLabel = idx === mainTabs.length;
           return (
             <React.Fragment key={key}>
-              {showExploreLabel && (
+              {showContentLabel && (
                 <span
                   style={{
                     color: 'rgba(232,184,91,0.72)',
@@ -490,12 +324,15 @@ export default function TopNav() {
 
       {/* Responsive style injection */}
       <style>{`
+        .tamu-tab-row { scrollbar-width: none; -ms-overflow-style: none; }
+        .tamu-tab-row::-webkit-scrollbar { display: none; }
         @media (max-width: 860px) {
           .tamu-desktop-nav { display: none !important; }
-          .tamu-mobile-menu-btn { display: flex !important; }
-          .tamu-mobile-lang { display: inline-flex !important; }
+          .tamu-mobile-utils { display: flex !important; }
+          .tamu-tab-row { display: none !important; }
         }
         @media (min-width: 861px) {
+          .tamu-mobile-utils { display: none !important; }
           #tamu-mobile-menu { display: none !important; }
         }
         .tamu-mobile-menu-btn:focus-visible {
@@ -524,10 +361,6 @@ export default function TopNav() {
         }
         .tamu-tab-mobile[aria-current]:hover {
           background-color: rgba(232,184,91,0.14) !important;
-        }
-        .tamu-explore-item:not([aria-current]):hover {
-          background-color: rgba(232,184,91,0.08) !important;
-          color: #f8f0df !important;
         }
       `}</style>
     </header>
