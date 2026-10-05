@@ -12,6 +12,7 @@ const LEARNING_AREAS = [
     course: 'Mental Health, Community and Culture',
     description:
       'How wellbeing is shaped by stress, culture, relationships, community support, institutions, and access to care.',
+    status: 'Available',
   },
   {
     number: '02',
@@ -19,6 +20,7 @@ const LEARNING_AREAS = [
     course: 'Understanding African Economies and the Global System',
     description:
       'How economic systems, inequality, trade, debt, institutions, and global relationships shape African development.',
+    status: 'Available',
   },
   {
     number: '03',
@@ -26,6 +28,7 @@ const LEARNING_AREAS = [
     course: 'AI Literacy for African and Diaspora Leaders',
     description:
       'A practical introduction to generative AI, responsible use, bias, work, governance, and technological change.',
+    status: 'In Development',
   },
   {
     number: '04',
@@ -33,6 +36,7 @@ const LEARNING_AREAS = [
     course: 'Power, Policy and the Public Good',
     description:
       'How public decisions are developed, implemented, evaluated, and shaped by institutions and communities.',
+    status: 'In Development',
   },
 ];
 
@@ -49,7 +53,7 @@ export default function LearningAreas() {
           Four connected areas of learning
         </h2>
         <p className="academy-section-support">
-          Tamu Academy is developing its first course and program portfolio across four connected areas of learning.
+          Two of these areas offer open courses you can enroll in today: mind and wellbeing, and economics and development. The AI, technology, public policy, and heritage courses are in development.
         </p>
       </header>
 
@@ -67,7 +71,7 @@ export default function LearningAreas() {
               <p className="academy-area-desc font-body">{item.description}</p>
               <p className="academy-status academy-status-line">
                 <span className="academy-status-dot" aria-hidden="true" />
-                In Development
+                {item.status}
               </p>
             </div>
           </li>

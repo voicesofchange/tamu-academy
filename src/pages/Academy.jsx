@@ -12,21 +12,21 @@ const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 const CONTENT = {
   navAttr: 'A Waiyaki House learning venture',
   navExplore: 'Explore the Academy',
-  navJoin: 'Join Early Access',
+  navJoin: 'Start Learning',
   heroEyebrow: 'Explore Tamu Academy',
   heroHeading: 'Learning built for understanding and application.',
   heroSupport: 'Tamu Academy develops culturally grounded courses, applied programs, and learning resources across economics, wellbeing, technology, governance, history, and global affairs.',
-  ctaJoin: 'Join Early Access',
+  ctaJoin: 'Start Learning',
   ctaPartner: 'Discuss a Partnership',
   heroAttr: 'A Waiyaki House learning venture',
   pathwayEyebrow: 'Featured Learning Pathway',
   pathwaySupport: "A six-module pathway for understanding economic systems, institutions, global relationships, inequality, and Africa's economic futures.",
-  pathwayStatus: 'In Development',
+  pathwayStatus: 'Available now',
   pathwayFormat: 'Recorded lessons, written learning companions, reflection, knowledge checks, applied activities, and a final analytical milestone.',
   milestoneEyebrow: 'Applied Milestone',
   milestoneHeading: 'African Economic Systems Analysis',
   milestoneSupport: 'Learners apply concepts from all six modules to examine a real economic system, identify stakeholders and trade-offs, and recommend practical action.',
-  milestoneStatus: 'Planned',
+  milestoneStatus: 'Included in the course',
   howEyebrow: 'How Learning Works',
   howHeading: 'Complete course packages may include',
   howItems: [
@@ -89,9 +89,9 @@ export default function Academy() {
           >
             {c.navExplore}
           </Link>
-          <a href="/#early-access" className="academy-nav-join font-body">
+          <Link to="/courses" className="academy-nav-join font-body">
             {c.navJoin}
-          </a>
+          </Link>
         </nav>
       </header>
 
@@ -106,9 +106,9 @@ export default function Academy() {
             {c.heroSupport}
           </p>
           <div className="academy-cta-row academy-hero-cta">
-            <a href="/#early-access" className="academy-cta-primary font-body">
+            <Link to="/courses" className="academy-cta-primary font-body">
               {c.ctaJoin}
-            </a>
+            </Link>
             <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
               {c.ctaPartner}
             </Link>
@@ -231,9 +231,9 @@ export default function Academy() {
             {c.finalCtaHeading}
           </h2>
           <div className="academy-cta-row">
-            <a href="/#early-access" className="academy-cta-primary font-body">
+            <Link to="/courses" className="academy-cta-primary font-body">
               {c.ctaJoin}
-            </a>
+            </Link>
             <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
               {c.ctaPartner}
             </Link>

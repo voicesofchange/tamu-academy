@@ -51,11 +51,11 @@ const CONTENT = {
   diasporaP3: 'We approach global issues through lenses that are often underrepresented in mainstream educational spaces — and we believe that doing so produces richer, more honest, and more useful learning for everyone.',
   currentHeading: 'What Is Currently Available',
   currentP1: "Tamu Academy's first publicly available learning is a collection of free introductory videos — the Tamu Academy First Lessons — exploring wellbeing, institutions, public policy, economics, culture, and global systems. These are accompanied by a growing collection of written articles designed for reflection and further study.",
-  currentP2: 'Expert-led courses are currently in development across five areas: mind and wellbeing, economics and development, AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection.',
+  currentP2: 'Three expert-led courses are open now, with enrollment and certificates available: Mental Health, Community and Culture; Understanding African Economies and the Global System; and Sauti za Soko: Markets, Climate and Community Power. Courses in AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection remain in development.',
   ctaWatch: 'Watch the First Lessons →',
   ctaExplore: 'Explore Courses →',
   currentStageLabel: 'Current Stage',
-  currentStageP: 'Tamu Academy is currently developing expert-led courses across five learning areas while expanding its public video and resource collections. Its first proposed pilot, Ubuntu and the Public Good, is being prepared for potential collaboration with educational and community institutions.',
+  currentStageP: 'Tamu Academy has opened its first three expert-led courses across mind and wellbeing and economics and development, while its public video and article collections continue to grow. Courses in AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection are in development, and the proposed pilot Ubuntu and the Public Good is prepared for potential collaboration with educational and community institutions.',
   ctaPartnership: 'Discuss a Partnership →',
   ctaGetInTouch: 'Get in Touch →',
 };

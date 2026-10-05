@@ -32,9 +32,10 @@
  * inferred from the blueprint media placements and Core Course
  * Learning Outcomes; they remain revisable.
  *
- * Phase 1 status:
- *   Module 1    — "In Development"   (route opens to admin shell preview)
- *   Modules 2–7 — "Coming Soon"       (route opens to admin shell preview)
+ * Release status:
+ *   All seven modules are published and the course is open for enrollment.
+ *   The authoritative enrollment and per-module publication flags live
+ *   server-side in base44/shared/mental-health-curriculum.js.
  *
  * This file is intentionally additive — it does not import from or write
  * to the Economics and Development metadata in economics-tracks.js.

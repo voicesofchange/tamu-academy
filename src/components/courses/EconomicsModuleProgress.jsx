@@ -93,7 +93,7 @@ const CONTENT = {
   errSave: 'We could not save your progress right now. Please try again.',
   errMissing: 'Some requirements are not yet complete.',
   errComplete: 'We could not complete this module right now. Please try again.',
-  trackingUnavailable: 'Progress tracking is not yet available for this module. Once the module is published and you are enrolled, your completion status will appear here.',
+  trackingUnavailable: 'Your progress for this module will appear here once you are enrolled in the course and signed in.',
   modeLabels: {
     private: 'Private',
     fictional: 'Fictional alternative',

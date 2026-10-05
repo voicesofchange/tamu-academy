@@ -20,6 +20,7 @@ export const SAUTI_ZA_SOKO_PEER_COURSE_SLUG = 'sauti-za-soko-peer-facilitator';
 export const SAUTI_ZA_SOKO_COURSE = {
   slug: SAUTI_ZA_SOKO_COURSE_SLUG,
   title: 'Sauti za Soko: Markets, Climate and Community Power',
+  status: 'Available',
   subtitle:
     'A seven-module course built with young market vendors in Kiambu, and written so that learners anywhere can follow it.',
   pillar: 'Economics and Development',

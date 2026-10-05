@@ -206,7 +206,7 @@ export default function ModuleJourney() {
           The Six-Module Journey
         </h2>
         <p className="academy-section-support">
-          A public preview of the curriculum sequence. Each module remains in active development and will become available when the full course launches.
+          A preview of the curriculum sequence. All six modules are available now, and the course can be started from its course page.
         </p>
       </header>
 
@@ -240,7 +240,7 @@ export default function ModuleJourney() {
                   <p className="academy-module-desc font-body">{preview}</p>
                   <p className="academy-status academy-status-line">
                     <span className="academy-status-dot" aria-hidden="true" />
-                    In Development
+                    {m.status}
                   </p>
                 </div>
               </li>

@@ -16,17 +16,15 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
  * description) plus navigation position and an appropriate unavailable
  * message. No lesson content is rendered.
  *
- * Status → message map (per implementation requirement #3 and #2):
- *   "In Development" — Module 1's full lesson content is in preparation.
- *   "Coming Soon"    — Module N's lesson content will be released later.
+ * The shell is the entitlement fallback for a published module: it appears
+ * when the viewer is not signed in, is not enrolled in the course, or has
+ * not yet completed the previous module. All seven modules are published,
+ * so it never stands in for unfinished content.
  *
- * Course access during this development phase is gated by the existing
- * SoftLaunchGate (admins/preview bypass; non-admins redirected during
- * LAUNCH_MODE). Shell metadata is public-safe to display regardless of
- * viewer, so this component does NOT perform its own auth gate. Server
- * side content delivery (getMentalHealthModule) is admin-only in Phase
- * 1 and will add enrollment + publication + prerequisite checks once
- * they are implemented.
+ * Shell metadata is public-safe to display regardless of viewer, so this
+ * component does NOT perform its own auth gate. Server-side content
+ * delivery (getMentalHealthModule) enforces enrollment, per-module
+ * publication and the prerequisite chain before releasing a lesson.
  */
 // Message resolved inside the component via useTranslation (see below).
 

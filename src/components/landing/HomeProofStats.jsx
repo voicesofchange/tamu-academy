@@ -2,9 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const STATS = [
-  { value: '2', label: 'Courses Live Now' },
+  { value: '3', label: 'Courses Live Now' },
   { value: '5', label: 'Learning Areas' },
-  { value: '13+', label: 'Modules with Certificates' },
+  { value: '20', label: 'Modules with Certificates' },
   { value: 'Free', label: 'To Learn' },
 ];
 

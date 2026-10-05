@@ -26,7 +26,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'Economics Is About More Than Money',
       description:
         'Introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between individual choices and the wider economy.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '35\u201350 minutes, excluding optional discussion',
       video: {
         embedUrl: 'https://www.youtube.com/embed/6DPU4eouAt8',
@@ -198,7 +198,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'How African Economies Actually Work',
       description:
         'Examines formal and informal work, household production, agriculture, services, small enterprise, infrastructure, and global value chains.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '40\u201355 minutes, excluding optional discussion',
       video: {
         embedUrl: 'https://www.youtube.com/embed/M9llDPq54LE',
@@ -375,7 +375,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'Inflation, Employment and the Cost of Living',
       description:
         'Explains inflation, household budgets, purchasing power, wages, employment, underemployment, and economic policy choices.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '40\u201355 minutes, excluding optional discussion',
       video: {
         embedUrl: 'https://www.youtube.com/embed/LRvVTa5fxVc',
@@ -575,7 +575,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'Trade, Debt and the Global Economy',
       description:
         'Introduces imports, exports, foreign exchange, commodity dependence, value chains, government borrowing, debt service, and global economic power.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '45\u201360 minutes, excluding optional discussion',
       video: {
         embedUrl: 'https://www.youtube.com/embed/tYnKUHHsOAM',
@@ -759,7 +759,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'Inequality, Institutions and Development',
       description:
         'Examines income, wealth, gender, geographic, and generational inequality and how institutions shape opportunity and development.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '45\u201360 minutes, excluding optional discussion',
       competency:
         'By the end of this module, learners should be able to analyze one inequality or development challenge by identifying its dimensions, affected groups, institutional and historical causes, distribution of benefits and risks, barriers to participation, and one practical reform that could expand inclusive development.',
@@ -1095,7 +1095,7 @@ export const ECONOMICS_MODULE_CONTENT = {
       title: 'Africa\u2019s Economic Futures',
       description:
         'Explores industrialization, technology, the future of work, the AfCFTA, climate resilience, ownership, and shared prosperity.',
-      status: 'In development',
+      status: 'Available',
       estimatedTime: '45\u201360 minutes, excluding optional discussion',
       competency:
         'By the end of this module, learners should be able to design a future-oriented economic strategy for an African country, region, sector, or community by connecting productive capacity, value creation, industrialization, technology, decent work, regional integration, climate resilience, ownership, institutions, and shared prosperity.',
@@ -1459,11 +1459,11 @@ export const ECONOMICS_MODULE_CONTENT = {
         'Learners are now prepared to complete the African Economic Systems Analysis milestone by applying the course framework to one real economic issue and proposing a grounded response.',
       ],
       courseClosingText: [
-        'You have reached the end of the six-module learning sequence. Full course completion requirements and the African Economic Systems Analysis milestone will become available when the course launches.',
+        'You have reached the end of the six-module learning sequence. Complete the requirements in each of the six modules to finish the course and claim your certificate.',
       ],
       endOfCourse: {
         label: 'Course modules complete',
-        milestone: 'Applied milestone coming soon: African Economic Systems Analysis',
+        milestone: 'Applied milestone: African Economic Systems Analysis',
       },
       sources: [
         'African Continental Free Trade Area Secretariat. Official materials on the AfCFTA and regional integration.',
