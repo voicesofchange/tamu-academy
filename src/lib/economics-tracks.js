@@ -44,7 +44,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
   {
     slug: 'african-economic-literacy-and-systems-analysis',
     title: 'African Economic Literacy and Systems Analysis',
-    status: 'Available',
+    status: 'Available now',
     pillar: 'Economics and Development',
     description:
       'A structured learning pathway that develops the ability to examine African economic issues across household, institutional, national, historical, and global dimensions.',
@@ -61,7 +61,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
         level: 'Foundational',
         format: 'Self-paced',
         modulesCount: 6,
-        status: 'Available',
+        status: 'Available now',
         estimatedCompletion: 'Approximately 4\u20136 hours',
         certificate: 'Available upon completion',
         access: 'Open',
@@ -105,7 +105,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'Economics Is About More Than Money',
             description:
               'Introduces scarcity, trade-offs, opportunity cost, incentives, institutions, culture, and the relationship between individual choices and the wider economy.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '35\u201350 minutes, excluding optional discussion',
           },
           {
@@ -114,7 +114,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'How African Economies Actually Work',
             description:
               'Examines formal and informal work, household production, agriculture, services, small enterprise, infrastructure, and global value chains.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '40\u201355 minutes, excluding optional discussion',
           },
           {
@@ -123,7 +123,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'Inflation, Employment and the Cost of Living',
             description:
               'Explains inflation, household budgets, purchasing power, wages, employment, underemployment, and economic policy choices.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '40\u201355 minutes, excluding optional discussion',
           },
           {
@@ -132,7 +132,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'Trade, Debt and the Global Economy',
             description:
               'Introduces imports, exports, foreign exchange, commodity dependence, value chains, government borrowing, debt service, and global economic power.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '45\u201360 minutes, excluding optional discussion',
           },
           {
@@ -141,7 +141,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'Inequality, Institutions and Development',
             description:
               'Examines income, wealth, gender, geographic, and generational inequality and how institutions shape opportunity and development.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '45\u201360 minutes, excluding optional discussion',
           },
           {
@@ -150,7 +150,7 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
             title: 'Africa\u2019s Economic Futures',
             description:
               'Explores industrialization, technology, the future of work, the AfCFTA, climate resilience, ownership, and shared prosperity.',
-            status: 'Available',
+            status: 'Available now',
             estimatedTime: '45\u201360 minutes, excluding optional discussion',
           },
         ],

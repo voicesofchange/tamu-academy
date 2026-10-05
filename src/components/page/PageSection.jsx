@@ -36,12 +36,12 @@ export default function PageSection({ id, eyebrow, heading, children, tone = 'da
     >
       <div style={isTinted ? { maxWidth: '1100px', margin: '0 auto' } : { maxWidth: '900px', margin: '0 auto' }}>
         {eyebrow && (
-          <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
+          <span className="font-body" style={{ color: 'var(--tamu-gold)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
             {eyebrow}
           </span>
         )}
         {heading && (
-          <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1.25rem' }}>
+          <h2 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 1.25rem' }}>
             {heading}
           </h2>
         )}

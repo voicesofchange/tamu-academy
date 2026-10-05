@@ -311,6 +311,25 @@ html {
   }
 }
 
+/* ── Tamu Academy shared brand tokens ─────────────────────────────────────
+   One source of truth for the espresso-and-gold palette consumed by the
+   shared shells, heroes, sections and badges. Components read these with
+   var(...) so the brand values live here only and every shared surface
+   stays in step. */
+:root {
+  --tamu-espresso: #24150f;
+  --tamu-espresso-raised: #302018;
+  --tamu-espresso-deep: #3a261c;
+  --tamu-parchment: #faf6ec;
+  --tamu-parchment-raised: #fffaf1;
+  --tamu-gold: #e8b85b;
+  --tamu-gold-deep: #d99b37;
+  --tamu-gold-ink: #b97827;
+  --tamu-ink: #f8f0df;
+  --tamu-body: rgba(243, 234, 216, 0.78);
+  --tamu-hairline: rgba(232, 184, 91, 0.22);
+}
+
 /* ── Safari ya Utu — Learner's Guide ─────────────────────────────────────── */
 :root {
   --guide-brown: #33241A;

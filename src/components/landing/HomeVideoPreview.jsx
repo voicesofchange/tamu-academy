@@ -20,7 +20,7 @@ export default function HomeVideoPreview() {
         >
           <div style={{ maxWidth: '560px' }}>
             <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.75rem' }}>
-              Now Available
+              Available now
             </p>
             <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 400, lineHeight: 1.25, margin: '0 0 0.85rem' }}>
               Tamu Academy's First Lessons

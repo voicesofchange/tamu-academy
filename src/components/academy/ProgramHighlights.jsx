@@ -25,7 +25,7 @@ const HERITAGE = {
   title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
   description:
     'A research- and memory-based learning collection exploring leadership, resistance, land, governance, oral history, and contemporary significance.',
-  status: 'In Development',
+  status: 'In development',
 };
 
 export default function ProgramHighlights() {

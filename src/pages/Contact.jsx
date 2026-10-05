@@ -24,7 +24,7 @@ const CONTENT = {
   communityHeading: 'Join the Community',
   communityP1: "Tamu Academy's learning community is forming. We are bringing together young people, educators, facilitators, and supporters who are serious about learning, dialogue, and leadership across cultures.",
   communityP2: 'If you want to be among the first to hear about upcoming programmes, pilot opportunities, and learning resources — please use the form above to let us know your interest.',
-  linkProgrammes: 'Explore Programmes →',
+  linkProgrammes: 'Explore Courses →',
   linkLearningAreas: 'Learning Areas →',
   linkResources: 'Resources →',
 };
@@ -85,10 +85,10 @@ export default function Contact() {
 
       {/* Related links */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(232,184,91,0.1)' }}>
-        <Link to="/programmes" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+        <Link to="/courses" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           {c.linkProgrammes}
         </Link>
-        <Link to="/programmes#learning-areas" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
+        <Link to="/courses#learning-areas" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>
           {c.linkLearningAreas}
         </Link>
         <Link to="/resources" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>

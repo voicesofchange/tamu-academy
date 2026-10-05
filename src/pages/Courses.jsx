@@ -11,6 +11,7 @@ import JourneyTrackCard from '@/components/courses/journey/JourneyTrackCard';
 import CoursePreviewCard from '@/components/courses/journey/CoursePreviewCard';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { normalizeStatus } from '@/lib/course-status';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const HERO_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c5d7236bd_generated_12fdce95.jpg';
@@ -26,7 +27,7 @@ const CONTENT = {
   heritageNote: 'A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.',
   exploreCourse: 'Explore the Course',
   competencyTracks: 'Competency-Based Learning Tracks',
-  nowAvailable: 'Now Available',
+  nowAvailable: 'Available now',
   courseDesignEyebrow: 'Course Design',
   courseDesignHeading: 'What a Complete Tamu Academy Course May Include',
   courseDesignIntro: 'Each open Tamu Academy course includes the following. Courses still in development will follow the same design:',
@@ -48,7 +49,7 @@ const CONTENT = {
         {
           title: 'Mental Health, Community and Culture',
           slug: 'mental-health-community-and-culture',
-          status: 'Available',
+          status: 'Available now',
           description:
             'A course examining mental health, stress, culture, family expectations, community support, structural conditions, and pathways to professional care.',
           visual: {
@@ -72,7 +73,7 @@ const CONTENT = {
         {
           title: 'Understanding African Economies and the Global System',
           slug: 'understanding-african-economies-and-the-global-system',
-          status: 'Available',
+          status: 'Available now',
           description:
             "A course introducing economic systems, development, inequality, trade, debt, institutions, and Africa's position within the global economy.",
           visual: {
@@ -88,7 +89,7 @@ const CONTENT = {
         {
           title: 'Sauti za Soko: Markets, Climate and Community Power',
           slug: 'sauti-za-soko',
-          status: 'Available',
+          status: 'Available now',
           description:
             'A seven-module course built with young market vendors in Kiambu: markets as economies, cash and credit, weather risk, county decisions, collective action, and a plan that lasts.',
           visual: {
@@ -111,7 +112,7 @@ const CONTENT = {
       courses: [
         {
           title: 'AI Literacy for African and Diaspora Leaders',
-          status: 'In Development',
+          status: 'In development',
           description:
             'A practical and critical introduction to generative AI, responsible use, bias, digital citizenship, work, governance, and technological change.',
           visual: {
@@ -133,7 +134,7 @@ const CONTENT = {
       courses: [
         {
           title: 'Power, Policy and the Public Good',
-          status: 'In Development',
+          status: 'In development',
           description:
             'A course exploring public policy, institutions, implementation, accountability, community participation, policy analysis, and writing for public decision-making.',
           visual: {
@@ -171,7 +172,7 @@ const CONTENT = {
       courses: [
         {
           title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
-          status: 'In Development',
+          status: 'In development',
           description:
             'A research- and memory-based course exploring Waiyaki wa Hinga, colonial history, leadership, resistance, land, governance, oral history, and contemporary significance.',
           visual: {
@@ -231,8 +232,8 @@ export default function Courses() {
   function statusFor(course) {
     if (!course.slug) return course.status;
     const ps = pubStatus[course.slug];
-    if (ps && ps.isLive) return c.nowAvailable;
-    return course.status;
+    if (ps && ps.isLive) return normalizeStatus(c.nowAvailable);
+    return normalizeStatus(course.status);
   }
 
   return (
@@ -397,7 +398,7 @@ export default function Courses() {
           <span className="font-body" style={{ ...eyebrowStyle('#e8b85b'), display: 'block', marginBottom: '1rem' }}>{c.institutionsEyebrow}</span>
           <h2 className="font-heading" style={{ fontSize: 'clamp(2rem,4vw,47px)', fontWeight: 400, margin: '0 0 18px', color: '#f8f0df' }}>{c.institutionsHeading}</h2>
           <p className="font-body" style={{ maxWidth: '600px', margin: '0 auto 28px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7 }}>{c.institutionsBody}</p>
-          <Link to="/contact?inquiry=university-or-institutional-partnership" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.discussPartnership} →</Link>
+          <Link to="/contact?type=partnership" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.discussPartnership} →</Link>
         </section>
 
       </main>

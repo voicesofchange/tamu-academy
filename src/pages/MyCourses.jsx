@@ -58,8 +58,8 @@ const CONTENT = {
   reviewCompletion: 'Review Course Completion',
   courseOverview: 'Course Overview',
   viewCertificate: 'View Certificate',
-  nowAvailable: 'Now Available',
-  inDevelopment: 'In Development',
+  nowAvailable: 'Available now',
+  inDevelopment: 'In development',
 };
 
 export default function MyCourses() {

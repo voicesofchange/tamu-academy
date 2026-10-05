@@ -52,7 +52,7 @@ export default function Insights() {
             >
               <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, margin: '0 0 0.6rem', lineHeight: 1.3 }}>{cat.title}</h3>
               <p className="font-body" style={{ color: 'rgba(243,234,216,0.62)', fontSize: '0.86rem', lineHeight: 1.7, fontWeight: 300, margin: '0 0 1rem' }}>{cat.desc}</p>
-              <span className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.67rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Coming Soon</span>
+              <span className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.67rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Coming soon</span>
             </motion.div>
           ))}
         </div>

@@ -1,5 +1,10 @@
 import React from 'react';
 
+/**
+ * StatusBadge — the single badge for course, module and content availability.
+ * Labels always come from src/lib/course-status.js so the wording is
+ * identical everywhere a status appears.
+ */
 export default function StatusBadge({ label, tone = 'dark' }) {
   const isLight = tone === 'light';
   const color = isLight ? '#9b5d1d' : 'rgba(232,184,91,0.85)';

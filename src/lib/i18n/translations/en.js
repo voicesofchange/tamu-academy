@@ -45,7 +45,7 @@ export default {
     startCourse: 'Start This Course',
     beginLearning: 'Begin Learning',
     courseStatus: 'Course Status',
-    available: 'Available',
+    available: 'Available now',
     open: 'Open',
     enrollPrompt:
       'This course is available. Create an account or sign in to begin learning, save your progress, and earn a certificate upon completion.',

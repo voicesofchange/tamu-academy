@@ -20,7 +20,7 @@ export const SAUTI_ZA_SOKO_PEER_COURSE_SLUG = 'sauti-za-soko-peer-facilitator';
 export const SAUTI_ZA_SOKO_COURSE = {
   slug: SAUTI_ZA_SOKO_COURSE_SLUG,
   title: 'Sauti za Soko: Markets, Climate and Community Power',
-  status: 'Available',
+  status: 'Available now',
   subtitle:
     'A seven-module course built with young market vendors in Kiambu, and written so that learners anywhere can follow it.',
   pillar: 'Economics and Development',
@@ -68,7 +68,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Soko ni Yetu: The Market as an Economy',
       description:
         'Introduces the market as a working economy: producers, traders, prices, rules, credit, value and risk, read from a trading day in Kiambu.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     },
     {
@@ -77,7 +77,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Biashara Is Knowledge: Reading Your Own Business',
       description:
         'Treats the learner\u2019s own enterprise as the object of analysis, including hidden costs, customer groups and the decisions that matter most.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     },
     {
@@ -86,7 +86,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Money, Margin and Trust: Cash in a Small Enterprise',
       description:
         'Cash, credit, savings and mobile money in a business whose money also serves a household, and how to read a loan before accepting it.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     },
     {
@@ -95,7 +95,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Weather, Climate and Market Risk',
       description:
         'Reading rainfall, season and a changing climate as economic risk, and adapting stock, storage, timing and shared arrangements.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     },
     {
@@ -104,7 +104,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Sauti na Nguvu: County Government, Licences and Public Decisions',
       description:
         'How county decisions shape a trading day, and how a traders\u2019 case is prepared, presented and followed up through public participation.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     },
     {
@@ -113,7 +113,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Kikundi ni Nguvu: Savings, Collective Action and Bargaining',
       description:
         'Savings groups, cooperatives, joint buying and storage, the governance that keeps groups alive, and negotiating collectively.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     },
     {
@@ -122,7 +122,7 @@ export const SAUTI_ZA_SOKO_COURSE = {
       title: 'Soko Endelevu: Planning a Market That Lasts',
       description:
         'Brings the course together into one written plan, with risks, dates, responsibilities and indicators, and what it means to lead without leaving others behind.',
-      status: 'Available',
+      status: 'Available now',
       estimatedTime: '50\u201365 minutes, excluding the optional discussion and final reflection',
     },
   ],

@@ -46,7 +46,7 @@ export default function VideoSeries() {
             marginBottom: '2rem',
           }}
         >
-          Coming Soon
+          Coming soon
         </span>
 
         <h2

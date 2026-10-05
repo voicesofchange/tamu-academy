@@ -37,6 +37,7 @@ const TYPE_PARAM_MAP = {
   'programme-interest': 'Prospective Learner or Programme Interest',
   'facilitator': 'Educator or Facilitator',
   'partnership': 'University or Institutional Partnership',
+  'supporter': 'Funder or Supporter',
   'community-organization': 'Youth or Community Organization',
   'media': 'Media or Interview Inquiry',
 };

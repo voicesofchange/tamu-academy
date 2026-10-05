@@ -44,8 +44,8 @@ const CONTENT = {
   ideasSupport: "Written learning companions extend Tamu Academy's videos through deeper analysis, practical examples, reflection, and further reading.",
   articles: [
     { area: 'Mind and Wellbeing', title: 'The Real Cost of Always Achieving', description: 'An exploration of how constant pressure to perform can affect identity, wellbeing, relationships, and the way success is understood.', status: 'Published', href: '/articles/the-real-cost-of-always-achieving' },
-    { area: 'Power and Policy', title: 'Can Policy Make Us Happier?', description: 'An examination of how public decisions influence security, belonging, opportunity, connection, and quality of life.', status: 'In Development', href: '/articles/can-policy-make-us-happier' },
-    { area: 'Economics and Global Systems', title: 'Who Controls the Global Economy?', description: 'An introduction to the institutions, governments, creditors, currencies, and financial rules that influence how resources and economic power move.', status: 'In Development', href: '/articles/who-controls-the-global-economy' },
+    { area: 'Power and Policy', title: 'Can Policy Make Us Happier?', description: 'An examination of how public decisions influence security, belonging, opportunity, connection, and quality of life.', status: 'In development', href: '/articles/can-policy-make-us-happier' },
+    { area: 'Economics and Global Systems', title: 'Who Controls the Global Economy?', description: 'An introduction to the institutions, governments, creditors, currencies, and financial rules that influence how resources and economic power move.', status: 'In development', href: '/articles/who-controls-the-global-economy' },
   ],
   readArticle: 'Read the Article',
   browseArticles: 'Browse Articles',

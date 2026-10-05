@@ -140,7 +140,7 @@ export default function ArticlePageTemplate({ article }) {
           {a.readingTime && <span>{a.readingTime} min read</span>}
           {a.status === 'in-development' && (
             <span style={{ color: 'rgba(232,184,91,0.5)', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '999px', padding: '0 0.5rem', fontSize: '0.68rem', letterSpacing: '0.12em' }}>
-              In Development
+              In development
             </span>
           )}
         </motion.div>

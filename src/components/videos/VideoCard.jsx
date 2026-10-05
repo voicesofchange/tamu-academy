@@ -121,7 +121,7 @@ export default function VideoCard({ lesson, index, onSelect }) {
               fontWeight: 500,
             }}
           >
-            Coming Soon
+            Coming soon
           </span>
         )}
       </div>

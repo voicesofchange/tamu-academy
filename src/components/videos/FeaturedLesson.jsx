@@ -131,7 +131,7 @@ export default function FeaturedLesson({ lesson, onSelect }) {
                 fontWeight: 400,
               }}
             >
-              Coming Soon
+              Coming soon
             </span>
           )}
         </div>

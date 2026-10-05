@@ -12,7 +12,7 @@ const LEARNING_AREAS = [
     course: 'Mental Health, Community and Culture',
     description:
       'How wellbeing is shaped by stress, culture, relationships, community support, institutions, and access to care.',
-    status: 'Available',
+    status: 'Available now',
   },
   {
     number: '02',
@@ -20,7 +20,7 @@ const LEARNING_AREAS = [
     course: 'Understanding African Economies and the Global System',
     description:
       'How economic systems, inequality, trade, debt, institutions, and global relationships shape African development.',
-    status: 'Available',
+    status: 'Available now',
   },
   {
     number: '03',
@@ -28,7 +28,7 @@ const LEARNING_AREAS = [
     course: 'AI Literacy for African and Diaspora Leaders',
     description:
       'A practical introduction to generative AI, responsible use, bias, work, governance, and technological change.',
-    status: 'In Development',
+    status: 'In development',
   },
   {
     number: '04',
@@ -36,7 +36,7 @@ const LEARNING_AREAS = [
     course: 'Power, Policy and the Public Good',
     description:
       'How public decisions are developed, implemented, evaluated, and shaped by institutions and communities.',
-    status: 'In Development',
+    status: 'In development',
   },
 ];
 

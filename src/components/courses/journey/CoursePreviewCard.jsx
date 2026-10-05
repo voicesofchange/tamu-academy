@@ -213,7 +213,7 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
             }}
           >
             <Clock size={13} strokeWidth={1.6} />
-            Coming Soon
+            Coming soon
           </span>
         )}
       </div>

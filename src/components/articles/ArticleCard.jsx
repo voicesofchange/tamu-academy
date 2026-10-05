@@ -5,7 +5,7 @@ import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
   inDevelopment: 'Article in Development',
-  comingSoon: 'Coming Soon',
+  comingSoon: 'Coming soon',
   previewArticle: 'Preview Article',
   readArticle: 'Read Article',
   watchEpisode: 'Watch Episode',

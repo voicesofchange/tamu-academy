@@ -122,7 +122,7 @@ export default function VideoModal({ lesson, onClose }) {
                   <line x1="2" y1="24" x2="46" y2="24" stroke="rgba(232,184,91,0.1)" strokeWidth="1" strokeDasharray="3 4" />
                 </svg>
                 <span className="font-body" style={{ color: 'rgba(232,184,91,0.45)', fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
-                  Coming Soon
+                  Coming soon
                 </span>
               </div>
             )}

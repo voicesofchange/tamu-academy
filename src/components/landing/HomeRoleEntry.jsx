@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { GraduationCap, Users, Building2, Heart } from 'lucide-react';
+import { GraduationCap, Compass, Users, Building2, Heart } from 'lucide-react';
+import { useAuth } from '@/lib/AuthContext';
 
+/**
+ * HomeRoleEntry — the audience front door.
+ *
+ * Five entry points, each sending the visitor to the path built for them:
+ * learning to the course catalogue, returning learners straight back to their
+ * own progress, and educators, institutions and supporters to the existing
+ * inquiry page with their inquiry type already selected.
+ */
 const ROLES = [
   {
     icon: GraduationCap,
@@ -12,29 +21,39 @@ const ROLES = [
     to: '/courses',
   },
   {
+    icon: Compass,
+    label: 'A Returning Learner',
+    desc: 'Pick up exactly where you left off in your courses and your Learner\u2019s Guide.',
+    cta: 'Resume Learning',
+    to: '/my-courses',
+    signedOutTo: '/login?returnTo=/my-courses',
+  },
+  {
     icon: Users,
     label: 'An Educator',
     desc: 'Bring Tamu Academy courses to your classroom, cohort, or community programme.',
     cta: 'Discuss a Partnership',
-    to: '/contact?inquiry=Educator or Facilitator',
+    to: '/contact?type=facilitator',
   },
   {
     icon: Building2,
     label: 'An Institution',
     desc: 'Partner with us to offer culturally grounded learning to your students or members.',
     cta: 'Institutional Inquiry',
-    to: '/contact?inquiry=University or Institutional Partnership',
+    to: '/contact?type=partnership',
   },
   {
     icon: Heart,
     label: 'A Supporter',
     desc: 'Help us keep learning accessible and expand new courses and learning areas.',
     cta: 'Get in Touch',
-    to: '/contact?inquiry=Funder or Supporter',
+    to: '/contact?type=supporter',
   },
 ];
 
 export default function HomeRoleEntry() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section
       id="begin"
@@ -52,10 +71,10 @@ export default function HomeRoleEntry() {
         transition={{ duration: 0.7, ease: 'easeOut' }}
         style={{ marginBottom: '2.5rem' }}
       >
-        <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
+        <p className="font-body" style={{ color: 'var(--tamu-gold)', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
           Begin Here
         </p>
-        <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
+        <h2 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
           Wherever you are coming from, there is a path in.
         </h2>
       </motion.div>
@@ -69,6 +88,7 @@ export default function HomeRoleEntry() {
       >
         {ROLES.map((role, i) => {
           const Icon = role.icon;
+          const destination = !isAuthenticated && role.signedOutTo ? role.signedOutTo : role.to;
           return (
             <motion.div
               key={role.label}
@@ -98,19 +118,19 @@ export default function HomeRoleEntry() {
                   marginBottom: '1.1rem',
                 }}
               >
-                <Icon size={18} style={{ color: '#e8b85b' }} strokeWidth={1.5} />
+                <Icon size={18} style={{ color: 'var(--tamu-gold)' }} strokeWidth={1.5} />
               </div>
-              <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 500, margin: '0 0 0.6rem', lineHeight: 1.25 }}>
+              <h3 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: '1.15rem', fontWeight: 500, margin: '0 0 0.6rem', lineHeight: 1.25 }}>
                 {role.label}
               </h3>
               <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1.25rem', flexGrow: 1 }}>
                 {role.desc}
               </p>
               <Link
-                to={role.to}
+                to={destination}
                 className="font-body"
                 style={{
-                  color: '#e8b85b',
+                  color: 'var(--tamu-gold)',
                   fontSize: '0.68rem',
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
