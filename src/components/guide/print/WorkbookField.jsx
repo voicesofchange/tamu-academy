@@ -51,7 +51,7 @@ function BlankTable({ field }) {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={{ ...BORDER, border: BORDER, padding: '0.4rem', width: '30%' }} />
+            <th style={{ border: BORDER, padding: '0.4rem', width: '30%' }} />
             {columns.map((column) => (
               <th
                 key={column.id}
