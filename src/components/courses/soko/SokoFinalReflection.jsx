@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import { SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300 };
@@ -34,6 +35,7 @@ const buttonStyle = {
  * administrators, and it can be revised until the course is completed.
  */
 export default function SokoFinalReflection({ prompt, canSave, onSaved }) {
+  const labels = useSokoLabels();
   const [reflection, setReflection] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -67,10 +69,10 @@ export default function SokoFinalReflection({ prompt, canSave, onSaved }) {
         courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG,
         reflection: reflection.trim(),
       });
-      setMessage({ type: 'success', text: 'Your final reflection has been saved.' });
+      setMessage({ type: 'success', text: labels.reflectionSaved });
       if (typeof onSaved === 'function') onSaved();
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not save your reflection right now. Please try again.' });
+      setMessage({ type: 'error', text: labels.reflectionError });
     } finally {
       setSaving(false);
     }
@@ -79,7 +81,7 @@ export default function SokoFinalReflection({ prompt, canSave, onSaved }) {
   if (loading) {
     return (
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
-        Loading your reflection…
+        {labels.reflectionLoading}
       </p>
     );
   }
@@ -92,7 +94,7 @@ export default function SokoFinalReflection({ prompt, canSave, onSaved }) {
         </p>
       )}
       <label htmlFor="soko-final-reflection" className="font-body" style={{ display: 'block', color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.5rem' }}>
-        Your final reflection
+        {labels.reflectionLabel}
       </label>
       <textarea
         id="soko-final-reflection"
@@ -116,12 +118,12 @@ export default function SokoFinalReflection({ prompt, canSave, onSaved }) {
             cursor: saving ? 'wait' : (canSave && reflection.trim() ? 'pointer' : 'not-allowed'),
           }}
         >
-          {saving ? 'Saving…' : 'Save reflection'}
+          {saving ? labels.reflectionSaving : labels.reflectionSave}
         </button>
       </div>
       {!canSave && (
         <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', marginTop: '0.85rem' }}>
-          Saving becomes available once your enrollment is active and the course is published.
+          {labels.reflectionUnavailable}
         </p>
       )}
       {message && (

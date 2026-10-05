@@ -7,6 +7,7 @@ import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import { useAuth } from '@/lib/AuthContext';
 import SokoFinalReflection from '@/components/courses/soko/SokoFinalReflection';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import { SAUTI_ZA_SOKO_COURSE_SLUG, SAUTI_ZA_SOKO_COURSE } from '@/lib/sauti-za-soko-tracks';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -53,8 +54,6 @@ const rowBase = {
 };
 
 const COURSE_PATH = `/courses/${SAUTI_ZA_SOKO_COURSE_SLUG}`;
-const FINAL_REFLECTION_PROMPT =
-  'Write your final reflection on the course. What has changed in how you read your market or your business, what will you do first, and what will you explain to somebody else? Two or three paragraphs is enough.';
 
 /**
  * SokoCourseCompletion — the core-course completion page. It shows every
@@ -62,6 +61,7 @@ const FINAL_REFLECTION_PROMPT =
  * and finalises the course once the server confirms everything is done.
  */
 export default function SokoCourseCompletion() {
+  const labels = useSokoLabels();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
   const [progress, setProgress] = useState(null);
@@ -94,17 +94,17 @@ export default function SokoCourseCompletion() {
       });
       const data = res?.data || null;
       if (data && data.completed) {
-        setMessage({ type: 'success', text: 'Your course is complete. Your certificate is being prepared and will appear on this page shortly, and is also emailed to you.' });
+        setMessage({ type: 'success', text: labels.completionFinaliseSuccess });
         await fetchProgress();
       } else if (data) {
         const missing = [
           ...(data.missingModules || []),
           ...(data.missingRequirements || []),
         ];
-        setMessage({ type: 'error', text: `Some requirements are still outstanding: ${missing.join(', ')}` });
+        setMessage({ type: 'error', text: `${labels.completionOutstanding}: ${missing.join(', ')}` });
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not finalise your course right now. Please try again.' });
+      setMessage({ type: 'error', text: labels.completionFinaliseError });
     } finally {
       setFinalizing(false);
     }
@@ -116,7 +116,7 @@ export default function SokoCourseCompletion() {
         <PageMeta title="Course Completion | Tamu Academy" path={`${COURSE_PATH}/completion`} noindex />
         <div style={{ padding: '5rem 0', textAlign: 'center' }}>
           <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>Loading your course record…</p>
+          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{labels.completionLoading}</p>
         </div>
       </PageLayout>
     );
@@ -135,23 +135,23 @@ export default function SokoCourseCompletion() {
         noindex
       />
       <PageHero
-        eyebrow="Course Completion"
+        eyebrow={labels.completionEyebrow}
         heading={SAUTI_ZA_SOKO_COURSE.title}
-        subheading="Your modules, your My Soko Action Plan, your peer discussion and your final reflection, in one place."
+        subheading={labels.completionSubheading}
       />
 
-      <PageSection heading="Your progress">
+      <PageSection heading={labels.completionProgressHeading}>
         {!progress ? (
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
-            Sign in to see your progress through this course.
+            {labels.completionSignIn}
           </p>
         ) : (
           <>
             <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-              {progress.completedCount} of {progress.totalModules} modules complete.
+              {progress.completedCount} {labels.ofWord} {progress.totalModules} {labels.completionModulesComplete}.
               {progress.hasEnrollment
-                ? ' Your enrollment is active.'
-                : ' You are not yet enrolled in this course.'}
+                ? ` ${labels.completionEnrollmentActive}`
+                : ` ${labels.completionNotEnrolled}`}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '2.5rem' }}>
@@ -177,7 +177,7 @@ export default function SokoCourseCompletion() {
             </div>
 
             <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.4rem', fontWeight: 400, margin: '0 0 1rem' }}>
-              Course requirements beyond the modules
+              {labels.completionBeyondHeading}
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '2.5rem' }}>
               {requirements.map((r, i) => (
@@ -191,7 +191,7 @@ export default function SokoCourseCompletion() {
                       <>
                         {' '}
                         <Link to={`${COURSE_PATH}/${r.route}`} className="tamu-nav-link" style={{ color: '#e8b85b', textDecoration: 'none' }}>
-                          Open this module →
+                          {labels.completionOpenModule} &rarr;
                         </Link>
                       </>
                     )}
@@ -204,9 +204,9 @@ export default function SokoCourseCompletion() {
       </PageSection>
 
       {progress?.hasEnrollment && (
-        <PageSection heading="Final reflection">
+        <PageSection heading={labels.completionReflectionHeading}>
           <SokoFinalReflection
-            prompt={FINAL_REFLECTION_PROMPT}
+            prompt={labels.completionReflectionPrompt}
             canSave={canSave}
             onSaved={fetchProgress}
           />
@@ -214,10 +214,9 @@ export default function SokoCourseCompletion() {
       )}
 
       {progress?.hasEnrollment && (
-        <PageSection heading="Finalise your course">
+        <PageSection heading={labels.completionFinaliseHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            When every module and every requirement above is complete, finalise your course. Your certificate is then
-            generated and emailed to you as a PDF, and it also appears on this site.
+            {labels.completionFinaliseBody}
           </p>
           {progress.courseCompleted ? (
             <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
@@ -225,7 +224,7 @@ export default function SokoCourseCompletion() {
                 Your course is complete. You can view or download your certificate.
               </p>
               <Link to={`${COURSE_PATH}/certificate`} className="font-body" style={primaryButtonStyle}>
-                View my certificate &rarr;
+                {labels.completionViewCertificate} &rarr;
               </Link>
             </div>
           ) : (
@@ -236,7 +235,7 @@ export default function SokoCourseCompletion() {
               className="font-body"
               style={{ ...primaryButtonStyle, opacity: finalizing ? 0.6 : 1, cursor: finalizing ? 'wait' : 'pointer' }}
             >
-              {finalizing ? 'Finalising…' : 'Finalise my course'}
+              {finalizing ? labels.completionFinalising : labels.completionFinalise}
             </button>
           )}
           {message && (
@@ -251,7 +250,7 @@ export default function SokoCourseCompletion() {
           {progress.modulesComplete && !progress.courseCompleted && (
             <div style={{ marginTop: '1.5rem' }}>
               <Link to={`/courses/${SAUTI_ZA_SOKO_COURSE_SLUG}/peer-facilitator`} className="font-body" style={linkButtonStyle}>
-                Optional: Peer Facilitator track &rarr;
+                {labels.completionPeerLink} &rarr;
               </Link>
             </div>
           )}

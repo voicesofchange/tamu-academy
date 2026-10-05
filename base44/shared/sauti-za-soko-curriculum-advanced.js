@@ -16,7 +16,7 @@ export const SOKO_ADVANCED_MODULES = {
     title: 'Sauti na Nguvu: County Government, Licences and Public Decisions',
     description:
       'Examines the county decisions that shape a trading day: licences, fees, stalls, sanitation, road works and enforcement, and how a traders\u2019 case is prepared, presented and heard through public participation.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to engage constructively with county government: identifying which level of government decides what, preparing a clear traders\u2019 case with evidence and a specific ask, and taking part in public participation so that a market decision is made with traders rather than about them.',
@@ -174,6 +174,20 @@ export const SOKO_ADVANCED_MODULES = {
       ],
       note:
         'Do not map county government onto a United States city council or vice versa. Kenyan county government combines responsibilities that in other countries are split across municipal, county and state bodies. Compare how a trader can be heard, not which office exists.',
+      examples: [
+        {
+          region: 'Porto Alegre, Brazil',
+          text: 'Residents in each district vote directly on part of the municipal investment budget. It has run since 1989, which makes it one of the longest-running examples of residents deciding on local spending.',
+        },
+        {
+          region: 'India',
+          text: 'Village assemblies are a formal route to question local spending and priorities. Attendance and influence vary widely between places, and that variation is itself worth noticing.',
+        },
+        {
+          region: 'Germany',
+          text: 'In German cities, a trader can object to a licensing or planning decision through a published process with defined deadlines. The route is written down, and using it is normal rather than unusual.',
+        },
+      ],
     },
     activity: {
       title: 'My County Case',
@@ -298,7 +312,7 @@ export const SOKO_ADVANCED_MODULES = {
     title: 'Kikundi ni Nguvu: Savings, Collective Action and Bargaining',
     description:
       'Examines how traders organise together: savings groups, cooperatives, joint buying and storage, shared records, governance and trust, and negotiating as a group rather than alone.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to organise collective action among traders: forming or strengthening a group with clear rules and records, using joint buying, storage or transport to improve terms, preventing the governance failures that break groups, and negotiating collectively.',
@@ -456,6 +470,20 @@ export const SOKO_ADVANCED_MODULES = {
       ],
       note:
         'Where a cooperative law, deposit protection or a credit union framework is well established, a group carries less risk than a chama whose members are its only safeguard. That is a difference in the surrounding system, not in the members.',
+      examples: [
+        {
+          region: 'Gujarat, India',
+          text: 'A dairy cooperative owned by millions of farmer members is governed by an elected board, and members help set the terms on which they sell rather than accepting the price offered to them.',
+        },
+        {
+          region: 'Basque Country, Spain',
+          text: 'Worker-owned cooperatives write their pay ratios and governance into their own rules. That structure is the product of deliberate design over decades, not of goodwill alone.',
+        },
+        {
+          region: 'Dakar, Senegal',
+          text: 'Tontines and women savings associations collect regularly and lend to members in turn. Where no cooperative framework exists, the group itself is the only safeguard its members have.',
+        },
+      ],
     },
     activity: {
       title: 'My Group Plan',
@@ -580,7 +608,7 @@ export const SOKO_ADVANCED_MODULES = {
     title: 'Soko Endelevu: Planning a Market That Lasts',
     description:
       'Brings the course together into one plan for a market and an enterprise: goals, resources, risks, first actions, indicators and review, and what it means to lead without leaving others behind.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '50\u201365 minutes, excluding the optional discussion and final reflection',
     competency:
       'By the end of this module, learners should be able to produce and defend a written plan for a market enterprise or a traders\u2019 group: setting goals that fit available resources, naming the risks and the responses, choosing first actions with dates and people responsible, and defining how progress will be judged.',
@@ -716,6 +744,20 @@ export const SOKO_ADVANCED_MODULES = {
       ],
       note:
         'Notice where the Kenyan case relies on peers and groups because formal business support is thin. That is a difference in the surrounding system, which is a useful thing to name rather than assume is universal.',
+      examples: [
+        {
+          region: 'Bangladesh',
+          text: 'Village organisations combine savings, training and a written plan with dates, names and responsibilities. The plan is the instrument that makes the rest checkable.',
+        },
+        {
+          region: 'United States',
+          text: 'Free mentoring is available through programmes such as SCORE and Small Business Development Centers. Access assumes available time and often an existing bank relationship, which is a filter in itself.',
+        },
+        {
+          region: 'Medellín, Colombia',
+          text: 'Market associations write short plans of their own and bring them to the municipality together, which changes the conversation from a request into a proposal.',
+        },
+      ],
     },
     activity: {
       title: 'My Soko Plan',
@@ -852,7 +894,7 @@ export const SOKO_FACILITATOR_MODULE = {
     title: 'Facilitating a Vendor Circle',
     description:
       'Prepares a learner who has completed the seven core modules to facilitate a peer vendor circle: what peer facilitation is and is not, safeguarding and consent, preparing and running a session, writing a privacy-protecting summary, and where the limits of the role lie.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '60\u201375 minutes, plus one facilitated discussion',
     competency:
       'By the end of this module, learners should be able to plan and facilitate one peer vendor circle: preparing a session plan for a small group of traders, opening with clear expectations and consent, keeping the discussion on practical ground, protecting participants\u2019 privacy, writing a summary that names no individual, and reflecting on what they would change.',
@@ -1014,6 +1056,20 @@ export const SOKO_FACILITATOR_MODULE = {
       ],
       note:
         'Accountability structures differ. In some countries a facilitator giving financial advice may carry professional or legal exposure; in others the boundary is informal. The boundary in this course is deliberately narrow for that reason.',
+      examples: [
+        {
+          region: 'United Kingdom',
+          text: 'Giving regulated financial advice without authorisation is a criminal offence. A facilitator there works inside a legal boundary that a volunteer facilitator elsewhere may never have been told about.',
+        },
+        {
+          region: 'India',
+          text: 'Federations of self-help groups train their own facilitators, keep attendance records and hold them to a written code of conduct, so the facilitator answers to the group that appointed them.',
+        },
+        {
+          region: 'United States',
+          text: 'Peer advisory groups and free mentoring services are common, and advice is normally given within a stated scope. Knowing where the scope ends is treated as part of the job.',
+        },
+      ],
     },
     activity: {
       title: 'My Vendor Circle Session Plan',

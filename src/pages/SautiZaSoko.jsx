@@ -4,6 +4,7 @@ import CoursePageTemplate from '@/components/courses/CoursePageTemplate';
 import CourseOverviewSection from '@/components/courses/CourseOverviewSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import SokoCourseProgress from '@/components/courses/soko/SokoCourseProgress';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
   SAUTI_ZA_SOKO_COURSE,
   SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -16,6 +17,7 @@ import {
  * describing the optional Peer Facilitator track.
  */
 export default function SautiZaSoko() {
+  const labels = useSokoLabels();
   return (
     <CoursePageTemplate
       course={SAUTI_ZA_SOKO_COURSE}
@@ -23,7 +25,7 @@ export default function SautiZaSoko() {
     >
       <CourseOverviewSection
         surface="light"
-        eyebrow="Optional Track"
+        eyebrow={labels.peerTrackEyebrow}
         heading={SAUTI_ZA_SOKO_PEER_TRACK.title}
       >
         <div style={{ padding: '28px 32px', border: '1px solid #dcc8a8', borderRadius: '4px', background: '#fffaf1' }}>
@@ -31,23 +33,23 @@ export default function SautiZaSoko() {
             <StatusBadge label={SAUTI_ZA_SOKO_PEER_TRACK.certificate} tone="light" />
           </div>
           <p className="font-body" style={{ color: '#725a46', fontSize: '15px', lineHeight: 1.75, fontWeight: 300, marginBottom: '1.25rem' }}>
-            {SAUTI_ZA_SOKO_PEER_TRACK.summary}
+            {labels.peerSummary}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', marginBottom: '1.5rem' }}>
             <div style={{ padding: '16px 18px', border: '1px solid #dcc8a8', borderRadius: '4px', background: '#fffdf8' }}>
               <span className="font-body" style={{ color: '#b97827', fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>
-                Entry requirement
+                {labels.peerEntryRequirementLabel}
               </span>
               <span className="font-body" style={{ color: '#725a46', fontSize: '13px', lineHeight: 1.6 }}>
-                {SAUTI_ZA_SOKO_PEER_TRACK.entryRequirement}
+                {labels.peerEntryRequirement}
               </span>
             </div>
             <div style={{ padding: '16px 18px', border: '1px solid #dcc8a8', borderRadius: '4px', background: '#fffdf8' }}>
               <span className="font-body" style={{ color: '#b97827', fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.3rem' }}>
-                Estimated time
+                {labels.peerEstimatedTimeLabel}
               </span>
               <span className="font-body" style={{ color: '#725a46', fontSize: '13px', lineHeight: 1.6 }}>
-                {SAUTI_ZA_SOKO_PEER_TRACK.estimatedTime}
+                {labels.peerEstimatedTime}
               </span>
             </div>
           </div>
@@ -56,7 +58,7 @@ export default function SautiZaSoko() {
             className="font-body"
             style={{ display: 'inline-flex', alignItems: 'center', color: '#9b5d1d', fontSize: '11px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, borderBottom: '1px solid #c18a36', paddingBottom: '2px' }}
           >
-            View the Peer Facilitator track &rarr;
+            {labels.peerViewTrack} &rarr;
           </Link>
         </div>
       </CourseOverviewSection>

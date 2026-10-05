@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { SAUTI_ZA_SOKO_COURSE_SLUG, SAUTI_ZA_SOKO_PEER_TRACK } from '@/lib/sauti-za-soko-tracks';
+import { SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -52,6 +53,7 @@ const dashedBox = {
  * completion. Used on the course overview page.
  */
 export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG }) {
+  const labels = useSokoLabels();
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -78,7 +80,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
       await base44.functions.invoke('enrollSokoCourse', { courseSlug });
       await fetchProgress();
     } catch (err) {
-      setEnrollError('Enrollment is not open for this course yet.');
+      setEnrollError(labels.courseEnrollError);
     } finally {
       setEnrolling(false);
     }
@@ -88,7 +90,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
-          Loading your progress…
+          {labels.courseProgressLoading}
         </p>
       </div>
     );
@@ -98,8 +100,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
     return (
       <div style={dashedBox} aria-live="polite">
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-          Sauti za Soko is still in development. Enrollment will open once the content review is complete; until then
-          the course can be read about here.
+          {labels.courseEnrollBody}
         </p>
         <button
           type="button"
@@ -108,7 +109,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
           className="font-body"
           style={{ ...primaryButtonStyle, opacity: enrolling ? 0.6 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
         >
-          {enrolling ? 'Checking…' : 'Enroll in this course'}
+          {enrolling ? labels.courseEnrolling : labels.courseEnroll}
         </button>
         {enrollError && (
           <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>
@@ -123,7 +124,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
-          Sign in or create an account to track your progress through the seven modules and your My Soko Action Plan.
+          {labels.courseSignIn}
         </p>
       </div>
     );
@@ -136,7 +137,9 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
   const resumeTarget = firstIncomplete
     ? `/courses/${courseSlug}/${firstIncomplete.route}`
     : `/courses/${courseSlug}/completion`;
-  const resumeLabel = firstIncomplete ? `Resume at ${firstIncomplete.number}` : 'Review course completion';
+  const resumeLabel = firstIncomplete
+    ? `${labels.courseResumeAt} ${firstIncomplete.number}`
+    : labels.courseReviewCompletion;
   const unmetRequirements = (progress.requirements || []).filter((r) => !r.met);
 
   return (
@@ -144,10 +147,10 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Overall progress
+            {labels.courseOverallProgress}
           </span>
           <span className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500 }}>
-            {completedCount} of {totalModules} modules
+            {completedCount} {labels.ofWord} {totalModules} {labels.courseModulesWord}
           </span>
         </div>
         <div
@@ -167,11 +170,11 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
           {resumeLabel} &rarr;
         </Link>
         <Link to={`/courses/${courseSlug}/completion`} className="font-body" style={linkButtonStyle}>
-          My Soko Action Plan &rarr;
+          {labels.courseActionPlanLink} &rarr;
         </Link>
         {progress.certificateEligible && (
           <Link to={`/courses/${courseSlug}/certificate`} className="font-body" style={linkButtonStyle}>
-            View Certificate &rarr;
+            {labels.courseViewCertificate} &rarr;
           </Link>
         )}
       </div>
@@ -179,14 +182,13 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
       {progress.courseCompleted ? (
         <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            You have completed all seven modules and every course requirement. Your certificate of completion is available.
+            {labels.courseCertificateReady}
           </p>
         </div>
       ) : (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem', fontSize: '0.9rem' }}>
-            Course completion also requires every My Soko Action Plan section, one peer discussion and the final
-            reflection. Still outstanding:
+            {labels.courseOutstandingIntro}
           </p>
           <ul className="font-body" style={{ ...bodyText, margin: '0 0 1rem', paddingLeft: '1.35rem', fontSize: '0.9rem' }}>
             {progress.incompleteModules.map((m) => (
@@ -197,7 +199,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
             ))}
           </ul>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>
-            The optional Peer Facilitator track can be started once the seven core modules are complete.
+            {labels.coursePeerNote}
           </p>
         </div>
       )}
@@ -205,13 +207,13 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
       {progress.modulesComplete && (
         <div style={{ marginTop: '1.25rem', padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
-            Optional next step
+            {labels.courseOptionalNextStep}
           </span>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.92rem', marginBottom: '0.85rem' }}>
-            {SAUTI_ZA_SOKO_PEER_TRACK.summary}
+            {labels.peerSummary}
           </p>
           <Link to={`/courses/${courseSlug}/peer-facilitator`} className="font-body" style={linkButtonStyle}>
-            Peer Facilitator track &rarr;
+            {labels.coursePeerTrackLink} &rarr;
           </Link>
         </div>
       )}

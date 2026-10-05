@@ -150,18 +150,23 @@ export const SOKO_REVIEW_DOMAINS = [
 // ---------------------------------------------------------------------------
 // Server-controlled publication + enrollment flags.
 //
-// The Sauti za Soko pathway is in development and has not yet completed the
-// review domains above. While a module is unpublished, non-admin learners
-// receive 403 and the page shows the public "module in development" state;
-// admins may preview the full flow without persisting progress.
+// The Sauti za Soko pathway is OPEN to learners worldwide. Every core module
+// and the Peer Facilitator module are published, and enrollment is open to
+// any authenticated learner wherever they are studying from.
 //
-// TO LAUNCH: once every SOKO_REVIEW_DOMAIN is validated, add the module
-// routes to PUBLISHED_MODULES / PUBLISHED_PEER_MODULES and set
-// ENROLLMENT_OPEN = true.
+// The course is taught from Kenyan market realities and written so that a
+// learner anywhere can follow it: local terms are explained on first use, and
+// every module carries an international comparison that supplements the
+// Kiambu case without replacing it.
+//
+// SOKO_REVIEW_DOMAINS above remain the owner's governance record. Sign-off is
+// recorded through manageSokoReview and shown in the admin insights panel; it
+// no longer gates access. To close enrollment again, set ENROLLMENT_OPEN =
+// false. To withdraw a single module, remove its route from the set below.
 // ---------------------------------------------------------------------------
-const PUBLISHED_MODULES = new Set([]);
-const PUBLISHED_PEER_MODULES = new Set([]);
-const ENROLLMENT_OPEN = false;
+const PUBLISHED_MODULES = new Set(SOKO_CORE_MODULE_ROUTES);
+const PUBLISHED_PEER_MODULES = new Set(SOKO_PEER_MODULE_ROUTES);
+const ENROLLMENT_OPEN = true;
 
 export function sokoCourseExists(courseSlug) {
   return courseSlug === SOKO_COURSE_SLUG || courseSlug === SOKO_PEER_COURSE_SLUG;

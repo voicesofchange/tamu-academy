@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300 };
 
@@ -9,13 +10,13 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHei
  * distinct contextual layer, never mixed into the core lesson text.
  */
 export default function SokoContextNotes({ notes }) {
+  const labels = useSokoLabels();
   if (!Array.isArray(notes) || notes.length === 0) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.88rem', margin: 0 }}>
-        This module uses terms and institutions from Kenya. They are explained here in plain language.
-        These notes are context, not additional requirements.
+        {labels.contextIntro}
       </p>
       {notes.map((note) => (
         <div

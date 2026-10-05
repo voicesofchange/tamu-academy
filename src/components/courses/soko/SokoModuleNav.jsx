@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const navLinkStyle = {
   display: 'inline-flex',
@@ -31,18 +32,19 @@ const disabledStyle = {
  * so paths are passed in explicitly rather than derived from a slug.
  */
 export default function SokoModuleNav({ coursePath, prevModule, prevPath, nextModule, nextPath, nextLabel, endOfCourse }) {
+  const labels = useSokoLabels();
   return (
     <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevPath ? (
           <Link to={prevPath} className="font-body" style={navLinkStyle}>
             <ChevronLeft size={14} aria-hidden="true" />
-            Previous: {prevModule.number} — {prevModule.title}
+            {labels.navPreviousPrefix} {prevModule.number} — {prevModule.title}
           </Link>
         ) : (
           <span aria-disabled="true" style={disabledStyle}>
             <ChevronLeft size={14} aria-hidden="true" />
-            This is the first module
+            {labels.navFirstModule}
           </span>
         )}
         {nextPath ? (
@@ -68,7 +70,7 @@ export default function SokoModuleNav({ coursePath, prevModule, prevPath, nextMo
       </div>
       <Link to={coursePath} className="font-body" style={navLinkStyle}>
         <ChevronLeft size={14} aria-hidden="true" />
-        Return to Course
+        {labels.navReturnToCourse}
       </Link>
     </nav>
   );

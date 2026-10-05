@@ -13,6 +13,7 @@ import SokoActionPlanActivity from '@/components/courses/soko/SokoActionPlanActi
 import SokoDiscussionPrompt from '@/components/courses/soko/SokoDiscussionPrompt';
 import SokoModuleProgress from '@/components/courses/soko/SokoModuleProgress';
 import SokoModuleNav from '@/components/courses/soko/SokoModuleNav';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -22,14 +23,16 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
  * Structure: lesson title and competency, learning objectives, the Tamu
  * Academy introduction, plain-language context notes for learners meeting
  * Kenyan institutions for the first time, key concepts, the Kiambu market
- * case, the optional international comparison, the My Soko Action Plan
- * section, the Kiswahili discussion prompt, the knowledge check,
+ * case, the international comparison and its examples, the My Soko Action
+ * Plan section, the Kiswahili discussion prompt, the knowledge check,
  * reflection prompts, completion requirements, closing text, sources and
  * navigation.
  *
- * The core lesson and the optional comparison are visually separated
- * throughout, so the Kenyan case is never diluted by the learner's own
- * context.
+ * The core lesson and the comparison are visually separated throughout, so
+ * the Kenyan case is never diluted by the learner's own context.
+ *
+ * Every section heading and instruction is read from the pathway label set,
+ * so a learner who selects a language reads the whole module in it.
  */
 export default function SokoExpandedTemplate({
   course,
@@ -47,6 +50,7 @@ export default function SokoExpandedTemplate({
   facilitatorSlot = null,
   onActivitySaved,
 }) {
+  const labels = useSokoLabels();
   const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
   const coursePath = `/courses/${courseSlug}`;
   const modulePath = courseSlug === course.slug ? `${coursePath}/${moduleRoute}` : null;
@@ -81,7 +85,7 @@ export default function SokoExpandedTemplate({
           {module.title}
         </h1>
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
-          Estimated time: {module.estimatedTime}
+          {labels.estimatedTimeLabel}: {module.estimatedTime}
         </p>
         <motion.div
           initial={{ opacity: 0, scaleX: 0.4 }}
@@ -93,7 +97,7 @@ export default function SokoExpandedTemplate({
         {module.competency && (
           <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
             <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
-              Module Competency
+              {labels.moduleCompetency}
             </span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{module.competency}</p>
           </div>
@@ -102,7 +106,7 @@ export default function SokoExpandedTemplate({
 
       {/* 2. Learning objectives */}
       {module.learningObjectives && module.learningObjectives.length > 0 && (
-        <ModuleLessonSection eyebrow="Objectives" heading="Learning Objectives">
+        <ModuleLessonSection eyebrow={labels.objectivesEyebrow} heading={labels.objectivesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.learningObjectives.map((o, i) => (
               <li key={i} style={{ marginBottom: '0.6rem' }}>{o}</li>
@@ -113,7 +117,7 @@ export default function SokoExpandedTemplate({
 
       {/* 3. Tamu Academy introduction */}
       {module.overview && module.overview.length > 0 && (
-        <ModuleLessonSection eyebrow="Lesson Introduction" heading="Tamu Academy Introduction">
+        <ModuleLessonSection eyebrow={labels.introEyebrow} heading={labels.introHeading}>
           {module.overview.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
@@ -122,14 +126,14 @@ export default function SokoExpandedTemplate({
 
       {/* 4. Context notes for learners new to the setting */}
       {module.contextNotes && module.contextNotes.length > 0 && (
-        <ModuleLessonSection eyebrow="Context" heading="Terms and Institutions in This Module">
+        <ModuleLessonSection eyebrow={labels.contextEyebrow} heading={labels.contextHeading}>
           <SokoContextNotes notes={module.contextNotes} />
         </ModuleLessonSection>
       )}
 
       {/* 5. Key concepts */}
       {module.keyConcepts && module.keyConcepts.length > 0 && (
-        <ModuleLessonSection eyebrow="Concepts" heading="Key Concepts and Definitions">
+        <ModuleLessonSection eyebrow={labels.conceptsEyebrow} heading={labels.conceptsHeading}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
             {module.keyConcepts.map((concept) => (
               <div key={concept.term}>
@@ -139,7 +143,7 @@ export default function SokoExpandedTemplate({
                 <p className="font-body" style={{ ...bodyText, marginBottom: '0.6rem' }}>{concept.definition}</p>
                 {concept.example && (
                   <p className="font-body" style={{ ...bodyText, fontSize: '0.88rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.62)', marginBottom: 0 }}>
-                    Example: {concept.example}
+                    {labels.exampleLabel}: {concept.example}
                   </p>
                 )}
               </div>
@@ -150,7 +154,7 @@ export default function SokoExpandedTemplate({
 
       {/* 6. The Kiambu market case */}
       {module.localCase && (
-        <ModuleLessonSection eyebrow="Kiambu Case" heading={module.localCase.title}>
+        <ModuleLessonSection eyebrow={labels.caseEyebrow} heading={module.localCase.title}>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', letterSpacing: '0.06em', color: 'rgba(232,184,91,0.75)', marginBottom: '1.1rem' }}>
             {module.localCase.location}
           </p>
@@ -170,7 +174,7 @@ export default function SokoExpandedTemplate({
           {Array.isArray(module.localCase.takeaways) && module.localCase.takeaways.length > 0 && (
             <div style={{ padding: '1.35rem 1.6rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.035)', marginTop: '1.5rem' }}>
               <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
-                What this case shows
+                {labels.caseTakeawaysLabel}
               </span>
               <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.35rem' }}>
                 {module.localCase.takeaways.map((t, i) => (
@@ -182,20 +186,20 @@ export default function SokoExpandedTemplate({
         </ModuleLessonSection>
       )}
 
-      {/* 7. Optional international comparison */}
+      {/* 7. International comparison and global examples */}
       {module.internationalComparison && (
-        <ModuleLessonSection eyebrow="Comparison" heading="International Learner Context">
+        <ModuleLessonSection eyebrow={labels.comparisonEyebrow} heading={labels.comparisonHeading}>
           <SokoInternationalComparison comparison={module.internationalComparison} />
         </ModuleLessonSection>
       )}
 
       {/* 8. My Soko Action Plan section (or the facilitator record) */}
       {isFacilitatorModule && facilitatorSlot ? (
-        <ModuleLessonSection eyebrow="Facilitator Record" heading="My Vendor Circle Record">
+        <ModuleLessonSection eyebrow={labels.facilitatorRecordEyebrow} heading={labels.facilitatorRecordHeading}>
           {facilitatorSlot}
         </ModuleLessonSection>
       ) : activity ? (
-        <ModuleLessonSection eyebrow="Action Plan" heading={activity.title}>
+        <ModuleLessonSection eyebrow={labels.actionPlanEyebrow} heading={activity.title}>
           <SokoActionPlanActivity
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
@@ -208,7 +212,7 @@ export default function SokoExpandedTemplate({
 
       {/* 9. Kiswahili discussion prompt */}
       {module.kiswahiliPrompt && (
-        <ModuleLessonSection eyebrow="Discussion" heading="Mazungumzo: A Question for the Circle">
+        <ModuleLessonSection eyebrow={labels.discussionEyebrow} heading={labels.discussionHeading}>
           <SokoDiscussionPrompt
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
@@ -220,10 +224,9 @@ export default function SokoExpandedTemplate({
 
       {/* 10. Knowledge check */}
       {module.quiz && (
-        <ModuleLessonSection eyebrow="Check" heading="Knowledge Check">
+        <ModuleLessonSection eyebrow={labels.checkEyebrow} heading={labels.checkHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-            Five multiple-choice questions. Answer at least four correctly to pass. Feedback appears only after you
-            submit, and you can retry as many times as you need.
+            {labels.checkIntro}
           </p>
           <KnowledgeCheck
             quiz={module.quiz}
@@ -237,10 +240,9 @@ export default function SokoExpandedTemplate({
 
       {/* 11. Reflection prompts */}
       {module.reflectionQuestions && module.reflectionQuestions.length > 0 && (
-        <ModuleLessonSection eyebrow="Reflect" heading="Reflection Prompts">
+        <ModuleLessonSection eyebrow={labels.reflectEyebrow} heading={labels.reflectHeading}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.88rem', marginBottom: '1.1rem' }}>
-            Respond to one of these in your own way. Nothing you write here is stored; answering privately and
-            marking the requirement complete is what is recorded.
+            {labels.reflectIntro}
           </p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.reflectionQuestions.map((q, i) => (
@@ -252,14 +254,14 @@ export default function SokoExpandedTemplate({
 
       {/* 12. Completion requirements */}
       {Array.isArray(module.completionRequirements) && module.completionRequirements.length > 0 && (
-        <ModuleLessonSection eyebrow="Requirements" heading="Completion Requirements">
+        <ModuleLessonSection eyebrow={labels.requirementsEyebrow} heading={labels.requirementsHeading}>
           <SokoModuleProgress
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
             completionRequirements={module.completionRequirements}
             activityLabel={isFacilitatorModule
-              ? 'Submit your vendor-circle record for review.'
-              : 'Save your section of the My Soko Action Plan.'}
+              ? labels.requirementActivityFacilitator
+              : labels.requirementActivityCore}
             refreshTrigger={quizPassedTrigger}
           />
         </ModuleLessonSection>
@@ -267,7 +269,7 @@ export default function SokoExpandedTemplate({
 
       {/* 13. Module closing */}
       {module.closingText && module.closingText.length > 0 && (
-        <ModuleLessonSection eyebrow="Closing" heading="Module Closing">
+        <ModuleLessonSection eyebrow={labels.closingEyebrow} heading={labels.closingHeading}>
           {module.closingText.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
@@ -276,7 +278,7 @@ export default function SokoExpandedTemplate({
 
       {/* Course closing — final module only */}
       {module.courseClosingText && (
-        <ModuleLessonSection eyebrow="Course Closing" heading="Course Closing">
+        <ModuleLessonSection eyebrow={labels.courseClosingEyebrow} heading={labels.courseClosingHeading}>
           {module.courseClosingText.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
@@ -285,7 +287,7 @@ export default function SokoExpandedTemplate({
 
       {/* 14. Sources */}
       {module.sources && module.sources.length > 0 && (
-        <ModuleLessonSection eyebrow="Sources" heading="Sources and Further Reading">
+        <ModuleLessonSection eyebrow={labels.sourcesEyebrow} heading={labels.sourcesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.sources.map((s, i) => (
               <li key={i} style={{ marginBottom: '0.5rem' }}>{s}</li>

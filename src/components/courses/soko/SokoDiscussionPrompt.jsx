@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 };
 
@@ -43,6 +44,7 @@ const LANGUAGES = [
  * learners.
  */
 export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, canSave }) {
+  const labels = useSokoLabels();
   const [response, setResponse] = useState('');
   const [language, setLanguage] = useState('sw');
   const [shareConsent, setShareConsent] = useState(false);
@@ -83,9 +85,9 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
         language,
         shareConsent,
       });
-      setMessage({ type: 'success', text: 'Your response has been saved. One response completes the peer discussion requirement for the course.' });
+      setMessage({ type: 'success', text: labels.discussionSaved });
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not save your response right now. Please try again.' });
+      setMessage({ type: 'error', text: labels.discussionError });
     } finally {
       setSaving(false);
     }
@@ -106,7 +108,7 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
         className="font-body"
         style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.7rem' }}
       >
-        Mazungumzo &middot; Discussion
+        {labels.discussionBadge}
       </span>
       <p className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.1rem,2.4vw,1.4rem)', fontWeight: 400, fontStyle: 'italic', lineHeight: 1.4, margin: '0 0 0.5rem' }}>
         {prompt.prompt}
@@ -124,12 +126,12 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
 
       {loading ? (
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: 0 }}>
-          Loading your saved response…
+          {labels.discussionLoading}
         </p>
       ) : (
         <>
           <label htmlFor={`soko-discussion-${moduleRoute}`} className="font-body" style={{ display: 'block', color: '#f8f0df', fontSize: '0.9rem', fontWeight: 500, marginBottom: '0.45rem' }}>
-            Your response
+            {labels.discussionYourResponse}
           </label>
           <textarea
             id={`soko-discussion-${moduleRoute}`}
@@ -143,7 +145,7 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', alignItems: 'center', marginTop: '0.9rem' }}>
             <label className="font-body" style={{ ...bodyText, fontSize: '0.87rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-              Language
+              {labels.discussionLanguage}
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
@@ -164,7 +166,7 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
                 disabled={!canSave || saving}
                 style={{ marginTop: '0.28rem', accentColor: '#e8b85b' }}
               />
-              <span>I agree to my response being shared with other learners on this course. Without this, it stays private.</span>
+              <span>{labels.discussionConsent}</span>
             </label>
           </div>
 
@@ -180,7 +182,7 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
                 cursor: saving ? 'wait' : (canSave && response.trim() ? 'pointer' : 'not-allowed'),
               }}
             >
-              {saving ? 'Saving…' : 'Save my response'}
+              {saving ? labels.discussionSaving : labels.discussionSave}
             </button>
           </div>
 

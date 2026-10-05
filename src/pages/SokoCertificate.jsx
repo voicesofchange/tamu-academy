@@ -5,6 +5,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
 import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
   SAUTI_ZA_SOKO_COURSE_SLUG,
   SAUTI_ZA_SOKO_PEER_COURSE_SLUG,
@@ -36,6 +37,7 @@ const actionButtonStyle = {
  * this page takes the course slug as a prop.
  */
 export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG }) {
+  const labels = useSokoLabels();
   const isPeer = courseSlug === SAUTI_ZA_SOKO_PEER_COURSE_SLUG;
   const coursePath = '/courses/sauti-za-soko';
   const completionPath = isPeer
@@ -98,21 +100,21 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
   if (state.notEligible || state.outstanding || state.needsProfile || state.status !== 'ready') {
     const isError = state.status === 'error';
     const heading = state.notEligible
-      ? (isPeer ? 'Peer Facilitator Certificate Not Yet Available' : 'Certificate Not Yet Available')
+      ? (isPeer ? labels.certHeadingNotYetPeer : labels.certHeadingNotYetCore)
       : state.outstanding
-        ? 'Course Requirements Outstanding'
+        ? labels.certHeadingOutstanding
         : state.needsProfile
-          ? 'Profile Name Required'
-          : 'Certificate Unavailable';
+          ? labels.certHeadingProfile
+          : labels.certHeadingUnavailable;
     const body = state.notEligible
       ? (isPeer
-        ? 'Your Peer Facilitator certificate becomes available once you have completed Module 8, submitted your vendor-circle record, and a reviewer has approved it.'
-        : 'Your certificate becomes available once you have completed all seven modules and every course requirement, and enrollment is open.')
+        ? labels.certBodyNotYetPeer
+        : labels.certBodyNotYetCore)
       : state.outstanding
-        ? 'Finish your My Soko Action Plan sections, a peer discussion and the final reflection, then finalise your course.'
+        ? labels.certBodyOutstanding
         : state.needsProfile
-          ? 'Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.'
-          : 'We could not load your certificate at this time. Please try again later.';
+          ? labels.certBodyProfile
+          : labels.certBodyUnavailable;
 
     return (
       <PageLayout>
@@ -125,10 +127,10 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
             {heading}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '520px', margin: '0 auto 2rem' }}>
-            {isError ? 'We could not load your certificate at this time. Please try again later.' : body}
+            {isError ? labels.certBodyUnavailable : body}
           </p>
           <Link to={completionPath} className="font-body tamu-nav-link" style={actionButtonStyle}>
-            &larr; Back to course progress
+            &larr; {labels.certBackToProgress}
           </Link>
         </div>
       </PageLayout>
@@ -144,18 +146,18 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
 
       <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
         <Link to={completionPath} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Back to course progress
+          &larr; {labels.certBackToProgress}
         </Link>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button onClick={() => window.print()} style={actionButtonStyle}>Print Certificate</button>
-          <button onClick={handleDownloadPDF} style={actionButtonStyle}>Download PDF</button>
+          <button onClick={() => window.print()} style={actionButtonStyle}>{labels.certPrint}</button>
+          <button onClick={handleDownloadPDF} style={actionButtonStyle}>{labels.certDownload}</button>
         </div>
       </div>
 
       {isPreview && (
         <div className="no-print" style={{ padding: '0.75rem 1.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.06)', marginBottom: '1.5rem', textAlign: 'center' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Administrator Preview &mdash; No certificate record created
+            {labels.certPreviewNotice}
           </span>
         </div>
       )}
@@ -171,7 +173,7 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <Link to={coursePath} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Return to Course
+          &larr; {labels.certReturnToCourse}
         </Link>
       </div>
     </PageLayout>

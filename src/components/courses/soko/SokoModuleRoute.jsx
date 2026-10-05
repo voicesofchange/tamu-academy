@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
 import SokoExpandedTemplate from '@/components/courses/soko/SokoExpandedTemplate';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
   SAUTI_ZA_SOKO_COURSE,
   SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -23,6 +24,7 @@ import {
  */
 export default function SokoModuleRoute({ moduleRoute }) {
   const { language } = useTranslation();
+  const labels = useSokoLabels();
   const { user } = useAuth();
   const preview = getSokoModulePreview(moduleRoute);
   const [module, setModule] = useState(null);
@@ -75,7 +77,9 @@ export default function SokoModuleRoute({ moduleRoute }) {
   const nextPath = nextModule
     ? `/courses/${SAUTI_ZA_SOKO_COURSE_SLUG}/${nextModule.route}`
     : `/courses/${SAUTI_ZA_SOKO_COURSE_SLUG}/completion`;
-  const nextLabel = nextModule ? `Next: ${nextModule.number} — ${nextModule.title}` : 'Course completion';
+  const nextLabel = nextModule
+    ? `${labels.navNextPrefix} ${nextModule.number} — ${nextModule.title}`
+    : labels.navCourseCompletion;
 
   const isAdmin = user?.role === 'admin';
   const canSave = isAdmin || !!user;

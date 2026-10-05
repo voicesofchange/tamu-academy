@@ -22,7 +22,7 @@ export const SOKO_CORE_MODULES = {
     title: 'Soko ni Yetu: The Market as an Economy',
     description:
       'Introduces the market as a working economy: producers, traders, buyers, prices, rules, credit, value and risk, read from the experience of young vendors in Kiambu.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to read one market as an economy: identifying who produces and trades, how prices are set, which rules and institutions shape the trading day, where value is created and captured, and who carries the risk.',
@@ -182,6 +182,20 @@ export const SOKO_CORE_MODULES = {
       ],
       note:
         'Use this comparison to clarify your own context, not to rank the two. The institutional differences are real: county licensing in Kiambu does not work like municipal permitting in a United States city, and informal credit there does not work like consumer credit here.',
+      examples: [
+        {
+          region: 'Lagos, Nigeria',
+          text: 'One tomato passes through a northern farm, a motor-park wholesaler, a market woman and a final seller. Each hand adds something and takes a margin, and the seller at the end of that chain carries the day that ends unsold.',
+        },
+        {
+          region: 'Delhi, India',
+          text: 'In a wholesale market, prices are called before dawn and settle within an hour. A trader who arrives after that hour buys the same crate at a different price from one who arrived earlier, and both of them know it.',
+        },
+        {
+          region: 'Mexico City, Mexico',
+          text: 'Vendors rotate between neighbourhood street markets on a fixed weekly cycle. The same trader reads a different set of customers on each day of the week, and plans stock around that.',
+        },
+      ],
     },
     activity: {
       title: 'My Market Map',
@@ -308,7 +322,7 @@ export const SOKO_CORE_MODULES = {
     title: 'Biashara Is Knowledge: Reading Your Own Business',
     description:
       'Treats the learner\u2019s own enterprise as the object of analysis: what is sold and to whom, which resources and relationships it depends on, which costs are hidden, and which decisions change profitability most.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to analyse their own enterprise as a system: describing what they sell and to whom, the resources and relationships they rely on, the records they keep, the costs that are easy and hard to see, and the two or three decisions that change profitability most.',
@@ -454,6 +468,20 @@ export const SOKO_CORE_MODULES = {
       ],
       note:
         'Notice where the difference is institutional rather than personal. Access to a savings group, a cooperative loan or a formal insurance product is a function of the surrounding system, not of the trader\u2019s discipline.',
+      examples: [
+        {
+          region: 'Hanoi, Vietnam',
+          text: 'A household shop sells phone top-ups, drinks and motorbike repairs from one counter. The repairs carry the margin, the drinks bring people to the counter, and the top-ups bring them back. Three lines of business, one stall, one set of books.',
+        },
+        {
+          region: 'La Paz, Bolivia',
+          text: 'A knitwear seller keeps two prices in mind: one for the tourist season and one for local buyers, because the two groups buy for entirely different reasons and at different times of year.',
+        },
+        {
+          region: 'Dhaka, Bangladesh',
+          text: 'A tailor prices by the piece rather than by the hour. Within a week he knows which garment earns most per metre of cloth, and which one only keeps him busy.',
+        },
+      ],
     },
     activity: {
       title: 'My Enterprise Profile',
@@ -580,7 +608,7 @@ export const SOKO_CORE_MODULES = {
     title: 'Money, Margin and Trust: Cash in a Small Enterprise',
     description:
       'Examines how cash moves through a small enterprise: separating household and business money, pricing for a margin, credit and its risks, savings, mobile money, and the terms attached to borrowing.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '40\u201355 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to manage cash in a small enterprise: distinguishing household and business money, setting a price that leaves a margin, deciding who receives credit, using savings and mobile money deliberately, and evaluating the terms of a loan before accepting it.',
@@ -722,6 +750,20 @@ export const SOKO_CORE_MODULES = {
       ],
       note:
         'The comparison is about systems, not about discipline. Where a savings group, a cooperative or unemployment protection does not exist, the individual trader is carrying a risk that in another country is shared.',
+      examples: [
+        {
+          region: 'Indonesia',
+          text: 'An arisan group pools a fixed contribution each month and hands the whole sum to one member in turn. Members receive capital in rotation rather than all at once, and every contribution is recorded by the group.',
+        },
+        {
+          region: 'India',
+          text: 'Self-help groups lend to their own members from pooled savings, with a book kept by a rotating secretary. The rules are written down, and that is what allows the group to survive its first disagreement.',
+        },
+        {
+          region: 'United States',
+          text: 'A trader who falls ill may draw on unemployment insurance or a business interruption policy. In Kiambu the same lost week is usually absorbed by savings, family and a group. The difference is the surrounding system, not the discipline of the trader.',
+        },
+      ],
     },
     activity: {
       title: 'My Cash and Credit Rules',
@@ -846,7 +888,7 @@ export const SOKO_CORE_MODULES = {
     title: 'Weather, Climate and Market Risk',
     description:
       'Examines how weather and season shape a trading day and a trading year: reading seasonal signals, adapting stock and storage, spreading risk, and responding to a changing climate.',
-    status: 'In development',
+    status: 'Available',
     estimatedTime: '45\u201360 minutes, excluding the optional discussion',
     competency:
       'By the end of this module, learners should be able to assess weather and climate risk for a small enterprise: reading seasonal signals, adjusting stock, storage and pricing across a season, spreading risk with others, and explaining how a changing climate alters the risks a trader faces.',
@@ -997,6 +1039,20 @@ export const SOKO_CORE_MODULES = {
       ],
       note:
         'Compare systems, not effort. Where public protection or affordable insurance exists, a trader is carrying less risk than one in a market where the same shock is absorbed personally. Climate vulnerability is shaped by infrastructure and policy as much as by geography.',
+      examples: [
+        {
+          region: 'The Philippines',
+          text: 'Vendors plan around typhoon season by moving stock to higher ground, adding dried goods to the stall, and splitting buying into smaller and more frequent purchases. The shape of the response is the same as in Kiambu, at a different scale.',
+        },
+        {
+          region: 'Bangladesh',
+          text: 'In flood-prone districts, traders work from floating markets and raised platforms. The adaptation was built by public and collective investment, not by each trader alone.',
+        },
+        {
+          region: 'California, United States',
+          text: 'In the highest fire-risk areas, insurers have withdrawn cover altogether, so households and small businesses carry a climate risk the market has decided it cannot price. Climate risk lands on whoever is least able to move away from it.',
+        },
+      ],
     },
     activity: {
       title: 'My Season and Risk Plan',

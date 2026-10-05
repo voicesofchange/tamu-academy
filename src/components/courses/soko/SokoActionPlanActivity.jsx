@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 };
 
@@ -34,6 +35,7 @@ const buttonStyle = {
  * requirement server-side.
  */
 export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activity, canSave, onSaved }) {
+  const labels = useSokoLabels();
   const [responses, setResponses] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -76,10 +78,10 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
         moduleRoute,
         responses: payload,
       });
-      setMessage({ type: 'success', text: 'Saved to your My Soko Action Plan. You can return and revise it at any time.' });
+      setMessage({ type: 'success', text: labels.actionSaved });
       if (typeof onSaved === 'function') onSaved();
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not save your answers right now. Please try again.' });
+      setMessage({ type: 'error', text: labels.actionError });
     } finally {
       setSaving(false);
     }
@@ -88,7 +90,7 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
   if (loading) {
     return (
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
-        Loading your saved section…
+        {labels.actionLoading}
       </p>
     );
   }
@@ -97,7 +99,7 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
     <div aria-live="polite">
       {activity?.purpose && (
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>
-          <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Purpose: </span>
+          <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{labels.purposeLabel}: </span>
           {activity.purpose}
         </p>
       )}
@@ -113,8 +115,7 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
         className="font-body"
         style={{ ...bodyText, fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.5rem' }}
       >
-        Your answers are stored privately to your account and are visible only to you and to course administrators.
-        Saving this section completes the module&rsquo;s action requirement.
+        {labels.actionPrivacy}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
@@ -156,14 +157,14 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
             cursor: saving ? 'wait' : (canSave && filledCount > 0 ? 'pointer' : 'not-allowed'),
           }}
         >
-          {saving ? 'Saving…' : 'Save my action plan section'}
+          {saving ? labels.actionSaving : labels.actionSave}
         </button>
         <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: '0.75rem 0 0', color: 'rgba(243,234,216,0.55)' }}>
-          {filledCount} of {fields.length} sections answered
+          {filledCount} {labels.ofWord} {fields.length} {labels.actionSectionsAnswered}
         </p>
         {!canSave && (
           <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', fontStyle: 'italic', margin: '0.5rem 0 0', color: 'rgba(243,234,216,0.5)' }}>
-            Saving is available once your enrollment is active and this module is published.
+            {labels.actionUnavailable}
           </p>
         )}
         {message && (

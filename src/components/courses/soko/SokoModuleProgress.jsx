@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300 };
 
@@ -58,10 +59,7 @@ const ACTION_BY_KEY = {
   reflection_acknowledged: 'acknowledge_reflection',
 };
 
-const MODE_OPTIONS = [
-  { value: 'private', label: 'Private' },
-  { value: 'fictional', label: 'Fictional alternative' },
-];
+const MODE_OPTIONS = ['private', 'fictional'];
 
 /**
  * SokoModuleProgress — the completion requirements and completion control
@@ -75,6 +73,7 @@ export default function SokoModuleProgress({
   activityLabel,
   refreshTrigger = 0,
 }) {
+  const labels = useSokoLabels();
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [savingKey, setSavingKey] = useState(null);
@@ -119,7 +118,7 @@ export default function SokoModuleProgress({
         setProgress((prev) => (prev ? { ...prev, completedKeys: res.data.completedKeys } : prev));
       }
     } catch (err) {
-      setStatusMessage({ type: 'error', text: 'We could not save your progress right now. Please try again.' });
+      setStatusMessage({ type: 'error', text: labels.progressSaveError });
     } finally {
       setSavingKey(null);
     }
@@ -134,14 +133,14 @@ export default function SokoModuleProgress({
       const data = res?.data || null;
       if (data && data.completed) {
         setProgress((prev) => (prev ? { ...prev, moduleCompleted: true, completedAt: data.completedAt } : prev));
-        setStatusMessage({ type: 'success', text: 'Module complete. Your progress has been saved.' });
+        setStatusMessage({ type: 'success', text: labels.progressAllComplete });
       } else if (data && data.missingRequirement) {
         setStatusMessage({ type: 'error', text: data.missingRequirement });
       } else if (data && data.missing && data.missing.length > 0) {
-        setStatusMessage({ type: 'error', text: 'Some requirements are not yet complete.' });
+        setStatusMessage({ type: 'error', text: labels.progressOutstanding });
       }
     } catch (err) {
-      setStatusMessage({ type: 'error', text: 'We could not complete this module right now. Please try again.' });
+      setStatusMessage({ type: 'error', text: labels.progressCompleteError });
     } finally {
       setCompletionPending(false);
     }
@@ -149,7 +148,7 @@ export default function SokoModuleProgress({
 
   if (loading) {
     return (
-      <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>Loading…</p>
+      <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>{labels.progressLoading}</p>
     );
   }
 
@@ -157,8 +156,7 @@ export default function SokoModuleProgress({
     return (
       <div style={{ padding: '1.1rem 1.35rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.6)', fontSize: '0.88rem' }}>
-          Progress tracking becomes available once this module is published and your enrollment is active. Until
-          then the module can be read, but nothing is saved.
+          {labels.progressUnavailable}
         </p>
       </div>
     );
@@ -167,8 +165,7 @@ export default function SokoModuleProgress({
   return (
     <div style={{ marginTop: '2rem' }} aria-live="polite" role="status">
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-        Your reflections and action-plan answers are stored privately to your account. The knowledge check and the
-        action-plan requirement are verified by the server, not self-attested.
+        {labels.progressPrivacyNote}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
@@ -201,7 +198,9 @@ export default function SokoModuleProgress({
                     aria-label={`Response mode for: ${label}`}
                   >
                     {MODE_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      <option key={opt} value={opt}>
+                        {opt === 'private' ? labels.progressModePrivate : labels.progressModeFictional}
+                      </option>
                     ))}
                   </select>
                   <button
@@ -211,7 +210,7 @@ export default function SokoModuleProgress({
                     className="font-body"
                     style={{ ...markButtonBase, cursor: savingKey === key ? 'wait' : 'pointer', opacity: savingKey === key ? 0.6 : 1 }}
                   >
-                    {savingKey === key ? 'Saving…' : 'Mark complete'}
+                    {savingKey === key ? labels.progressSaving : labels.progressMarkComplete}
                   </button>
                 </div>
               )}
@@ -224,25 +223,25 @@ export default function SokoModuleProgress({
                   className="font-body"
                   style={{ ...markButtonBase, cursor: savingKey === key ? 'wait' : 'pointer', opacity: savingKey === key ? 0.6 : 1 }}
                 >
-                  {savingKey === key ? 'Saving…' : 'Mark complete'}
+                  {savingKey === key ? labels.progressSaving : labels.progressMarkComplete}
                 </button>
               )}
 
               {isSelfAttested && isCompleted && (
                 <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, whiteSpace: 'nowrap' }}>
-                  Completed
+                  {labels.progressCompleted}
                 </span>
               )}
 
               {isKnowledgeCheck && (
                 <span className="font-body" style={{ color: isCompleted ? '#e8b85b' : 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: isCompleted ? '0.1em' : 0, textTransform: isCompleted ? 'uppercase' : 'none', fontStyle: isCompleted ? 'normal' : 'italic', fontWeight: isCompleted ? 500 : 300, whiteSpace: 'nowrap' }}>
-                  {isCompleted ? 'Passed' : 'Verified by knowledge check'}
+                  {isCompleted ? labels.progressPassed : labels.progressVerifiedByCheck}
                 </span>
               )}
 
               {isActivity && (
                 <span className="font-body" style={{ color: isCompleted ? '#e8b85b' : 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: isCompleted ? '0.1em' : 0, textTransform: isCompleted ? 'uppercase' : 'none', fontStyle: isCompleted ? 'normal' : 'italic', fontWeight: isCompleted ? 500 : 300, whiteSpace: 'nowrap' }}>
-                  {isCompleted ? 'Saved' : 'Save your section above'}
+                  {isCompleted ? labels.progressSaved : labels.progressSaveSection}
                 </span>
               )}
             </div>
@@ -263,7 +262,7 @@ export default function SokoModuleProgress({
             cursor: allComplete && !completionPending && !progress.moduleCompleted ? 'pointer' : 'not-allowed',
           }}
         >
-          {completionPending ? 'Saving…' : 'Complete module'}
+          {completionPending ? labels.progressSaving : labels.progressCompleteModule}
         </button>
       </div>
 
@@ -279,7 +278,7 @@ export default function SokoModuleProgress({
 
       {progress.moduleCompleted && !statusMessage && (
         <p className="font-body" style={{ color: '#e8b85b', marginTop: '1rem', marginBottom: 0, fontSize: '0.9rem', fontStyle: 'italic' }}>
-          Module complete. Your progress has been saved.
+          {labels.progressAllComplete}
         </p>
       )}
     </div>
