@@ -40,6 +40,12 @@ import {
   WAIYAKI_CERTIFICATE_MODULE_ROUTES,
   checkWaiyakiCourseCompletionRequirements,
 } from './waiyaki-config.js';
+import {
+  WEALTH_CERTIFICATE_COURSE_SLUG,
+  WEALTH_CERTIFICATE_COURSE_TITLE,
+  WEALTH_CERTIFICATE_STATEMENT,
+  WEALTH_MODULE_ROUTES,
+} from './building-wealth-together-config.js';
 
 export const COURSE_REGISTRY = {
   [MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG]: {
@@ -76,6 +82,17 @@ export const COURSE_REGISTRY = {
     title: WAIYAKI_CERTIFICATE_COURSE_TITLE,
     completionStatement: WAIYAKI_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: WAIYAKI_CERTIFICATE_MODULE_ROUTES,
+  },
+  // Building Wealth Together. All nine modules are required — the course
+  // material's own completion rule is that every module is finished — and
+  // checkExtraCompletionRequirements additionally requires the submitted
+  // capstone project. The learner's pathway focus (entrepreneur, leader or
+  // both) orders their study; it never removes a module from this list.
+  [WEALTH_CERTIFICATE_COURSE_SLUG]: {
+    slug: WEALTH_CERTIFICATE_COURSE_SLUG,
+    title: WEALTH_CERTIFICATE_COURSE_TITLE,
+    completionStatement: WEALTH_CERTIFICATE_STATEMENT,
+    requiredModuleRoutes: WEALTH_MODULE_ROUTES,
   },
 };
 
@@ -119,6 +136,19 @@ export async function checkExtraCompletionRequirements(base44, learnerId, course
   // written final project to be submitted, on top of the five modules.
   if (courseSlug === WAIYAKI_CERTIFICATE_COURSE_SLUG) {
     return checkWaiyakiCourseCompletionRequirements(base44, learnerId, courseSlug);
+  }
+  // Building Wealth Together requires the submitted capstone project on top
+  // of the nine modules.
+  if (courseSlug === WEALTH_CERTIFICATE_COURSE_SLUG) {
+    const rows = await base44.asServiceRole.entities.WealthCapstone.filter({
+      learner_id: learnerId,
+      course_slug: courseSlug,
+    });
+    const row = rows && rows.length > 0 ? rows[0] : null;
+    if (!row || !row.submitted_at) {
+      return { ok: false, missing: ['capstone'] };
+    }
+    return { ok: true, missing: [] };
   }
   return { ok: true, missing: [] };
 }

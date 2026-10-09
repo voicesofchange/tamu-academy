@@ -38,6 +38,12 @@ import {
   isWaiyakiEnrollmentOpen,
   isWaiyakiModulePublished,
 } from '../../shared/waiyaki-config.js';
+import {
+  WEALTH_COURSE_SLUG,
+  WEALTH_MODULE_ROUTES,
+  isWealthEnrollmentOpen,
+  isWealthModulePublished,
+} from '../../shared/building-wealth-together-config.js';
 
 export default async function(req: Request): Promise<Response> {
   try {
@@ -77,6 +83,13 @@ export default async function(req: Request): Promise<Response> {
     const waiyakiEnrollmentOpen = isWaiyakiEnrollmentOpen();
     const waiyakiIsLive = waiyakiEnrollmentOpen && waiyakiPublishedCount > 0;
 
+    // Building Wealth Together — Economics and Development
+    const wealthPublishedCount = WEALTH_MODULE_ROUTES.filter(
+      (r) => isWealthModulePublished(WEALTH_COURSE_SLUG, r)
+    ).length;
+    const wealthEnrollmentOpen = isWealthEnrollmentOpen();
+    const wealthIsLive = wealthEnrollmentOpen && wealthPublishedCount > 0;
+
     return Response.json({
       courses: {
         [MENTAL_HEALTH_COURSE_SLUG]: {
@@ -108,6 +121,12 @@ export default async function(req: Request): Promise<Response> {
           publishedModuleCount: waiyakiPublishedCount,
           totalModules: WAIYAKI_MODULE_ROUTES.length,
           isLive: waiyakiIsLive,
+        },
+        [WEALTH_COURSE_SLUG]: {
+          enrollmentOpen: wealthEnrollmentOpen,
+          publishedModuleCount: wealthPublishedCount,
+          totalModules: WEALTH_MODULE_ROUTES.length,
+          isLive: wealthIsLive,
         },
       },
     });
