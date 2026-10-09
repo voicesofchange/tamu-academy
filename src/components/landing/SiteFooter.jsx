@@ -9,6 +9,7 @@ const LINKS = [
   { key: 'nav.videos', to: '/videos' },
   { key: 'nav.articles', to: '/articles' },
   { key: 'nav.resources', to: '/resources' },
+  { key: 'nav.remotePathway', to: '/remote-pathway' },
   { key: 'nav.stories', to: '/stories' },
   { key: 'nav.contact', to: '/contact' },
   { key: 'nav.privacy', to: '/privacy' },

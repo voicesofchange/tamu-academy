@@ -6,14 +6,25 @@ import { useTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import DisplayModeToggle from '@/components/display/DisplayModeToggle';
 import {
-  PRIMARY_LINKS,
-  AUTH_LINKS,
-  CONTENT_LINKS,
+  PUBLIC_LINKS,
+  LEARNER_LINKS,
+  READING_LINKS,
   NavIcon,
   desktopTabStyle,
   mobileTabStyle,
   linkBaseStyle,
 } from '@/components/landing/nav-links';
+
+// Mobile menu section label — names the group a set of rows belongs to.
+const sectionLabelStyle = {
+  color: 'rgba(232,184,91,0.72)',
+  fontSize: '0.58rem',
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  padding: '1.1rem 0 0.3rem',
+  borderBottom: '1px solid rgba(232,184,91,0.07)',
+};
 
 export default function TopNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -64,10 +75,16 @@ export default function TopNav() {
   const isActive = (to) =>
     location.pathname === to || (to !== '/' && location.pathname.startsWith(to + '/'));
 
-  // Every destination is a tab: the fixed pages, the learner pages once signed
-  // in, then the reading and programme pages.
-  const mainTabs = [...PRIMARY_LINKS, ...(isAuthenticated ? AUTH_LINKS : [])];
-  const mobileLinks = [...mainTabs, ...CONTENT_LINKS];
+  // Two menus. A visitor who is not signed in reads only the Academy's public
+  // pages. A signed-in learner gets their own learning destinations first, then
+  // the public pages, then the reading collections — grouped, never blended.
+  const navGroups = isAuthenticated
+    ? [
+        { key: 'learner', label: t('nav.myLearning'), links: LEARNER_LINKS },
+        { key: 'public', links: PUBLIC_LINKS },
+        { key: 'reading', label: t('nav.explore'), links: READING_LINKS },
+      ]
+    : [{ key: 'public', links: PUBLIC_LINKS }];
 
   const renderTab = ({ key, to, icon }, size) => {
     const active = isActive(to);
@@ -224,21 +241,24 @@ export default function TopNav() {
           overflowX: 'auto',
         }}
       >
-        {mainTabs.map((link) => renderTab(link))}
-
-        <span
-          aria-hidden="true"
-          style={{
-            width: '1px',
-            alignSelf: 'stretch',
-            minHeight: '16px',
-            backgroundColor: 'rgba(232,184,91,0.22)',
-            margin: '0 0.5rem',
-            flexShrink: 0,
-          }}
-        />
-
-        {CONTENT_LINKS.map((link) => renderTab(link))}
+        {navGroups.map((group, groupIdx) => (
+          <React.Fragment key={group.key}>
+            {groupIdx > 0 && (
+              <span
+                aria-hidden="true"
+                style={{
+                  width: '1px',
+                  alignSelf: 'stretch',
+                  minHeight: '16px',
+                  backgroundColor: 'rgba(232,184,91,0.22)',
+                  margin: '0 0.5rem',
+                  flexShrink: 0,
+                }}
+              />
+            )}
+            {group.links.map((link) => renderTab(link))}
+          </React.Fragment>
+        ))}
       </nav>
 
       {/* Mobile dropdown menu */}
@@ -253,39 +273,35 @@ export default function TopNav() {
           gap: '0',
         }}
       >
-        {mobileLinks.map(({ key, to, icon }, idx) => {
-          const active = isActive(to);
-          // Insert a section label before the first reading destination
-          const showContentLabel = idx === mainTabs.length;
-          return (
-            <React.Fragment key={key}>
-              {showContentLabel && (
-                <span
-                  style={{
-                    color: 'rgba(232,184,91,0.72)',
-                    fontSize: '0.58rem',
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    fontWeight: 600,
-                    padding: '1.1rem 0 0.3rem',
-                    borderBottom: '1px solid rgba(232,184,91,0.07)',
-                  }}
-                >
-                  {t('nav.explore')}
-                </span>
-              )}
-              <Link
-                to={to}
-                className="tamu-tab-mobile"
-                aria-current={active ? 'page' : undefined}
-                style={mobileTabStyle(active)}
+        {navGroups.map((group, groupIdx) => (
+          <React.Fragment key={group.key}>
+            {/* Each group is named, so the menu reads as sections rather than
+                one long list of rows. */}
+            {group.label && (
+              <span
+                className="font-body"
+                style={{ ...sectionLabelStyle, paddingTop: groupIdx === 0 ? '0.5rem' : '1.1rem' }}
               >
-                <NavIcon icon={icon} active={active} size={16} />
-                <span>{t(key)}</span>
-              </Link>
-            </React.Fragment>
-          );
-        })}
+                {group.label}
+              </span>
+            )}
+            {group.links.map(({ key, to, icon }) => {
+              const active = isActive(to);
+              return (
+                <Link
+                  key={key}
+                  to={to}
+                  className="tamu-tab-mobile"
+                  aria-current={active ? 'page' : undefined}
+                  style={mobileTabStyle(active)}
+                >
+                  <NavIcon icon={icon} active={active} size={16} />
+                  <span>{t(key)}</span>
+                </Link>
+              );
+            })}
+          </React.Fragment>
+        ))}
         {/* Auth actions in mobile menu */}
         {isAuthenticated ? (
           <button

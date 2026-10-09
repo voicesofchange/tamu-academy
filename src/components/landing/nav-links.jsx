@@ -5,6 +5,9 @@ import {
   LayoutDashboard,
   BookOpen,
   User,
+  TrendingUp,
+  Library,
+  Landmark,
   Video,
   FileText,
   FolderOpen,
@@ -17,33 +20,37 @@ import {
 /**
  * The header's navigation model and shared tab styling.
  *
- * Every destination is a first-class tab — nothing sits behind a menu — so the
- * whole site is visible at a glance and the page being read is always filled in
- * brand gold.
+ * There are two menus rather than one. A visitor who is not signed in sees the
+ * Academy's public pages only, in reading order. A signed-in learner sees their
+ * own learning destinations first, then the same public pages, then the reading
+ * collections — grouped, not blended, so each audience reads one clear menu.
  */
 
-// Always-visible destinations
-export const PRIMARY_LINKS = [
+// The Academy's public pages — shown to everyone, in this order.
+export const PUBLIC_LINKS = [
   { key: 'nav.home', to: '/', icon: Home },
   { key: 'nav.courses', to: '/courses', icon: GraduationCap },
+  { key: 'nav.academicLeadership', to: '/academy', icon: Landmark },
+  { key: 'nav.about', to: '/about', icon: Info },
+  { key: 'nav.contact', to: '/contact', icon: Mail },
 ];
 
-// Learner-only destinations, shown once signed in
-export const AUTH_LINKS = [
+// Learner-only destinations, shown once signed in.
+export const LEARNER_LINKS = [
   { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
   { key: 'nav.learnersGuide', to: '/learners-guide', icon: BookOpen },
+  { key: 'nav.myProgress', to: '/my-progress', icon: TrendingUp },
+  { key: 'nav.learningHub', to: '/learning-hub', icon: Library },
   { key: 'nav.myProfile', to: '/profile', icon: User },
 ];
 
-// Reading and programme destinations
-export const CONTENT_LINKS = [
+// Reading and programme destinations.
+export const READING_LINKS = [
   { key: 'nav.videos', to: '/videos', icon: Video },
   { key: 'nav.articles', to: '/articles', icon: FileText },
   { key: 'nav.resources', to: '/resources', icon: FolderOpen },
   { key: 'nav.remotePathway', to: '/remote-pathway', icon: Wifi },
   { key: 'nav.stories', to: '/stories', icon: Quote },
-  { key: 'nav.about', to: '/about', icon: Info },
-  { key: 'nav.contact', to: '/contact', icon: Mail },
 ];
 
 export const linkBaseStyle = {
