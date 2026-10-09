@@ -28,6 +28,16 @@
       "type": "string",
       "title": "Last Module Slug"
     },
+    "pathway": {
+      "type": "string",
+      "title": "Pathway Focus",
+      "description": "Optional. Used by courses that offer more than one pathway, such as Building Wealth Together, to record which pathway the learner is focusing on. It frames the learner's study order and never gates module content.",
+      "enum": [
+        "entrepreneur",
+        "leader",
+        "both"
+      ]
+    },
     "completed_at": {
       "type": "string",
       "format": "date-time",
