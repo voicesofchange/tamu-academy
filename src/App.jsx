@@ -84,6 +84,7 @@ import WaiyakiCourseCompletion from './pages/WaiyakiCourseCompletion';
 import WaiyakiCertificate from './pages/WaiyakiCertificate';
 import ProgressDashboard from './pages/ProgressDashboard';
 import LearningHub from './pages/LearningHub';
+import CertificateDesignSample from './pages/CertificateDesignSample';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -183,6 +184,9 @@ const AuthenticatedApp = () => {
         <Route path="/learners-guide/credits" element={<GuideCredits />} />
         <Route path="/learners-guide/print" element={<GuidePrint />} />
         <Route path="/learners-guide/:sectionId" element={<GuideSection />} />
+        {/* Administrator-only review sheet for the official certificate design.
+            Demonstration data only — no certificate record is created. */}
+        <Route path="/admin/certificate-design" element={<CertificateDesignSample />} />
       </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />

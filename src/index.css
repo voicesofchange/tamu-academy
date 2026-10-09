@@ -682,3 +682,58 @@ select option {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+/* ── Certificate sheet ─────────────────────────────────────────────────────
+   The official Certificate of Completion is a landscape US Letter sheet
+   (11 × 8.5). The sheet keeps that exact proportion so what is reviewed on
+   screen matches the downloadable PDF. Below 720px the fixed ratio is
+   released, so the same content reflows rather than overflowing on a phone. */
+.tamu-cert-sheet {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  aspect-ratio: 11 / 8.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(0.6rem, 1.6vw, 1.2rem);
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .tamu-cert-sheet {
+    aspect-ratio: auto;
+  }
+}
+
+/* The certificate carries its own ivory-and-navy identity onto paper. The app's
+   generic print rules force every heading and paragraph to black, so the three
+   certificate text colours are restated here for the classes the document uses. */
+@media print {
+  @page {
+    size: letter landscape;
+    margin: 0.4in;
+  }
+  .tamu-print-area.tamu-cert-print-area {
+    background: #faf8f2 !important;
+    color: #243b53 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    border: none !important;
+  }
+  .tamu-print-area .tamu-cert-sheet {
+    aspect-ratio: 11 / 8.5;
+    max-width: none;
+    border-color: #b69a5c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .tamu-print-area .tamu-cert-navy {
+    color: #243b53 !important;
+  }
+  .tamu-print-area .tamu-cert-slate {
+    color: #586475 !important;
+  }
+}
