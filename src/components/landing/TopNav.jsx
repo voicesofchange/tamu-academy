@@ -8,6 +8,7 @@ import DisplayModeToggle from '@/components/display/DisplayModeToggle';
 import {
   PUBLIC_LINKS,
   LEARNER_LINKS,
+  LEARNER_CORE_LINKS,
   READING_LINKS,
   NavIcon,
   desktopTabStyle,
@@ -31,7 +32,7 @@ export default function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const menuRef = useRef(null);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -75,16 +76,21 @@ export default function TopNav() {
   const isActive = (to) =>
     location.pathname === to || (to !== '/' && location.pathname.startsWith(to + '/'));
 
-  // Two menus. A visitor who is not signed in reads only the Academy's public
-  // pages. A signed-in learner gets their own learning destinations first, then
-  // the public pages, then the reading collections — grouped, never blended.
-  const navGroups = isAuthenticated
-    ? [
-        { key: 'learner', label: t('nav.myLearning'), links: LEARNER_LINKS },
-        { key: 'public', links: PUBLIC_LINKS },
-        { key: 'reading', label: t('nav.explore'), links: READING_LINKS },
-      ]
-    : [{ key: 'public', links: PUBLIC_LINKS }];
+  // Three menus, by who is reading. A visitor who is not signed in reads the
+  // Academy's public pages. A signed-in learner reads their core learning
+  // destinations and nothing else. An administrator keeps the full menu:
+  // learning destinations, then the public pages, then the reading collections
+  // — grouped, never blended.
+  const isAdmin = user?.role === 'admin';
+  const navGroups = !isAuthenticated
+    ? [{ key: 'public', links: PUBLIC_LINKS }]
+    : isAdmin
+      ? [
+          { key: 'learner', label: t('nav.myLearning'), links: LEARNER_LINKS },
+          { key: 'public', links: PUBLIC_LINKS },
+          { key: 'reading', label: t('nav.explore'), links: READING_LINKS },
+        ]
+      : [{ key: 'learning', links: LEARNER_CORE_LINKS }];
 
   const renderTab = ({ key, to, icon }, size) => {
     const active = isActive(to);

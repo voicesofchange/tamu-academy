@@ -44,6 +44,16 @@ export const LEARNER_LINKS = [
   { key: 'nav.myProfile', to: '/profile', icon: User },
 ];
 
+// The learner's core destinations — the only tabs a signed-in learner who is
+// not an administrator sees. Everything in the menus above stays with admins.
+export const LEARNER_CORE_LINKS = [
+  { key: 'nav.home', to: '/', icon: Home },
+  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
+  { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
+  { key: 'nav.myProgress', to: '/my-progress', icon: TrendingUp },
+  { key: 'nav.myProfile', to: '/profile', icon: User },
+];
+
 // Reading and programme destinations.
 export const READING_LINKS = [
   { key: 'nav.videos', to: '/videos', icon: Video },
