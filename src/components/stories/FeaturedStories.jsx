@@ -30,9 +30,14 @@ export default function FeaturedStories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.LearnerStory.list('-created_date', 20)
-      .then((data) => {
-        const sorted = [...data].sort((a, b) => {
+    // Public feed: only stories an administrator has approved or featured are
+    // readable here, so signed-in and logged-out visitors see the same set.
+    base44.entities.LearnerStory.filter(
+      { status: { $in: ['approved', 'featured'] } },
+      { sort: '-created_date', limit: 50 }
+    )
+      .then((page) => {
+        const sorted = [...(page.items || [])].sort((a, b) => {
           if (a.status === 'featured' && b.status !== 'featured') return -1;
           if (b.status === 'featured' && a.status !== 'featured') return 1;
           return new Date(b.created_date) - new Date(a.created_date);
