@@ -181,6 +181,12 @@ export default function LearnerStoryForm() {
             <option value="mental-health-community-and-culture" style={{ background: '#24150f' }}>
               {t('stories.courseMentalHealth')}
             </option>
+            <option value="waiyaki-wa-hinga" style={{ background: '#24150f' }}>
+              {t('stories.courseWaiyaki')}
+            </option>
+            <option value="sauti-za-soko" style={{ background: '#24150f' }}>
+              {t('stories.courseSoko')}
+            </option>
           </select>
         </div>
       </div>

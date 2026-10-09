@@ -15,7 +15,9 @@
       "title": "Course Slug",
       "enum": [
         "understanding-african-economies-and-the-global-system",
-        "mental-health-community-and-culture"
+        "mental-health-community-and-culture",
+        "waiyaki-wa-hinga",
+        "sauti-za-soko"
       ]
     },
     "story_type": {

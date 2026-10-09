@@ -102,6 +102,8 @@ export default {
     featuredEmpty: 'Hakuna hadithi bado. Kuwa wa kwanza kushiriki uzoefu wako!',
     courseEconomics: 'Kuelewa Uchumi wa Afrika',
     courseMentalHealth: 'Afya ya Akili, Jamii na Utamaduni',
+    courseWaiyaki: 'Waiyaki wa Hinga',
+    courseSoko: 'Sauti za Soko',
     form: {
       name: 'Jina Lako',
       namePlaceholder: 'Andika jina lako',

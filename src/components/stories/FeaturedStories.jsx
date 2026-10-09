@@ -62,6 +62,8 @@ export default function FeaturedStories() {
   const courseLabel = (slug) => {
     if (slug === 'understanding-african-economies-and-the-global-system') return t('stories.courseEconomics');
     if (slug === 'mental-health-community-and-culture') return t('stories.courseMentalHealth');
+    if (slug === 'waiyaki-wa-hinga') return t('stories.courseWaiyaki');
+    if (slug === 'sauti-za-soko') return t('stories.courseSoko');
     return null;
   };
 

@@ -102,6 +102,8 @@ export default {
     featuredEmpty: 'No stories yet. Be the first to share your experience!',
     courseEconomics: 'Understanding African Economies',
     courseMentalHealth: 'Mental Health, Community and Culture',
+    courseWaiyaki: 'Waiyaki wa Hinga',
+    courseSoko: 'Sauti za Soko',
     form: {
       name: 'Your Name',
       namePlaceholder: 'Enter your name',
