@@ -50,6 +50,7 @@ export const LEARNER_CORE_LINKS = [
   { key: 'nav.home', to: '/', icon: Home },
   { key: 'nav.courses', to: '/courses', icon: GraduationCap },
   { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
+  { key: 'nav.learnersGuide', to: '/learners-guide', icon: BookOpen },
   { key: 'nav.myProgress', to: '/my-progress', icon: TrendingUp },
   { key: 'nav.myProfile', to: '/profile', icon: User },
 ];
