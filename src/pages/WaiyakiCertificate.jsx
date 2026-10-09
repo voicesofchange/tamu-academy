@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
-import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
-import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
+import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
+import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 
 const bodyText = {
@@ -83,11 +83,12 @@ export default function WaiyakiCertificate() {
 
   const handleDownloadPDF = async () => {
     if (!state.data) return;
-    await generateCertificatePDF({
-      data: state.data,
+    await generateTamuCertificatePDF({
+      learnerName: state.data.learnerName,
+      courseTitle: state.data.courseTitle,
+      completedAt: state.data.completedAt,
+      certificateId: state.data.certificateId,
       isPreview: state.data.preview === true,
-      moduleWord: 'five',
-      moduleCountLabel: 'FIVE',
     });
   };
 
@@ -236,11 +237,12 @@ export default function WaiyakiCertificate() {
       )}
 
       <div>
-        <MhCertificateDocument
-          data={data}
+        <TamuCertificateDocument
+          learnerName={data.learnerName}
+          courseTitle={data.courseTitle}
+          completedAt={data.completedAt}
+          certificateId={data.certificateId}
           isPreview={isPreview}
-          moduleWord="five"
-          moduleCountLabel="Five"
         />
       </div>
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
-import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
-import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
+import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
+import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
   SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -47,9 +47,6 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
     ? `${coursePath}/peer-facilitator/certificate`
     : `${coursePath}/certificate`;
 
-  const moduleWord = isPeer ? 'the required' : 'seven';
-  const moduleCountLabel = isPeer ? 'One' : 'Seven';
-
   const [state, setState] = useState({
     status: 'loading',
     data: null,
@@ -89,11 +86,12 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
 
   const handleDownloadPDF = async () => {
     if (!state.data) return;
-    await generateCertificatePDF({
-      data: state.data,
+    await generateTamuCertificatePDF({
+      learnerName: state.data.learnerName,
+      courseTitle: state.data.courseTitle,
+      completedAt: state.data.completedAt,
+      certificateId: state.data.certificateId,
       isPreview: state.data.preview === true,
-      moduleWord,
-      moduleCountLabel: moduleCountLabel.toUpperCase(),
     });
   };
 
@@ -163,11 +161,12 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
       )}
 
       <div>
-        <MhCertificateDocument
-          data={data}
+        <TamuCertificateDocument
+          learnerName={data.learnerName}
+          courseTitle={data.courseTitle}
+          completedAt={data.completedAt}
+          certificateId={data.certificateId}
           isPreview={isPreview}
-          moduleWord={moduleWord}
-          moduleCountLabel={moduleCountLabel}
         />
       </div>
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
-import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
-import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
+import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
+import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -95,7 +95,13 @@ export default function MhCertificate() {
 
   const handleDownloadPDF = async () => {
     if (!state.data) return;
-    await generateCertificatePDF({ data: state.data, isPreview: state.data.preview === true, moduleWord: 'seven', moduleCountLabel: 'SEVEN' });
+    await generateTamuCertificatePDF({
+      learnerName: state.data.learnerName,
+      courseTitle: state.data.courseTitle,
+      completedAt: state.data.completedAt,
+      certificateId: state.data.certificateId,
+      isPreview: state.data.preview === true,
+    });
   };
 
   if (state.notEligible) {
@@ -197,7 +203,13 @@ export default function MhCertificate() {
       )}
 
       <div ref={certificateRef}>
-        <MhCertificateDocument data={data} isPreview={isPreview} />
+        <TamuCertificateDocument
+          learnerName={data.learnerName}
+          courseTitle={data.courseTitle}
+          completedAt={data.completedAt}
+          certificateId={data.certificateId}
+          isPreview={isPreview}
+        />
       </div>
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>

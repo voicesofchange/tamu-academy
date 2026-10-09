@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
-import MhCertificateDocument from '@/components/courses/MhCertificateDocument';
-import { generateCertificatePDF } from '@/lib/generate-certificate-pdf';
+import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
+import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
 
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
@@ -126,7 +126,15 @@ export default function WealthCertificate() {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button onClick={() => window.print()} style={actionButtonStyle}>Print Certificate</button>
           <button
-            onClick={() => generateCertificatePDF({ data, isPreview, moduleWord: 'nine', moduleCountLabel: 'Nine' })}
+            onClick={() =>
+              generateTamuCertificatePDF({
+                learnerName: data.learnerName,
+                courseTitle: data.courseTitle,
+                completedAt: data.completedAt,
+                certificateId: data.certificateId,
+                isPreview,
+              })
+            }
             style={actionButtonStyle}
           >
             Download PDF
@@ -142,7 +150,13 @@ export default function WealthCertificate() {
         </div>
       )}
 
-      <MhCertificateDocument data={data} isPreview={isPreview} moduleWord="nine" moduleCountLabel="Nine" />
+      <TamuCertificateDocument
+        learnerName={data.learnerName}
+        courseTitle={data.courseTitle}
+        completedAt={data.completedAt}
+        certificateId={data.certificateId}
+        isPreview={isPreview}
+      />
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={actionButtonStyle}>

@@ -16,6 +16,7 @@ import {
   CERT_DATE_LABEL,
   CERT_ID_LABEL,
   formatCertificateDate,
+  resolveCertificateId,
 } from '@/lib/certificate-design';
 
 const serif = "'Cormorant Garamond', Georgia, serif";
@@ -36,15 +37,17 @@ const serif = "'Cormorant Garamond', Georgia, serif";
  * signature rule, and a handwritten signature is only ever added once an
  * approved image is explicitly uploaded.
  *
- * Props: { learnerName, courseTitle, completedAt, certificateId }
+ * Props: { learnerName, courseTitle, completedAt, certificateId, isPreview }
  */
 export default function TamuCertificateDocument({
   learnerName,
   courseTitle,
   completedAt,
   certificateId,
+  isPreview = false,
 }) {
   const completedDate = formatCertificateDate(completedAt);
+  const displayId = resolveCertificateId(certificateId, isPreview);
 
   return (
     <div
@@ -284,7 +287,7 @@ export default function TamuCertificateDocument({
                 overflowWrap: 'anywhere',
               }}
             >
-              {certificateId}
+              {displayId}
             </p>
           </div>
         </div>

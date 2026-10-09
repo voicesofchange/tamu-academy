@@ -4,10 +4,9 @@ const GOLD = '#e8b85b';
 
 /**
  * MhLessonOrnaments — decorative motifs shared across the Mental Health
- * course lesson pages, drawn from the same visual language as the
- * certificate of completion (MhCertificateDocument). Gold strokes on
- * the dark espresso lesson background. Purely decorative (aria-hidden);
- * contains no business logic.
+ * course lesson pages, drawn from the same visual language the academy has
+ * always used. Gold strokes on the dark espresso lesson background. Purely
+ * decorative (aria-hidden); contains no business logic.
  */
 
 // Ornamental divider: gold line + center diamond + gold line.

@@ -15,6 +15,7 @@ import {
   CERT_DATE_LABEL,
   CERT_ID_LABEL,
   formatCertificateDate,
+  resolveCertificateId,
 } from '@/lib/certificate-design';
 
 /**
@@ -68,6 +69,7 @@ export async function generateTamuCertificatePDF({
   courseTitle,
   completedAt,
   certificateId,
+  isPreview = false,
   fileName = 'tamu-academy-certificate.pdf',
 }) {
   const { jsPDF } = await import('jspdf');
@@ -80,6 +82,7 @@ export async function generateTamuCertificatePDF({
   const leftEdge = 24;
 
   const completedDate = formatCertificateDate(completedAt);
+  const displayId = resolveCertificateId(certificateId, isPreview);
 
   // ── Ground ──────────────────────────────────────────────────────────────
   doc.setFillColor(...CERT_IVORY_RGB);
@@ -261,7 +264,7 @@ export async function generateTamuCertificatePDF({
   doc.setFont('courier', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(...CERT_NAVY_RGB);
-  doc.text(String(certificateId || ''), rightEdge, ruleY + 17.5, { align: 'right' });
+  doc.text(displayId, rightEdge, ruleY + 17.5, { align: 'right' });
 
   doc.save(fileName);
 }

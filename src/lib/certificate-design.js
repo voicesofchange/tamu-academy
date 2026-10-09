@@ -44,6 +44,15 @@ export const CERT_AUTHORIZER_ROLE = 'Founder and Course Developer, Tamu Academy'
 export const CERT_DATE_LABEL = 'Date of Completion';
 export const CERT_ID_LABEL = 'Certificate ID';
 
+// The identifier shown while an administrator previews a certificate. It is
+// deliberately recognisable as not a real credential.
+export const CERT_PREVIEW_ID = 'PREVIEW-NOT-A-REAL-ID';
+
+/** The identifier the certificate presents: the real one, or the preview placeholder. */
+export function resolveCertificateId(certificateId, isPreview) {
+  return isPreview ? CERT_PREVIEW_ID : (certificateId || '');
+}
+
 // ── Design-sample data ─────────────────────────────────────────────────────
 // Demonstration values used only on the administrator design-sample page. The
 // certificate ID is deliberately recognisable as not a real credential, and
