@@ -302,8 +302,8 @@ export default function Courses() {
                 <div style={{ marginTop: '2rem' }}>
                   <span className="font-body" style={{ color: '#b97827', fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}>{c.competencyTracks}</span>
                   {ECONOMICS_DEVELOPMENT_TRACKS.map((track) => {
-                    const econPs = pubStatus['understanding-african-economies-and-the-global-system'];
-                    const trackStatus = econPs && econPs.isLive ? c.nowAvailable : track.status;
+                    const trackPs = pubStatus[track.courses?.[0]?.slug];
+                    const trackStatus = trackPs && trackPs.isLive ? c.nowAvailable : track.status;
                     return <div key={track.slug} style={{ marginBottom: '1.25rem' }}><JourneyTrackCard track={{ ...track, status: trackStatus }} /></div>;
                   })}
                 </div>

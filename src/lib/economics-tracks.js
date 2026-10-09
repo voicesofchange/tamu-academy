@@ -35,6 +35,8 @@
  * rebuilding the UI. Only the pilot track is populated in this phase.
  */
 
+import { BUILDING_WEALTH_TOGETHER_COURSE } from './building-wealth-together-tracks';
+
 export const ECONOMICS_DEVELOPMENT_PILLAR = {
   id: 'economics-and-development',
   name: 'Economics and Development',
@@ -172,6 +174,19 @@ export const ECONOMICS_DEVELOPMENT_TRACKS = [
         },
       },
     ],
+  },
+  // The applied companion track in the same pillar: personal money, a small
+  // enterprise, and leading a group that handles shared money and shared risk.
+  {
+    slug: 'community-wealth-and-enterprise',
+    title: 'Community Wealth and Enterprise',
+    status: 'Available now',
+    pillar: 'Economics and Development',
+    description:
+      'An applied learning pathway that develops the ability to manage personal and household money, build and sustain a small enterprise, and lead groups that handle shared money and shared risk.',
+    competency:
+      'By completing this learning track, learners should be able to manage their own household cash flow, validate and price an enterprise, and lead a group through shared financial decisions using transparent, accountable structures.',
+    courses: [BUILDING_WEALTH_TOGETHER_COURSE],
   },
 ];
 

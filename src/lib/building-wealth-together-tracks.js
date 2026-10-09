@@ -68,7 +68,7 @@ export const BUILDING_WEALTH_TOGETHER_COURSE = {
   subtitle:
     'A nine-module course that starts with community: managing your own money, starting and sustaining an enterprise, and leading groups that handle shared money and shared risk.',
   pillar: WEALTH_PILLAR,
-  track: 'African Economic Literacy and Systems Analysis',
+  track: 'Community Wealth and Enterprise',
   level: 'Applied',
   format: 'Self-paced',
   modulesCount: 9,
