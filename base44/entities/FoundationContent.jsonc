@@ -1,0 +1,113 @@
+{
+  "name": "FoundationContent",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "title": "Content Key",
+      "description": "Identifies which page this record holds. The Our Foundation page reads the record keyed 'our-foundation'."
+    },
+    "hero_eyebrow": {
+      "type": "string",
+      "title": "Intro Label",
+      "description": "Small label above the page heading."
+    },
+    "hero_heading": {
+      "type": "string",
+      "title": "Page Heading"
+    },
+    "intro_paragraphs": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Introduction",
+      "description": "Separate paragraphs with a blank line."
+    },
+    "people_heading": {
+      "type": "string",
+      "title": "People Section Heading"
+    },
+    "tex_name": {
+      "type": "string",
+      "title": "Tex Wambui \u2014 Name"
+    },
+    "tex_role": {
+      "type": "string",
+      "title": "Tex Wambui \u2014 Role"
+    },
+    "tex_bio": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Tex Wambui \u2014 Profile"
+    },
+    "tex_photo_url": {
+      "type": "string",
+      "title": "Tex Wambui \u2014 Profile Photo",
+      "description": "Optional. Paste the link to an uploaded photograph. Left empty, the profile shows a monogram instead, so no photograph is invented."
+    },
+    "hussein_name": {
+      "type": "string",
+      "title": "Hussein Waiyaki \u2014 Name"
+    },
+    "hussein_role": {
+      "type": "string",
+      "title": "Hussein Waiyaki \u2014 Role"
+    },
+    "hussein_bio": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Hussein Waiyaki \u2014 Profile"
+    },
+    "hussein_photo_url": {
+      "type": "string",
+      "title": "Hussein Waiyaki \u2014 Profile Photo",
+      "description": "Optional. Paste the link to an uploaded photograph. Left empty, the profile shows a monogram instead, so no photograph is invented."
+    },
+    "relationship_heading": {
+      "type": "string",
+      "title": "Organizations Section Heading"
+    },
+    "relationship_paragraphs": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Organization Relationship",
+      "description": "One line per organization, in order. Separate each with a blank line."
+    },
+    "relationship_note": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Organizations Note",
+      "description": "Clarifies how the organizations relate without implying they are the same legal organization."
+    },
+    "commitment_heading": {
+      "type": "string",
+      "title": "Commitment Section Heading"
+    },
+    "commitment_paragraphs": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Educational Commitment",
+      "description": "Separate paragraphs with a blank line."
+    }
+  },
+  "required": [
+    "key"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

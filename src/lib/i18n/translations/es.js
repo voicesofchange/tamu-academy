@@ -18,7 +18,7 @@ export default {
     myProgress: 'Mi Progreso',
     learningHub: 'Centro del Estudiante',
     myProfile: 'Mi Perfil',
-    academicLeadership: 'Liderazgo Académico',
+    ourFoundation: 'Nuestra Fundación',
     myLearning: 'Mi Aprendizaje',
     privacy: 'Privacidad',
     stories: 'Historias',

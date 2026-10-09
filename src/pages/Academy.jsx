@@ -1,92 +1,66 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
-import LearningAreas from '@/components/academy/LearningAreas';
-import ProgramHighlights from '@/components/academy/ProgramHighlights';
-import ModuleJourney from '@/components/academy/ModuleJourney';
-import { getEconomicsCourseBySlug } from '@/lib/economics-tracks';
+import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import {
+  FOUNDATION_KEY,
+  FOUNDATION_DEFAULTS,
+  mergeFoundationContent,
+} from '@/lib/foundation-content';
+import FoundationIntro from '@/components/foundation/FoundationIntro';
+import FoundationProfiles from '@/components/foundation/FoundationProfiles';
+import FoundationRelationship from '@/components/foundation/FoundationRelationship';
+import FoundationCommitment from '@/components/foundation/FoundationCommitment';
 
-const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
-
-const CONTENT = {
-  navAttr: 'A Waiyaki House learning venture',
-  navExplore: 'Explore the Academy',
-  navJoin: 'Start Learning',
-  heroEyebrow: 'Explore Tamu Academy',
-  heroHeading: 'Learning built for understanding and application.',
-  heroSupport: 'Tamu Academy develops culturally grounded courses, applied programs, and learning resources across economics, wellbeing, technology, governance, history, and global affairs.',
-  ctaJoin: 'Start Learning',
-  ctaPartner: 'Discuss a Partnership',
-  heroAttr: 'A Waiyaki House learning venture',
-  pathwayEyebrow: 'Featured Learning Pathway',
-  pathwaySupport: "A six-module pathway for understanding economic systems, institutions, global relationships, inequality, and Africa's economic futures.",
-  pathwayStatus: 'Available now',
-  pathwayFormat: 'Recorded lessons, written learning companions, reflection, knowledge checks, applied activities, and a final analytical milestone.',
-  milestoneEyebrow: 'Applied Milestone',
-  milestoneHeading: 'African Economic Systems Analysis',
-  milestoneSupport: 'Learners apply concepts from all six modules to examine a real economic system, identify stakeholders and trade-offs, and recommend practical action.',
-  milestoneStatus: 'Included in the course',
-  howEyebrow: 'How Learning Works',
-  howHeading: 'Complete course packages may include',
-  howItems: [
-    'Recorded lessons',
-    'Written learning companions',
-    'Transcripts and captions',
-    'Reflection questions',
-    'Knowledge checks',
-    'Applied activities',
-    'Workbooks and assignments',
-    'Facilitator materials',
-  ],
-  ideasEyebrow: 'Ideas Beyond the Lesson',
-  ideasHeading: 'Written learning companions',
-  ideasSupport: "Written learning companions extend Tamu Academy's videos through deeper analysis, practical examples, reflection, and further reading.",
-  articles: [
-    { area: 'Mind and Wellbeing', title: 'The Real Cost of Always Achieving', description: 'An exploration of how constant pressure to perform can affect identity, wellbeing, relationships, and the way success is understood.', status: 'Published', href: '/articles/the-real-cost-of-always-achieving' },
-    { area: 'Power and Policy', title: 'Can Policy Make Us Happier?', description: 'An examination of how public decisions influence security, belonging, opportunity, connection, and quality of life.', status: 'In development', href: '/articles/can-policy-make-us-happier' },
-    { area: 'Economics and Global Systems', title: 'Who Controls the Global Economy?', description: 'An introduction to the institutions, governments, creditors, currencies, and financial rules that influence how resources and economic power move.', status: 'In development', href: '/articles/who-controls-the-global-economy' },
-  ],
-  readArticle: 'Read the Article',
-  browseArticles: 'Browse Articles',
-  watchEpisodes: 'Watch the Episodes',
-  finalCtaHeading: 'Interested in learning, piloting, or partnering with Tamu Academy?',
-  footerAttr: 'A Waiyaki House learning venture',
-  footerCopy: '© 2026 Waiyaki House LLC. All rights reserved.',
-  privacyPolicy: 'Privacy Policy',
-};
-
+/**
+ * Our Foundation — who is behind Tamu Academy.
+ *
+ * The wording comes from the default text in @/lib/foundation-content, with any
+ * values an administrator has saved on the FoundationContent record merged over
+ * it. Nothing here is translated from the record: saved copy is shown as written.
+ */
 export default function Academy() {
-  const found = getEconomicsCourseBySlug(COURSE_SLUG);
-  const course = found?.course;
-  const { content: c } = useTranslatedContent('academy', CONTENT);
+  const [saved, setSaved] = useState(null);
+  const { content: translated } = useTranslatedContent('our-foundation', FOUNDATION_DEFAULTS);
+
+  useEffect(() => {
+    let active = true;
+    base44.entities.FoundationContent.filter({ key: FOUNDATION_KEY }, { limit: 1 })
+      .then((page) => {
+        if (active) setSaved(page.items?.[0] ?? null);
+      })
+      // A record that cannot be read simply leaves the page on its default text.
+      .catch(() => {
+        if (active) setSaved(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const c = useMemo(() => mergeFoundationContent(saved, translated), [saved, translated]);
+  const photos = {
+    tex: saved?.tex_photo_url || '',
+    hussein: saved?.hussein_photo_url || '',
+  };
 
   return (
     <div className="academy-root">
       <PageMeta
-        title="Explore Tamu Academy | Learning Areas, Courses and Programs"
-        description="Explore Tamu Academy's developing courses, learning areas, applied programs, heritage collection, and culturally grounded approach to learning."
+        title="Our Foundation | Tamu Academy"
+        description="Meet the people and organizations behind Tamu Academy: our academic foundation, educational leadership, and commitment to free, credible learning."
         path="/academy"
       />
 
       {/* Minimal top navigation (consistent with launch homepage) */}
       <header className="academy-topnav">
-        <Link
-          to="/"
-          aria-label="Tamu Academy — home"
-          className="academy-topnav-brand font-heading"
-        >
+        <Link to="/" aria-label="Tamu Academy — home" className="academy-topnav-brand font-heading">
           Tamu <span className="academy-topnav-accent">Academy</span>
-          <span className="academy-topnav-attr font-body">
-            {c.navAttr}
-          </span>
+          <span className="academy-topnav-attr font-body">{c.footerAttr}</span>
         </Link>
         <nav aria-label="Primary" className="academy-nav">
-          <Link
-            to="/academy"
-            aria-current="page"
-            className="academy-nav-link font-body"
-          >
+          <Link to="/academy" aria-current="page" className="academy-nav-link font-body">
             {c.navExplore}
           </Link>
           <Link to="/courses" className="academy-nav-join font-body">
@@ -96,149 +70,10 @@ export default function Academy() {
       </header>
 
       <main id="academy-main" tabIndex={-1} className="academy-main">
-        {/* Hero */}
-        <section aria-labelledby="academy-hero-heading" className="academy-hero">
-          <p className="academy-eyebrow academy-eyebrow-large">{c.heroEyebrow}</p>
-          <h1 id="academy-hero-heading" className="academy-hero-h1 font-heading">
-            {c.heroHeading}
-          </h1>
-          <p className="academy-hero-support font-body">
-            {c.heroSupport}
-          </p>
-          <div className="academy-cta-row academy-hero-cta">
-            <Link to="/courses" className="academy-cta-primary font-body">
-              {c.ctaJoin}
-            </Link>
-            <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
-              {c.ctaPartner}
-            </Link>
-          </div>
-          <p className="academy-attribution font-body">
-            {c.heroAttr}
-          </p>
-        </section>
-
-        {/* Learning Areas */}
-        <LearningAreas />
-
-        {/* Featured Learning Pathway */}
-        <section aria-labelledby="pathway-heading" className="academy-pathway">
-          <header className="academy-section-head">
-            <p className="academy-eyebrow">{c.pathwayEyebrow}</p>
-            <h2 id="pathway-heading" className="academy-h2 font-heading">
-              {course?.title ?? 'Understanding African Economies and the Global System'}
-            </h2>
-            <p className="academy-section-support">
-              {c.pathwaySupport}
-            </p>
-            <p className="academy-status academy-status-line academy-status-center">
-              <span className="academy-status-dot" aria-hidden="true" />
-              {c.pathwayStatus}
-            </p>
-          </header>
-          <p className="academy-pathway-format font-body">
-            {c.pathwayFormat}
-          </p>
-        </section>
-
-        {/* Module Journey (parallax preview of all six modules) */}
-        <ModuleJourney />
-
-        {/* Applied Milestone */}
-        <section aria-labelledby="milestone-heading" className="academy-milestone">
-          <header className="academy-section-head">
-            <p className="academy-eyebrow">{c.milestoneEyebrow}</p>
-            <h2 id="milestone-heading" className="academy-h2 font-heading">
-              {c.milestoneHeading}
-            </h2>
-            <p className="academy-section-support">
-              {c.milestoneSupport}
-            </p>
-            <p className="academy-status academy-status-line academy-status-center">
-              <span className="academy-status-dot" aria-hidden="true" />
-              {c.milestoneStatus}
-            </p>
-          </header>
-        </section>
-
-        {/* Proposed Pilot Programme + Heritage Collection */}
-        <ProgramHighlights />
-
-        {/* How Learning Works */}
-        <section aria-labelledby="how-heading" className="academy-how">
-          <header className="academy-section-head">
-            <p className="academy-eyebrow">{c.howEyebrow}</p>
-            <h2 id="how-heading" className="academy-h2 font-heading">
-              {c.howHeading}
-            </h2>
-          </header>
-          <ul className="academy-how-list font-body">
-            {c.howItems.map((item) => (
-              <li key={item} className="academy-how-item">
-                <span className="academy-how-marker" aria-hidden="true" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Ideas Beyond the Lesson — Articles + Videos */}
-        <section aria-labelledby="ideas-heading" className="academy-ideas">
-          <header className="academy-section-head">
-            <p className="academy-eyebrow">{c.ideasEyebrow}</p>
-            <h2 id="ideas-heading" className="academy-h2 font-heading">
-              {c.ideasHeading}
-            </h2>
-            <p className="academy-section-support">
-              {c.ideasSupport}
-            </p>
-          </header>
-
-          <ul className="academy-ideas-list">
-            {c.articles.map((a) => (
-              <li key={a.title} className="academy-idea-row">
-                <p className="academy-eyebrow academy-eyebrow-mute">{a.area}</p>
-                <h3 className="academy-idea-title font-heading">{a.title}</h3>
-                <p className="academy-idea-desc font-body">{a.description}</p>
-                <p className="academy-status academy-status-line">
-                  <span className="academy-status-dot" aria-hidden="true" />
-                  {a.status}
-                </p>
-                {a.status === 'Published' && a.href ? (
-                  <p className="academy-idea-link">
-                    <Link to={a.href} className="academy-cta-secondary academy-cta-inline font-body">
-                      {c.readArticle}
-                    </Link>
-                  </p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-
-          <div className="academy-ideas-actions">
-            <Link to="/articles" className="academy-cta-secondary font-body">
-              {c.browseArticles}
-            </Link>
-            <Link to="/videos" className="academy-cta-secondary font-body">
-              {c.watchEpisodes}
-            </Link>
-          </div>
-        </section>
-
-        {/* Final CTA */}
-        <section aria-labelledby="final-cta-heading" className="academy-final-cta">
-          <h2 id="final-cta-heading" className="academy-h2 font-heading">
-            {c.finalCtaHeading}
-          </h2>
-          <div className="academy-cta-row">
-            <Link to="/courses" className="academy-cta-primary font-body">
-              {c.ctaJoin}
-            </Link>
-            <Link to="/partnership-inquiry" className="academy-cta-secondary font-body">
-              {c.ctaPartner}
-            </Link>
-          </div>
-        </section>
+        <FoundationIntro content={c} />
+        <FoundationProfiles content={c} photos={photos} />
+        <FoundationRelationship content={c} />
+        <FoundationCommitment content={c} />
       </main>
 
       {/* Minimal footer (legal copyright keeps full Waiyaki House LLC) */}
@@ -246,12 +81,8 @@ export default function Academy() {
         <p className="academy-footer-brand font-heading">
           Tamu <span className="academy-topnav-accent">Academy</span>
         </p>
-        <p className="academy-footer-attr font-body">
-          {c.footerAttr}
-        </p>
-        <p className="academy-footer-copy font-body">
-          {c.footerCopy}
-        </p>
+        <p className="academy-footer-attr font-body">{c.footerAttr}</p>
+        <p className="academy-footer-copy font-body">{c.footerCopy}</p>
         <p className="academy-footer-links">
           <Link to="/privacy" className="font-body">
             {c.privacyPolicy}
@@ -363,255 +194,176 @@ export default function Academy() {
   font-size: 0.74rem;
   margin-bottom: 0.85rem;
 }
-.academy-eyebrow-mute {
-  color: rgba(92,117,111,0.95);
-  font-size: 0.64rem;
-  letter-spacing: 0.22em;
-  text-align: left;
-}
 .academy-h2 {
   color: #f8f0df;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0.005em;
-  margin: 0.5rem 0 0.85rem;
+  margin: 0;
 }
-.academy-section-support {
-  color: rgba(243,234,216,0.72);
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  line-height: 1.75;
-  font-weight: 300;
+.academy-prose {
+  max-width: 680px;
   margin: 0 auto;
-  max-width: 640px;
 }
-.academy-status {
-  color: rgba(92,117,111,0.95);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+.academy-prose p {
+  color: rgba(243,234,216,0.78);
+  font-size: clamp(0.98rem, 2vw, 1.05rem);
+  line-height: 1.8;
+  font-weight: 300;
+  margin: 0 0 1.1rem;
 }
-.academy-status-line { display: inline-flex; }
-.academy-status-center { justify-content: center; }
-.academy-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #e8b85b;
-  display: inline-block;
-  flex-shrink: 0;
-}
+.academy-prose p:last-child { margin-bottom: 0; }
+.academy-prose-narrow { max-width: 620px; }
 
-/* ---------- CTA buttons ---------- */
-.academy-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-.academy-cta-primary,
-.academy-cta-secondary {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 500;
-  border-radius: 3px;
-  padding: 0.85rem 1.6rem;
-  text-decoration: none;
-  white-space: nowrap;
-  display: inline-block;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-.academy-cta-primary {
-  color: #24150f;
-  background-color: #e8b85b;
-  border: 1px solid transparent;
-}
-.academy-cta-primary:hover { background-color: rgba(232,184,91,0.85); }
-.academy-cta-secondary {
-  color: #f8f0df;
-  background-color: transparent;
-  border: 1px solid rgba(232,184,91,0.5);
-}
-.academy-cta-secondary:hover {
-  border-color: rgba(232,184,91,0.85);
-  color: #e8b85b;
-}
-.academy-cta-inline {
-  font-size: 0.66rem;
-  padding: 0.6rem 1.1rem;
-}
-
-/* ---------- Hero ---------- */
+/* ---------- Opening ---------- */
 .academy-hero {
   text-align: center;
   max-width: 820px;
   margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 5vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 3.5rem);
 }
 .academy-hero-h1 {
   color: #f8f0df;
-  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  font-size: clamp(2rem, 5.5vw, 3.1rem);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.16;
   letter-spacing: 0.005em;
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.75rem;
 }
-.academy-hero-support {
-  color: rgba(243,234,216,0.78);
-  font-size: clamp(0.98rem, 2vw, 1.15rem);
-  line-height: 1.75;
-  font-weight: 300;
-  margin: 0 auto 1.5rem;
-  max-width: 620px;
-}
-.academy-hero-cta { margin-top: 1.75rem; }
-.academy-attribution {
-  color: rgba(92,117,111,0.95);
-  font-size: 0.64rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 400;
-  margin: 2rem 0 0;
-}
+.academy-hero .academy-prose p { color: rgba(243,234,216,0.72); }
 
-/* ---------- Featured pathway ---------- */
-.academy-pathway {
+/* ---------- People ---------- */
+.academy-people {
   padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  text-align: center;
-  max-width: 860px;
+  max-width: 980px;
   margin: 0 auto;
-  border-top: 1px solid rgba(232,184,91,0.18);
-  border-bottom: 1px solid rgba(232,184,91,0.18);
+  border-top: 1px solid rgba(232,184,91,0.14);
 }
-.academy-pathway-format {
-  color: rgba(243,234,216,0.6);
-  font-size: 0.9rem;
-  line-height: 1.7;
-  font-weight: 300;
-  max-width: 620px;
-  margin: 1rem auto 0;
-}
-
-/* ---------- Applied milestone ---------- */
-.academy-milestone {
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-/* ---------- How learning works ---------- */
-.academy-how {
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto;
-  border-top: 1px solid rgba(232,184,91,0.12);
-}
-.academy-how-list {
+.academy-people-grid {
   list-style: none;
   padding: 0;
-  margin: 1.5rem auto 0;
+  margin: 0;
   display: grid;
-  gap: 0.6rem 1.75rem;
-  text-align: left;
-  max-width: 640px;
-}
-@media (min-width: 640px) {
-  .academy-how-list { grid-template-columns: 1fr 1fr; }
-}
-.academy-how-item {
-  display: flex;
-  align-items: baseline;
-  gap: 0.65rem;
-  color: rgba(243,234,216,0.78);
-  font-size: 0.94rem;
-  line-height: 1.5;
-  font-weight: 300;
-}
-.academy-how-marker {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(232,184,91,0.75);
-  display: inline-block;
-  flex-shrink: 0;
-  position: relative;
-  top: -2px;
-}
-
-/* ---------- Ideas / articles ---------- */
-.academy-ideas {
-  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  max-width: 1080px;
-  margin: 0 auto;
-}
-.academy-ideas-list {
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0 0;
-  display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 @media (min-width: 768px) {
-  .academy-ideas-list {
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: start;
-  }
+  .academy-people-grid { grid-template-columns: 1fr 1fr; align-items: start; }
 }
-.academy-idea-row {
-  text-align: left;
-  padding: 1.6rem 1.35rem;
+.academy-person {
+  padding: 2rem 1.75rem;
   border: 1px solid rgba(232,184,91,0.18);
   background-color: rgba(243,234,216,0.02);
   border-radius: 4px;
+  text-align: center;
+}
+.academy-person-photo {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  margin: 0 auto 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(232,184,91,0.3);
+  background-color: rgba(232,184,91,0.08);
   display: flex;
-  flex-direction: column;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
+  align-items: center;
+  justify-content: center;
 }
-.academy-idea-row:hover {
-  border-color: rgba(232,184,91,0.4);
-  background-color: rgba(243,234,216,0.04);
+.academy-person-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.academy-idea-title {
+.academy-person-initials {
+  color: #e8b85b;
+  font-size: 2rem;
+  letter-spacing: 0.06em;
+  font-weight: 400;
+}
+.academy-person-name {
   color: #f8f0df;
-  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  font-size: clamp(1.3rem, 2.8vw, 1.6rem);
   font-weight: 400;
   line-height: 1.25;
-  margin: 0.5rem 0 0.75rem;
+  margin: 0 0 0.5rem;
 }
-.academy-idea-desc {
-  color: rgba(243,234,216,0.7);
-  font-size: 0.92rem;
+.academy-person-role {
+  color: #e8b85b;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 400;
   line-height: 1.6;
-  font-weight: 300;
   margin: 0 0 1rem;
-  flex: 1 1 auto;
 }
-.academy-idea-link { margin: 0.25rem 0 0; }
-.academy-ideas-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  justify-content: center;
-  margin-top: 2.25rem;
+.academy-person-bio {
+  color: rgba(243,234,216,0.75);
+  font-size: 0.96rem;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0;
+  text-align: left;
 }
 
-/* ---------- Final CTA ---------- */
-.academy-final-cta {
+/* ---------- Organizations ---------- */
+.academy-relationship {
   padding: clamp(2.5rem, 5vw, 3.5rem) 0;
-  text-align: center;
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  border-top: 1px solid rgba(232,184,91,0.18);
+  border-top: 1px solid rgba(232,184,91,0.14);
+  text-align: center;
 }
-.academy-final-cta .academy-h2 { margin: 0 0 1rem; }
+.academy-steps {
+  list-style: none;
+  counter-reset: foundation-step;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 620px;
+  display: grid;
+  gap: 0.9rem;
+}
+.academy-step {
+  counter-increment: foundation-step;
+  position: relative;
+  padding: 1.1rem 1.35rem 1.1rem 3rem;
+  border: 1px solid rgba(232,184,91,0.16);
+  border-radius: 4px;
+  background-color: rgba(243,234,216,0.02);
+  color: rgba(243,234,216,0.8);
+  font-size: 0.96rem;
+  line-height: 1.7;
+  font-weight: 300;
+  text-align: left;
+}
+.academy-step::before {
+  content: counter(foundation-step);
+  position: absolute;
+  left: 1.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #e8b85b;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+.academy-relationship-note {
+  color: rgba(243,234,216,0.55);
+  font-size: 0.86rem;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 1.75rem auto 0;
+  max-width: 600px;
+}
+
+/* ---------- Commitment ---------- */
+.academy-commitment {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+  max-width: 760px;
+  margin: 0 auto;
+  border-top: 1px solid rgba(232,184,91,0.14);
+  text-align: center;
+}
 
 /* ---------- Footer ---------- */
 .academy-footer {
@@ -645,9 +397,7 @@ export default function Academy() {
   font-weight: 300;
   margin: 0.85rem 0 0;
 }
-.academy-footer-links {
-  margin: 0.85rem 0 0;
-}
+.academy-footer-links { margin: 0.85rem 0 0; }
 .academy-footer-links a {
   color: rgba(232,184,91,0.85);
   font-size: 0.64rem;
@@ -658,27 +408,17 @@ export default function Academy() {
 }
 
 /* ---------- Focus + responsive ---------- */
-.academy-cta-primary:focus-visible,
-.academy-cta-secondary:focus-visible,
 .academy-nav-link:focus-visible,
 .academy-nav-join:focus-visible,
 .academy-topnav-brand:focus-visible,
-.academy-footer-links a:focus-visible,
-.academy-idea-link a:focus-visible {
+.academy-footer-links a:focus-visible {
   outline: 2px solid rgba(232,184,91,0.7);
   outline-offset: 3px;
 }
 @media (max-width: 600px) {
   .academy-topnav-attr { display: none; }
   .academy-topnav { justify-content: space-between; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .academy-cta-primary,
-  .academy-cta-secondary,
-  .academy-area-row,
-  .academy-idea-row {
-    transition: none !important;
-  }
+  .academy-person { padding: 1.75rem 1.25rem; }
 }
 `}</style>
     </div>

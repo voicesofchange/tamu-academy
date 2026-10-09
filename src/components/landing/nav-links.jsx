@@ -30,7 +30,7 @@ import {
 export const PUBLIC_LINKS = [
   { key: 'nav.home', to: '/', icon: Home },
   { key: 'nav.courses', to: '/courses', icon: GraduationCap },
-  { key: 'nav.academicLeadership', to: '/academy', icon: Landmark },
+  { key: 'nav.ourFoundation', to: '/academy', icon: Landmark },
   { key: 'nav.about', to: '/about', icon: Info },
   { key: 'nav.contact', to: '/contact', icon: Mail },
 ];
