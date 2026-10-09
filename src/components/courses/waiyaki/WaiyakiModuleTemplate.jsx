@@ -6,7 +6,7 @@ import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import ModuleNav from '@/components/courses/module/ModuleNav';
-import EconomicsLessonHeader from '@/components/courses/module/EconomicsLessonHeader';
+import ModuleHero from '@/components/courses/module/ModuleHero';
 import WaiyakiModuleBody from '@/components/courses/waiyaki/WaiyakiModuleBody';
 import WaiyakiKeyTerms from '@/components/courses/waiyaki/WaiyakiKeyTerms';
 import WaiyakiSourceAnalysis from '@/components/courses/waiyaki/WaiyakiSourceAnalysis';
@@ -21,10 +21,6 @@ const CONTENT = {
   objectivesHeading: 'Learning Objectives',
   introEyebrow: 'Introduction',
   introHeading: 'Lesson Introduction',
-  mediaEyebrow: 'Recorded Lessons',
-  mediaHeading: 'Recorded Lessons',
-  mediaIntro:
-    'The companion recording supports this module. It is not played here, so the module reads completely without it on a slow connection. The written lesson follows.',
   lessonEyebrow: 'Lesson',
   conceptsEyebrow: 'Concepts',
   conceptsHeading: 'Key Terms',
@@ -98,10 +94,13 @@ export default function WaiyakiModuleTemplate({
 
       <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} completed={completedCount} />
 
-      <EconomicsLessonHeader
-        module={{ ...module, competency: module.subtitle }}
-        competencyLabel={CONTENT.moduleFocus}
-        estimatedTimeLabel={CONTENT.estimatedTime}
+      <ModuleHero
+        courseSlug={WAIYAKI_COURSE.slug}
+        eyebrow={`${module.number} · ${WAIYAKI_COURSE.title}`}
+        title={module.title}
+        subheading={module.subtitle}
+        status={module.status}
+        metaItems={[{ icon: 'Clock', label: `${CONTENT.estimatedTime}: ${module.estimatedTime}` }]}
       />
 
       <ModuleTextSection
@@ -114,14 +113,6 @@ export default function WaiyakiModuleTemplate({
         eyebrow={CONTENT.introEyebrow}
         heading={CONTENT.introHeading}
         paragraphs={module.lead ? [module.lead] : undefined}
-      />
-
-      <ModuleTextSection
-        eyebrow={CONTENT.mediaEyebrow}
-        heading={CONTENT.mediaHeading}
-        intro={CONTENT.mediaIntro}
-        items={module.companionVideo ? [`Companion recording: ${module.companionVideo}`] : undefined}
-        ordered={false}
       />
 
       {sections.map((section, i) => (

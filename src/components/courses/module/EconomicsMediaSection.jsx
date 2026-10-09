@@ -30,24 +30,26 @@ export function normalizeLessonVideos(module) {
 
 /**
  * EconomicsMediaSection — the shared recorded-lessons block. Renders every
- * recording the module carries through the official YouTube player, and the
- * standard placeholder when a module records none.
+ * recording the module carries through the official YouTube player.
+ *
+ * A module that carries no recording renders nothing at all: the recorded
+ * lessons heading, its introduction and the placeholder are omitted together
+ * rather than announcing lessons that do not exist.
  */
-export default function EconomicsMediaSection({ module, eyebrow, heading, intro, fallbackText }) {
+export default function EconomicsMediaSection({ module, eyebrow, heading, intro }) {
   const entries = normalizeLessonVideos(module);
+  if (entries.length === 0) return null;
 
   return (
     <ModuleLessonSection eyebrow={eyebrow} heading={heading}>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>{intro}</p>
-      {entries.length > 0
-        ? entries.map((entry, i) =>
-            entry.kind === 'attributed' ? (
-              <LessonVideo key={entry.video.id || i} video={entry.video} />
-            ) : (
-              <TamuLessonVideo key={entry.video.embedUrl || i} video={entry.video} />
-            ),
-          )
-        : <LessonVideo video={null} fallbackText={fallbackText} />}
+      {entries.map((entry, i) =>
+        entry.kind === 'attributed' ? (
+          <LessonVideo key={entry.video.id || i} video={entry.video} />
+        ) : (
+          <TamuLessonVideo key={entry.video.embedUrl || i} video={entry.video} />
+        ),
+      )}
     </ModuleLessonSection>
   );
 }

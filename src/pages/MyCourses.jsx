@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
-import PageHero from '@/components/page/PageHero';
-import PageSection from '@/components/page/PageSection';
-import StatusBadge from '@/components/page/StatusBadge';
+import JourneyHero from '@/components/courses/journey/JourneyHero';
+import JourneyBand from '@/components/courses/journey/JourneyBand';
+import JourneyCourseTile from '@/components/courses/journey/JourneyCourseTile';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
@@ -24,7 +23,8 @@ import { useDisplayMode } from '@/lib/display-mode';
 import { getProfile } from '@/lib/learner-profile';
 import { DASHBOARD_GROUPS, DASHBOARD_FALLBACK, getDashboardGroup } from '@/lib/learner-dashboard';
 
-const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+// The same opening band the Courses page uses.
+const HERO_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c5d7236bd_generated_12fdce95.jpg';
 
 const COURSE_META = {
   [MENTAL_HEALTH_COURSE.slug]: MENTAL_HEALTH_COURSE,
@@ -35,24 +35,65 @@ const COURSE_META = {
 
 const ALL_COURSES = [MENTAL_HEALTH_COURSE, ECONOMICS_COURSE, SAUTI_ZA_SOKO_COURSE, WAIYAKI_COURSE];
 
+// Each course keeps the same tile face it wears on the Courses page.
+const COURSE_VISUALS = {
+  [MENTAL_HEALTH_COURSE.slug]: {
+    number: '01',
+    icon: 'Heart',
+    accent: 'rgba(197,90,56,0.28)',
+    meta: [
+      { icon: 'Layers', label: '7 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Introductory' },
+    ],
+  },
+  [ECONOMICS_COURSE.slug]: {
+    number: '02',
+    icon: 'TrendingUp',
+    accent: 'rgba(217,155,55,0.30)',
+    meta: [
+      { icon: 'Layers', label: '6 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Introductory' },
+    ],
+  },
+  [SAUTI_ZA_SOKO_COURSE_SLUG]: {
+    number: '02',
+    icon: 'Store',
+    accent: 'rgba(217,155,55,0.30)',
+    meta: [
+      { icon: 'Layers', label: '7 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Applied' },
+    ],
+  },
+  [WAIYAKI_COURSE_SLUG]: {
+    number: '05',
+    icon: 'Scroll',
+    accent: 'rgba(197,130,50,0.26)',
+    meta: [
+      { icon: 'Layers', label: '5 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Research-based' },
+    ],
+  },
+};
+
 const primaryButtonStyle = {
   display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
   color: '#24150f', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
   fontWeight: 600, textDecoration: 'none', border: 'none', borderRadius: '2px',
-  padding: '0.65rem 1.3rem', backgroundColor: '#e8b85b',
-};
-
-const linkButtonStyle = {
-  display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-  color: '#e8b85b', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase',
-  fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(232,184,91,0.5)',
-  borderRadius: '2px', padding: '0.65rem 1.3rem',
+  padding: '0.75rem 1.4rem', backgroundColor: '#e8b85b',
 };
 
 const CONTENT = {
   heroEyebrow: 'My Courses',
   heroHeading: 'Your Learning Journey',
   heroSubheading: 'Continue where you left off, track your progress across courses, and access your certificates of completion.',
+  stepLabel: 'Your learning journey',
+  myProgress: 'My Progress',
+  resourcesEyebrow: 'Your Resources',
+  resourcesHeading: 'Support for your learning',
   emptyEyebrow: 'Get Started',
   emptyHeading: "You haven't enrolled in a course yet",
   emptyBody: 'Browse available courses and enroll to start tracking your progress here. Your enrolled courses, module progress, and certificates will all appear on this page.',
@@ -154,6 +195,8 @@ export default function MyCourses() {
     .filter((c) => c.firstIncomplete)
     .sort((a, b) => b.completedCount - a.completedCount)[0];
 
+  const statusFor = (slug) => (pubStatus[slug]?.isLive ? c.nowAvailable : null);
+
   return (
     <PageLayout>
       <PageMeta
@@ -161,32 +204,38 @@ export default function MyCourses() {
         description="Track your enrolled courses, progress, and certificates at Tamu Academy."
         path="/my-courses"
       />
-      <PageHero
+
+      <JourneyHero
+        image={HERO_IMG}
         eyebrow={c.heroEyebrow}
         heading={c.heroHeading}
         subheading={c.heroSubheading}
+        actions={[
+          { label: c.browseCourses, to: '/courses' },
+          { label: c.myProgress, to: '/my-progress', variant: 'secondary' },
+        ]}
+        step="02"
+        stepLabel={c.stepLabel}
       />
 
-      <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <JourneyBand tone="dark" eyebrow={c.resourcesEyebrow} heading={c.resourcesHeading}>
+        <div style={{ marginBottom: '2.5rem' }}>
           <GuideContinueCard />
-          <DashboardLearnerTools />
         </div>
-      </div>
+        <DashboardLearnerTools />
+      </JourneyBand>
 
-      <div style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)', marginBottom: '3.5rem' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <DashboardGroupFilter
-            groups={DASHBOARD_GROUPS}
-            activeId={activeGroup.id}
-            isPreviewing={isPreviewing}
-            onSelect={(id) => setViewGroupId(id === savedGroup?.id ? null : id)}
-            onReset={() => setViewGroupId(null)}
-            labels={{ label: c.filterLabel, note: c.filterNote, backToMyGroup: c.backToMyGroup }}
-          />
-          <DashboardFocusPanel group={activeGroup} isPreviewing={isPreviewing} labels={focusLabels} />
-        </div>
-      </div>
+      <JourneyBand tone="dark">
+        <DashboardGroupFilter
+          groups={DASHBOARD_GROUPS}
+          activeId={activeGroup.id}
+          isPreviewing={isPreviewing}
+          onSelect={(id) => setViewGroupId(id === savedGroup?.id ? null : id)}
+          onReset={() => setViewGroupId(null)}
+          labels={{ label: c.filterLabel, note: c.filterNote, backToMyGroup: c.backToMyGroup }}
+        />
+        <DashboardFocusPanel group={activeGroup} isPreviewing={isPreviewing} labels={focusLabels} />
+      </JourneyBand>
 
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
@@ -194,134 +243,88 @@ export default function MyCourses() {
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       ) : courses.length === 0 ? (
-        <PageSection eyebrow={c.emptyEyebrow} heading={c.emptyHeading}>
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            {c.emptyBody}
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
-            {ALL_COURSES.map((course) => (
-              <Link key={course.slug} to={`/courses/${course.slug}`} style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', textDecoration: 'none', display: 'block' }}>
-                {pubStatus[course.slug]?.isLive && (
-                  <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.4rem' }}>{c.nowAvailable}</span>
-                )}
-                <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 400, lineHeight: 1.3, display: 'block' }}>{course.title}</span>
-              </Link>
+        <JourneyBand tone="parchment" eyebrow={c.emptyEyebrow} heading={c.emptyHeading} intro={c.emptyBody}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '2rem' }}>
+            {ALL_COURSES.map((course, index) => (
+              <JourneyCourseTile
+                key={course.slug}
+                index={index}
+                number={COURSE_VISUALS[course.slug]?.number}
+                title={course.title}
+                description={course.subtitle}
+                status={statusFor(course.slug)}
+                visual={COURSE_VISUALS[course.slug]}
+                actions={[{ label: c.courseOverview, to: `/courses/${course.slug}` }]}
+              />
             ))}
           </div>
           <Link to="/courses" className="font-body" style={primaryButtonStyle}>
             {c.browseCourses} &rarr;
           </Link>
-        </PageSection>
+        </JourneyBand>
       ) : (
         <>
           {resumeTarget && (
-            <PageSection eyebrow={c.resumeEyebrow} heading={c.resumeHeading}>
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}
-              >
-                <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, margin: '0 0 0.5rem' }}>
-                  {resumeTarget.meta?.title}
-                </p>
-                <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.5rem' }}>
-                  {resumeTarget.firstIncomplete.number}: {resumeTarget.firstIncomplete.title}
-                </h3>
-                <div style={{ marginBottom: '1.25rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                    <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-                      {c.progress}
-                    </span>
-                    <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500 }}>
-                      {resumeTarget.completedCount} {c.of} {resumeTarget.completion?.totalModules} {c.modules}
-                    </span>
-                  </div>
-                  <div
-                    role="progressbar"
-                    aria-valuenow={Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={`${resumeTarget.meta?.title} progress`}
-                    style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
-                  >
-                    <div style={{ width: `${Math.round((resumeTarget.completedCount / (resumeTarget.completion?.totalModules || 1)) * 100)}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
-                  </div>
-                </div>
-                <Link to={`/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`} className="font-body" style={primaryButtonStyle}>
-                  {c.continueAt} {resumeTarget.firstIncomplete.number} &rarr;
-                </Link>
-              </motion.div>
-            </PageSection>
+            <JourneyBand tone="tint" eyebrow={c.resumeEyebrow} heading={c.resumeHeading}>
+              <div style={{ maxWidth: '520px' }}>
+                <JourneyCourseTile
+                  number={COURSE_VISUALS[resumeTarget.slug]?.number}
+                  title={`${resumeTarget.firstIncomplete.number}: ${resumeTarget.firstIncomplete.title}`}
+                  description={resumeTarget.meta?.title}
+                  status={statusFor(resumeTarget.slug)}
+                  visual={COURSE_VISUALS[resumeTarget.slug]}
+                  progress={{
+                    completed: resumeTarget.completedCount,
+                    total: resumeTarget.completion?.totalModules || 0,
+                    label: c.progress,
+                  }}
+                  actions={[{
+                    label: `${c.continueAt} ${resumeTarget.firstIncomplete.number}`,
+                    to: `/courses/${resumeTarget.slug}/${resumeTarget.firstIncomplete.route}`,
+                    primary: true,
+                  }]}
+                />
+              </div>
+            </JourneyBand>
           )}
 
-          <PageSection eyebrow={c.enrolledEyebrow} heading={c.enrolledHeading}>
-            {courses.map((enr) => {
-              const meta = COURSE_META[enr.slug];
-              const completedCount = enr.completion?.completedCount || 0;
-              const totalModules = enr.completion?.totalModules || 0;
-              const progressPct = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
-              const firstIncomplete = enr.completion?.incompleteModules?.[0] || null;
-              const resumePath = firstIncomplete
-                ? `/courses/${enr.slug}/${firstIncomplete.route}`
-                : `/courses/${enr.slug}/completion`;
-              const resumeLabel = firstIncomplete ? `${c.resumeAt} ${firstIncomplete.number}` : c.reviewCompletion;
-              const statusLabel = pubStatus[enr.slug]?.isLive ? c.nowAvailable : null;
-              return (
-                <motion.div
-                  key={enr.slug}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                  style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)', marginBottom: '1.25rem' }}
-                >
-                  {statusLabel && (
-                    <div style={{ marginBottom: '0.85rem' }}>
-                      <StatusBadge label={statusLabel} />
-                    </div>
-                  )}
-                  <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.5vw, 1.5rem)', fontWeight: 400, lineHeight: 1.3, margin: '0 0 1rem' }}>
-                    {meta?.title}
-                  </h3>
-                  <div style={{ marginBottom: '1.25rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                      <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-                        {c.progress}
-                      </span>
-                      <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.95rem', fontWeight: 500 }}>
-                        {completedCount} {c.of} {totalModules} {c.modules}
-                      </span>
-                    </div>
-                    <div
-                      role="progressbar"
-                      aria-valuenow={progressPct}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={`${meta?.title} progress`}
-                      style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
-                    >
-                      <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    <Link to={resumePath} className="font-body" style={primaryButtonStyle}>
-                      {resumeLabel} &rarr;
-                    </Link>
-                    <Link to={`/courses/${enr.slug}`} className="font-body" style={linkButtonStyle}>
-                      {c.courseOverview} &rarr;
-                    </Link>
-                    {enr.completion?.certificateEligible && (
-                      <Link to={`/courses/${enr.slug}/certificate`} className="font-body" style={linkButtonStyle}>
-                        {c.viewCertificate} &rarr;
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </PageSection>
+          <JourneyBand tone="parchment" eyebrow={c.enrolledEyebrow} heading={c.enrolledHeading}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+              {courses.map((enr, index) => {
+                const meta = COURSE_META[enr.slug];
+                const completedCount = enr.completion?.completedCount || 0;
+                const totalModules = enr.completion?.totalModules || 0;
+                const firstIncomplete = enr.completion?.incompleteModules?.[0] || null;
+                const resumePath = firstIncomplete
+                  ? `/courses/${enr.slug}/${firstIncomplete.route}`
+                  : `/courses/${enr.slug}/completion`;
+                const actions = [{
+                  label: firstIncomplete ? `${c.resumeAt} ${firstIncomplete.number}` : c.reviewCompletion,
+                  to: resumePath,
+                  primary: true,
+                }, {
+                  label: c.courseOverview,
+                  to: `/courses/${enr.slug}`,
+                }];
+                if (enr.completion?.certificateEligible) {
+                  actions.push({ label: c.viewCertificate, to: `/courses/${enr.slug}/certificate` });
+                }
+                return (
+                  <JourneyCourseTile
+                    key={enr.slug}
+                    index={index}
+                    number={COURSE_VISUALS[enr.slug]?.number}
+                    title={meta?.title}
+                    description={meta?.subtitle}
+                    status={statusFor(enr.slug)}
+                    visual={COURSE_VISUALS[enr.slug]}
+                    progress={{ completed: completedCount, total: totalModules, label: c.progress }}
+                    actions={actions}
+                  />
+                );
+              })}
+            </div>
+          </JourneyBand>
         </>
       )}
 

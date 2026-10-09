@@ -5,6 +5,7 @@ import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleHero from '@/components/courses/module/ModuleHero';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import LessonVideo from '@/components/courses/module/LessonVideo';
 import MhInteractiveScenario from '@/components/courses/MhInteractiveScenario';
@@ -209,30 +210,17 @@ export default function MhModuleLesson({ course, module: mod, lesson }) {
         total={course.modules.length}
       />
 
-      <header style={{ marginBottom: '3rem' }}>
-        <ModuleEmblem />
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-          <StatusBadge label={mod.number} />
-          <StatusBadge label={mod.status} />
-        </div>
-        <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
-          {mod.title}
-        </h1>
-        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
-          {c.learningArea}: {course.learningArea}
-        </p>
-        <p className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
-          {c.estimatedTime}: {mod.estimatedTime}
-        </p>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
-          aria-hidden="true"
-        >
-          <GoldDivider width="220px" />
-        </motion.div>
-      </header>
+      <ModuleHero
+        courseSlug={course.slug}
+        eyebrow={`${mod.number} · ${course.title}`}
+        title={mod.title}
+        subheading={mod.description}
+        status={mod.status}
+        metaItems={[
+          { icon: 'Clock', label: `${c.estimatedTime}: ${mod.estimatedTime}` },
+          { icon: 'Layers', label: `${c.learningArea}: ${course.learningArea}` },
+        ]}
+      />
 
       <ModuleLessonSection id="module-overview" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>
         {renderParagraphs(lesson.moduleOverview.paragraphs)}

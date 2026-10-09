@@ -9,9 +9,9 @@ import KnowledgeCheck from '@/components/courses/module/KnowledgeCheck';
 import EconomicsModuleProgress from '@/components/courses/EconomicsModuleProgress';
 import AfricanCaseStudy from '@/components/courses/module/AfricanCaseStudy';
 import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
-import EconomicsLessonHeader from '@/components/courses/module/EconomicsLessonHeader';
 import EconomicsKeyConcepts from '@/components/courses/module/EconomicsKeyConcepts';
-import EconomicsMediaSection from '@/components/courses/module/EconomicsMediaSection';
+import EconomicsMediaSection, { normalizeLessonVideos } from '@/components/courses/module/EconomicsMediaSection';
+import ModuleHero from '@/components/courses/module/ModuleHero';
 import EconomicsAppliedActivity from '@/components/courses/module/EconomicsAppliedActivity';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -92,6 +92,10 @@ export default function EconomicsLessonTemplate({ course, module }) {
     ? `${c.nextPrefix}: ${nextModule.number} — ${nextModule.title}`
     : c.courseComplete;
   const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
+  // A module that carries no recording shows no recorded-lessons block and no
+  // "while you watch" questions: sections about media that does not exist are
+  // omitted rather than left standing empty.
+  const hasMedia = normalizeLessonVideos(module).length > 0;
 
   const quizQuestions = (module.quiz && module.quiz.questions) || [];
   const gradedCount = quizQuestions.filter((q) => !q.written).length;
@@ -115,10 +119,13 @@ export default function EconomicsLessonTemplate({ course, module }) {
       />
       <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} />
 
-      <EconomicsLessonHeader
-        module={module}
-        competencyLabel={c.moduleCompetency}
-        estimatedTimeLabel={c.estimatedTime}
+      <ModuleHero
+        courseSlug={course.slug}
+        eyebrow={`${module.number} · ${course.title}`}
+        title={module.title}
+        subheading={module.competency}
+        status={module.status}
+        metaItems={[{ icon: 'Clock', label: `${c.estimatedTime}: ${module.estimatedTime}` }]}
       />
 
       <ModuleTextSection
@@ -133,20 +140,23 @@ export default function EconomicsLessonTemplate({ course, module }) {
         paragraphs={module.overview}
       />
 
-      <EconomicsMediaSection
-        module={module}
-        eyebrow={c.mediaEyebrow}
-        heading={c.mediaHeading}
-        intro={c.mediaIntro}
-        fallbackText={c.videoComingSoon}
-      />
+      {hasMedia && (
+        <EconomicsMediaSection
+          module={module}
+          eyebrow={c.mediaEyebrow}
+          heading={c.mediaHeading}
+          intro={c.mediaIntro}
+        />
+      )}
 
-      <ModuleTextSection
-        eyebrow={c.watchEyebrow}
-        heading={c.watchHeading}
-        intro={c.watchIntro}
-        items={module.watchingQuestions}
-      />
+      {hasMedia && (
+        <ModuleTextSection
+          eyebrow={c.watchEyebrow}
+          heading={c.watchHeading}
+          intro={c.watchIntro}
+          items={module.watchingQuestions}
+        />
+      )}
 
       <ModuleTextSection
         eyebrow={c.explanationEyebrow}

@@ -5,6 +5,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
+import ModuleHero from '@/components/courses/module/ModuleHero';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import { useTranslation } from '@/lib/i18n';
 
@@ -82,31 +83,14 @@ export default function MhModuleShell({ course, module: mod }) {
         total={course.modules.length}
       />
 
-      <header style={{ marginBottom: '2.5rem' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-          <StatusBadge label={mod.number} />
-          <StatusBadge label={mod.status} />
-        </div>
-        <h1
-          className="font-heading"
-          style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
-        >
-          {mod.title}
-        </h1>
-        <p
-          className="font-body"
-          style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.82rem', letterSpacing: '0.06em', marginBottom: '1.5rem' }}
-        >
-          {t('common.estimatedTime')}: {mod.estimatedTime}
-        </p>
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0.4 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
-          aria-hidden="true"
-          style={{ width: '60px', height: '1px', background: 'linear-gradient(90deg, transparent, #e8b85b 35%, #E2B652 50%, #e8b85b 65%, transparent)', transformOrigin: 'left' }}
-        />
-      </header>
+      <ModuleHero
+        courseSlug={course.slug}
+        eyebrow={`${mod.number} · ${course.title}`}
+        title={mod.title}
+        subheading={mod.description}
+        status={mod.status}
+        metaItems={[{ icon: 'Clock', label: `${t('common.estimatedTime')}: ${mod.estimatedTime}` }]}
+      />
 
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
         {mod.description}
