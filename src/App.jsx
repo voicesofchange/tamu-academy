@@ -23,6 +23,11 @@ import GuidePrint from './pages/GuidePrint';
 import About from './pages/About';
 import Courses from './pages/Courses';
 import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
+import BuildingWealthTogether from './pages/BuildingWealthTogether';
+import BuildingWealthModule from './pages/BuildingWealthModule';
+import WealthCourseCompletion from './pages/WealthCourseCompletion';
+import WealthCertificate from './pages/WealthCertificate';
+import WealthCapstone from './pages/WealthCapstone';
 import SautiZaSoko from './pages/SautiZaSoko';
 import SokoModule from './pages/SokoModule';
 import SokoCourseCompletion from './pages/SokoCourseCompletion';
@@ -117,6 +122,9 @@ const AuthenticatedApp = () => {
       {/* Public course catalog and course overview pages — no login required to read about courses */}
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />
+      {/* Building Wealth Together — Economics and Development. The overview is public;
+          the modules, the capstone, the completion room and the certificate require signing in. */}
+      <Route path="/courses/building-wealth-together" element={<BuildingWealthTogether />} />
       <Route path="/courses/mental-health-community-and-culture" element={<UbuntuMentalHealth />} />
       {/* Waiyaki wa Hinga — Heritage and Leadership Collection. The overview is public;
           the modules, the completion room and the certificate require signing in. */}
@@ -142,6 +150,12 @@ const AuthenticatedApp = () => {
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
+        {/* Building Wealth Together — four static routes declared before the module
+            route so they always win. */}
+        <Route path="/courses/building-wealth-together/completion" element={<WealthCourseCompletion />} />
+        <Route path="/courses/building-wealth-together/certificate" element={<WealthCertificate />} />
+        <Route path="/courses/building-wealth-together/capstone" element={<WealthCapstone />} />
+        <Route path="/courses/building-wealth-together/:moduleRoute" element={<BuildingWealthModule />} />
         <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
         <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
         <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />

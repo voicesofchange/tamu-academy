@@ -12,6 +12,7 @@ import {
   Clock,
   BarChart,
   GraduationCap,
+  Users,
   ArrowRight,
 } from 'lucide-react';
 
@@ -26,6 +27,7 @@ const ICON_MAP = {
   Clock,
   BarChart,
   GraduationCap,
+  Users,
 };
 
 export default function CoursePreviewCard({ number, course, status, exploreLabel, visual, index = 0 }) {

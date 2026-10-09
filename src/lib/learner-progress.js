@@ -13,6 +13,7 @@ import { ECONOMICS_COURSE } from './economics-tracks';
 import { MENTAL_HEALTH_COURSE } from './mental-health-tracks';
 import { SAUTI_ZA_SOKO_COURSE } from './sauti-za-soko-tracks';
 import { WAIYAKI_COURSE } from './waiyaki-tracks';
+import { BUILDING_WEALTH_TOGETHER_COURSE } from './building-wealth-together-tracks';
 
 /** Every course a learner can hold progress in. */
 export const LEARNER_COURSES = [
@@ -20,6 +21,7 @@ export const LEARNER_COURSES = [
   MENTAL_HEALTH_COURSE,
   SAUTI_ZA_SOKO_COURSE,
   WAIYAKI_COURSE,
+  BUILDING_WEALTH_TOGETHER_COURSE,
 ];
 
 /** How a course reads to a learner who has not finished it yet. */

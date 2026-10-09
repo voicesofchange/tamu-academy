@@ -66,6 +66,7 @@ const CONTENT = {
 const ENROLLMENT_FUNCTION_BY_SLUG = {
   'mental-health-community-and-culture': 'enrollMentalHealth',
   'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
+  'building-wealth-together': 'enrollWealthCourse',
   'sauti-za-soko': 'enrollSokoCourse',
   'sauti-za-soko-peer-facilitator': 'enrollSokoCourse',
   'waiyaki-wa-hinga': 'enrollWaiyakiCourse',

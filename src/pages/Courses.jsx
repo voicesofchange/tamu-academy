@@ -84,6 +84,22 @@ const CONTENT = {
           },
         },
         {
+          title: 'Building Wealth Together: Money, Enterprise and Community Leadership',
+          slug: 'building-wealth-together',
+          status: 'Available now',
+          description:
+            'A nine-module course that starts with community: managing your own money, starting and sustaining an enterprise, and leading groups that handle shared money and shared risk.',
+          visual: {
+            icon: 'Users',
+            accent: 'rgba(217,155,55,0.30)',
+            meta: [
+              { icon: 'Layers', label: '9 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
+              { icon: 'BarChart', label: 'Applied' },
+            ],
+          },
+        },
+        {
           title: 'Sauti za Soko: Markets, Climate and Community Power',
           slug: 'sauti-za-soko',
           status: 'Available now',

@@ -2,10 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import StartCourseButton from '@/components/courses/StartCourseButton';
-import {
-  BUILDING_WEALTH_TOGETHER_COURSE,
-  WEALTH_TRACK_META,
-} from '@/lib/building-wealth-together-tracks';
+import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
 
 const COURSE_SLUG = BUILDING_WEALTH_TOGETHER_COURSE.slug;
 
@@ -159,7 +156,8 @@ export default function BuildingWealthCourseProgress() {
         Your pathway focus
       </span>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
-        {WEALTH_TRACK_META.length > 0 && 'Choose the pathway you are focusing on, or take both. This frames your study order and never locks a module away.'}
+        Choose the pathway you are focusing on, or take both. This frames your study order and never
+        locks a module away.
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
         {FOCUS_OPTIONS.map((option) => (
