@@ -121,7 +121,7 @@ export default {
       rating: 'Alama (hiari)',
       submit: 'Wasilisha Hadithi',
       submitting: 'Inawasilisha...',
-      success: 'Asante! Hadithi yako imewasilishwa na itaonekana baada ya ukaguzi.',
+      success: 'Asante! Hadithi yako imechapishwa sasa.',
       error: 'Hitilafu imetokea. Tafadhali jaribu tena.',
       submitAnother: 'Wasilisha Hadithi Nyingine',
     },

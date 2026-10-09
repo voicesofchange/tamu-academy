@@ -68,7 +68,9 @@ export default function LearnerStoryForm() {
         story_type: form.story_type,
         title: form.title,
         content: form.content,
-        status: 'pending',
+        // Stories publish themselves on submission: approved and featured so
+        // the public feed and the homepage voices section pick them straight up.
+        status: 'featured',
       };
       if (form.author_location) payload.author_location = form.author_location;
       if (form.course_slug) payload.course_slug = form.course_slug;

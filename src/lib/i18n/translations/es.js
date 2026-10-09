@@ -121,7 +121,7 @@ export default {
       rating: 'Calificación (opcional)',
       submit: 'Enviar Historia',
       submitting: 'Enviando...',
-      success: '¡Gracias! Tu historia ha sido enviada y aparecerá después de la revisión.',
+      success: '¡Gracias! Tu historia ya está publicada.',
       error: 'Algo salió mal. Por favor, inténtalo de nuevo.',
       submitAnother: 'Enviar Otra Historia',
     },

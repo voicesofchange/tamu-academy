@@ -121,7 +121,7 @@ export default {
       rating: 'Rating (optional)',
       submit: 'Submit Story',
       submitting: 'Submitting...',
-      success: 'Thank you! Your story has been submitted and will appear after review.',
+      success: 'Thank you! Your story is now published.',
       error: 'Something went wrong. Please try again.',
       submitAnother: 'Submit Another Story',
     },
