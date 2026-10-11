@@ -15,6 +15,7 @@ import {
   Users,
   ArrowRight,
 } from 'lucide-react';
+import StartCourseButton from '@/components/courses/StartCourseButton';
 
 const ICON_MAP = {
   Heart,
@@ -176,6 +177,14 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
             })}
           </div>
         )}
+
+        {coursePath ? (
+          <div style={{ paddingTop: '16px', borderTop: '1px solid #e8d9bf', marginBottom: '14px' }}>
+            {/* The enrollment action lives on the card itself, so starting or
+                registering for a course never depends on spotting a text link. */}
+            <StartCourseButton courseSlug={course.slug} compact surface="light" />
+          </div>
+        ) : null}
 
         {coursePath ? (
           <Link

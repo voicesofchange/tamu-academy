@@ -170,6 +170,16 @@ export default function UbuntuMentalHealth() {
         </div>
       </CourseOverviewSection>
 
+      {/* Access — the enrollment action again at the end of the page */}
+      <CourseOverviewSection surface="dark" eyebrow="Access" heading="Begin Learning">
+        <StartCourseButton courseSlug={course.slug} />
+        <div style={{ marginTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '11px 22px' }}>
+            Back to Courses &rarr;
+          </Link>
+        </div>
+      </CourseOverviewSection>
+
       <TamuGuideWidget />
     </CourseOverviewLayout>
   );

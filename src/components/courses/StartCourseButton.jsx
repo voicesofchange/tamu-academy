@@ -54,6 +54,24 @@ const errorTextStyle = {
   margin: '0.75rem 0 0',
 };
 
+/* Parchment-surface variants. Cards sit on a light background, where the
+   gold-on-cream outline of the dark treatment would read too faintly. */
+const secondaryButtonStyleLight = {
+  ...secondaryButtonStyle,
+  color: '#5f4531',
+  border: '1px solid rgba(95,69,49,0.45)',
+};
+
+const infoTextStyleLight = {
+  ...infoTextStyle,
+  color: '#806b58',
+};
+
+const errorTextStyleLight = {
+  ...errorTextStyle,
+  color: '#a8442a',
+};
+
 const CONTENT = {
   starting: 'Starting...',
   startCourse: 'Start Course',
@@ -72,12 +90,32 @@ const ENROLLMENT_FUNCTION_BY_SLUG = {
   'waiyaki-wa-hinga': 'enrollWaiyakiCourse',
 };
 
-export default function StartCourseButton({ courseSlug, firstModuleRoute = 'module-1' }) {
+/**
+ * StartCourseButton — the enrollment action for a course.
+ *
+ * `compact` drops the explanatory line and tightens the buttons, for use
+ * inside cards. `surface="light"` switches the outline button and error text
+ * to the espresso-on-parchment palette. Both default to the full-size
+ * dark-surface treatment used in the course heroes.
+ */
+export default function StartCourseButton({
+  courseSlug,
+  firstModuleRoute = 'module-1',
+  compact = false,
+  surface = 'dark',
+}) {
   const { content: c } = useTranslatedContent('start-course-btn', CONTENT);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [enrolling, setEnrolling] = useState(false);
   const [enrollError, setEnrollError] = useState(null);
+
+  const onLight = surface === 'light';
+  const infoStyle = onLight ? infoTextStyleLight : infoTextStyle;
+  const errorStyle = onLight ? errorTextStyleLight : errorTextStyle;
+  const primaryStyle = compact ? { ...primaryButtonStyle, padding: '0.62rem 1.15rem' } : primaryButtonStyle;
+  const outlineBase = onLight ? secondaryButtonStyleLight : secondaryButtonStyle;
+  const outlineStyle = compact ? { ...outlineBase, padding: '0.62rem 1.15rem' } : outlineBase;
 
   const modulePath = `/courses/${courseSlug}/${firstModuleRoute}`;
 
@@ -107,11 +145,11 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
           onClick={handleStart}
           disabled={enrolling}
           className="font-body"
-          style={{ ...primaryButtonStyle, opacity: enrolling ? 0.7 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
+          style={{ ...primaryStyle, opacity: enrolling ? 0.7 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
         >
           {enrolling ? c.starting : `${c.startCourse} \u2192`}
         </button>
-        {enrollError && <p className="font-body" role="alert" style={errorTextStyle}>{enrollError}</p>}
+        {enrollError && <p className="font-body" role="alert" style={errorStyle}>{enrollError}</p>}
       </div>
     );
   }
@@ -120,14 +158,16 @@ export default function StartCourseButton({ courseSlug, firstModuleRoute = 'modu
 
   return (
     <div>
-      <p className="font-body" style={infoTextStyle}>
-        {c.infoText}
-      </p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <Link to={`/login?returnTo=${encodedReturnTo}`} style={primaryButtonStyle}>
+      {!compact && (
+        <p className="font-body" style={infoStyle}>
+          {c.infoText}
+        </p>
+      )}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: compact ? '0.5rem' : '0.75rem' }}>
+        <Link to={`/login?returnTo=${encodedReturnTo}`} style={primaryStyle}>
           {c.signInToStart} &rarr;
         </Link>
-        <Link to={`/register?returnTo=${encodedReturnTo}`} style={secondaryButtonStyle}>
+        <Link to={`/register?returnTo=${encodedReturnTo}`} style={outlineStyle}>
           {c.createAccount} &rarr;
         </Link>
       </div>

@@ -143,6 +143,11 @@ export default function CoursePageTemplate({ course, progressSlot, children, mod
 
       {/* Access */}
       <CourseOverviewSection surface="dark" eyebrow={t('course.access')} heading={t('common.beginLearning')}>
+        {/* The same enrollment action as the hero, so it is still within reach
+            at the end of a long page. */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <StartCourseButton courseSlug={course.slug} />
+        </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
           <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '11px 22px' }}>
             {t('common.backToCourses')} &rarr;
