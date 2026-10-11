@@ -3,24 +3,35 @@
  * "Learning Without Barriers: Voices of Change and Tamu Academy" to a bounded
  * list of addresses supplied by an administrator.
  *
- * The message itself comes entirely from base44/emails/EventInvitation.html:
- * the caller supplies only who should receive it, so the subject, wording and
- * links cannot be rewritten by a request. Every address is validated and
- * deduplicated, and one run is capped, so re-running the campaign cannot
- * flood an address.
+ * Delivery goes through the app's connected Gmail account, sending as
+ * tex@sustainthevoices.org (a verified alias on that mailbox), so the
+ * invitation arrives from the Voices of Change address rather than the
+ * platform's sending address, and replies come back to that same inbox.
  *
- * A dry run previews exactly who would receive the invitation while sending
- * nothing, so the list can be reviewed before the send.
+ * The message itself comes entirely from
+ * base44/shared/event-invitation-email.js: the caller supplies only who should
+ * receive it, so the subject, wording and links cannot be rewritten by a
+ * request. Every address is validated and deduplicated, and one run is capped,
+ * so re-running the campaign cannot flood an address.
  *
- * Admin-only. This reaches addresses that are not app users, so it uses the
- * platform's email service rather than an app-user mailbox.
+ * A dry run reports the sending account and previews exactly who would receive
+ * the invitation while sending nothing, so the list can be reviewed first.
+ *
+ * Admin-only.
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
+import { getGmailSender, sendTrackedEmail } from '../../shared/course-outreach.js';
+import {
+  EVENT_FROM_ADDRESS,
+  EVENT_INVITATION_SUBJECT,
+  buildEventInvitationHtml,
+  buildEventInvitationText,
+} from '../../shared/event-invitation-email.js';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_PER_RUN = 50;
 const SEND_BATCH = 6;
-const TEMPLATE_NAME = 'EventInvitation';
+const MESSAGE_TYPE = 'course_invitation';
 
 /** The given name to greet with, or a warm fallback when none is on file. */
 function firstNameOf(name) {
@@ -56,9 +67,23 @@ export default async function (req: Request): Promise<Response> {
 
     const batch = targets.slice(0, MAX_PER_RUN);
 
+    // --- The Gmail account the invitation is sent from ---
+    let sender;
+    try {
+      sender = await getGmailSender(base44);
+    } catch (error) {
+      console.error('[sendEventInvitation] gmail connection error:', error && error.message);
+      return Response.json(
+        { error: 'The connected Gmail account could not be reached. Reconnect Gmail and try again.' },
+        { status: 502 }
+      );
+    }
+
     if (body.dry_run === true) {
       return Response.json({
         dry_run: true,
+        sender: EVENT_FROM_ADDRESS,
+        mailbox: sender.fromEmail,
         eligible: batch.length,
         remaining_after: Math.max(0, targets.length - batch.length),
         recipients: batch.map((t) => ({ email: t.email, first_name: t.firstName })),
@@ -74,10 +99,14 @@ export default async function (req: Request): Promise<Response> {
       const slice = batch.slice(i, i + SEND_BATCH);
       const results = await Promise.allSettled(
         slice.map((recipient) =>
-          base44.asServiceRole.integrations.Core.SendEmail({
+          sendTrackedEmail(base44, {
+            accessToken: sender.accessToken,
+            fromEmail: EVENT_FROM_ADDRESS,
             to: recipient.email,
-            template_name: TEMPLATE_NAME,
-            variables: { first_name: recipient.firstName },
+            subject: EVENT_INVITATION_SUBJECT,
+            text: buildEventInvitationText({ firstName: recipient.firstName }),
+            html: buildEventInvitationHtml({ firstName: recipient.firstName }),
+            messageType: MESSAGE_TYPE,
           })
         )
       );
@@ -98,6 +127,8 @@ export default async function (req: Request): Promise<Response> {
     return Response.json({
       sent,
       failed,
+      sender: EVENT_FROM_ADDRESS,
+      mailbox: sender.fromEmail,
       eligible: batch.length,
       remaining_after: Math.max(0, targets.length - batch.length),
       errors,
