@@ -13,6 +13,7 @@ import {
   BarChart,
   GraduationCap,
   Users,
+  Banknote,
   ArrowRight,
 } from 'lucide-react';
 import StartCourseButton from '@/components/courses/StartCourseButton';
@@ -29,6 +30,7 @@ const ICON_MAP = {
   BarChart,
   GraduationCap,
   Users,
+  Banknote,
 };
 
 export default function CoursePreviewCard({ number, course, status, exploreLabel, visual, index = 0 }) {

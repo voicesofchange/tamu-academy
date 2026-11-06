@@ -22,7 +22,7 @@ const PROGRESS_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e28
 const CONTENT = {
   heroEyebrow: 'Courses',
   heroHeading: 'Courses Designed for Learning, Reflection and Application',
-  heroSubheading: 'Four Tamu Academy courses are open for enrollment now, with more in development. Every course is built with subject-matter experts, educators, researchers, and knowledge holders, and combines recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning.',
+  heroSubheading: 'Six Tamu Academy courses are open for enrollment now, with more in development. Every course is built with subject-matter experts, educators, researchers, and knowledge holders, and combines recorded lessons, written learning companions, reflection, practical activities, and resources for continued learning.',
   heritageLabel: 'Heritage and Leadership Collection',
   learningAreaLabel: 'Learning Area',
   heritageNote: 'A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.',
@@ -112,6 +112,22 @@ const CONTENT = {
               { icon: 'Layers', label: '7 modules' },
               { icon: 'Clock', label: 'Self-paced' },
               { icon: 'BarChart', label: 'Applied' },
+            ],
+          },
+        },
+        {
+          title: 'The Diaspora Remittance Economy',
+          slug: 'diaspora-remittance-economy',
+          status: 'Available now',
+          description:
+            'A three-module course on the money families send across borders: what a remittance actually is, what it costs to send, and what happens where it lands.',
+          visual: {
+            icon: 'Banknote',
+            accent: 'rgba(217,155,55,0.30)',
+            meta: [
+              { icon: 'Layers', label: '3 modules' },
+              { icon: 'Clock', label: 'Self-paced' },
+              { icon: 'BarChart', label: 'Foundational' },
             ],
           },
         },
