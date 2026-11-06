@@ -17,6 +17,7 @@ import {
   deriveModule6CompletedKeys,
   deriveModule7CompletedKeys,
 } from '../../shared/mental-health-curriculum.js';
+import { syncCourseEnrollmentProgress } from '../../shared/enrollment-progress.js';
 
 /**
  * completeMentalHealthModule — Mental Health pillar Module 1 completion
@@ -50,7 +51,8 @@ import {
  *     the original `completed_at` is preserved and returned unchanged.
  *   - Unsatisfied requirements: the function returns the list of unmet
  *     requirements WITHOUT writing `status: 'completed'` or `completed_at`.
- *   - No CourseEnrollment record is created or modified.
+ *   - The learner's CourseEnrollment progress_percentage and last_module_slug
+ *     are recalculated from ModuleProgress.
  *   - No course-level completion is written (Module 1 completion only).
  *   - No certificate or certificate eligibility is created.
  *   - Enrollment settings and publication settings remain unchanged.
@@ -202,27 +204,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m2Now = new Date().toISOString();
-      if (m2Row) {
-        const m2Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m2Row.id,
-          { status: 'completed', completed_at: m2Now, updated_at: m2Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m2Updated.completed_at || m2Now,
-        });
-      }
-      const m2Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m2Now,
-        updated_at: m2Now,
-      });
+      const m2Saved = m2Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m2Row.id,
+            { status: 'completed', completed_at: m2Now, updated_at: m2Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m2Now,
+            updated_at: m2Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m2Created.completed_at || m2Now,
+        completedAt: (m2Saved && m2Saved.completed_at) || m2Now,
       });
     }
 
@@ -300,27 +301,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m3Now = new Date().toISOString();
-      if (m3Row) {
-        const m3Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m3Row.id,
-          { status: 'completed', completed_at: m3Now, updated_at: m3Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m3Updated.completed_at || m3Now,
-        });
-      }
-      const m3Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m3Now,
-        updated_at: m3Now,
-      });
+      const m3Saved = m3Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m3Row.id,
+            { status: 'completed', completed_at: m3Now, updated_at: m3Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m3Now,
+            updated_at: m3Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m3Created.completed_at || m3Now,
+        completedAt: (m3Saved && m3Saved.completed_at) || m3Now,
       });
     }
 
@@ -398,27 +398,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m4Now = new Date().toISOString();
-      if (m4Row) {
-        const m4Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m4Row.id,
-          { status: 'completed', completed_at: m4Now, updated_at: m4Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m4Updated.completed_at || m4Now,
-        });
-      }
-      const m4Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m4Now,
-        updated_at: m4Now,
-      });
+      const m4Saved = m4Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m4Row.id,
+            { status: 'completed', completed_at: m4Now, updated_at: m4Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m4Now,
+            updated_at: m4Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m4Created.completed_at || m4Now,
+        completedAt: (m4Saved && m4Saved.completed_at) || m4Now,
       });
     }
 
@@ -496,27 +495,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m5Now = new Date().toISOString();
-      if (m5Row) {
-        const m5Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m5Row.id,
-          { status: 'completed', completed_at: m5Now, updated_at: m5Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m5Updated.completed_at || m5Now,
-        });
-      }
-      const m5Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m5Now,
-        updated_at: m5Now,
-      });
+      const m5Saved = m5Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m5Row.id,
+            { status: 'completed', completed_at: m5Now, updated_at: m5Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m5Now,
+            updated_at: m5Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m5Created.completed_at || m5Now,
+        completedAt: (m5Saved && m5Saved.completed_at) || m5Now,
       });
     }
 
@@ -607,27 +605,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m6Now = new Date().toISOString();
-      if (m6Row) {
-        const m6Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m6Row.id,
-          { status: 'completed', completed_at: m6Now, updated_at: m6Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m6Updated.completed_at || m6Now,
-        });
-      }
-      const m6Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m6Now,
-        updated_at: m6Now,
-      });
+      const m6Saved = m6Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m6Row.id,
+            { status: 'completed', completed_at: m6Now, updated_at: m6Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m6Now,
+            updated_at: m6Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m6Created.completed_at || m6Now,
+        completedAt: (m6Saved && m6Saved.completed_at) || m6Now,
       });
     }
 
@@ -713,27 +710,26 @@ export default async function(req: Request): Promise<Response> {
         });
       }
       const m7Now = new Date().toISOString();
-      if (m7Row) {
-        const m7Updated = await base44.asServiceRole.entities.ModuleProgress.update(
-          m7Row.id,
-          { status: 'completed', completed_at: m7Now, updated_at: m7Now },
-        );
-        return Response.json({
-          completed: true,
-          completedAt: m7Updated.completed_at || m7Now,
-        });
-      }
-      const m7Created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: m7Now,
-        updated_at: m7Now,
-      });
+      const m7Saved = m7Row
+        ? await base44.asServiceRole.entities.ModuleProgress.update(
+            m7Row.id,
+            { status: 'completed', completed_at: m7Now, updated_at: m7Now },
+          )
+        : await base44.asServiceRole.entities.ModuleProgress.create({
+            learner_id: user.id,
+            course_slug: courseSlug,
+            module_slug: moduleRoute,
+            status: 'completed',
+            completed_at: m7Now,
+            updated_at: m7Now,
+          });
+
+      // Keep the enrollment's course progress in step with this module.
+      await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
       return Response.json({
         completed: true,
-        completedAt: m7Created.completed_at || m7Now,
+        completedAt: (m7Saved && m7Saved.completed_at) || m7Now,
       });
     }
 
@@ -846,40 +842,34 @@ export default async function(req: Request): Promise<Response> {
     // --- All requirements satisfied — mark Module 1 complete ---
     const now = new Date().toISOString();
 
-    if (existingRow) {
-      const updated = await base44.asServiceRole.entities.ModuleProgress.update(
-        existingRow.id,
-        {
+    const saved = existingRow
+      ? await base44.asServiceRole.entities.ModuleProgress.update(
+          existingRow.id,
+          {
+            status: 'completed',
+            completed_at: now,
+            quiz_passed: true,
+            updated_at: now,
+          }
+        )
+      : await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: learnerId,
+          course_slug: courseSlug,
+          module_slug: moduleRoute,
           status: 'completed',
           completed_at: now,
           quiz_passed: true,
           updated_at: now,
-        }
-      );
-      return Response.json({
-        completed: true,
-        completedAt: updated.completed_at || now,
-        requirements,
-      });
-    } else {
-      // No progress row exists yet — create one fully completed.
-      // (Edge case: admin completed all activities in a prior session
-      //  without the row being provisioned.)
-      const created = await base44.asServiceRole.entities.ModuleProgress.create({
-        learner_id: learnerId,
-        course_slug: courseSlug,
-        module_slug: moduleRoute,
-        status: 'completed',
-        completed_at: now,
-        quiz_passed: true,
-        updated_at: now,
-      });
-      return Response.json({
-        completed: true,
-        completedAt: created.completed_at || now,
-        requirements,
-      });
-    }
+        });
+
+    // Keep the enrollment's course progress in step with this module.
+    await syncCourseEnrollmentProgress(base44, { learnerId, courseSlug });
+
+    return Response.json({
+      completed: true,
+      completedAt: (saved && saved.completed_at) || now,
+      requirements,
+    });
   } catch (error) {
     console.error('[completeMentalHealthModule] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

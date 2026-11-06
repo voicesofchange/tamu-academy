@@ -17,15 +17,10 @@
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import {
-  ECONOMICS_CERTIFICATE_COURSE_SLUG,
-  ECONOMICS_CERTIFICATE_COURSE_TITLE,
-  ECONOMICS_CERTIFICATE_MODULE_ROUTES,
-} from '../../shared/economics-course-config.js';
-import {
-  MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG,
-  MENTAL_HEALTH_CERTIFICATE_COURSE_TITLE,
-  MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES,
-} from '../../shared/mental-health-certificate.js';
+  getCourseConfig,
+  getRequiredModuleRoutes,
+} from '../../shared/course-registry.js';
+import { SOKO_PEER_COURSE_SLUG } from '../../shared/sauti-za-soko-config.js';
 import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
 
 const SITE_URL = 'https://tamuacademy.org';
@@ -34,22 +29,23 @@ const SUBJECT = 'A gentle nudge from Tamu Academy — your journey continues';
 const INACTIVITY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days between check-ins
 
-const COURSE_MAP = {
-  [ECONOMICS_CERTIFICATE_COURSE_SLUG]: {
-    title: ECONOMICS_CERTIFICATE_COURSE_TITLE,
-    firstModuleRoute: ECONOMICS_CERTIFICATE_MODULE_ROUTES[0],
-  },
-  [MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG]: {
-    title: MENTAL_HEALTH_CERTIFICATE_COURSE_TITLE,
-    firstModuleRoute: MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES[0],
-  },
-};
+/**
+ * Where the learner continues: the module they last touched, then the slug
+ * saved on their enrollment, then the course's first required module.
+ *
+ * The Peer Facilitator track is a separate course whose single module lives
+ * inside the Sauti za Soko pathway, so it links to that page.
+ */
+const resumeUrl = (courseSlug, lastModuleSlug) => {
+  if (courseSlug === SOKO_PEER_COURSE_SLUG) {
+    return `${SITE_URL}/courses/sauti-za-soko/peer-facilitator`;
+  }
 
-const resumeUrl = (slug, lastModuleSlug) => {
-  if (lastModuleSlug) return `${SITE_URL}/courses/${slug}/${lastModuleSlug}`;
-  const c = COURSE_MAP[slug];
-  if (c) return `${SITE_URL}/courses/${slug}/${c.firstModuleRoute}`;
-  return `${SITE_URL}/courses/${slug}`;
+  const routes = getRequiredModuleRoutes(courseSlug);
+  const moduleSlug = lastModuleSlug && routes.includes(lastModuleSlug) ? lastModuleSlug : routes[0];
+
+  if (moduleSlug) return `${SITE_URL}/courses/${courseSlug}/${moduleSlug}`;
+  return `${SITE_URL}/courses/${courseSlug}`;
 };
 
 const SIGNATURE_TEXT = `Tex Wambui, MPA
@@ -122,8 +118,11 @@ export default async function (req: Request): Promise<Response> {
     const progressMap = {};
     for (const p of allProgress || []) {
       const key = `${p.learner_id}|${p.course_slug}`;
-      if (!progressMap[key] || new Date(p.updated_at) > new Date(progressMap[key])) {
-        progressMap[key] = p.updated_at;
+      const touched = p.updated_at || p.updated_date || p.created_date;
+      if (!touched) continue;
+      const current = progressMap[key];
+      if (!current || new Date(touched) > new Date(current.touched)) {
+        progressMap[key] = { touched, module_slug: p.module_slug };
       }
     }
 
@@ -139,7 +138,7 @@ export default async function (req: Request): Promise<Response> {
 
     for (const e of enrollments || []) {
       const key = `${e.learner_id}|${e.course_slug}`;
-      const lastActivity = progressMap[key] || e.enrolled_at;
+      const lastActivity = progressMap[key]?.touched || e.enrolled_at;
       if (!lastActivity) continue;
       if (new Date(lastActivity).getTime() > inactiveThreshold) continue;
 
@@ -156,7 +155,11 @@ export default async function (req: Request): Promise<Response> {
       const learner = userMap[e.learner_id];
       if (!learner || !learner.email) continue;
 
-      targets.push({ enrollment: e, learner, lastActivity });
+      // The module they last touched is the truest place to resume, with the
+      // enrollment's saved slug as a fallback for older records.
+      const lastModule = progressMap[key]?.module_slug || e.last_module_slug || null;
+
+      targets.push({ enrollment: e, learner, lastActivity, lastModule });
     }
 
     if (dryRun) {
@@ -169,6 +172,7 @@ export default async function (req: Request): Promise<Response> {
           email: t.learner.email,
           name: t.learner.full_name,
           course_slug: t.enrollment.course_slug,
+          last_module: t.lastModule,
           last_activity: t.lastActivity,
           last_check_in: t.enrollment.last_check_in_sent_at || null,
         })),
@@ -195,10 +199,10 @@ export default async function (req: Request): Promise<Response> {
     let failed = 0;
     const errors = [];
     for (let i = 0; i < targets.length; i++) {
-      const { enrollment, learner } = targets[i];
-      const course = COURSE_MAP[enrollment.course_slug];
-      const courseTitle = course ? course.title : enrollment.course_slug;
-      const url = resumeUrl(enrollment.course_slug, enrollment.last_module_slug);
+      const { enrollment, learner, lastModule } = targets[i];
+      const config = getCourseConfig(enrollment.course_slug);
+      const courseTitle = config ? config.title : enrollment.course_slug;
+      const url = resumeUrl(enrollment.course_slug, lastModule);
       const { text, html } = buildEmail(learner.full_name, courseTitle, url);
       const finalHtml = html + trackingPixel(trackingRecords[i].tracking_token);
       const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, SUBJECT, text, finalHtml);

@@ -8,6 +8,7 @@ import {
   isEconomicsModulePublished,
   deriveEconomicsCompletedKeys,
 } from '../../shared/economics-course-config.js';
+import { syncCourseEnrollmentProgress } from '../../shared/enrollment-progress.js';
 
 /**
  * completeEconomicsModule — evaluates the five uniform completion
@@ -22,8 +23,9 @@ import {
  *     completed_at.
  *   - Unsatisfied requirements: returns the missing keys WITHOUT writing
  *     status:'completed' or completed_at.
- *   - No CourseEnrollment record is created or modified. No course-level
- *     completion or certificate is written here.
+ *   - The learner's CourseEnrollment progress_percentage and last_module_slug
+ *     are recalculated from ModuleProgress. No course-level completion or
+ *     certificate is written here.
  *   - Admins previewing an unpublished module receive a preview response
  *     with progressSaved:false and no persisted change.
  *
@@ -157,28 +159,27 @@ export default async function(req: Request): Promise<Response> {
     }
 
     const now = new Date().toISOString();
-    if (row) {
-      const updated = await base44.asServiceRole.entities.ModuleProgress.update(row.id, {
-        status: 'completed',
-        completed_at: now,
-        updated_at: now,
-      });
-      return Response.json({
-        completed: true,
-        completedAt: (updated && updated.completed_at) || now,
-      });
-    }
-    const created = await base44.asServiceRole.entities.ModuleProgress.create({
-      learner_id: user.id,
-      course_slug: courseSlug,
-      module_slug: moduleRoute,
-      status: 'completed',
-      completed_at: now,
-      updated_at: now,
-    });
+    const saved = row
+      ? await base44.asServiceRole.entities.ModuleProgress.update(row.id, {
+          status: 'completed',
+          completed_at: now,
+          updated_at: now,
+        })
+      : await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: moduleRoute,
+          status: 'completed',
+          completed_at: now,
+          updated_at: now,
+        });
+
+    // Keep the enrollment's course progress in step with this module.
+    await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
     return Response.json({
       completed: true,
-      completedAt: (created && created.completed_at) || now,
+      completedAt: (saved && saved.completed_at) || now,
     });
   } catch (error) {
     console.error('[completeEconomicsModule] Unexpected error:', error && error.message);

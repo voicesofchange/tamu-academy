@@ -8,6 +8,7 @@ import {
   isModuleCompleteFromRow,
   WAIYAKI_COMPLETION_KEYS,
 } from '../../shared/waiyaki-config.js';
+import { syncCourseEnrollmentProgress } from '../../shared/enrollment-progress.js';
 
 /**
  * completeWaiyakiModule — authenticated endpoint that marks one module of
@@ -22,8 +23,9 @@ import {
  *     completed prerequisite module.
  *   - Admins previewing an unpublished module receive completed:false and
  *     nothing is written.
- *   - Only status and completed_at are written here. The three keys are set
- *     by updateWaiyakiProgress, never by this function.
+ *   - The three keys are set by updateWaiyakiProgress, never by this
+ *     function. The learner's CourseEnrollment progress_percentage and
+ *     last_module_slug are recalculated from ModuleProgress.
  */
 export default async function(req: Request): Promise<Response> {
   try {
@@ -142,6 +144,9 @@ export default async function(req: Request): Promise<Response> {
       completed_at: now,
       updated_at: now,
     });
+
+    // Keep the enrollment's course progress in step with this module.
+    await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
 
     try {
       await base44.analytics.track({

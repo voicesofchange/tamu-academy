@@ -8,6 +8,7 @@ import {
   SOKO_PEER_COURSE_SLUG,
 } from '../../shared/sauti-za-soko-config.js';
 import { SOKO_COMPLETION_KEYS } from '../../shared/sauti-za-soko-config.js';
+import { syncCourseEnrollmentProgress } from '../../shared/enrollment-progress.js';
 
 /**
  * completeSokoModule — evaluates the five completion requirements for a
@@ -24,8 +25,9 @@ import { SOKO_COMPLETION_KEYS } from '../../shared/sauti-za-soko-config.js';
  *   - Module 8 of the Peer Facilitator track additionally requires a
  *     vendor-circle submission that a reviewer has approved. A learner
  *     cannot complete the track by self-attestation.
- *   - No CourseEnrollment, course completion or certificate is written
- *     here.
+ *   - The learner's CourseEnrollment progress_percentage and last_module_slug
+ *     are recalculated from ModuleProgress. No course completion or
+ *     certificate is written here.
  *
  * REJECTED BODY FIELDS: learner_id, completed_at, status, quiz_passed,
  * score, passed, attempt_number.
@@ -167,28 +169,27 @@ export default async function(req: Request): Promise<Response> {
     }
 
     const now = new Date().toISOString();
-    if (row) {
-      const updated = await base44.asServiceRole.entities.ModuleProgress.update(row.id, {
-        status: 'completed',
-        completed_at: now,
-        updated_at: now,
-      });
-      return Response.json({
-        completed: true,
-        completedAt: (updated && updated.completed_at) || now,
-      });
-    }
-    const created = await base44.asServiceRole.entities.ModuleProgress.create({
-      learner_id: user.id,
-      course_slug: courseSlug,
-      module_slug: moduleRoute,
-      status: 'completed',
-      completed_at: now,
-      updated_at: now,
-    });
+    const saved = row
+      ? await base44.asServiceRole.entities.ModuleProgress.update(row.id, {
+          status: 'completed',
+          completed_at: now,
+          updated_at: now,
+        })
+      : await base44.asServiceRole.entities.ModuleProgress.create({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: moduleRoute,
+          status: 'completed',
+          completed_at: now,
+          updated_at: now,
+        });
+
+    // Keep the enrollment's course progress in step with this module.
+    await syncCourseEnrollmentProgress(base44, { learnerId: user.id, courseSlug });
+
     return Response.json({
       completed: true,
-      completedAt: (created && created.completed_at) || now,
+      completedAt: (saved && saved.completed_at) || now,
     });
   } catch (error) {
     console.error('[completeSokoModule] Unexpected error:', error && error.message);
