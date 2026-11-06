@@ -13,6 +13,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ProfileCompletionPrompt from '@/components/profile/ProfileCompletionPrompt';
 import SoftLaunchGate from '@/components/SoftLaunchGate';
 import AppLoadingSpinner from '@/components/AppLoadingSpinner';
+import AppErrorBoundary from '@/components/errors/AppErrorBoundary';
 import ProtectedRoute from '@/components/ProtectedRoute';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
@@ -251,9 +252,11 @@ function App() {
             <ProfileCompletionPrompt />
             {/* Pages are code-split: the same loading spinner covers the
                 session check and the download of a page's code. */}
-            <Suspense fallback={<AppLoadingSpinner />}>
-              <AuthenticatedApp />
-            </Suspense>
+            <AppErrorBoundary>
+              <Suspense fallback={<AppLoadingSpinner />}>
+                <AuthenticatedApp />
+              </Suspense>
+            </AppErrorBoundary>
           </Router>
           <Toaster />
         </MotionConfig>
