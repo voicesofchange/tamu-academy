@@ -75,7 +75,7 @@ export default function UbuntuMentalHealth() {
       }
       heroCta={<StartCourseButton courseSlug={course.slug} />}
     >
-      <PageMeta title={`${course.title} | Tamu Academy`} description={course.description} path={`/courses/${course.slug}`} noindex />
+      <PageMeta title={`${course.title} | Tamu Academy`} description={course.description} path={`/courses/${course.slug}`} />
 
       {/* Overview */}
       <CourseOverviewSection surface="light" eyebrow={c.overviewEyebrow} heading={c.overviewHeading}>

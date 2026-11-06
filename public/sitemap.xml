@@ -6,19 +6,9 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tamuacademy.org/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://tamuacademy.org/courses</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tamuacademy.org/videos</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tamuacademy.org/articles</loc>
@@ -26,10 +16,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tamuacademy.org/articles/the-real-cost-of-always-achieving</loc>
+    <loc>https://tamuacademy.org/videos</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/about</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-07-12</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tamuacademy.org/resources</loc>
@@ -37,26 +31,82 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://tamuacademy.org/remote-pathway</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/academy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/stories</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/programmes/intercultural-ai-lab</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://tamuacademy.org/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://tamuacademy.org/articles/is-the-icc-biased-against-africa</loc>
+    <loc>https://tamuacademy.org/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/courses/understanding-african-economies-and-the-global-system</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/courses/building-wealth-together</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/courses/mental-health-community-and-culture</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/courses/waiyaki-wa-hinga</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/courses/sauti-za-soko</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/articles/the-real-cost-of-always-achieving</loc>
+    <lastmod>2026-07-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tamuacademy.org/articles/is-the-icc-biased-against-africa</loc>
     <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://tamuacademy.org/articles/after-the-guns-go-silent</loc>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2026-07-14</lastmod>
   </url>
   <url>
     <loc>https://tamuacademy.org/articles/climate-is-a-mental-health-crisis</loc>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2026-07-14</lastmod>
   </url>
 </urlset>
