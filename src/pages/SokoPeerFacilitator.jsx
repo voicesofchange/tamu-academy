@@ -3,6 +3,8 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import SokoExpandedTemplate from '@/components/courses/soko/SokoExpandedTemplate';
 import SokoFacilitatorPanel from '@/components/courses/soko/SokoFacilitatorPanel';
 import {
@@ -28,6 +30,9 @@ export default function SokoPeerFacilitator() {
   const { user } = useAuth();
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(SAUTI_ZA_SOKO_PEER_COURSE_SLUG);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
 
   useEffect(() => {
     let cancelled = false;
@@ -51,7 +56,7 @@ export default function SokoPeerFacilitator() {
       }
     })();
     return () => { cancelled = true; };
-  }, [language]);
+  }, [language, reloadToken]);
 
   if (status === 'loading') {
     return (
@@ -62,12 +67,29 @@ export default function SokoPeerFacilitator() {
   }
 
   if (status === 'denied') {
-    return (
-      <ModuleDevelopmentState
-        course={COURSE_STUB}
-        module={{ number: 'Module 8', route: 'module-8', title: 'Facilitating a Vendor Circle' }}
-      />
-    );
+    const peerModule = { number: 'Module 8', route: 'module-8', title: 'Facilitating a Vendor Circle' };
+
+    // Signed in but not enrolled: start the track here and load the module in
+    // place. Unpublished modules and prerequisites keep their own state.
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <ModuleStartGate
+          course={COURSE_STUB}
+          module={peerModule}
+          autoStart={autoStart}
+          onStarted={() => setReloadToken((token) => token + 1)}
+        />
+      );
+    }
+
+    return <ModuleDevelopmentState course={COURSE_STUB} module={peerModule} />;
   }
 
   const canSave = !!user;

@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import BuildingWealthLessonTemplate from '@/components/courses/wealth/BuildingWealthLessonTemplate';
 import ModuleLockedState from '@/components/courses/wealth/ModuleLockedState';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import {
   BUILDING_WEALTH_TOGETHER_COURSE,
   getWealthModulePreview,
@@ -28,6 +30,9 @@ export default function BuildingWealthModule() {
   const found = getWealthModulePreview(COURSE.slug, moduleRoute);
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(COURSE.slug);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +57,7 @@ export default function BuildingWealthModule() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute]);
+  }, [moduleRoute, reloadToken]);
 
   if (!found) return <PageNotFound />;
 
@@ -68,6 +73,26 @@ export default function BuildingWealthModule() {
   }
 
   if (status === 'locked') {
+    // A signed-in learner who has not enrolled yet starts the course here and
+    // the module loads in place. Everything else keeps the existing state.
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <ModuleStartGate
+          course={COURSE}
+          module={found.module}
+          autoStart={autoStart}
+          onStarted={() => setReloadToken((token) => token + 1)}
+        />
+      );
+    }
+
     const index = COURSE.modules.findIndex((m) => m.route === moduleRoute);
     const previous = index > 0 ? COURSE.modules[index - 1] : null;
     return (

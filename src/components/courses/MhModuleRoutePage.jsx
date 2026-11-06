@@ -8,6 +8,8 @@ import MhModule4Lesson from '@/components/courses/MhModule4Lesson';
 import MhModule5Lesson from '@/components/courses/MhModule5Lesson';
 import MhModule6Lesson from '@/components/courses/MhModule6Lesson';
 import MhModule7Lesson from '@/components/courses/MhModule7Lesson';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import { getMentalHealthModule } from '@/lib/mental-health-tracks';
 import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
@@ -51,6 +53,9 @@ export default function MhModuleRoutePage({ moduleRoute }) {
   const { language } = useTranslation();
   const found = getMentalHealthModule(COURSE_SLUG, moduleRoute);
   const [state, setState] = useState({ status: 'loading', module: null });
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(COURSE_SLUG);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
 
   useEffect(() => {
     let cancelled = false;
@@ -68,20 +73,20 @@ export default function MhModuleRoutePage({ moduleRoute }) {
         } else if (mod) {
           setState({ status: 'shell', module: mod });
         } else {
-          setState({ status: 'shell', module: null });
+          setState({ status: 'shell', module: null, denied: true });
         }
       } catch (err) {
         if (cancelled) return;
-        // 403 (non-admin during development) and any network error both
-        // fall back to the public shell state — no protected content is
-        // displayed to a viewer who is not authorized for this course.
-        setState({ status: 'shell', module: null });
+        // 403 (not enrolled, or not authorized) and network errors both fall
+        // back to the shell — no protected content is displayed. `denied`
+        // marks that the server refused rather than the content being absent.
+        setState({ status: 'shell', module: null, denied: true });
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute, language]);
+  }, [moduleRoute, language, reloadToken]);
 
   if (!found) return <PageNotFound />;
 
@@ -151,6 +156,28 @@ export default function MhModuleRoutePage({ moduleRoute }) {
         lesson={state.module.lesson}
       />
     );
+  }
+
+  // Signed in but not enrolled: start the course here and load the module in
+  // place. An enrolled learner whose content is not available keeps the shell.
+  if (state.denied) {
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <ModuleStartGate
+          course={found.course}
+          module={found.module}
+          autoStart={autoStart}
+          onStarted={() => setReloadToken((token) => token + 1)}
+        />
+      );
+    }
   }
 
   return <MhModuleShell course={found.course} module={found.module} />;

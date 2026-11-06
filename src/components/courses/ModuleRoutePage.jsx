@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import EconomicsLessonTemplate from '@/components/courses/module/EconomicsLessonTemplate';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import { getEconomicsModule } from '@/lib/economics-tracks';
 import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
@@ -35,6 +37,9 @@ export default function ModuleRoutePage({ moduleRoute }) {
   const found = getEconomicsModule(COURSE_SLUG, moduleRoute);
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'denied'
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(COURSE_SLUG);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
 
   useEffect(() => {
     let cancelled = false;
@@ -60,7 +65,7 @@ export default function ModuleRoutePage({ moduleRoute }) {
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute, language]);
+  }, [moduleRoute, language, reloadToken]);
 
   if (!found) return <PageNotFound />;
 
@@ -84,6 +89,25 @@ export default function ModuleRoutePage({ moduleRoute }) {
   }
 
   if (status === 'denied') {
+    // Signed in but not enrolled: start the course here and reload this module
+    // in place. Unpublished modules and prerequisites keep their own state.
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <ModuleStartGate
+          course={found.course}
+          module={found.module}
+          autoStart={autoStart}
+          onStarted={() => setReloadToken((token) => token + 1)}
+        />
+      );
+    }
     return <ModuleDevelopmentState course={found.course} module={found.module} />;
   }
 

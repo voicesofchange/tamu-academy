@@ -47,6 +47,8 @@ const CONTENT = {
 
 export default function Register() {
   const { content: c } = useTranslatedContent("register", CONTENT);
+  // Keep the course the visitor came from when they move to sign-in.
+  const returnToPath = safeReturnTo();
   const [learnerCategory, setLearnerCategory] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -190,7 +192,10 @@ export default function Register() {
       footer={
         <>
           {c.footerPre}{" "}
-          <Link to="/login" className="text-primary font-medium hover:underline">
+          <Link
+            to={returnToPath === "/" ? "/login" : `/login?returnTo=${encodeURIComponent(returnToPath)}`}
+            className="text-primary font-medium hover:underline"
+          >
             {c.footerLink}
           </Link>
         </>

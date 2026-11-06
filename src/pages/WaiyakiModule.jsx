@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageNotFound from '@/lib/PageNotFound';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import WaiyakiModuleTemplate from '@/components/courses/waiyaki/WaiyakiModuleTemplate';
 import {
   WAIYAKI_COURSE,
@@ -27,6 +29,9 @@ export default function WaiyakiModule() {
 
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(WAIYAKI_COURSE_SLUG);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
   const [progress, setProgress] = useState(null);
   const [savingKey, setSavingKey] = useState(null);
   const [completing, setCompleting] = useState(false);
@@ -64,11 +69,11 @@ export default function WaiyakiModule() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute]);
+  }, [moduleRoute, reloadToken]);
 
   useEffect(() => {
     fetchProgress();
-  }, [fetchProgress]);
+  }, [fetchProgress, reloadToken]);
 
   const currentModuleProgress = (progress?.modules || []).find(
     (m) => m.route === moduleRoute,
@@ -141,6 +146,27 @@ export default function WaiyakiModule() {
   }
 
   if (status === 'denied') {
+    // Signed in but not enrolled: start the course here and load the module in
+    // place. Unpublished modules and prerequisites keep their own state.
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <div className="tamu-waiyaki-centered">
+          <ModuleStartGate
+            course={preview.course}
+            module={preview.module}
+            autoStart={autoStart}
+            onStarted={() => setReloadToken((token) => token + 1)}
+          />
+        </div>
+      );
+    }
     return (
       <div className="tamu-waiyaki-centered">
         <ModuleDevelopmentState course={preview.course} module={preview.module} />

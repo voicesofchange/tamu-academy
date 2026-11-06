@@ -29,6 +29,8 @@ const CONTENT = {
 
 export default function Login() {
   const { content: c } = useTranslatedContent("login", CONTENT);
+  // Keep the course the visitor came from when they move to registration.
+  const returnTo = safeReturnTo();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -60,7 +62,10 @@ export default function Login() {
       footer={
         <>
           {c.footerPre}{" "}
-          <Link to="/register" className="text-primary font-medium hover:underline">
+          <Link
+            to={returnTo === "/" ? "/register" : `/register?returnTo=${encodeURIComponent(returnTo)}`}
+            className="text-primary font-medium hover:underline"
+          >
             {c.footerLink}
           </Link>
         </>

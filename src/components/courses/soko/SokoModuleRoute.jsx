@@ -4,6 +4,8 @@ import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
 import ModuleDevelopmentState from '@/components/courses/module/ModuleDevelopmentState';
+import ModuleStartGate from '@/components/courses/ModuleStartGate';
+import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import SokoExpandedTemplate from '@/components/courses/soko/SokoExpandedTemplate';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
@@ -29,6 +31,9 @@ export default function SokoModuleRoute({ moduleRoute }) {
   const preview = getSokoModulePreview(moduleRoute);
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [reloadToken, setReloadToken] = useState(0);
+  const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(SAUTI_ZA_SOKO_COURSE_SLUG);
+  const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
 
   useEffect(() => {
     let cancelled = false;
@@ -72,7 +77,7 @@ export default function SokoModuleRoute({ moduleRoute }) {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, language]);
+  }, [moduleRoute, language, reloadToken]);
 
   if (!preview) return <PageNotFound />;
 
@@ -85,6 +90,25 @@ export default function SokoModuleRoute({ moduleRoute }) {
   }
 
   if (status === 'denied') {
+    // Signed in but not enrolled: start the course here and reload this module
+    // in place. Unpublished modules and prerequisites keep their own state.
+    if (isAuthenticated && enrollmentStatus === 'checking') {
+      return (
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+        </div>
+      );
+    }
+    if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
+      return (
+        <ModuleStartGate
+          course={preview.course}
+          module={preview.module}
+          autoStart={autoStart}
+          onStarted={() => setReloadToken((token) => token + 1)}
+        />
+      );
+    }
     return <ModuleDevelopmentState course={preview.course} module={preview.module} />;
   }
 

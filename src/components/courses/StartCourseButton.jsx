@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import { base44 } from '@/api/base44Client';
+import { enrollInCourse } from '@/lib/course-enrollment';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const primaryButtonStyle = {
@@ -81,15 +82,6 @@ const CONTENT = {
   createAccount: 'Create Account',
 };
 
-const ENROLLMENT_FUNCTION_BY_SLUG = {
-  'mental-health-community-and-culture': 'enrollMentalHealth',
-  'understanding-african-economies-and-the-global-system': 'enrollEconomicsCourse',
-  'building-wealth-together': 'enrollWealthCourse',
-  'sauti-za-soko': 'enrollSokoCourse',
-  'sauti-za-soko-peer-facilitator': 'enrollSokoCourse',
-  'waiyaki-wa-hinga': 'enrollWaiyakiCourse',
-};
-
 /**
  * StartCourseButton — the enrollment action for a course.
  *
@@ -123,15 +115,12 @@ export default function StartCourseButton({
     if (enrolling) return;
     setEnrolling(true);
     setEnrollError(null);
-    const functionName = ENROLLMENT_FUNCTION_BY_SLUG[courseSlug];
-    if (functionName) {
-      try {
-        await base44.functions.invoke(functionName, { courseSlug });
-      } catch (err) {
-        setEnrollError(c.enrollError);
-        setEnrolling(false);
-        return;
-      }
+    try {
+      await enrollInCourse(courseSlug);
+    } catch (err) {
+      setEnrollError(c.enrollError);
+      setEnrolling(false);
+      return;
     }
     base44.analytics.track({ eventName: "course_started", properties: { course_slug: courseSlug } });
     navigate(modulePath);
@@ -154,7 +143,9 @@ export default function StartCourseButton({
     );
   }
 
-  const encodedReturnTo = encodeURIComponent(modulePath);
+  // `enroll=1` is the sign-in intent: the module page finishes the job by
+  // enrolling the learner automatically once they are signed in.
+  const encodedReturnTo = encodeURIComponent(`${modulePath}?enroll=1`);
 
   return (
     <div>
