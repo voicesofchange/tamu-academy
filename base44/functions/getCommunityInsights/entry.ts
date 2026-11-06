@@ -6,6 +6,14 @@ const COURSE_SLUGS = [
   'mental-health-community-and-culture',
 ];
 
+/** "module-2" reads as "Module 2"; any other route is humanised. */
+function moduleLabel(route) {
+  const numbered = /^module-(\d+)$/.exec(route || '');
+  if (numbered) return `Module ${numbered[1]}`;
+  const text = String(route || '').replace(/-/g, ' ').trim();
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
+}
+
 function monthKey(dateStr) {
   if (!dateStr) return null;
   const d = new Date(dateStr);
@@ -93,9 +101,9 @@ export default async function(req) {
     });
 
     // Learner funnel per course — administrators only. Every figure counts
-    // distinct learners, and "opened Module 1" comes from ModuleOpen, which is
-    // written when a module is first opened, so it is never a completion
-    // signal. A course appears once anyone has enrolled in it.
+    // distinct learners, and each module's opened figure comes from ModuleOpen,
+    // which is written when that module is first opened, so it is never a
+    // completion signal. A course appears once anyone has enrolled in it.
     let moduleFunnel = [];
     if (isAdmin) {
       const learnersWhere = (rows, matches) => {
@@ -112,7 +120,7 @@ export default async function(req) {
         courseMap.set(enrollment.course_slug, {
           slug: enrollment.course_slug,
           title: COURSE_REGISTRY[enrollment.course_slug]?.title || enrollment.course_slug,
-          firstModule: getRequiredModuleRoutes(enrollment.course_slug)[0] || null,
+          moduleRoutes: getRequiredModuleRoutes(enrollment.course_slug),
         });
       }
 
@@ -120,27 +128,26 @@ export default async function(req) {
         .map((course) => ({
           slug: course.slug,
           title: course.title,
-          moduleOne: course.firstModule,
           enrolled: learnersWhere(enrollments, (e) => e.course_slug === course.slug).size,
-          openedModuleOne: course.firstModule
-            ? learnersWhere(
-                moduleOpens,
-                (m) => m.course_slug === course.slug && m.module_slug === course.firstModule,
-              ).size
-            : 0,
-          completedModuleOne: course.firstModule
-            ? learnersWhere(
-                moduleProgress,
-                (m) =>
-                  m.course_slug === course.slug &&
-                  m.module_slug === course.firstModule &&
-                  m.status === 'completed',
-              ).size
-            : 0,
           completedCourse: learnersWhere(
             enrollments,
             (e) => e.course_slug === course.slug && e.status === 'completed',
           ).size,
+          modules: course.moduleRoutes.map((route) => ({
+            slug: route,
+            label: moduleLabel(route),
+            opened: learnersWhere(
+              moduleOpens,
+              (m) => m.course_slug === course.slug && m.module_slug === route,
+            ).size,
+            completed: learnersWhere(
+              moduleProgress,
+              (m) =>
+                m.course_slug === course.slug &&
+                m.module_slug === route &&
+                m.status === 'completed',
+            ).size,
+          })),
         }))
         .sort((a, b) => b.enrolled - a.enrolled);
     }

@@ -8,7 +8,7 @@ import InsightStatCard from '@/components/insights/InsightStatCard';
 import TranslationReviewCard from '@/components/insights/TranslationReviewCard';
 import EnrollmentTrendChart from '@/components/insights/EnrollmentTrendChart';
 import CourseBreakdownChart from '@/components/insights/CourseBreakdownChart';
-import CourseFunnelTable from '@/components/insights/CourseFunnelTable';
+import ModuleEngagementTable from '@/components/insights/ModuleEngagementTable';
 import ModuleMilestonesChart from '@/components/insights/ModuleMilestonesChart';
 import DiasporaProgressMap from '@/components/insights/DiasporaProgressMap';
 import FollowUpInquiries from '@/components/insights/FollowUpInquiries';
@@ -206,13 +206,13 @@ export default function CommunityInsights() {
           {isAdmin && data.moduleFunnel && data.moduleFunnel.length > 0 && (
             <PageSection heading={t('insights.funnelHeading')}>
               <p style={{ ...bodyText, marginBottom: '1.5rem' }}>{t('insights.funnelIntro')}</p>
-              <CourseFunnelTable
+              <ModuleEngagementTable
                 rows={data.moduleFunnel}
                 labels={{
-                  course: t('insights.funnelCourse'),
+                  module: t('insights.funnelModule'),
                   enrolled: t('insights.funnelEnrolled'),
                   opened: t('insights.funnelOpened'),
-                  completedModule: t('insights.funnelCompletedModule'),
+                  completed: t('insights.funnelCompleted'),
                   completedCourse: t('insights.funnelCompletedCourse'),
                 }}
               />

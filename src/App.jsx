@@ -10,6 +10,7 @@ import { LanguageProvider } from '@/lib/i18n';
 import { DisplayModeProvider } from '@/lib/display-mode';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
+import ProfileCompletionPrompt from '@/components/profile/ProfileCompletionPrompt';
 import SoftLaunchGate from '@/components/SoftLaunchGate';
 import AppLoadingSpinner from '@/components/AppLoadingSpinner';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -241,6 +242,8 @@ function App() {
         <MotionConfig reducedMotion="user">
           <Router>
             <ScrollToTop />
+            {/* The short, skippable profile prompt after a learner's first enrollment */}
+            <ProfileCompletionPrompt />
             {/* Pages are code-split: the same loading spinner covers the
                 session check and the download of a page's code. */}
             <Suspense fallback={<AppLoadingSpinner />}>

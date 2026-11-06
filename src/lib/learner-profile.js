@@ -106,3 +106,31 @@ export function needsLearnerCategory(user) {
   if (!user || user.role === 'admin') return false;
   return getProfile(user).learner_category.trim().length === 0;
 }
+
+/** The three details the short post-enrollment prompt asks for. */
+export const BASIC_PROFILE_FIELDS = ['country', 'age_range', 'preferred_language'];
+
+function readStamp(user, field) {
+  if (!user) return '';
+  const direct = user[field];
+  if (typeof direct === 'string' && direct.length > 0) return direct;
+  const nested = user.data && typeof user.data === 'object' ? user.data[field] : undefined;
+  return typeof nested === 'string' ? nested : '';
+}
+
+/** Whether any of the three quick profile details is still missing. */
+export function needsBasicProfile(user) {
+  if (!user) return false;
+  const profile = getProfile(user);
+  return BASIC_PROFILE_FIELDS.some((field) => !String(profile[field] || '').trim());
+}
+
+/** The learner skipped the prompt shown after their first enrollment. */
+export function hasSkippedProfilePrompt(user) {
+  return Boolean(readStamp(user, 'profile_prompt_skipped_at'));
+}
+
+/** The one-time dashboard reminder has already been dismissed. */
+export function hasDismissedProfileReminder(user) {
+  return Boolean(readStamp(user, 'profile_reminder_dismissed_at'));
+}

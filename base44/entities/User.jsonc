@@ -80,6 +80,18 @@
       "type": "string",
       "format": "date-time",
       "title": "Profile Completed At"
+    },
+    "profile_prompt_skipped_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Profile Prompt Skipped At",
+      "description": "When the learner skipped the short profile prompt shown after their first enrollment. Never blocks course access."
+    },
+    "profile_reminder_dismissed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Profile Reminder Dismissed At",
+      "description": "When the learner dismissed the one-time dashboard reminder to finish their profile."
     }
   },
   "required": [

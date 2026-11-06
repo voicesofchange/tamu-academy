@@ -18,6 +18,7 @@ import DashboardGroupFilter from '@/components/dashboard/DashboardGroupFilter';
 import DashboardFocusPanel from '@/components/dashboard/DashboardFocusPanel';
 import DashboardRecommendations from '@/components/dashboard/DashboardRecommendations';
 import DashboardThemeSection from '@/components/dashboard/DashboardThemeSection';
+import ProfileReminderCard from '@/components/dashboard/ProfileReminderCard';
 import { useAuth } from '@/lib/AuthContext';
 import { useDisplayMode } from '@/lib/display-mode';
 import { getProfile } from '@/lib/learner-profile';
@@ -217,6 +218,8 @@ export default function MyCourses() {
         step="02"
         stepLabel={c.stepLabel}
       />
+
+      <ProfileReminderCard />
 
       <JourneyBand tone="dark" eyebrow={c.resourcesEyebrow} heading={c.resourcesHeading}>
         <div style={{ marginBottom: '2.5rem' }}>

@@ -18,7 +18,13 @@ export const ENROLLMENT_FUNCTION_BY_SLUG = {
 export async function enrollInCourse(courseSlug) {
   const functionName = ENROLLMENT_FUNCTION_BY_SLUG[courseSlug];
   if (!functionName) throw new Error('Unknown course');
-  return base44.functions.invoke(functionName, { courseSlug });
+  const result = await base44.functions.invoke(functionName, { courseSlug });
+  // Tells the short profile prompt that a course was just started. Nothing
+  // waits on it, and no course access depends on it.
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('tamu:course-enrolled', { detail: { courseSlug } }));
+  }
+  return result;
 }
 
 /** Whether the signed-in learner already holds an enrollment for the course. */
