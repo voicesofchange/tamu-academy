@@ -57,7 +57,7 @@ export default function MhCertificate() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueMentalHealthCertificate', {
+        const res = await base44.functions.invoke('issueCourseCertificate', {
           courseSlug: COURSE_SLUG,
         });
         if (cancelled) return;

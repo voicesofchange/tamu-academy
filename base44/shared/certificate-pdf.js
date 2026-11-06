@@ -95,7 +95,9 @@ async function loadLogoBytes() {
  * @returns {string} base64-encoded PDF data (without the data: URI prefix)
  */
 export async function generateCertificatePdfBase64(data, moduleCount = 6) {
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'letter' });
+  // compress: true keeps the attached PDF small enough to email (the email
+  // integration refuses attachments over 5 MB); the logo is compressed below.
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'letter', compress: true });
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const cx = pageWidth / 2;
@@ -138,7 +140,9 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
         h = 16;
         w = h * ratio;
       }
-      doc.addImage(logoBytes, props.fileType || 'PNG', cx - w / 2, 18, w, h);
+      // The source PNG is ~700 KB and would otherwise be embedded as raw
+      // pixels (several MB). 'MEDIUM' re-encodes it at attachment-safe size.
+      doc.addImage(logoBytes, props.fileType || 'PNG', cx - w / 2, 18, w, h, undefined, 'MEDIUM');
       mastheadBaseline = 18 + h + 10;
     } catch (_) {
       mastheadBaseline = 28;

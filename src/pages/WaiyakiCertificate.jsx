@@ -55,7 +55,7 @@ export default function WaiyakiCertificate() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueWaiyakiCertificate', {
+        const res = await base44.functions.invoke('issueCourseCertificate', {
           courseSlug: WAIYAKI_COURSE_SLUG,
         });
         if (cancelled) return;

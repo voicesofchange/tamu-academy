@@ -59,7 +59,7 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueSokoCertificate', { courseSlug });
+        const res = await base44.functions.invoke('issueCourseCertificate', { courseSlug });
         if (cancelled) return;
         if (res && res.data && (res.data.preview || res.data.certificateId)) {
           setState({ status: 'ready', data: res.data, notEligible: false, needsProfile: false, outstanding: false });

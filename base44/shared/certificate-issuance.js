@@ -2,11 +2,9 @@
  * Certificate issuance — the single implementation behind every course
  * certificate.
  *
- * Both entry points use it:
- *   - issueCourseCertificate, called by the learner's certificate page (the
- *     learner's own session) and by the completion workflow (admin context);
- *   - the five per-course endpoints while they are still deployed, each of
- *     which now only forwards its own course here.
+ * One entry point uses it: issueCourseCertificate, called by every course's
+ * certificate page (the learner's own session) and by the completion
+ * workflows (admin context).
  *
  * Everything course-specific comes from the course registry
  * (./course-registry.js): title, completion statement, required module
@@ -192,6 +190,20 @@ export async function issueLearnerCertificate(
   const rules = config.certificate || {};
   const isAdmin = user.role === 'admin';
 
+  // A preview shows the certificate's design and wording without creating a
+  // record. Administrators always get one whenever the certificate could not
+  // be issued to them, so the certificate pages stay reviewable.
+  const adminPreview = {
+    status: 200,
+    body: {
+      preview: true,
+      progressSaved: false,
+      learnerName: 'Preview Learner',
+      courseTitle: config.title,
+      completionStatement: config.completionStatement,
+    },
+  };
+
   // Administrator preview — placeholder data, no record created.
   if (isAdmin && body.preview === true) {
     return {
@@ -213,12 +225,14 @@ export async function issueLearnerCertificate(
     status: { $in: ['active', 'completed'] },
   });
   if (!enrollmentRows || enrollmentRows.length === 0) {
+    if (isAdmin) return adminPreview;
     return { status: 403, body: { error: 'Forbidden' } };
   }
   const enrollments = Array.isArray(enrollmentRows) ? enrollmentRows : [];
 
   // --- Course publication gate ---
   if (!config.isPublished || !config.isPublished(courseSlug)) {
+    if (isAdmin) return adminPreview;
     return { status: 403, body: { error: 'Forbidden' } };
   }
 
@@ -231,6 +245,7 @@ export async function issueLearnerCertificate(
 
   if (rules.extraRequirements === 'waiyaki') {
     if (incompleteModules.length > 0) {
+      if (isAdmin) return adminPreview;
       return {
         status: 403,
         body: { error: 'Course not completed', incompleteModules },
@@ -238,6 +253,7 @@ export async function issueLearnerCertificate(
     }
     const extra = await checkExtraCompletionRequirements(base44, user.id, courseSlug);
     if (!extra.ok) {
+      if (isAdmin) return adminPreview;
       return {
         status: 403,
         body: { error: 'Course requirements outstanding', missing: extra.missing },
@@ -249,12 +265,14 @@ export async function issueLearnerCertificate(
     const extra = await checkExtraCompletionRequirements(base44, user.id, courseSlug);
     if (!extra.ok) outstanding.push(...extra.missing);
     if (outstanding.length > 0) {
+      if (isAdmin) return adminPreview;
       return {
         status: 403,
         body: { error: 'Course not completed', incompleteModules: outstanding },
       };
     }
   } else if (incompleteModules.length > 0) {
+    if (isAdmin) return adminPreview;
     return {
       status: 403,
       body: { error: 'Course not completed', incompleteModules },
@@ -279,6 +297,7 @@ export async function issueLearnerCertificate(
   if (rules.requiresCompletedEnrollment) {
     completedEnrollment = enrollments.find((row) => row && row.status === 'completed') || null;
     if (!completedEnrollment) {
+      if (isAdmin) return adminPreview;
       return {
         status: 409,
         body: {

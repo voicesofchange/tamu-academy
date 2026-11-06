@@ -43,7 +43,7 @@ export default function WealthCertificate() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueWealthCertificate', { courseSlug: COURSE.slug });
+        const res = await base44.functions.invoke('issueCourseCertificate', { courseSlug: COURSE.slug });
         if (cancelled) return;
         const data = res && res.data ? res.data : null;
         if (data && (data.preview || data.certificateId)) {

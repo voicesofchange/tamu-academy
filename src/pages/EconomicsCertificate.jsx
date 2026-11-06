@@ -56,7 +56,7 @@ export default function EconomicsCertificate() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await base44.functions.invoke('issueEconomicsCertificate', {
+        const res = await base44.functions.invoke('issueCourseCertificate', {
           courseSlug: COURSE_SLUG,
         });
         if (cancelled) return;

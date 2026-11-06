@@ -201,7 +201,7 @@ export { WAIYAKI_ASSESSMENT_MODULE_SLUG };
  * Evaluate the two Waiyaki requirements that sit outside module completion:
  * the final assessment must be passed and the written final project must be
  * submitted. Called by completeCourseEnrollment (through course-registry's
- * checkExtraCompletionRequirements) and by issueWaiyakiCertificate, so a
+ * checkExtraCompletionRequirements) and by issueCourseCertificate, so a
  * learner cannot be certified for the course without both.
  *
  * @returns {{ ok: boolean, missing: string[] }}
