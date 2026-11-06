@@ -10,6 +10,7 @@ import {
   getWealthModulePreview,
 } from '@/lib/building-wealth-together-tracks';
 import PageNotFound from '@/lib/PageNotFound';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
 
@@ -27,6 +28,7 @@ const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
  */
 export default function BuildingWealthModule() {
   const { moduleRoute } = useParams();
+  const { language } = useTranslation();
   const found = getWealthModulePreview(COURSE.slug, moduleRoute);
   const [module, setModule] = useState(null);
   const [status, setStatus] = useState('loading');
@@ -43,6 +45,7 @@ export default function BuildingWealthModule() {
         const res = await base44.functions.invoke('getWealthModule', {
           courseSlug: COURSE.slug,
           moduleRoute,
+          language,
         });
         const data = res && res.data ? res.data : null;
         if (cancelled) return;
@@ -57,7 +60,7 @@ export default function BuildingWealthModule() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, reloadToken]);
+  }, [moduleRoute, language, reloadToken]);
 
   if (!found) return <PageNotFound />;
 

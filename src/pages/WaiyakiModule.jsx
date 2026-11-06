@@ -11,6 +11,7 @@ import {
   WAIYAKI_COURSE_SLUG,
   getWaiyakiModulePreview,
 } from '@/lib/waiyaki-tracks';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 /**
  * WaiyakiModule — the lesson page for one module of the course, resolved from
@@ -25,6 +26,7 @@ import {
  */
 export default function WaiyakiModule() {
   const { moduleRoute } = useParams();
+  const { language } = useTranslation();
   const preview = getWaiyakiModulePreview(moduleRoute);
 
   const [module, setModule] = useState(null);
@@ -55,6 +57,7 @@ export default function WaiyakiModule() {
         const res = await base44.functions.invoke('getWaiyakiModule', {
           courseSlug: WAIYAKI_COURSE_SLUG,
           moduleRoute,
+          language,
         });
         if (cancelled) return;
         const data = res && res.data ? res.data : null;
@@ -69,7 +72,7 @@ export default function WaiyakiModule() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, reloadToken]);
+  }, [moduleRoute, language, reloadToken]);
 
   useEffect(() => {
     fetchProgress();

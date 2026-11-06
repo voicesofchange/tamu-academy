@@ -6,6 +6,31 @@ import {
   isWealthModulePublished,
 } from '../../shared/building-wealth-together-config.js';
 import { getWealthModuleContent } from '../../shared/building-wealth-together-curriculum.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
+
+/**
+ * The learner-facing sections translated for a learner whose language is not
+ * English: the module title, the welcome film, goals, the recorded lesson, the
+ * worked example, the "Try it" steps, the local prompt, the dilemma, the
+ * concept-check questions and their options, and the reflection.
+ *
+ * The answer key is stripped before this runs, and identifiers, routes, module
+ * numbers, statuses, the time estimate, the passing score and video URLs are
+ * left alone by the shared layer.
+ */
+const TRANSLATED_SECTIONS = [
+  'title',
+  'welcomeFilm',
+  'goals',
+  'watch',
+  'lessonSections',
+  'workedExample',
+  'tryIt',
+  'whereYouLive',
+  'dilemma',
+  'quiz',
+  'reflection',
+];
 
 /**
  * Access-checked endpoint that returns the full module content for one
@@ -61,6 +86,7 @@ export default async function(req: Request): Promise<Response> {
 
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
+    const language = typeof body.language === 'string' ? body.language : 'en';
     if (courseSlug !== WEALTH_COURSE_SLUG || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -118,7 +144,14 @@ export default async function(req: Request): Promise<Response> {
       };
     }
 
-    return Response.json({ module: moduleContent });
+    const translated = await translateCourseSections(
+      base44,
+      moduleContent,
+      language,
+      TRANSLATED_SECTIONS,
+    );
+
+    return Response.json({ module: translated });
   } catch (error) {
     console.error('[getWealthModule] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

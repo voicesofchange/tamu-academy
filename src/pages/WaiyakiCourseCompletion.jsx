@@ -9,6 +9,7 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import WaiyakiAssessment from '@/components/courses/waiyaki/WaiyakiAssessment';
 import WaiyakiProjectForm from '@/components/courses/waiyaki/WaiyakiProjectForm';
 import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 const COURSE_PATH = `/courses/${WAIYAKI_COURSE_SLUG}`;
 
@@ -57,6 +58,7 @@ const completionButtonStyle = {
  * certificate can be issued.
  */
 export default function WaiyakiCourseCompletion() {
+  const { language } = useTranslation();
   const [progress, setProgress] = useState(null);
   const [work, setWork] = useState(null);
   const [status, setStatus] = useState('loading');
@@ -65,7 +67,10 @@ export default function WaiyakiCourseCompletion() {
     try {
       const [completionRes, assessmentRes] = await Promise.all([
         base44.functions.invoke('getWaiyakiCourseCompletion', { courseSlug: WAIYAKI_COURSE_SLUG }),
-        base44.functions.invoke('getWaiyakiAssessment', { courseSlug: WAIYAKI_COURSE_SLUG }),
+        base44.functions.invoke('getWaiyakiAssessment', {
+          courseSlug: WAIYAKI_COURSE_SLUG,
+          language,
+        }),
       ]);
       const completion = completionRes?.data || null;
       setProgress(completion);
@@ -76,7 +81,7 @@ export default function WaiyakiCourseCompletion() {
       setWork(null);
       setStatus('error');
     }
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     fetchAll();
