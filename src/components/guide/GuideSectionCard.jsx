@@ -19,6 +19,7 @@ import {
   Route,
 } from 'lucide-react';
 import { progressLabels } from '@/lib/guide/styles';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 
 /** Each section's header glyph, in the guide's warm palette. */
 const SECTION_VISUALS = {
@@ -45,14 +46,14 @@ const BADGE_TONES = {
 };
 
 /** What a section contains, as a short metadata strip. */
-function buildMeta(section) {
+function buildMeta(section, ui) {
   const meta = [];
   const count = section.exercises?.length || 0;
-  if (count) meta.push({ icon: 'ListChecks', label: `${count} exercise${count === 1 ? '' : 's'}` });
-  if (section.closingReflection) meta.push({ icon: 'PenLine', label: 'Closing reflection' });
-  if (section.special === 'kioo') meta.push({ icon: 'Eye', label: 'Ten statements' });
-  if (section.special === 'kurudi') meta.push({ icon: 'RotateCcw', label: 'Compare attempts' });
-  if (!meta.length) meta.push({ icon: 'Clock', label: 'In preparation' });
+  if (count) meta.push({ icon: 'ListChecks', label: `${count} ${count === 1 ? ui.exercise : ui.exercises}` });
+  if (section.closingReflection) meta.push({ icon: 'PenLine', label: ui.closingReflection });
+  if (section.special === 'kioo') meta.push({ icon: 'Eye', label: ui.tenStatements });
+  if (section.special === 'kurudi') meta.push({ icon: 'RotateCcw', label: ui.compareAttempts });
+  if (!meta.length) meta.push({ icon: 'Clock', label: ui.inPreparation });
   return meta;
 }
 
@@ -61,8 +62,9 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
   const visual = SECTION_VISUALS[section.id] || FALLBACK_VISUAL;
   const HeroIcon = visual.icon;
   const tone = section.available ? BADGE_TONES[status] || BADGE_TONES.not_started : BADGE_TONES.preparing;
-  const badgeLabel = section.available ? progressLabels[status] || progressLabels.not_started : 'In preparation';
-  const meta = buildMeta(section);
+  const { ui } = useGuideStrings();
+  const badgeLabel = section.available ? progressLabels[status] || progressLabels.not_started : ui.inPreparation;
+  const meta = buildMeta(section, ui);
 
   return (
     <motion.article
@@ -169,7 +171,7 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
               alignSelf: 'flex-start',
             }}
           >
-            Open section
+            {ui.openSection}
             <ArrowRight size={13} strokeWidth={2} />
           </Link>
         ) : (
@@ -178,7 +180,7 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
             style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#a89074', fontSize: '11px', letterSpacing: '0.13em', textTransform: 'uppercase', fontWeight: 500 }}
           >
             <Clock size={13} strokeWidth={1.6} />
-            Content in preparation
+            {ui.contentInPreparation}
           </span>
         )}
       </div>

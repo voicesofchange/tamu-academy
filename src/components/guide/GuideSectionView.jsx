@@ -5,6 +5,7 @@ import ExerciseBlock from './ExerciseBlock';
 import SectionFooterNav from './SectionFooterNav';
 import SavedIndicator from './SavedIndicator';
 import { useGuideSection } from '@/lib/guide/useGuideSection';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';
 
@@ -15,6 +16,7 @@ import { creamText, darkText } from '@/lib/guide/styles';
  */
 export default function GuideSectionView({ section }) {
   const { getValue, setValue, saveState, learnerId } = useGuideSection(section.id);
+  const { ui } = useGuideStrings();
   const [status, setStatus] = useState(() => getCachedStatus(learnerId, section.id));
   const [marking, setMarking] = useState(false);
 
@@ -50,10 +52,10 @@ export default function GuideSectionView({ section }) {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
           <div>
             <span className="font-guide-body" style={{ ...darkText.eyebrow, display: 'block', marginBottom: '0.4rem' }}>
-              Exercises
+              {ui.exercises}
             </span>
             <h2 className="font-guide-heading" style={{ ...darkText.heading, fontSize: 'clamp(1.35rem, 3vw, 1.85rem)', lineHeight: 1.25, margin: 0 }}>
-              Write your answers
+              {ui.writeAnswers}
             </h2>
           </div>
           <SavedIndicator state={saveState} tone="dark" />
@@ -66,7 +68,7 @@ export default function GuideSectionView({ section }) {
 
       <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.25rem' }}>
         <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-          Key takeaways
+          {ui.keyTakeaways}
         </span>
         <ul style={{ margin: 0, paddingLeft: '1.15rem' }}>
           {section.takeaways.map((takeaway) => (
@@ -80,7 +82,7 @@ export default function GuideSectionView({ section }) {
       {section.closingReflection && (
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)', borderLeft: '4px solid #C9961A' }}>
           <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-            Closing reflection
+            {ui.closingReflection}
           </span>
           <label htmlFor={`${section.id}-closing`} className="font-guide-heading" style={{ ...creamText.heading, fontSize: '1.1rem', display: 'block', lineHeight: 1.45, marginBottom: '0.9rem' }}>
             {section.closingReflection.prompt}

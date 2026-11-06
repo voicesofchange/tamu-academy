@@ -102,6 +102,17 @@ const PROTECTED_TERM_PATTERN = new RegExp(
 
 const TOKEN_PATTERN = /\u00ab\s*T(\d+)\s*\u00bb/g;
 
+/**
+ * The same do-not-translate rules, for the page-content endpoint that
+ * translates the Learner's Guide and other static page text.
+ */
+export const PAGE_TRANSLATION_INSTRUCTIONS = [
+  'Page rules:',
+  `- Leave these names exactly as written and never translate them: ${PROTECTED_TERMS.join(', ')}.`,
+  '- Leave Kiswahili (Swahili) words and phrases exactly as written, including section names such as Karibu, Kioo, Kurudi, Utu and Ujima.',
+  '- Never translate anything a learner wrote themselves: only the interface labels and guide text in this payload may change.',
+].join('\n');
+
 /** What the model is told about names it must leave alone. */
 const TRANSLATOR_INSTRUCTIONS = [
   `Course rules:`,

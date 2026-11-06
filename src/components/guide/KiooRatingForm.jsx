@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FrequencyField from './fields/FrequencyField';
-import { KIOO_STATEMENTS } from '@/lib/guide/sections';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { creamText } from '@/lib/guide/styles';
 
 /**
@@ -18,15 +18,16 @@ export default function KiooRatingForm({
   defaultRatings,
   defaultNote,
 }) {
+  const { kiooStatements, ui } = useGuideStrings();
   const [ratings, setRatings] = useState(defaultRatings || {});
   const [note, setNote] = useState(defaultNote || '');
   const [error, setError] = useState('');
 
-  const answered = KIOO_STATEMENTS.every((statement) => Number(ratings[statement.id]) > 0);
+  const answered = kiooStatements.every((statement) => Number(ratings[statement.id]) > 0);
 
   const handleSubmit = () => {
     if (!answered) {
-      setError('Please answer all ten statements before saving.');
+      setError(ui.answerAll);
       return;
     }
     setError('');
@@ -36,7 +37,7 @@ export default function KiooRatingForm({
   return (
     <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem', borderLeft: '4px solid #C9961A' }}>
       <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-        Kioo
+        {ui.kiooEyebrow}
       </span>
       <h2 className="font-guide-heading" style={{ ...creamText.heading, fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', lineHeight: 1.3, margin: '0 0 0.6rem' }}>
         {title}
@@ -47,11 +48,11 @@ export default function KiooRatingForm({
         </p>
       )}
 
-      <FrequencyField field={{ id: 'kioo', label: '', statements: KIOO_STATEMENTS }} value={ratings} onChange={setRatings} />
+      <FrequencyField field={{ id: 'kioo', label: '', statements: kiooStatements }} value={ratings} onChange={setRatings} />
 
       <div style={{ marginTop: '1.75rem' }}>
         <label htmlFor="kioo-note" className="font-guide-body" style={creamText.label}>
-          {notePrompt || 'Your note with this reflection'}
+          {notePrompt || ui.notePrompt}
         </label>
         <textarea
           id="kioo-note"
@@ -90,7 +91,7 @@ export default function KiooRatingForm({
           opacity: submitting ? 0.7 : 1,
         }}
       >
-        {submitting ? 'Saving…' : submitLabel}
+        {submitting ? ui.saving : submitLabel}
       </button>
     </section>
   );

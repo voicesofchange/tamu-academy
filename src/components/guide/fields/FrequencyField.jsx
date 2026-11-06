@@ -1,5 +1,5 @@
 import React from 'react';
-import { FREQUENCY_SCALE } from '@/lib/guide/sections';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { creamText } from '@/lib/guide/styles';
 
 /**
@@ -8,6 +8,7 @@ import { creamText } from '@/lib/guide/styles';
  */
 export default function FrequencyField({ field, value, onChange, disabled = false }) {
   const current = value && typeof value === 'object' ? value : {};
+  const { frequencyScale, ui } = useGuideStrings();
   return (
     <div>
       {field.label && (
@@ -15,7 +16,7 @@ export default function FrequencyField({ field, value, onChange, disabled = fals
           {field.label}
         </span>
       )}
-      <div role="radiogroup" aria-label={field.label || 'Frequency ratings'}>
+      <div role="radiogroup" aria-label={field.label || ui.frequencyAria}>
         {field.statements.map((statement, index) => (
           <div
             key={statement.id}
@@ -33,7 +34,7 @@ export default function FrequencyField({ field, value, onChange, disabled = fals
               {statement.text}
             </span>
             <div role="presentation" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-              {FREQUENCY_SCALE.map((option) => (
+              {frequencyScale.map((option) => (
                 <button
                   key={option.value}
                   type="button"

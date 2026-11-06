@@ -9,6 +9,7 @@ import SavedIndicator from './SavedIndicator';
 import { useAuth } from '@/lib/AuthContext';
 import { averageRating, formatAttemptDate, loadKiooAttempts, ratingsOf, saveKiooAttempt, splitAttempts } from '@/lib/guide/kioo';
 import { useGuideSection } from '@/lib/guide/useGuideSection';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';
 
@@ -21,6 +22,7 @@ export default function KurudiSectionView({ section }) {
   const { user } = useAuth();
   const learnerId = user?.id || null;
   const { getValue, setValue, saveState } = useGuideSection(section.id);
+  const { ui } = useGuideStrings();
 
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,43 +99,43 @@ export default function KurudiSectionView({ section }) {
       ) : !first ? (
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
           <h2 className="font-guide-heading" style={{ ...creamText.heading, fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', lineHeight: 1.3, margin: '0 0 0.6rem' }}>
-            Start with the mirror
+            {ui.startWithMirror}
           </h2>
           <p className="font-guide-body" style={{ ...creamText.body, margin: '0 0 1.25rem' }}>
-            Your first reflection in Kioo becomes the starting point this section compares against. Take it once, then come back here.
+            {ui.startWithMirrorBody}
           </p>
           <Link to="/learners-guide/kioo" className="font-guide-body guide-link" style={{ fontSize: '0.85rem' }}>
-            Open Kioo &rarr;
+            {ui.openKioo} &rarr;
           </Link>
         </section>
       ) : (
         <>
           <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem' }}>
             <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-              Your Kioo history
+              {ui.kiooHistory}
             </span>
             <h2 className="font-guide-heading" style={{ ...creamText.heading, fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', lineHeight: 1.3, margin: '0 0 1.25rem' }}>
-              The mirror, kept with its dates
+              {ui.mirrorKept}
             </h2>
 
             <div style={{ padding: '0.85rem 0', borderBottom: '1px solid #e7dbc4' }}>
               <span className="font-guide-body" style={{ ...creamText.body, fontWeight: 500 }}>
-                First time · {formatAttemptDate(first.attempt_date)}
+                {ui.firstTime} · {formatAttemptDate(first.attempt_date)}
               </span>
               {averageRating(ratingsOf(first)) !== null && (
-                <span className="font-guide-body" style={{ ...creamText.body, color: '#6b5744' }}> · average {averageRating(ratingsOf(first))}</span>
+                <span className="font-guide-body" style={{ ...creamText.body, color: '#6b5744' }}> · {ui.average} {averageRating(ratingsOf(first))}</span>
               )}
             </div>
 
             {returns.length === 0 ? (
               <p className="font-guide-body" style={{ ...creamText.body, margin: '1.25rem 0 0', color: '#6b5744' }}>
-                You have not returned yet. Whenever you are ready, take the same ten statements again below.
+                {ui.notReturnedYet}
               </p>
             ) : (
               returns.map((attempt) => (
                 <div key={attempt.id} style={{ padding: '0.75rem 0', borderBottom: '1px solid #e7dbc4' }}>
                   <span className="font-guide-body" style={{ ...creamText.body }}>
-                    Return · {formatAttemptDate(attempt.attempt_date)}
+                    {ui.returnLabel} · {formatAttemptDate(attempt.attempt_date)}
                   </span>
                   {averageRating(ratingsOf(attempt)) !== null && (
                     <span className="font-guide-body" style={{ ...creamText.body, color: '#6b5744' }}> · average {averageRating(ratingsOf(attempt))}</span>
@@ -146,10 +148,10 @@ export default function KurudiSectionView({ section }) {
           {taking ? (
             <>
               <KiooRatingForm
-                title="Return reflection"
-                instructions="Answer the same ten statements as honestly as you can today. This attempt is kept with today's date."
+                title={ui.returnReflectionTitle}
+                instructions={ui.returnReflectionInstructions}
                 notePrompt={section.closingReflection?.prompt}
-                submitLabel="Save this return reflection"
+                submitLabel={ui.returnReflectionSubmit}
                 submitting={saving}
                 onSubmit={handleSaveReturn}
               />
@@ -159,7 +161,7 @@ export default function KurudiSectionView({ section }) {
                 className="font-guide-body"
                 style={{ background: 'none', border: 'none', color: '#C9961A', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', padding: 0, marginBottom: '2rem' }}
               >
-                Cancel
+                {ui.cancel}
               </button>
             </>
           ) : (
@@ -183,14 +185,14 @@ export default function KurudiSectionView({ section }) {
                   cursor: 'pointer',
                 }}
               >
-                Take the reflection again
+                {ui.takeAgain}
               </button>
             </div>
           )}
 
           {failed && (
             <p className="font-guide-body" role="alert" style={{ ...darkText.body, color: '#f0b8a8', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
-              Your return reflection was not saved. Please try again.
+              {ui.saveFailed}
             </p>
           )}
 
@@ -200,7 +202,7 @@ export default function KurudiSectionView({ section }) {
 
       <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.25rem' }}>
         <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-          Key takeaways
+          {ui.keyTakeaways}
         </span>
         <ul style={{ margin: 0, paddingLeft: '1.15rem' }}>
           {section.takeaways.map((takeaway) => (
@@ -215,7 +217,7 @@ export default function KurudiSectionView({ section }) {
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)', borderLeft: '4px solid #C9961A' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'baseline', justifyContent: 'space-between' }}>
             <span className="font-guide-body" style={{ ...creamText.eyebrow }}>
-              Closing reflection
+              {ui.closingReflection}
             </span>
             <SavedIndicator state={saveState} />
           </div>

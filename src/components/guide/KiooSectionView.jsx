@@ -5,13 +5,13 @@ import FrameworkCards from './FrameworkCards';
 import SectionFooterNav from './SectionFooterNav';
 import KiooRatingForm from './KiooRatingForm';
 import { useAuth } from '@/lib/AuthContext';
-import { FREQUENCY_SCALE } from '@/lib/guide/sections';
-import { KIOO_STATEMENTS, averageRating, formatAttemptDate, loadKiooAttempts, ratingsOf, saveKiooAttempt, splitAttempts } from '@/lib/guide/kioo';
+import { averageRating, formatAttemptDate, loadKiooAttempts, ratingsOf, saveKiooAttempt, splitAttempts } from '@/lib/guide/kioo';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';
 
-function labelFor(value) {
-  const option = FREQUENCY_SCALE.find((entry) => entry.value === Number(value));
+function labelFor(value, scale) {
+  const option = scale.find((entry) => entry.value === Number(value));
   return option ? option.label : '—';
 }
 
@@ -23,6 +23,7 @@ function labelFor(value) {
 export default function KiooSectionView({ section }) {
   const { user } = useAuth();
   const learnerId = user?.id || null;
+  const { kiooStatements, frequencyScale, ui } = useGuideStrings();
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -99,34 +100,34 @@ export default function KiooSectionView({ section }) {
       ) : !first ? (
         <>
           <KiooRatingForm
-            title="Your first reflection"
-            instructions="Rate how often each statement is true of you. This becomes your starting point, and it is kept with today's date."
+            title={ui.firstReflectionTitle}
+            instructions={ui.firstReflectionInstructions}
             notePrompt={section.closingReflection?.prompt}
-            submitLabel="Save my first reflection"
+            submitLabel={ui.firstReflectionSubmit}
             submitting={saving}
             onSubmit={handleSaveFirst}
           />
           {failed && (
             <p className="font-guide-body" role="alert" style={{ ...darkText.body, color: '#f0b8a8', fontSize: '0.85rem' }}>
-              Your reflection was not saved. Please try again.
+              {ui.saveFailed}
             </p>
           )}
         </>
       ) : (
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
           <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-            First time · kioo cha kwanza
+            {ui.keptEyebrow}
           </span>
           <h2 className="font-guide-heading" style={{ ...creamText.heading, fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', lineHeight: 1.3, margin: '0 0 0.5rem' }}>
-            Your first reflection is kept
+            {ui.keptHeading}
           </h2>
           <p className="font-guide-body" style={{ ...creamText.body, margin: '0 0 1.5rem' }}>
-            Written on {formatAttemptDate(first.attempt_date)}
-            {firstAverage !== null ? ` · average ${firstAverage} of 5` : ''}
+            {ui.writtenOn} {formatAttemptDate(first.attempt_date)}
+            {firstAverage !== null ? ` · ${ui.average} ${firstAverage} ${ui.ofFive}` : ''}
           </p>
 
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {KIOO_STATEMENTS.map((statement) => (
+            {kiooStatements.map((statement) => (
               <li
                 key={statement.id}
                 style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'space-between', padding: '0.6rem 0', borderBottom: '1px solid #e7dbc4' }}
@@ -135,7 +136,7 @@ export default function KiooSectionView({ section }) {
                   {statement.text}
                 </span>
                 <span className="font-guide-body" style={{ ...creamText.body, fontWeight: 500 }}>
-                  {labelFor(ratingsOf(first)[statement.id])}
+                  {labelFor(ratingsOf(first)[statement.id], frequencyScale)}
                 </span>
               </li>
             ))}
@@ -144,7 +145,7 @@ export default function KiooSectionView({ section }) {
           {first.note && (
             <div style={{ marginTop: '1.5rem' }}>
               <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.4rem' }}>
-                Your note
+                {ui.yourNote}
               </span>
               <p className="font-guide-body" style={{ ...creamText.body, margin: 0 }}>{first.note}</p>
             </div>
@@ -161,7 +162,7 @@ export default function KiooSectionView({ section }) {
 
       <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.25rem' }}>
         <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-          Key takeaways
+          {ui.keyTakeaways}
         </span>
         <ul style={{ margin: 0, paddingLeft: '1.15rem' }}>
           {section.takeaways.map((takeaway) => (

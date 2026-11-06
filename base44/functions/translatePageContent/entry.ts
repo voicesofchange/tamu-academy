@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { translateTextBatch } from '../../shared/translate-content.js';
+import { PAGE_TRANSLATION_INSTRUCTIONS } from '../../shared/course-translation.js';
 import { clientKeyFromRequest, allowRequestWithinLimits } from '../../shared/rate-limit.js';
 
 /**
@@ -66,7 +67,14 @@ export default async function(req) {
       return Response.json({ error: 'Too many requests' }, { status: 429 });
     }
 
-    const translations = await translateTextBatch(base44, texts, language);
+    // Fixed, server-side rules keep the app's names and Kiswahili terms
+    // verbatim; callers cannot supply or override them.
+    const translations = await translateTextBatch(
+      base44,
+      texts,
+      language,
+      PAGE_TRANSLATION_INSTRUCTIONS,
+    );
     return Response.json({ translations });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

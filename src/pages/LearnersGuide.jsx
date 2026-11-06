@@ -7,8 +7,19 @@ import GuideJourneyBand from '@/components/guide/GuideJourneyBand';
 import GuideClosingSection from '@/components/guide/GuideClosingSection';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import { useAuth } from '@/lib/AuthContext';
-import { GUIDE_PHASES, TOTAL_SECTIONS } from '@/lib/guide/sections';
+import { TOTAL_SECTIONS } from '@/lib/guide/sections';
+import { GuideStringsProvider } from '@/lib/guide/GuideStringsContext';
+import { useTranslatedGuidePhases, useTranslatedSectionSummaries } from '@/lib/guide/useGuideTranslation';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { countStarted, loadProgressMap } from '@/lib/guide/guideProgress';
+
+/** The guide home's own copy, translated once per session. */
+const GUIDE_HOME_STRINGS = {
+  sectionsEyebrow: 'The sections',
+  sectionsHeading: 'Ten sections, one journey',
+  sectionsIntro:
+    'The guide runs in three phases. You can follow them in order, or step into whichever section meets you where you are.',
+};
 
 /**
  * LearnersGuide — the guide home, laid out like the Courses page: a hero, the
@@ -19,6 +30,9 @@ import { countStarted, loadProgressMap } from '@/lib/guide/guideProgress';
 export default function LearnersGuide() {
   const { user } = useAuth();
   const [progressMap, setProgressMap] = useState({});
+  const phases = useTranslatedGuidePhases();
+  const summaries = useTranslatedSectionSummaries();
+  const { content: homeText } = useTranslatedContent('guide-home', GUIDE_HOME_STRINGS);
 
   useEffect(() => {
     if (!user?.id) return undefined;
@@ -37,6 +51,7 @@ export default function LearnersGuide() {
   const done = Object.values(progressMap).filter((status) => status === 'done').length;
 
   return (
+    <GuideStringsProvider>
     <PageLayout>
       <PageMeta
         title="Safari ya Utu — Learner's Guide | Tamu Academy"
@@ -51,18 +66,24 @@ export default function LearnersGuide() {
       <section id="section-pathway" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#F1E7D3', color: '#33241A', scrollMarginTop: '90px' }}>
         <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 3.5rem)', maxWidth: '720px' }}>
           <span className="font-guide-body" style={{ color: '#8A650B', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-            The sections
+            {homeText.sectionsEyebrow}
           </span>
           <h2 className="font-guide-heading" style={{ color: '#33241A', fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.1, fontWeight: 600, margin: '10px 0 0.8rem' }}>
-            Ten sections, one journey
+            {homeText.sectionsHeading}
           </h2>
           <p className="font-guide-body" style={{ color: '#6b5744', fontSize: '15px', lineHeight: 1.75, margin: 0 }}>
-            The guide runs in three phases. You can follow them in order, or step into whichever section meets you where you are.
+            {homeText.sectionsIntro}
           </p>
         </div>
 
-        {GUIDE_PHASES.map((phase, index) => (
-          <GuidePhaseSection key={phase.id} phase={phase} progressMap={progressMap} isFirst={index === 0} />
+        {phases.map((phase, index) => (
+          <GuidePhaseSection
+            key={phase.id}
+            phase={phase}
+            progressMap={progressMap}
+            isFirst={index === 0}
+            summaries={summaries}
+          />
         ))}
       </section>
 
@@ -71,5 +92,6 @@ export default function LearnersGuide() {
 
       <TamuGuideWidget />
     </PageLayout>
+    </GuideStringsProvider>
   );
 }

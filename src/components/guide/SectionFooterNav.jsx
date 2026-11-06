@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getSectionNeighbours } from '@/lib/guide/sections';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
+import { useTranslatedSectionSummaries } from '@/lib/guide/useGuideTranslation';
 import { darkText } from '@/lib/guide/styles';
 
 const navLinkStyle = {
@@ -21,6 +23,9 @@ const navLinkStyle = {
 /** Previous / next section links, plus the button that marks a section done. */
 export default function SectionFooterNav({ section, status, onMarkDone, busy, hideMarkDone = false }) {
   const { previous, next } = getSectionNeighbours(section.id);
+  const { ui } = useGuideStrings();
+  const summaries = useTranslatedSectionSummaries();
+  const titleFor = (entry) => (entry ? summaries[entry.id]?.english || entry.english : '');
 
   return (
     <section style={{ borderTop: darkText.rule, paddingTop: '1.75rem', marginTop: '0.5rem' }}>
@@ -28,7 +33,7 @@ export default function SectionFooterNav({ section, status, onMarkDone, busy, hi
         <div style={{ marginBottom: '1.75rem' }}>
           {status === 'done' ? (
             <p className="font-guide-body" style={{ ...darkText.body, fontSize: '0.85rem', margin: 0 }}>
-              <span style={{ color: '#C9961A' }}>Done</span> — you marked this section as done. You can still write in it whenever you like.
+              {ui.doneNote}
             </p>
           ) : (
             <button
@@ -53,7 +58,7 @@ export default function SectionFooterNav({ section, status, onMarkDone, busy, hi
                 opacity: busy ? 0.7 : 1,
               }}
             >
-              {busy ? 'Saving…' : 'Mark section as done'}
+              {busy ? ui.saving : ui.markDone}
             </button>
           )}
         </div>
@@ -62,20 +67,20 @@ export default function SectionFooterNav({ section, status, onMarkDone, busy, hi
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'space-between' }}>
         {previous ? (
           <Link to={`/learners-guide/${previous.id}`} className="font-guide-body" style={navLinkStyle}>
-            &larr; {previous.number ? `${previous.number} · ` : ''}{previous.english}
+            &larr; {previous.number ? `${previous.number} · ` : ''}{titleFor(previous)}
           </Link>
         ) : (
           <Link to="/learners-guide" className="font-guide-body" style={navLinkStyle}>
-            &larr; Guide home
+            &larr; {ui.guideHome}
           </Link>
         )}
         {next ? (
           <Link to={`/learners-guide/${next.id}`} className="font-guide-body" style={navLinkStyle}>
-            {next.number ? `${next.number} · ` : ''}{next.english} &rarr;
+            {next.number ? `${next.number} · ` : ''}{titleFor(next)} &rarr;
           </Link>
         ) : (
           <Link to="/learners-guide" className="font-guide-body" style={navLinkStyle}>
-            Back to the guide home &rarr;
+            {ui.backToGuideHome} &rarr;
           </Link>
         )}
       </div>

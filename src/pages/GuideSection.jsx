@@ -6,6 +6,8 @@ import GuideSectionView from '@/components/guide/GuideSectionView';
 import GuideSectionShell from '@/components/guide/GuideSectionShell';
 import KiooSectionView from '@/components/guide/KiooSectionView';
 import KurudiSectionView from '@/components/guide/KurudiSectionView';
+import { GuideStringsProvider } from '@/lib/guide/GuideStringsContext';
+import { useTranslatedGuideSection } from '@/lib/guide/useGuideTranslation';
 import { getGuideSection } from '@/lib/guide/sections';
 import { creamText } from '@/lib/guide/styles';
 
@@ -15,7 +17,10 @@ import { creamText } from '@/lib/guide/styles';
  */
 export default function GuideSection() {
   const { sectionId } = useParams();
-  const section = getGuideSection(sectionId);
+  const rawSection = getGuideSection(sectionId);
+  // The section in the learner's own language. Identifiers, table row labels
+  // and saved answers are untouched.
+  const section = useTranslatedGuideSection(rawSection);
 
   if (!section) {
     return (
@@ -45,6 +50,7 @@ export default function GuideSection() {
   else body = <GuideSectionShell section={section} />;
 
   return (
+    <GuideStringsProvider>
     <PageLayout>
       <PageMeta
         title={`${section.english} (${section.swahili}) — Safari ya Utu | Tamu Academy`}
@@ -56,5 +62,6 @@ export default function GuideSection() {
         {body}
       </div>
     </PageLayout>
+    </GuideStringsProvider>
   );
 }

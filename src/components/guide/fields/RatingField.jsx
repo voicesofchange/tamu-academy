@@ -1,17 +1,18 @@
 import React from 'react';
-import { RATING_SCALE } from '@/lib/guide/sections';
+import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { creamText } from '@/lib/guide/styles';
 
 /** A 1-5 rating for each statement. */
 export default function RatingField({ field, value, onChange }) {
   const current = value && typeof value === 'object' ? value : {};
+  const { ratingScale, ui } = useGuideStrings();
   return (
     <div>
       <span className="font-guide-body" style={creamText.label}>
         {field.label}
       </span>
       <p className="font-guide-body" style={{ ...creamText.hint, marginBottom: '1rem' }}>
-        1 = not true yet · 5 = very true
+        {ui.rateHint}
       </p>
       <div role="radiogroup" aria-label={field.label}>
         {field.statements.map((statement, index) => (
@@ -31,7 +32,7 @@ export default function RatingField({ field, value, onChange }) {
               {statement.text}
             </span>
             <div role="presentation" style={{ display: 'flex', gap: '0.35rem' }}>
-              {RATING_SCALE.map((option) => (
+              {ratingScale.map((option) => (
                 <button
                   key={option.value}
                   type="button"

@@ -7,8 +7,19 @@ import { getGuideSection } from '@/lib/guide/sections';
  * introduction, and the section cards that belong to it. Mirrors a learning
  * area block on the Courses page.
  */
-export default function GuidePhaseSection({ phase, progressMap = {}, isFirst = false }) {
-  const sections = phase.sectionIds.map(getGuideSection).filter(Boolean);
+export default function GuidePhaseSection({ phase, progressMap = {}, isFirst = false, summaries = {} }) {
+  const sections = phase.sectionIds
+    .map(getGuideSection)
+    .filter(Boolean)
+    .map((section) => {
+      const summary = summaries[section.id];
+      if (!summary) return section;
+      return {
+        ...section,
+        english: summary.english || section.english,
+        proverb: section.proverb ? { ...section.proverb, en: summary.proverb || section.proverb.en } : section.proverb,
+      };
+    });
 
   return (
     <div
