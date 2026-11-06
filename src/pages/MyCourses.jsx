@@ -10,6 +10,8 @@ import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { DIASPORA_REMITTANCE_COURSE } from '@/lib/diaspora-remittance-tracks';
+import { buildCourseProgress } from '@/lib/learner-progress';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import GuideContinueCard from '@/components/guide/GuideContinueCard';
@@ -32,9 +34,23 @@ const COURSE_META = {
   [ECONOMICS_COURSE.slug]: ECONOMICS_COURSE,
   [SAUTI_ZA_SOKO_COURSE_SLUG]: SAUTI_ZA_SOKO_COURSE,
   [WAIYAKI_COURSE_SLUG]: WAIYAKI_COURSE,
+  [DIASPORA_REMITTANCE_COURSE.slug]: DIASPORA_REMITTANCE_COURSE,
 };
 
-const ALL_COURSES = [MENTAL_HEALTH_COURSE, ECONOMICS_COURSE, SAUTI_ZA_SOKO_COURSE, WAIYAKI_COURSE];
+const ALL_COURSES = [
+  MENTAL_HEALTH_COURSE,
+  ECONOMICS_COURSE,
+  SAUTI_ZA_SOKO_COURSE,
+  WAIYAKI_COURSE,
+  DIASPORA_REMITTANCE_COURSE,
+];
+
+/**
+ * A course whose last module is the end of the course has no separate
+ * completion page or certificate page, so its tile points back at the course
+ * overview instead of a route that does not exist.
+ */
+const hasCompletionPage = (slug) => COURSE_META[slug]?.hasCompletionPage !== false;
 
 // Each course keeps the same tile face it wears on the Courses page.
 const COURSE_VISUALS = {
@@ -76,6 +92,16 @@ const COURSE_VISUALS = {
       { icon: 'Layers', label: '5 modules' },
       { icon: 'Clock', label: 'Self-paced' },
       { icon: 'BarChart', label: 'Research-based' },
+    ],
+  },
+  [DIASPORA_REMITTANCE_COURSE.slug]: {
+    number: '02',
+    icon: 'Banknote',
+    accent: 'rgba(217,155,55,0.30)',
+    meta: [
+      { icon: 'Layers', label: '3 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Foundational' },
     ],
   },
 };
@@ -162,12 +188,21 @@ export default function MyCourses() {
     let cancelled = false;
     (async () => {
       try {
-        const [mhRes, econRes, sokoRes, waiyakiRes, pubRes] = await Promise.all([
+        const [mhRes, econRes, sokoRes, waiyakiRes, pubRes, diasporaEnrollments, diasporaModuleProgress] = await Promise.all([
           base44.functions.invoke('getMentalHealthCourseCompletion', { courseSlug: MENTAL_HEALTH_COURSE.slug }),
           base44.functions.invoke('getEconomicsCourseCompletion', { courseSlug: ECONOMICS_COURSE.slug }),
           base44.functions.invoke('getSokoCourseCompletion', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG }),
           base44.functions.invoke('getWaiyakiCourseCompletion', { courseSlug: WAIYAKI_COURSE_SLUG }),
           base44.functions.invoke('getPublicationStatus', {}),
+          // The Diaspora course is built with the shared course template, so it
+          // reads from the learner's own enrollment and module progress rather
+          // than a course-specific completion endpoint.
+          user?.id
+            ? base44.entities.CourseEnrollment.filter({ learner_id: user.id, course_slug: DIASPORA_REMITTANCE_COURSE.slug })
+            : [],
+          user?.id
+            ? base44.entities.ModuleProgress.filter({ learner_id: user.id, course_slug: DIASPORA_REMITTANCE_COURSE.slug })
+            : [],
         ]);
         if (cancelled) return;
         setPubStatus(pubRes?.data?.courses || {});
@@ -176,6 +211,25 @@ export default function MyCourses() {
         if (econRes?.data?.hasEnrollment) enrolled.push({ slug: ECONOMICS_COURSE.slug, completion: econRes.data });
         if (sokoRes?.data?.hasEnrollment) enrolled.push({ slug: SAUTI_ZA_SOKO_COURSE_SLUG, completion: sokoRes.data });
         if (waiyakiRes?.data?.hasEnrollment) enrolled.push({ slug: WAIYAKI_COURSE_SLUG, completion: waiyakiRes.data });
+
+        const diaspora = buildCourseProgress(
+          DIASPORA_REMITTANCE_COURSE,
+          (diasporaEnrollments || [])[0] || null,
+          diasporaModuleProgress || []
+        );
+        if (diaspora.enrolled) {
+          enrolled.push({
+            slug: DIASPORA_REMITTANCE_COURSE.slug,
+            completion: {
+              hasEnrollment: true,
+              completedCount: diaspora.completedCount,
+              totalModules: diaspora.totalModules,
+              incompleteModules: diaspora.nextModule ? [diaspora.nextModule] : [],
+              certificateEligible: diaspora.certificateEligible,
+            },
+          });
+        }
+
         setCourses(enrolled);
       } catch (err) {
         // Not authenticated or error — empty state handles it.
@@ -184,7 +238,7 @@ export default function MyCourses() {
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [user?.id]);
 
   const resumeTarget = courses
     .map((c) => ({
@@ -298,18 +352,21 @@ export default function MyCourses() {
                 const completedCount = enr.completion?.completedCount || 0;
                 const totalModules = enr.completion?.totalModules || 0;
                 const firstIncomplete = enr.completion?.incompleteModules?.[0] || null;
+                const courseHasCompletionPage = hasCompletionPage(enr.slug);
                 const resumePath = firstIncomplete
                   ? `/courses/${enr.slug}/${firstIncomplete.route}`
-                  : `/courses/${enr.slug}/completion`;
+                  : `/courses/${enr.slug}${courseHasCompletionPage ? '/completion' : ''}`;
                 const actions = [{
-                  label: firstIncomplete ? `${c.resumeAt} ${firstIncomplete.number}` : c.reviewCompletion,
+                  label: firstIncomplete
+                    ? `${c.resumeAt} ${firstIncomplete.number}`
+                    : (courseHasCompletionPage ? c.reviewCompletion : c.courseOverview),
                   to: resumePath,
                   primary: true,
-                }, {
-                  label: c.courseOverview,
-                  to: `/courses/${enr.slug}`,
                 }];
-                if (enr.completion?.certificateEligible) {
+                if (firstIncomplete || courseHasCompletionPage) {
+                  actions.push({ label: c.courseOverview, to: `/courses/${enr.slug}` });
+                }
+                if (courseHasCompletionPage && enr.completion?.certificateEligible) {
                   actions.push({ label: c.viewCertificate, to: `/courses/${enr.slug}/certificate` });
                 }
                 return (

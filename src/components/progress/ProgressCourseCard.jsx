@@ -158,8 +158,12 @@ export default function ProgressCourseCard({ course }) {
           </Link>
         )}
         {course.enrolled && !nextStep && (
-          <Link to={`/courses/${course.slug}/completion`} className="font-body" style={primaryButtonStyle}>
-            {content.reviewCompletion} &rarr;
+          <Link
+            to={`/courses/${course.slug}${course.hasCompletionPage ? '/completion' : ''}`}
+            className="font-body"
+            style={primaryButtonStyle}
+          >
+            {course.hasCompletionPage ? content.reviewCompletion : content.openCourse} &rarr;
           </Link>
         )}
         {!course.enrolled && (

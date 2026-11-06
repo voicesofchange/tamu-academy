@@ -12,10 +12,11 @@ import {
   Clock,
   BarChart,
   GraduationCap,
+  Banknote,
   ArrowRight,
 } from 'lucide-react';
 
-const ICONS = { Heart, TrendingUp, Cpu, Landmark, Scroll, Store, Layers, Clock, BarChart, GraduationCap };
+const ICONS = { Heart, TrendingUp, Cpu, Landmark, Scroll, Store, Layers, Clock, BarChart, GraduationCap, Banknote };
 
 const primaryAction = {
   display: 'inline-flex',

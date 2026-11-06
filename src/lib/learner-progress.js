@@ -1,10 +1,10 @@
 /**
  * Learner progress assembly for the My Progress dashboard.
  *
- * The four published courses already describe themselves in their public
- * track files (titles, modules, routes). Those files are the single source of
- * course structure, so this module only joins that structure to the learner's
- * own enrollment and module-progress records — it never restates a course.
+ * The published courses already describe themselves in their public track
+ * files (titles, modules, routes). Those files are the single source of course
+ * structure, so this module only joins that structure to the learner's own
+ * enrollment and module-progress records — it never restates a course.
  *
  * Everything here is derived from records the learner already owns; no
  * privileged data is read and no new access is granted.
@@ -14,6 +14,7 @@ import { MENTAL_HEALTH_COURSE } from './mental-health-tracks';
 import { SAUTI_ZA_SOKO_COURSE } from './sauti-za-soko-tracks';
 import { WAIYAKI_COURSE } from './waiyaki-tracks';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from './building-wealth-together-tracks';
+import { DIASPORA_REMITTANCE_COURSE } from './diaspora-remittance-tracks';
 
 /** Every course a learner can hold progress in. */
 export const LEARNER_COURSES = [
@@ -22,6 +23,7 @@ export const LEARNER_COURSES = [
   SAUTI_ZA_SOKO_COURSE,
   WAIYAKI_COURSE,
   BUILDING_WEALTH_TOGETHER_COURSE,
+  DIASPORA_REMITTANCE_COURSE,
 ];
 
 /** How a course reads to a learner who has not finished it yet. */
@@ -98,6 +100,9 @@ export function buildCourseProgress(course, enrollment, moduleProgress) {
     slug: course.slug,
     title: course.title,
     subtitle: course.subtitle,
+    // False for courses whose last module is the end of the course, so a
+    // finished learner is never sent to a completion page that does not exist.
+    hasCompletionPage: course.hasCompletionPage !== false,
     modules,
     completedCount,
     totalModules,

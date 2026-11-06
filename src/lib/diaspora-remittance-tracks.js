@@ -27,6 +27,9 @@ export const DIASPORA_REMITTANCE_COURSE = {
   estimatedCompletion: 'Approximately 2 hours',
   certificate: 'Available upon completion',
   access: 'Open',
+  // Course-template courses end with their last module: there is no separate
+  // completion page or certificate page to send a learner to.
+  hasCompletionPage: false,
   description:
     'The Diaspora Remittance Economy follows one of the largest and least examined flows of money in the world: the transfers families send across borders to each other.',
   descriptionLong: [
