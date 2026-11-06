@@ -147,7 +147,7 @@ const AuthenticatedApp = () => {
       <Route path="/courses/diaspora-remittance-economy" element={<DiasporaRemittanceEconomy />} />
       <Route path="/courses/sauti-za-soko/peer-facilitator" element={<SokoLabelsProvider><SokoPeerFacilitator /></SokoLabelsProvider>} />
       {/* Protected Routes — login required for module content, progress, and certificates */}
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+      <Route element={<ProtectedRoute />}>
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-courses" element={<MyCourses />} />

@@ -33,17 +33,24 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
     return fallback;
   }
 
+  // The page the visitor asked for, carried on the sign-in link so they land
+  // back on it after logging in or registering. safeReturnTo() validates it on
+  // the auth pages before using it.
+  const returnTo = encodeURIComponent(location.pathname + location.search);
+  const loginTarget = `/login?returnTo=${returnTo}`;
+
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     }
-    return unauthenticatedElement || <Navigate to="/login" replace />;
+    return unauthenticatedElement || <Navigate to={loginTarget} replace />;
   }
 
   if (!isAuthenticated) {
-    if (unauthenticatedElement) return unauthenticatedElement;
-    const returnTo = encodeURIComponent(location.pathname + location.search);
-    return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
+    // Always carry the destination. Letting `unauthenticatedElement` win here
+    // would drop it, so the visitor would land on the homepage instead of the
+    // page they opened.
+    return <Navigate to={loginTarget} replace />;
   }
 
   // The learner-group prompt rides along with every signed-in route, so a
