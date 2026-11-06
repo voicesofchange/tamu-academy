@@ -13,7 +13,8 @@
  *     (shared/translate-content.js), so a module is translated once and later
  *     views are served from the cache;
  *   - structural values are never sent: identifiers, routes, module numbers,
- *     statuses, URLs, time estimates, passing scores and answer keys.
+ *     statuses, URLs, passing scores and answer keys. The time estimate is
+ *     translated, since it is read by the learner rather than acted on.
  *
  * Protected names — Tamu Academy, Ubuntu, Safari ya Utu, Kioo, Sauti za Soko,
  * Waiyaki wa Hinga, Manguo Wetland — and any Kiswahili words embedded in
@@ -70,7 +71,6 @@ const STRUCTURAL_KEYS = new Set([
   'href',
   'src',
   'videoId',
-  'estimatedTime',
   'passingScore',
   'correctIndex',
   'correctAnswerIndex',

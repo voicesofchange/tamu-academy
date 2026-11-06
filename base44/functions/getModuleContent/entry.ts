@@ -35,6 +35,7 @@ const TRANSLATED_SECTIONS = [
   'courseClosingText',
   'completionRequirements',
   'endOfCourse',
+  'estimatedTime',
 ];
 
 /**

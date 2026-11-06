@@ -28,6 +28,7 @@ const TRANSLATED_SECTIONS = [
   'sourceAnalysis',
   'reflection',
   'completionRequirements',
+  'estimatedTime',
 ];
 
 /**

@@ -30,6 +30,7 @@ const TRANSLATED_SECTIONS = [
   'dilemma',
   'quiz',
   'reflection',
+  'estimatedTime',
 ];
 
 /**

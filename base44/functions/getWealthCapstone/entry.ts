@@ -4,6 +4,7 @@ import {
   WEALTH_CAPSTONE_FORMATS,
 } from '../../shared/building-wealth-together-config.js';
 import { getWealthCapstoneOption } from '../../shared/building-wealth-together-curriculum.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
 
 /**
  * getWealthCapstone — authenticated, non-mutating endpoint that returns the
@@ -37,7 +38,7 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug']);
+    const allowedKeys = new Set(['courseSlug', 'language']);
     for (const k of Object.keys(body)) {
       if (!allowedKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
