@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from '@/lib/i18n';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -26,6 +28,7 @@ function Field({ id, label, prompt, value, onChange, rows = 3 }) {
 }
 
 export default function MhPathwaysLab({ lab }) {
+  const { t } = useTranslation();
   const [fields, setFields] = useState({});
   const [checks, setChecks] = useState(Array.isArray(lab.completionChecklist.items) ? new Array(lab.completionChecklist.items.length).fill(false) : []);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -79,28 +82,28 @@ export default function MhPathwaysLab({ lab }) {
       <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '1.04rem', fontStyle: 'italic', marginBottom: '1.5rem' }}>{lab.subtitle}</p>
 
       <dl className="font-body" style={{ ...boxStyle, marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.9rem 1.5rem' }}>
-        <div><dt style={eyebrowStyle}>Course</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
-        <div><dt style={eyebrowStyle}>Module</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
-        <div><dt style={eyebrowStyle}>Estimated time</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.estimatedTime}</dd></div>
-        <div><dt style={eyebrowStyle}>Completion mode</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.completionMode}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.course')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.module')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.estimatedTime')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.estimatedTime}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.completionMode')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.completionMode}</dd></div>
       </dl>
 
-      <div style={{ ...privacyBoxStyle, marginBottom: '1.75rem' }} role="note" aria-label="Safety and scope">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Safety and scope</span>
+      <div style={{ ...privacyBoxStyle, marginBottom: '1.75rem' }} role="note" aria-label={t('mhLab.safetyScope')}>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.safetyScope')}</span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{lab.safetyScope}</p>
       </div>
 
-      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label="Clear all temporary responses">
-        {confirmClear ? 'Confirm clear all' : 'Clear all temporary responses'}
+      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label={t('mhLab.clearAll')}>
+        {confirmClear ? t('mhLab.confirmClearAll') : t('mhLab.clearAll')}
       </button>
 
-      <h3 className="font-heading" style={subHeading}>How to Use This Lab</h3>
+      <h3 className="font-heading" style={subHeading}>{t('mhLab.howToUse')}</h3>
       <ol className="font-body" style={{ ...bodyText, margin: '0 0 1rem 1.4rem' }}>
         {lab.howToUse.map((item, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{item}</li>)}
       </ol>
 
       <div style={{ ...boxStyle, marginBottom: '1.75rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>PATHWAYS Framework</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.pathwaysFramework')}</span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{lab.frameworkSummary}</p>
       </div>
 
@@ -109,7 +112,7 @@ export default function MhPathwaysLab({ lab }) {
       {lab.step1Setting.examples && (
         <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
           <table style={tableStyle}>
-            <thead><tr><th style={thStyle}>Example setting</th><th style={thStyle}>Possible coordination problem</th></tr></thead>
+            <thead><tr><th style={thStyle}>{t('mhLab.exampleSetting')}</th><th style={thStyle}>{t('mhLab.possibleProblem')}</th></tr></thead>
             <tbody>
               {lab.step1Setting.examples.map((ex, i) => (
                 <tr key={i}><td style={tdStyle}>{ex.setting}</td><td style={tdStyle}>{ex.problem}</td></tr>
@@ -138,7 +141,7 @@ export default function MhPathwaysLab({ lab }) {
       {/* P: Person, Preference, and Purpose */}
       <h3 className="font-heading" style={partHeading}>{lab.sectionP.heading}</h3>
       <div style={{ ...privacyBoxStyle, marginBottom: '1.5rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Start with the person</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.startWithPerson')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.sectionP.startWithPerson}</p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -177,7 +180,7 @@ export default function MhPathwaysLab({ lab }) {
       {/* W: Warm Referral and Follow Up */}
       <h3 className="font-heading" style={partHeading}>{lab.sectionW.heading}</h3>
       <div style={{ ...privacyBoxStyle, marginBottom: '1.5rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Warm referral</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.warmReferral')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.sectionW.warmReferralNote}</p>
       </div>
       {renderTable({ columns: lab.sectionW.columns, rows: lab.sectionW.rows }, 'referral')}
@@ -190,7 +193,7 @@ export default function MhPathwaysLab({ lab }) {
       <h3 className="font-heading" style={partHeading}>{lab.warmReferralPractice.heading}</h3>
       <p className="font-body" style={promptStyle}>{lab.warmReferralPractice.instruction}</p>
       <div style={{ ...privacyBoxStyle, marginBottom: '1.5rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Fictional situation</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.fictionalSituation')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.warmReferralPractice.fictionalSituation}</p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -207,7 +210,7 @@ export default function MhPathwaysLab({ lab }) {
       {/* Y: Youth and Lived Experience Voice */}
       <h3 className="font-heading" style={partHeading}>{lab.sectionY.heading}</h3>
       <div style={{ ...privacyBoxStyle, marginBottom: '1.5rem' }}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Participation with authority</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.participationWithAuthority')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.sectionY.participationWithAuthority}</p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -234,7 +237,7 @@ export default function MhPathwaysLab({ lab }) {
       <p className="font-body" style={promptStyle}>{lab.redTeamTests.instruction}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
         {lab.redTeamTests.tests.map((test, i) => (
-          <Field key={i} id={`pw-rt-${i}`} label={`Red team test ${i + 1}`} prompt={test} value={fields[`rt_${i}`] || ''} onChange={(v) => setField(`rt_${i}`, v)} rows={2} />
+          <Field key={i} id={`pw-rt-${i}`} label={fillTemplate(t('mhLab.redTeamTest'), { number: i + 1 })} prompt={test} value={fields[`rt_${i}`] || ''} onChange={(v) => setField(`rt_${i}`, v)} rows={2} />
         ))}
       </div>
 
@@ -252,7 +255,7 @@ export default function MhPathwaysLab({ lab }) {
 
       {/* Ninety Day Preparation Plan */}
       <h3 className="font-heading" style={partHeading}>{lab.ninetyDayPlan.heading}</h3>
-      <Field id="pw-90day" label={lab.ninetyDayPlan.day90DecisionLabel || 'Ninety day preparation plan'} prompt={lab.ninetyDayPlan.prompt} value={fields.day90 || ''} onChange={(v) => setField('day90', v)} rows={4} />
+      <Field id="pw-90day" label={lab.ninetyDayPlan.day90DecisionLabel || t('mhLab.ninetyDayPlan')} prompt={lab.ninetyDayPlan.prompt} value={fields.day90 || ''} onChange={(v) => setField('day90', v)} rows={4} />
 
       {/* One Page Partnership Charter */}
       <h3 className="font-heading" style={partHeading}>{lab.partnershipCharter.heading}</h3>
@@ -263,7 +266,7 @@ export default function MhPathwaysLab({ lab }) {
           ))}
         </div>
       ) : (
-        <Field id="pw-charter" label="One page partnership charter" prompt={lab.partnershipCharter.prompt} value={fields.charter || ''} onChange={(v) => setField('charter', v)} rows={5} />
+        <Field id="pw-charter" label={t('mhLab.partnershipCharter')} prompt={lab.partnershipCharter.prompt} value={fields.charter || ''} onChange={(v) => setField('charter', v)} rows={5} />
       )}
 
       {/* Completion Checklist */}
