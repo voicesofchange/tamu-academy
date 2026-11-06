@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
-import { LEARNER_CATEGORIES, needsLearnerCategory } from '@/lib/learner-profile';
+import { LEARNER_CATEGORIES, DEFAULT_LEARNER_CATEGORY, needsLearnerCategory } from '@/lib/learner-profile';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
@@ -31,7 +31,7 @@ export default function LearnerCategoryPrompt() {
   const { user, checkUserAuth } = useAuth();
   const { content: c } = useTranslatedContent('learner-category-prompt', CONTENT);
   const location = useLocation();
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(DEFAULT_LEARNER_CATEGORY);
   const [error, setError] = useState('');
   const [status, setStatus] = useState('idle');
 

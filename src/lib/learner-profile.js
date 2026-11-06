@@ -38,7 +38,11 @@ export const LEARNER_CATEGORIES = [
   'Diaspora Learner',
   'Remote Learner',
   'Soko Peer Facilitator',
+  'General Learner',
 ];
+
+/** Pre-selected on the sign-up form so no learner is left without a group. */
+export const DEFAULT_LEARNER_CATEGORY = 'General Learner';
 
 export const LANGUAGE_OPTIONS = [
   { value: 'en', label: 'English' },

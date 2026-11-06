@@ -11,7 +11,7 @@ import PageMeta from "@/components/seo/PageMeta";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 import { safeReturnTo } from "@/lib/authReturnTo";
-import { LEARNER_CATEGORIES } from "@/lib/learner-profile";
+import { LEARNER_CATEGORIES, DEFAULT_LEARNER_CATEGORY } from "@/lib/learner-profile";
 import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 
 const CONTENT = {
@@ -49,7 +49,7 @@ export default function Register() {
   const { content: c } = useTranslatedContent("register", CONTENT);
   // Keep the course the visitor came from when they move to sign-in.
   const returnToPath = safeReturnTo();
-  const [learnerCategory, setLearnerCategory] = useState("");
+  const [learnerCategory, setLearnerCategory] = useState(DEFAULT_LEARNER_CATEGORY);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -97,7 +97,7 @@ export default function Register() {
       }
       base44.analytics.track({ eventName: "user_registered", properties: { method: "email" } });
       const returnTo = safeReturnTo();
-      window.location.href = returnTo === "/" ? "/profile?onboarding=1" : returnTo;
+      window.location.href = returnTo === "/" ? "/welcome" : returnTo;
     } catch (err) {
       setError(err.message || c.invalidCode);
     } finally {
