@@ -21,14 +21,17 @@ export default async function (req) {
     const url = new URL(req.url);
     const token = url.searchParams.get('t');
 
-    if (token) {
+    const ua = (req.headers.get('user-agent') || '').slice(0, 300);
+
+    // Automated platform fetches are not learner opens: record nothing for them,
+    // so they never inflate an open count or an open rate.
+    if (token && ua !== 'Base44-Backend') {
       const events = await base44.asServiceRole.entities.EmailOpenEvent.filter({
         tracking_token: token,
       });
       if (events.length > 0) {
         const ev = events[0];
         const now = new Date().toISOString();
-        const ua = (req.headers.get('user-agent') || '').slice(0, 300);
         if (ev.opened_at) {
           await base44.asServiceRole.entities.EmailOpenEvent.update(ev.id, {
             open_count: (ev.open_count || 1) + 1,

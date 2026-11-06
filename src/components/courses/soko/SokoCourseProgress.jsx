@@ -61,6 +61,11 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
 
   const fetchProgress = useCallback(async () => {
     try {
+      // Completion status belongs to a signed-in learner: never ask for it as a guest.
+      if (!(await base44.auth.isAuthenticated())) {
+        setProgress(null);
+        return;
+      }
       const res = await base44.functions.invoke('getSokoCourseCompletion', { courseSlug });
       setProgress(res && res.data ? res.data : null);
     } catch (err) {

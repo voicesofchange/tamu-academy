@@ -77,6 +77,11 @@ export default function EconomicsCourseProgress({ courseSlug }) {
 
   const fetchProgress = useCallback(async () => {
     try {
+      // Completion status belongs to a signed-in learner: never ask for it as a guest.
+      if (!(await base44.auth.isAuthenticated())) {
+        setProgress(null);
+        return;
+      }
       const res = await base44.functions.invoke('getEconomicsCourseCompletion', { courseSlug });
       if (res && res.data) setProgress(res.data);
       else setProgress(null);

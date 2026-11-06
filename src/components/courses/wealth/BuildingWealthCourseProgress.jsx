@@ -57,6 +57,11 @@ export default function BuildingWealthCourseProgress() {
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
+    // Completion status belongs to a signed-in learner: never ask for it as a guest.
+    if (!(await base44.auth.isAuthenticated())) {
+      setState({ status: 'error', data: null });
+      return;
+    }
     try {
       const res = await base44.functions.invoke('getWealthCourseCompletion', { courseSlug: COURSE_SLUG });
       const data = res && res.data ? res.data : null;

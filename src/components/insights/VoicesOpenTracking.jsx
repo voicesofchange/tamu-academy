@@ -51,7 +51,8 @@ export default function VoicesOpenTracking() {
     setError(false);
     try {
       const list = await base44.entities.EmailOpenEvent.list('-sent_at', 200);
-      setEvents(Array.isArray(list) ? list : []);
+      // Automated platform fetches are not learner opens and stay out of the figures.
+      setEvents((Array.isArray(list) ? list : []).filter((e) => e.user_agent !== 'Base44-Backend'));
     } catch (e) {
       setError(true);
     } finally {

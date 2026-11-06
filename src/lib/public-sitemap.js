@@ -42,7 +42,7 @@ const STATIC_PAGES = [
   { path: '/remote-pathway', changefreq: 'monthly', priority: 0.7 },
   { path: '/academy', changefreq: 'monthly', priority: 0.6 },
   { path: '/stories', changefreq: 'monthly', priority: 0.6 },
-  { path: '/programmes/intercultural-ai-lab', changefreq: 'monthly', priority: 0.6 },
+  { path: '/programmes/intercultural-ai-leadership-lab', changefreq: 'monthly', priority: 0.6 },
   { path: '/contact', changefreq: 'monthly', priority: 0.6 },
   { path: '/privacy', changefreq: 'yearly', priority: 0.3 },
 ];

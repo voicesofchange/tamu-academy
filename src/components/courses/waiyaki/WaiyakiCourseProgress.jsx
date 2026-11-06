@@ -61,6 +61,11 @@ export default function WaiyakiCourseProgress() {
 
   const fetchProgress = useCallback(async () => {
     try {
+      // Completion status belongs to a signed-in learner: never ask for it as a guest.
+      if (!(await base44.auth.isAuthenticated())) {
+        setProgress(null);
+        return;
+      }
       const res = await base44.functions.invoke('getWaiyakiCourseCompletion', {
         courseSlug: WAIYAKI_COURSE_SLUG,
       });
