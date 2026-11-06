@@ -9,6 +9,8 @@ import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import TemplateCourseQuiz from '@/components/courses/template/TemplateCourseQuiz';
 import TemplateCourseProgress from '@/components/courses/template/TemplateCourseProgress';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -16,6 +18,29 @@ const linkStyle = {
   fontSize: '0.86rem',
   textDecoration: 'underline',
   textUnderlineOffset: '3px',
+};
+
+const CONTENT = {
+  recordedMaterial: 'Recorded material',
+  watch: 'Watch',
+  whatYouWillLearn: 'What you will learn',
+  whatYoullLearn: 'What You\u2019ll Learn',
+  theLesson: 'The lesson',
+  theLessonHeading: 'The Lesson',
+  pauseAndThink: 'Pause and think',
+  tryIt: 'Try it',
+  tryItHeading: 'Try It',
+  keyTerms: 'Key terms',
+  keyTermsHeading: 'Key Terms',
+  knowledgeCheck: 'Knowledge check',
+  knowledgeCheckHeading: 'Knowledge Check',
+  reflection: 'Reflection',
+  requirements: 'Requirements',
+  requirementsHeading: 'Completion Requirements',
+  nextModule: 'Next: {number} \u2014 {title}',
+  modulesComplete: 'Course modules complete',
+  allComplete: 'All modules complete',
+  certificateReady: 'Your course certificate is ready when you are.',
 };
 
 /**
@@ -28,16 +53,18 @@ const linkStyle = {
  *   previous / next navigation.
  *
  * The module arrives from getTemplateCourseModule, which has already stripped
- * the quiz answer keys and translated the content.
+ * the quiz answer keys and translated the content. Only this layout's own
+ * labels are translated here; the module's content arrives already translated.
  */
 export default function TemplateCourseLesson({ course, module, onRefresh }) {
+  const { content: c } = useTranslatedContent('template-course-lesson', CONTENT);
   const moduleIndex = course.modules.findIndex((item) => item.route === module.route);
   const prevModule = moduleIndex > 0 ? course.modules[moduleIndex - 1] : null;
   const nextModule =
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
   const nextLabel = nextModule
-    ? `Next: ${nextModule.number} \u2014 ${nextModule.title}`
-    : 'Course modules complete';
+    ? fillTemplate(c.nextModule, { number: nextModule.number, title: nextModule.title })
+    : c.modulesComplete;
   const completedCount = course.modules.filter((item) => item.completed).length;
   const isLastModule = !nextModule;
 
@@ -69,7 +96,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       />
 
       {module.video && (
-        <ModuleLessonSection eyebrow="Recorded material" heading={module.video.title || 'Watch'}>
+        <ModuleLessonSection eyebrow={c.recordedMaterial} heading={module.video.title || c.watch}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>
             <a href={module.video.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>
               {module.video.title}
@@ -83,9 +110,9 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection eyebrow="What you will learn" heading="What You'll Learn" items={module.goals} />
+      <ModuleTextSection eyebrow={c.whatYouWillLearn} heading={c.whatYoullLearn} items={module.goals} />
 
-      <ModuleLessonSection eyebrow="The lesson" heading="The Lesson">
+      <ModuleLessonSection eyebrow={c.theLesson} heading={c.theLessonHeading}>
         {(module.lessonSections || []).map((section, sectionIndex) => (
           <div key={sectionIndex} className="workbook-block" style={{ marginBottom: '2.25rem' }}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 1rem' }}>
@@ -105,7 +132,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
                 }}
               >
                 <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.5rem' }}>
-                  Pause and think
+                  {c.pauseAndThink}
                 </span>
                 <p className="font-body" style={{ ...bodyText, margin: 0 }}>{section.pauseAndThink}</p>
               </aside>
@@ -115,7 +142,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       </ModuleLessonSection>
 
       {module.activity && (
-        <ModuleLessonSection eyebrow="Try it" heading="Try It">
+        <ModuleLessonSection eyebrow={c.tryIt} heading={c.tryItHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{module.activity.intro}</p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
             {(module.activity.steps || []).map((step, stepIndex) => (
@@ -126,7 +153,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {Array.isArray(module.keyTerms) && module.keyTerms.length > 0 && (
-        <ModuleLessonSection eyebrow="Key terms" heading="Key Terms">
+        <ModuleLessonSection eyebrow={c.keyTerms} heading={c.keyTermsHeading}>
           <dl style={{ margin: 0 }}>
             {module.keyTerms.map((entry, termIndex) => (
               <div key={termIndex} style={{ marginBottom: '1rem' }}>
@@ -141,7 +168,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {module.quiz && (
-        <ModuleLessonSection eyebrow="Knowledge check" heading="Knowledge Check">
+        <ModuleLessonSection eyebrow={c.knowledgeCheck} heading={c.knowledgeCheckHeading}>
           <TemplateCourseQuiz
             courseSlug={course.slug}
             moduleRoute={module.route}
@@ -152,12 +179,12 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {module.reflection && (
-        <ModuleLessonSection eyebrow="Reflection" heading="Reflection">
+        <ModuleLessonSection eyebrow={c.reflection} heading={c.reflection}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>{module.reflection}</p>
         </ModuleLessonSection>
       )}
 
-      <ModuleLessonSection eyebrow="Requirements" heading="Completion Requirements">
+      <ModuleLessonSection eyebrow={c.requirements} heading={c.requirementsHeading}>
         <TemplateCourseProgress
           courseSlug={course.slug}
           moduleRoute={module.route}
@@ -175,7 +202,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
         nextLabel={nextLabel}
         endOfCourse={
           isLastModule && module.progress && module.progress.completed
-            ? { label: 'All modules complete', milestone: 'Your course certificate is ready when you are.' }
+            ? { label: c.allComplete, milestone: c.certificateReady }
             : null
         }
       />

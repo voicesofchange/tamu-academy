@@ -24,6 +24,7 @@ export const BuildingWealthTogether = lazy(() => import('@/pages/BuildingWealthT
 export const BuildingWealthModule = lazy(() => import('@/pages/BuildingWealthModule'));
 // One module page serves every course built with the course template.
 export const TemplateCourseModule = lazy(() => import('@/pages/TemplateCourseModule'));
+export const DiasporaRemittanceEconomy = lazy(() => import('@/pages/DiasporaRemittanceEconomy'));
 export const WealthCourseCompletion = lazy(() => import('@/pages/WealthCourseCompletion'));
 export const WealthCertificate = lazy(() => import('@/pages/WealthCertificate'));
 export const WealthCapstone = lazy(() => import('@/pages/WealthCapstone'));

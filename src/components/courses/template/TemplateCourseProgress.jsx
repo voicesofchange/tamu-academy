@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.7, fontWeight: 300 };
 
-const STEP_LABELS = {
-  media: 'Watch or listen to the module\u2019s recorded material.',
-  lesson: 'Read the lesson and follow the worked example.',
-  activity: 'Complete the Try it activity.',
-  scenario: 'Work through the scenario and write your position.',
-  knowledge_check: 'Pass the knowledge check.',
-  reflection: 'Write your reflection.',
+const CONTENT = {
+  stepLabels: {
+    media: 'Watch or listen to the module\u2019s recorded material.',
+    lesson: 'Read the lesson and follow the worked example.',
+    activity: 'Complete the Try it activity.',
+    scenario: 'Work through the scenario and write your position.',
+    knowledge_check: 'Pass the knowledge check.',
+    reflection: 'Write your reflection.',
+  },
+  previewNote: 'This module is a preview, so your progress is not being saved.',
+  notOpen: 'This module is not open for saved progress yet.',
+  stepRecorded: 'Step recorded.',
+  saveFailed: 'We could not save that step just now. Please try again.',
+  moduleComplete: 'This module is complete.',
+  completeFailed: 'We could not complete the module just now. Please try again.',
+  saving: 'Saving\u2026',
+  markDone: 'Mark done',
+  checking: 'Checking\u2026',
+  markComplete: 'Mark this module complete',
+  stillNeeds: 'This module still needs: {steps}.',
 };
 
 const actionStyle = {
@@ -49,6 +64,7 @@ const completeStyle = {
  * outstanding step comes back in `missing` and the module is not completed.
  */
 export default function TemplateCourseProgress({ courseSlug, moduleRoute, requirements, progress, onRefresh }) {
+  const { content: c } = useTranslatedContent('template-course-progress', CONTENT);
   const [busy, setBusy] = useState(null);
   const [note, setNote] = useState(null);
   const [missing, setMissing] = useState([]);
@@ -68,10 +84,10 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
         step,
       });
       const data = res && res.data ? res.data : null;
-      setNote(data && data.progressSaved === false ? 'This module is not open for saved progress yet.' : 'Step recorded.');
+      setNote(data && data.progressSaved === false ? c.notOpen : c.stepRecorded);
       if (onRefresh) await onRefresh();
     } catch (err) {
-      setNote('We could not save that step just now. Please try again.');
+      setNote(c.saveFailed);
     } finally {
       setBusy(null);
     }
@@ -84,12 +100,12 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
     try {
       const res = await base44.functions.invoke('completeTemplateCourseModule', { courseSlug, moduleRoute });
       const data = res && res.data ? res.data : null;
-      if (data && data.completed) setNote('This module is complete.');
+      if (data && data.completed) setNote(c.moduleComplete);
       else if (data && Array.isArray(data.missing)) setMissing(data.missing);
-      else setNote('We could not complete the module just now. Please try again.');
+      else setNote(c.completeFailed);
       if (onRefresh) await onRefresh();
     } catch (err) {
-      setNote('We could not complete the module just now. Please try again.');
+      setNote(c.completeFailed);
     } finally {
       setBusy(null);
     }
@@ -99,7 +115,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
     <div>
       {!canSave && (
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          This module is a preview, so your progress is not being saved.
+          {c.previewNote}
         </p>
       )}
 
@@ -126,7 +142,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
                   {done ? '\u2713' : '\u25CB'}
                 </span>
                 <span className="font-body" style={{ ...bodyText, margin: 0 }}>
-                  {STEP_LABELS[step] || step.replace(/_/g, ' ')}
+                  {(c.stepLabels && c.stepLabels[step]) || step.replace(/_/g, ' ')}
                 </span>
               </div>
               {!done && step !== 'knowledge_check' && canSave && (
@@ -136,7 +152,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
                   disabled={busy === step}
                   style={{ ...actionStyle, opacity: busy === step ? 0.6 : 1 }}
                 >
-                  {busy === step ? 'Saving...' : 'Mark done'}
+                  {busy === step ? c.saving : c.markDone}
                 </button>
               )}
             </li>
@@ -150,14 +166,14 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
 
       {missing.length > 0 && (
         <p className="font-body" role="alert" style={{ ...bodyText, marginTop: '1rem', color: '#e8955c' }}>
-          This module still needs: {missing.join(', ').replace(/_/g, ' ')}.
+          {fillTemplate(c.stillNeeds, { steps: missing.join(', ').replace(/_/g, ' ') })}
         </p>
       )}
 
       <div style={{ marginTop: '1.5rem' }}>
         {progress && progress.completed ? (
           <p className="font-body" style={{ ...bodyText, color: '#e8b85b', margin: 0 }}>
-            This module is complete.
+            {c.moduleComplete}
           </p>
         ) : (
           <button
@@ -170,7 +186,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
               cursor: busy === 'complete' || !canSave ? 'not-allowed' : 'pointer',
             }}
           >
-            {busy === 'complete' ? 'Checking...' : 'Mark this module complete'}
+            {busy === 'complete' ? c.checking : c.markComplete}
           </button>
         )}
       </div>

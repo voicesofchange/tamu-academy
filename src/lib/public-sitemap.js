@@ -18,6 +18,7 @@ import { MENTAL_HEALTH_COURSE } from './mental-health-tracks.js';
 import { WAIYAKI_COURSE } from './waiyaki-tracks.js';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from './building-wealth-together-tracks.js';
 import { SAUTI_ZA_SOKO_COURSE } from './sauti-za-soko-tracks.js';
+import { DIASPORA_REMITTANCE_COURSE } from './diaspora-remittance-tracks.js';
 
 export const SITE_ORIGIN = 'https://tamuacademy.org';
 
@@ -28,6 +29,7 @@ export const PUBLIC_COURSES = [
   MENTAL_HEALTH_COURSE,
   WAIYAKI_COURSE,
   SAUTI_ZA_SOKO_COURSE,
+  DIASPORA_REMITTANCE_COURSE,
 ];
 
 const STATIC_PAGES = [

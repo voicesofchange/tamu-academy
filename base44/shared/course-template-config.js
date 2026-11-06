@@ -100,6 +100,50 @@ export const TEMPLATE_COURSE_REGISTRY = {
       },
     ],
   },
+
+  // ── The Diaspora Remittance Economy ─────────────────────────────────────
+  // The first real course built with the template. Its overview page is
+  // src/pages/DiasporaRemittanceEconomy.jsx; its content is in
+  // course-template-curriculum.js. Nothing else references the slug.
+  'diaspora-remittance-economy': {
+    slug: 'diaspora-remittance-economy',
+    title: 'The Diaspora Remittance Economy',
+    pillar: 'Economics and Development',
+    track: 'African Economic Literacy and Systems Analysis',
+    completionStatement:
+      'This certifies that the learner named below has completed every module of The Diaspora Remittance Economy, including the module lessons, activities, knowledge checks and reflections. This certificate confirms completion of an educational course. It does not constitute financial, investment, legal or migration advice, and it does not authorise the holder to provide such advice.',
+    enrollmentOpen: true,
+    certificate: {
+      includeEnrollmentId: true,
+      verificationCode: true,
+      requiresCompletedEnrollment: false,
+      extraRequirements: 'none',
+      finalizesEnrollment: true,
+    },
+    modules: [
+      {
+        route: 'module-1',
+        number: 'Module 1',
+        title: 'What a Remittance Really Is',
+        published: true,
+        prerequisite: null,
+      },
+      {
+        route: 'module-2',
+        number: 'Module 2',
+        title: 'The Cost of Sending',
+        published: true,
+        prerequisite: 'module-1',
+      },
+      {
+        route: 'module-3',
+        number: 'Module 3',
+        title: 'When the Money Lands',
+        published: true,
+        prerequisite: 'module-2',
+      },
+    ],
+  },
 };
 
 export function templateCourseExists(courseSlug) {

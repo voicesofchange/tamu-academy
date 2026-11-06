@@ -82,6 +82,7 @@ import {
   UnderstandingAfricanEconomies,
   TranslationReview,
   TemplateCourseModule,
+  DiasporaRemittanceEconomy,
   Videos,
   WaiyakiCertificate,
   WaiyakiCourseCompletion,
@@ -139,6 +140,10 @@ const AuthenticatedApp = () => {
       {/* Sauti za Soko — wrapped in SokoLabelsProvider so the pathway renders
           in the learner's selected language, including the lesson interface. */}
       <Route path="/courses/sauti-za-soko" element={<SokoLabelsProvider><SautiZaSoko /></SokoLabelsProvider>} />
+      {/* The Diaspora Remittance Economy — the first course built with the course
+          template. The overview is public; its modules are served by the single
+          template module route inside the protected block below. */}
+      <Route path="/courses/diaspora-remittance-economy" element={<DiasporaRemittanceEconomy />} />
       <Route path="/courses/sauti-za-soko/peer-facilitator" element={<SokoLabelsProvider><SokoPeerFacilitator /></SokoLabelsProvider>} />
       {/* Protected Routes — login required for module content, progress, and certificates */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>

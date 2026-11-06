@@ -5,6 +5,7 @@ import TemplateCourseLesson from '@/components/courses/template/TemplateCourseLe
 import TemplateCourseGate from '@/components/courses/template/TemplateCourseGate';
 import PageNotFound from '@/lib/PageNotFound';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CENTERED = {
   minHeight: '60vh',
@@ -12,6 +13,16 @@ const CENTERED = {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '#24150f',
+};
+
+const CONTENT = {
+  loading: 'Loading module',
+  lockedTitle: 'This module is not available yet',
+  lockedPrerequisite: 'Finish the module that comes before this one to open it.',
+  lockedUnpublished: 'This module has not been published yet. Please check back soon.',
+  previousModule: 'Go to the previous module',
+  errorText: 'We could not open this module just now.',
+  tryAgain: 'Try again',
 };
 
 /**
@@ -30,6 +41,7 @@ const CENTERED = {
 export default function TemplateCourseModule() {
   const { courseSlug, moduleRoute } = useParams();
   const { language } = useTranslation();
+  const { content: c } = useTranslatedContent('template-course-module', CONTENT);
   const [state, setState] = useState({ status: 'loading' });
   const [reloadToken, setReloadToken] = useState(0);
   const refresh = useCallback(() => setReloadToken((token) => token + 1), []);
@@ -74,7 +86,7 @@ export default function TemplateCourseModule() {
       <div style={CENTERED}>
         <div
           className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin"
-          aria-label="Loading module"
+          aria-label={c.loading}
         />
       </div>
     );
@@ -95,12 +107,10 @@ export default function TemplateCourseModule() {
     return (
       <div style={{ ...CENTERED, flexDirection: 'column', gap: '1rem', padding: '2rem', textAlign: 'center' }}>
         <p className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.4rem,3vw,1.9rem)', fontWeight: 400, margin: 0 }}>
-          This module is not available yet
+          {c.lockedTitle}
         </p>
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '0.95rem', lineHeight: 1.8, maxWidth: '34rem', margin: 0 }}>
-          {state.prerequisite
-            ? 'Finish the module that comes before this one to open it.'
-            : 'This module has not been published yet. Please check back soon.'}
+          {state.prerequisite ? c.lockedPrerequisite : c.lockedUnpublished}
         </p>
         {state.prerequisite && (
           <Link
@@ -108,7 +118,7 @@ export default function TemplateCourseModule() {
             className="font-body"
             style={{ color: '#e8b85b', fontSize: '0.75rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none' }}
           >
-            Go to the previous module &rarr;
+            {c.previousModule} &rarr;
           </Link>
         )}
       </div>
@@ -119,7 +129,7 @@ export default function TemplateCourseModule() {
     return (
       <div style={{ ...CENTERED, flexDirection: 'column', gap: '1rem', padding: '2rem', textAlign: 'center' }}>
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.75)', fontSize: '0.95rem', margin: 0 }}>
-          We could not open this module just now.
+          {c.errorText}
         </p>
         <button
           type="button"
@@ -138,7 +148,7 @@ export default function TemplateCourseModule() {
             cursor: 'pointer',
           }}
         >
-          Try again
+          {c.tryAgain}
         </button>
       </div>
     );
