@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from '@/lib/i18n';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -22,6 +24,7 @@ function Field({ id, label, prompt, value, onChange, rows = 3 }) {
 }
 
 export default function MhAmplifyLab({ lab }) {
+  const { t } = useTranslation();
   const [fields, setFields] = useState({});
   const [checks, setChecks] = useState(Array.isArray(lab.completionChecklist.items) ? new Array(lab.completionChecklist.items.length).fill(false) : []);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -48,22 +51,22 @@ export default function MhAmplifyLab({ lab }) {
       <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '1.04rem', fontStyle: 'italic', marginBottom: '1.5rem' }}>{lab.subtitle}</p>
 
       <dl className="font-body" style={{ ...boxStyle, marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.9rem 1.5rem' }}>
-        <div><dt style={eyebrowStyle}>Course</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
-        <div><dt style={eyebrowStyle}>Module</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
-        <div><dt style={eyebrowStyle}>Estimated time</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.estimatedTime}</dd></div>
-        <div><dt style={eyebrowStyle}>Completion mode</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.completionMode}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.course')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.module')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.estimatedTime')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.estimatedTime}</dd></div>
+        <div><dt style={eyebrowStyle}>{t('mhLab.completionMode')}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.completionMode}</dd></div>
       </dl>
 
-      <div style={{ ...privacyBoxStyle, marginBottom: '1.75rem' }} role="note" aria-label="Safety and scope">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Safety and scope</span>
+      <div style={{ ...privacyBoxStyle, marginBottom: '1.75rem' }} role="note" aria-label={t('mhLab.safetyScope')}>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.safetyScope')}</span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{lab.safetyScope}</p>
       </div>
 
-      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label="Clear all temporary responses">
-        {confirmClear ? 'Confirm clear all' : 'Clear all temporary responses'}
+      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label={t('mhLab.clearAll')}>
+        {confirmClear ? t('mhLab.confirmClearAll') : t('mhLab.clearAll')}
       </button>
 
-      <h3 className="font-heading" style={subHeading}>How to Use This Lab</h3>
+      <h3 className="font-heading" style={subHeading}>{t('mhLab.howToUse')}</h3>
       <ol className="font-body" style={{ ...bodyText, margin: '0 0 1rem 1.4rem' }}>
         {lab.howToUse.map((item, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{item}</li>)}
       </ol>
@@ -81,7 +84,7 @@ export default function MhAmplifyLab({ lab }) {
       <h3 className="font-heading" style={partHeading}>{lab.step2Route.heading}</h3>
       {lab.step2Route.routeOptions && (
         <div style={{ ...boxStyle, marginBottom: '1.5rem' }}>
-          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Route options</span>
+          <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.routeOptions')}</span>
           <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {lab.step2Route.routeOptions.map((opt, i) => <li key={i} style={{ marginBottom: '0.4rem' }}><strong style={{ color: 'rgba(232,184,91,0.85)' }}>{opt.key === 'policy' ? 'A' : 'B'}.</strong> {opt.label}</li>)}
           </ul>
@@ -133,7 +136,7 @@ export default function MhAmplifyLab({ lab }) {
       <p className="font-body" style={promptStyle}>{lab.redTeamTests.instruction}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
         {lab.redTeamTests.tests.map((test, i) => (
-          <Field key={i} id={`amplify-rt-${i}`} label={`Red team test ${i + 1}`} prompt={test} value={fields[`rt_${i}`] || ''} onChange={(v) => setField(`rt_${i}`, v)} rows={2} />
+          <Field key={i} id={`amplify-rt-${i}`} label={fillTemplate(t('mhLab.redTeamTest'), { number: i + 1 })} prompt={test} value={fields[`rt_${i}`] || ''} onChange={(v) => setField(`rt_${i}`, v)} rows={2} />
         ))}
       </div>
       <h4 className="font-heading" style={{ ...subHeading, marginTop: '1.5rem' }}>{lab.redTeamTests.summaryHeading}</h4>
@@ -159,8 +162,8 @@ export default function MhAmplifyLab({ lab }) {
       </div>
 
       {/* Final Reminder */}
-      <div style={privacyBoxStyle} role="note" aria-label="Final reminder">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Final reminder</span>
+      <div style={privacyBoxStyle} role="note" aria-label={t('mhLab.finalReminder')}>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.finalReminder')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.finalReminder}</p>
       </div>
     </div>

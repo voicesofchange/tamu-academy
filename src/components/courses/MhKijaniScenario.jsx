@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslation } from '@/lib/i18n';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -20,6 +22,7 @@ const retryButtonStyle = { ...navButtonStyle, borderColor: 'rgba(232,184,91,0.6)
 function optionLabel(i) { return String.fromCharCode(65 + i); }
 
 export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
   const [selections, setSelections] = useState({});
   const [feedbacks, setFeedbacks] = useState({});
@@ -99,7 +102,7 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
       setFeedbacks((prev) => ({ ...prev, [decisionId]: data.feedback }));
     } catch (err) {
       if (requestRefs.current[decisionId] !== requestId) return;
-      setDecisionErrors((prev) => ({ ...prev, [decisionId]: 'We could not evaluate your selection right now. Please try again.' }));
+      setDecisionErrors((prev) => ({ ...prev, [decisionId]: t('mhLab.evaluationError') }));
     } finally {
       if (requestRefs.current[decisionId] === requestId) {
         setPendingDecisions((prev) => { const next = { ...prev }; delete next[decisionId]; return next; });
@@ -107,7 +110,7 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
     }
   }
 
-  function handleRetryCompletion() { setCompletionError(false); setRetryTrigger((t) => t + 1); }
+  function handleRetryCompletion() { setCompletionError(false); setRetryTrigger((n) => n + 1); }
 
   function isStepAccessible(i) {
     if (i === activeStep) return true;
@@ -128,7 +131,7 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem', color: '#f8f0df', fontWeight: 400, fontSize: '1.02rem' }}>{scenario.prompt}</p>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.9rem' }}>{scenario.instruction}</p>
 
-      <ol aria-label="Scenario decision progress" style={{ ...stepContainerStyle, listStyle: 'none', padding: 0, margin: '0 0 1.75rem' }}>
+      <ol aria-label={t('mhLab.decisionProgress')} style={{ ...stepContainerStyle, listStyle: 'none', padding: 0, margin: '0 0 1.75rem' }}>
         {scenario.decisions.map((d, i) => {
           const isAnswered = !!feedbacks[d.decisionId];
           const isCurrent = i === activeStep;
@@ -137,7 +140,10 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
           return (
             <li key={d.decisionId} style={{ listStyle: 'none' }}>
               <button type="button" aria-current={isCurrent ? 'step' : undefined}
-                aria-label={`Decision ${i + 1}${isAnswered ? ', answered' : ''}${isCurrent ? ', current' : ''}`}
+                aria-label={fillTemplate(t('mhLab.decisionStep'), {
+                  number: i + 1,
+                  status: `${isAnswered ? t('mhLab.answeredSuffix') : ''}${isCurrent ? t('mhLab.currentSuffix') : ''}`,
+                })}
                 disabled={!accessible} onClick={() => accessible && setActiveStep(i)} style={style}>{i + 1}</button>
             </li>
           );
@@ -145,19 +151,19 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
       </ol>
 
       <div style={decisionBoxStyle}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Decision {activeStep + 1} of {scenario.decisions.length}</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{fillTemplate(t('mhLab.decisionOf'), { current: activeStep + 1, total: scenario.decisions.length })}</span>
         <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}>{activeDecision.heading}</h3>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>{activeDecision.prompt}</p>
-        <fieldset aria-label={`Decision ${activeStep + 1}: ${activeDecision.heading}`} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
+        <fieldset aria-label={fillTemplate(t('mhLab.decisionFieldset'), { number: activeStep + 1, heading: activeDecision.heading })} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
           <legend className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>{activeDecision.prompt}</legend>
-          <ul role="radiogroup" aria-label={`Decision ${activeStep + 1} response options`} style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          <ul role="radiogroup" aria-label={fillTemplate(t('mhLab.decisionOptions'), { number: activeStep + 1 })} style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {activeDecision.options.map((opt, i) => {
               const isSelected = selections[activeDecisionId] === i;
               return (
                 <li key={i} style={{ marginBottom: '0.85rem' }}>
                   <label style={isSelected ? optionSelected : optionBase}>
                     <input type="radio" name={`m6-scenario-${activeDecisionId}`} value={i} checked={isSelected || false} disabled={isPending}
-                      onChange={() => handleSelect(activeDecisionId, i)} style={{ marginTop: '0.18rem' }} aria-label={`Option ${optionLabel(i)}: ${opt}`} />
+                      onChange={() => handleSelect(activeDecisionId, i)} style={{ marginTop: '0.18rem' }} aria-label={fillTemplate(t('mhLab.option'), { letter: optionLabel(i), text: opt })} />
                     <span style={{ flex: 1 }}><strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{optionLabel(i)}.</strong> {opt}</span>
                   </label>
                 </li>
@@ -165,10 +171,10 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
             })}
           </ul>
         </fieldset>
-        {isPending && <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem', margin: 0 }}>Loading feedback\u2026</p>}
+        {isPending && <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem', margin: 0 }}>{t('mhLab.loadingFeedback')}</p>}
         {hasFeedback && !isPending && (
           <div role="status" aria-live="polite" style={feedbackBoxStyle}>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Feedback</span>
+            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>{t('mhLab.feedback')}</span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.7)' }}>{feedbacks[activeDecisionId]}</p>
           </div>
         )}
@@ -176,24 +182,24 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-        {activeStep > 0 ? <button type="button" onClick={() => setActiveStep(activeStep - 1)} style={navButtonStyle}>&larr; Previous Decision</button> : <span />}
-        {!isLastStep && hasFeedback && !isPending && <button type="button" onClick={() => setActiveStep(activeStep + 1)} style={navButtonStyle}>Next Decision &rarr;</button>}
+        {activeStep > 0 ? <button type="button" onClick={() => setActiveStep(activeStep - 1)} style={navButtonStyle}>{t('mhLab.previousDecision')}</button> : <span />}
+        {!isLastStep && hasFeedback && !isPending && <button type="button" onClick={() => setActiveStep(activeStep + 1)} style={navButtonStyle}>{t('mhLab.nextDecision')}</button>}
       </div>
 
       {completionPending && !completed && !completionError && (
-        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>Completing scenario\u2026</p>
+        <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>{t('mhLab.completingScenario')}</p>
       )}
       {completionError && (
         <div role="alert" style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', marginBottom: '1.5rem' }}>
-          <p className="font-body" style={{ ...bodyText, color: '#e8955c', margin: 0 }}>We could not complete your scenario right now.</p>
-          <button type="button" onClick={handleRetryCompletion} style={retryButtonStyle}>Retry completion</button>
+          <p className="font-body" style={{ ...bodyText, color: '#e8955c', margin: 0 }}>{t('mhLab.completionError')}</p>
+          <button type="button" onClick={handleRetryCompletion} style={retryButtonStyle}>{t('mhLab.retryCompletion')}</button>
         </div>
       )}
 
       {completed && (
         <div role="status" aria-live="polite">
           <div style={summaryBoxStyle}>
-            <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>Your Design Summary</h3>
+            <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>{t('mhLab.designSummary')}</h3>
             {scenario.summaryHeadings.map((heading, i) => {
               const decision = scenario.decisions[i];
               const selectedIdx = selections[decision.decisionId];
@@ -210,9 +216,9 @@ export default function MhKijaniScenario({ courseSlug, moduleSlug, scenario }) {
             })}
           </div>
           <div style={finalMessageBoxStyle}>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Strongest Design Feature</span>
+            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.strongestFeature')}</span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: '0 0 1rem', color: 'rgba(243,234,216,0.75)' }}>{scenario.strongestDesignFeature}</p>
-            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Most Important Revision</span>
+            <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.mostImportantRevision')}</span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.75)' }}>{scenario.mostImportantRevision}</p>
           </div>
         </div>

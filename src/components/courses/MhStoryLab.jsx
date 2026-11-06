@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslation } from '@/lib/i18n';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.75, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -31,6 +32,7 @@ function SectionBox({ heading, children }) {
 }
 
 export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }) {
+  const { t } = useTranslation();
   const [fields, setFields] = useState({});
   const [checklist, setChecklist] = useState({});
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -59,7 +61,7 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
         setAckDone(true);
         if (onCompleted) onCompleted();
       } else {
-        setAckError('We could not save your progress. Please try again.');
+        setAckError(t('mhLab.saveError'));
       }
     } catch (err) {
       setAckError('We could not save your progress. Please try again.');
@@ -81,12 +83,12 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
     <div className="tamu-print-area">
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.2rem', fontSize: '0.85rem' }}>{lab.safetyScope}</p>
 
-      <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>How to use this lab</p>
+      <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{t('mhLab.howToUseShort')}</p>
       <ol className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1.5rem' }}>
         {lab.howToUse.map((item, i) => <li key={i} style={{ marginBottom: '0.4rem' }}>{item}</li>)}
       </ol>
 
-      <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>Route options</p>
+      <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.5rem' }}>{t('mhLab.routeOptions')}</p>
       <ul className="font-body" style={{ ...bodyText, paddingLeft: '1.2rem', marginBottom: '1.5rem', listStyle: 'none' }}>
         {lab.routeOptions.map((r) => (
           <li key={r.key} style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'rgba(232,184,91,0.85)' }}>{r.label}:</strong> {r.purpose}</li>
@@ -139,22 +141,22 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1.5rem', fontSize: '0.82rem' }}>{lab.finalReminder}</p>
 
       <div className="no-print" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <button type="button" onClick={() => window.print()} style={{ ...clearButtonStyle, color: '#e8b85b', borderColor: 'rgba(232,184,91,0.4)' }}>Print worksheet</button>
+        <button type="button" onClick={() => window.print()} style={{ ...clearButtonStyle, color: '#e8b85b', borderColor: 'rgba(232,184,91,0.4)' }}>{t('mhLab.printWorksheet')}</button>
         {!showClearConfirm ? (
-          <button type="button" onClick={() => setShowClearConfirm(true)} style={clearButtonStyle}>Clear all</button>
+          <button type="button" onClick={() => setShowClearConfirm(true)} style={clearButtonStyle}>{t('mhLab.clearAllShort')}</button>
         ) : (
           <>
-            <span className="font-body" style={{ ...bodyText, color: '#e8955c', fontSize: '0.85rem' }}>Clear all entries? This cannot be undone.</span>
-            <button type="button" onClick={handleClearAll} style={clearButtonStyle}>Yes, clear</button>
-            <button type="button" onClick={() => setShowClearConfirm(false)} style={{ ...clearButtonStyle, color: 'rgba(243,234,216,0.7)', borderColor: 'rgba(243,234,216,0.25)' }}>Cancel</button>
+            <span className="font-body" style={{ ...bodyText, color: '#e8955c', fontSize: '0.85rem' }}>{t('mhLab.clearConfirm')}</span>
+            <button type="button" onClick={handleClearAll} style={clearButtonStyle}>{t('mhLab.yesClear')}</button>
+            <button type="button" onClick={() => setShowClearConfirm(false)} style={{ ...clearButtonStyle, color: 'rgba(243,234,216,0.7)', borderColor: 'rgba(243,234,216,0.25)' }}>{t('mhLab.cancel')}</button>
           </>
         )}
         {!ackDone && (
           <button type="button" disabled={ackPending} onClick={handleAcknowledge} style={{ ...completeButtonStyle, cursor: ackPending ? 'wait' : 'pointer', opacity: ackPending ? 0.7 : 1 }}>
-            {ackPending ? 'Saving...' : 'Acknowledge completion'}
+            {ackPending ? t('mhLab.saving') : t('mhLab.acknowledgeCompletion')}
           </button>
         )}
-        {ackDone && <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.82rem', fontStyle: 'italic' }}>Completion acknowledged.</span>}
+        {ackDone && <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.82rem', fontStyle: 'italic' }}>{t('mhLab.completionAcknowledged')}</span>}
         {ackError && <p className="font-body" role="alert" style={{ color: '#e8955c', fontSize: '0.85rem', margin: 0 }}>{ackError}</p>}
       </div>
     </div>

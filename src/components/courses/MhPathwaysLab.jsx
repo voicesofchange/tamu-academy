@@ -281,8 +281,8 @@ export default function MhPathwaysLab({ lab }) {
       </div>
 
       {/* Final Reminder */}
-      <div style={privacyBoxStyle} role="note" aria-label="Final reminder">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Final reminder</span>
+      <div style={privacyBoxStyle} role="note" aria-label={t('mhLab.finalReminder')}>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{t('mhLab.finalReminder')}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.finalReminder}</p>
       </div>
     </div>
