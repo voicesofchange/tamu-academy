@@ -77,6 +77,7 @@ export default async function(req) {
     );
     return Response.json({ translations });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('translatePageContent failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

@@ -220,6 +220,7 @@ export default async function(req) {
       recentMilestones,
     });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('getCommunityInsights failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

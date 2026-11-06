@@ -44,6 +44,7 @@ export default async function (req) {
       counts: countTranslations(trimmed),
     });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('getTranslationReview failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

@@ -52,6 +52,7 @@ export default async function (req) {
       updated_at: updated && updated.updated_date,
     });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('saveTranslationReview failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

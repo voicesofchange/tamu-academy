@@ -26,6 +26,7 @@ export default async function (req) {
     const rows = await fetchCourseTranslations(base44, language);
     return Response.json({ language, count: rows.length, csv: buildCsv(rows) });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('exportTranslationCsv failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }

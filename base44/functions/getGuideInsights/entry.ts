@@ -66,6 +66,7 @@ export default async function (req) {
       statements,
     });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('getGuideInsights failed', error);
+    return Response.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }
