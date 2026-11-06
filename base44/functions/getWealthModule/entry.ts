@@ -52,7 +52,7 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug', 'moduleRoute']);
+    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
     for (const k of Object.keys(body)) {
       if (!allowedKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });

@@ -7,6 +7,15 @@ import {
   getWaiyakiProjectOption,
   WAIYAKI_ASSESSMENT_MODULE_SLUG,
 } from '../../shared/waiyaki-config.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
+
+/**
+ * Only the assessment (heading, intro, question prompts and options — the
+ * answer key is stripped above) and the four final-project options are
+ * translated. The learner's own saved project and previous attempt are their
+ * own words and are returned exactly as they were written.
+ */
+const TRANSLATED_SECTIONS = ['assessment', 'projectOptions'];
 
 /**
  * getWaiyakiAssessment — access-gated endpoint that returns the final
@@ -46,7 +55,7 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug']);
+    const allowedKeys = new Set(['courseSlug', 'language']);
     for (const k of Object.keys(body)) {
       if (!allowedKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
@@ -54,6 +63,7 @@ export default async function(req: Request): Promise<Response> {
     }
 
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
+    const language = typeof body.language === 'string' ? body.language : 'en';
     if (!courseSlug || !waiyakiCourseExists(courseSlug)) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -124,9 +134,19 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
+    // Question prompts and options are translated; the answer key was never
+    // included in `assessment`, and `attempt` / `project` are the learner's own
+    // words, so they are returned untouched.
+    const translated = await translateCourseSections(
+      base44,
+      { assessment, projectOptions },
+      language,
+      TRANSLATED_SECTIONS,
+    );
+
     return Response.json({
-      assessment,
-      projectOptions,
+      assessment: translated.assessment,
+      projectOptions: translated.projectOptions,
       passRequired,
       attempt,
       project,

@@ -8,6 +8,27 @@ import {
   getWaiyakiCompletionRequirements,
 } from '../../shared/waiyaki-config.js';
 import { WAIYAKI_COURSE_TITLE } from '../../shared/waiyaki-curriculum.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
+
+/**
+ * The learner-facing sections of a Waiyaki wa Hinga module that are
+ * translated: the title, subtitle, lead, learning objectives, companion video
+ * notes, key terms, the module's reading sections, the source analysis, the
+ * reflection prompts and the completion requirements. The course title,
+ * routes, numbers, time estimates and evidence labels stay as they are.
+ */
+const TRANSLATED_SECTIONS = [
+  'title',
+  'subtitle',
+  'lead',
+  'learningObjectives',
+  'companionVideo',
+  'keyTerms',
+  'sections',
+  'sourceAnalysis',
+  'reflection',
+  'completionRequirements',
+];
 
 /**
  * Access-gated endpoint that returns one Waiyaki wa Hinga module. The
@@ -49,7 +70,7 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug', 'moduleRoute']);
+    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
     for (const k of Object.keys(body)) {
       if (!allowedKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
@@ -58,6 +79,7 @@ export default async function(req: Request): Promise<Response> {
 
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
+    const language = typeof body.language === 'string' ? body.language : 'en';
 
     if (!courseSlug || !waiyakiCourseExists(courseSlug) || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
@@ -105,7 +127,16 @@ export default async function(req: Request): Promise<Response> {
       completionRequirements: getWaiyakiCompletionRequirements(),
     };
 
-    return Response.json({ module: moduleContent });
+    // Batched, cached, per-field English fallback; learner progress is neither
+    // read nor written here.
+    const translatedContent = await translateCourseSections(
+      base44,
+      moduleContent,
+      language,
+      TRANSLATED_SECTIONS,
+    );
+
+    return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getWaiyakiModule] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });

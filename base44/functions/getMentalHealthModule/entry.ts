@@ -4,7 +4,17 @@ import {
   isModulePublished,
   getModulePrerequisite,
 } from '../../shared/mental-health-curriculum.js';
-import { translateModuleContent } from '../../shared/translate-content.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
+
+/**
+ * The learner-facing sections of a mental health module that are translated:
+ * the module title and the whole lesson (overview, objectives, core media,
+ * questions to consider, introduction, explanation, scenario and lab text,
+ * reflection prompt, knowledge check questions and options, closing text and
+ * completion requirements). The knowledge check arrives already stripped to
+ * id, prompt and options, so no answer key is ever sent for translation.
+ */
+const TRANSLATED_SECTIONS = ['title', 'lesson'];
 
 /**
  * Role-gated endpoint that returns the Mental Health pillar module
@@ -125,7 +135,14 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
-    const translatedContent = await translateModuleContent(base44, moduleContent, language);
+    // Batched, cached, per-field English fallback. No answer key is present in
+    // the payload above, and learner progress is neither read nor written here.
+    const translatedContent = await translateCourseSections(
+      base44,
+      moduleContent,
+      language,
+      TRANSLATED_SECTIONS,
+    );
     return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getMentalHealthModule] Unexpected error:', error && error.message);

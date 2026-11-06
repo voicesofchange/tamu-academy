@@ -78,8 +78,17 @@ const STRUCTURAL_KEYS = new Set([
   'publishedAt',
 ]);
 
-/** Sections that hold citations and links only. */
-const REFERENCE_SECTIONS = new Set(['sources', 'citations', 'references']);
+/**
+ * Sections that hold citations and bibliographic detail only — wherever they
+ * sit in a module (top level or nested inside a lesson). Works of reference are
+ * cited in their published language.
+ */
+const REFERENCE_SECTIONS = new Set([
+  'sources',
+  'citations',
+  'references',
+  'sourcesFurtherLearning',
+]);
 
 const NUMBER_ONLY = /^[\s\d.,:;%()\u2013\u2014/-]*$/;
 
@@ -131,7 +140,7 @@ function restoreTerms(value) {
 function isTranslatableLeaf(path) {
   const segments = path.split('.').filter((segment) => !/^\d+$/.test(segment));
   if (segments.length === 0) return false;
-  if (REFERENCE_SECTIONS.has(segments[0])) return false;
+  if (segments.some((segment) => REFERENCE_SECTIONS.has(segment))) return false;
   const key = segments[segments.length - 1];
   return !STRUCTURAL_KEYS.has(key);
 }
