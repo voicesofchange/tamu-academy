@@ -6,7 +6,7 @@ import PathwayModeStatus from '@/components/remote/PathwayModeStatus';
 import PathwayStateLegend from '@/components/remote/PathwayStateLegend';
 import PathwayStage from '@/components/remote/PathwayStage';
 import RemoteOfflinePlan from '@/components/remote/RemoteOfflinePlan';
-import { PATHWAY_STAGES } from '@/lib/remote-pathway';
+import { PATHWAY_STAGES, STATE_STYLES } from '@/lib/remote-pathway';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const PATHWAY_STRINGS = {
@@ -14,6 +14,11 @@ const PATHWAY_STRINGS = {
   heading: 'The Remote Learner pathway',
   subheading:
     'Text-first study, material you can carry offline, and a clear line between what is saved to your account and what only exists on paper.',
+  stateLabels: {
+    saved: STATE_STYLES.saved.label,
+    offline: STATE_STYLES.offline.label,
+    reading: STATE_STYLES.reading.label,
+  },
   stages: PATHWAY_STAGES,
 };
 
@@ -47,7 +52,7 @@ export default function RemotePathway() {
       <PathwayStateLegend />
 
       {content.stages.map((stage) => (
-        <PathwayStage key={stage.id} stage={stage} />
+        <PathwayStage key={stage.id} stage={stage} stateLabels={content.stateLabels} />
       ))}
 
       <RemoteOfflinePlan onPrint={() => window.print()} />

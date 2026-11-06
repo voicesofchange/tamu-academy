@@ -13,7 +13,7 @@ const ctaStyle = { color: 'var(--tamu-gold)', fontSize: '0.72rem', letterSpacing
  * PathwayStage — one stage of the Remote Learner pathway, with each step
  * tagged by what happens to the learner's work (saved, offline, or read online).
  */
-export default function PathwayStage({ stage }) {
+export default function PathwayStage({ stage, stateLabels }) {
   return (
     <section style={{ padding: '0 clamp(1.5rem, 6vw, 4rem)', marginBottom: '3.5rem' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
@@ -37,7 +37,7 @@ export default function PathwayStage({ stage }) {
               >
                 <div style={{ flex: '1 1 20rem' }}>
                   <span className="font-body" style={{ display: 'inline-block', color: tag.color, border: `1px solid ${tag.border}`, backgroundColor: tag.background, fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, borderRadius: '2px', padding: '0.18rem 0.6rem', marginBottom: '0.6rem' }}>
-                    {tag.label}
+                    {stateLabels?.[step.state] || tag.label}
                   </span>
                   <h3 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: '1.08rem', fontWeight: 400, lineHeight: 1.35, margin: '0 0 0.35rem' }}>
                     {step.title}

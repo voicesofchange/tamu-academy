@@ -1,5 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+const SUMMARY_STRINGS = {
+  coursesJoined: 'Courses joined',
+  coursesJoinedNote: 'Courses you have enrolled in.',
+  modulesCompleted: 'Modules completed',
+  modulesCompletedNote: 'Modules finished across every course.',
+  coursesCompleted: 'Courses completed',
+  coursesCompletedNote: 'Courses with every module complete.',
+  overallProgress: 'Overall progress',
+  overallProgressNote: 'Your progress across the whole library.',
+  countOf: '{count} of {total}',
+  percentOf: '{value}%',
+};
 
 const tileStyle = {
   padding: '1.4rem 1.5rem',
@@ -31,26 +46,32 @@ const noteStyle = {
  * in total, how many courses are complete, and overall progress.
  */
 export default function ProgressSummaryStrip({ summary }) {
+  const { content } = useTranslatedContent('progress-summary', SUMMARY_STRINGS);
+
+  const countOf = (count, total) => fillTemplate(content.countOf, { count, total });
+
   const tiles = [
     {
-      label: 'Courses joined',
-      value: `${summary.enrolled} of ${summary.coursesTotal}`,
-      note: 'Courses you have enrolled in.',
+      label: content.coursesJoined,
+      value: countOf(summary.enrolled, summary.coursesTotal),
+      note: content.coursesJoinedNote,
     },
     {
-      label: 'Modules completed',
-      value: `${summary.modulesCompleted} of ${summary.modulesTotal}`,
-      note: 'Modules finished across every course.',
+      label: content.modulesCompleted,
+      value: countOf(summary.modulesCompleted, summary.modulesTotal),
+      note: content.modulesCompletedNote,
     },
     {
-      label: 'Courses completed',
-      value: `${summary.coursesCompleted} of ${summary.coursesTotal}`,
-      note: 'Courses with every module complete.',
+      label: content.coursesCompleted,
+      value: countOf(summary.coursesCompleted, summary.coursesTotal),
+      note: content.coursesCompletedNote,
     },
     {
-      label: 'Overall progress',
-      value: `${summary.modulesTotal > 0 ? Math.round((summary.modulesCompleted / summary.modulesTotal) * 100) : 0}%`,
-      note: 'Your progress across the whole library.',
+      label: content.overallProgress,
+      value: fillTemplate(content.percentOf, {
+        value: summary.modulesTotal > 0 ? Math.round((summary.modulesCompleted / summary.modulesTotal) * 100) : 0,
+      }),
+      note: content.overallProgressNote,
     },
   ];
 

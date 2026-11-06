@@ -1,6 +1,20 @@
 import React from 'react';
 import { Feather, Gauge } from 'lucide-react';
 import { useDisplayMode } from '@/lib/display-mode';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const MODE_STRINGS = {
+  dataSaverOn: 'Data-Saver is on',
+  standardOn: 'Standard mode is on',
+  dataSaverBody:
+    'Pages are running on system text with no decorative imagery, and no video or audio is downloaded unless you press play. This page and every lesson stay text-first.',
+  standardBody:
+    'You are on the full experience, and lesson media still waits for your tap before it loads. Data-Saver removes decorative imagery altogether and keeps every page to system text.',
+  switchOff: 'Switch off Data-Saver',
+  switchOn: 'Switch on Data-Saver',
+  deviceNote:
+    'The choice is kept on this device, so a phone can read in Data-Saver while a desktop stays on the full experience.',
+};
 
 /**
  * PathwayModeStatus — the Standard / Data-Saver switch in the place a Remote
@@ -10,6 +24,7 @@ import { useDisplayMode } from '@/lib/display-mode';
  */
 export default function PathwayModeStatus() {
   const { isDataSaver, setMode } = useDisplayMode();
+  const { content } = useTranslatedContent('pathway-mode', MODE_STRINGS);
   const Icon = isDataSaver ? Feather : Gauge;
 
   return (
@@ -20,13 +35,11 @@ export default function PathwayModeStatus() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.6rem' }}>
               <Icon size={14} color="var(--tamu-gold)" aria-hidden="true" />
               <span className="font-body" style={{ color: 'var(--tamu-gold)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}>
-                {isDataSaver ? 'Data-Saver is on' : 'Standard mode is on'}
+                {isDataSaver ? content.dataSaverOn : content.standardOn}
               </span>
             </div>
             <p className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300, margin: 0, maxWidth: '42rem' }}>
-              {isDataSaver
-                ? 'Pages are running on system text with no decorative imagery, and no video or audio is downloaded unless you press play. This page and every lesson stay text-first.'
-                : 'You are on the full experience, and lesson media still waits for your tap before it loads. Data-Saver removes decorative imagery altogether and keeps every page to system text.'}
+              {isDataSaver ? content.dataSaverBody : content.standardBody}
             </p>
           </div>
           <button
@@ -38,12 +51,12 @@ export default function PathwayModeStatus() {
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, cursor: 'pointer', borderRadius: '2px', padding: '0.6rem 1.1rem', border: '1px solid var(--tamu-gold)', backgroundColor: 'var(--tamu-gold)', color: '#24150f' }}
           >
             <Icon size={13} strokeWidth={2} aria-hidden="true" />
-            {isDataSaver ? 'Switch off Data-Saver' : 'Switch on Data-Saver'}
+            {isDataSaver ? content.switchOff : content.switchOn}
           </button>
         </div>
 
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, margin: '0.6rem 0 0' }}>
-          The choice is kept on this device, so a phone can read in Data-Saver while a desktop stays on the full experience.
+          {content.deviceNote}
         </p>
       </div>
     </section>

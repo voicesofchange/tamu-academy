@@ -8,6 +8,22 @@ import {
   STANDING_NOTES,
   progressDate,
 } from '@/lib/learner-progress';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+const CARD_STRINGS = {
+  progress: 'Progress',
+  modulesComplete: '{completed} of {total} modules complete',
+  progressAria: '{title} progress',
+  continueAt: 'Continue at {number}',
+  reviewCompletion: 'Review course completion',
+  openCourse: 'Open course',
+  showModules: 'Show all modules',
+  hideModules: 'Hide modules',
+  standings: STANDING_LABELS,
+  standingNotes: STANDING_NOTES,
+  moduleStatuses: MODULE_STATUS_LABELS,
+};
 
 const primaryButtonStyle = {
   display: 'inline-flex',
@@ -77,7 +93,11 @@ const statusPillBase = {
  */
 export default function ProgressCourseCard({ course }) {
   const [open, setOpen] = useState(false);
-  const completedLabel = `${course.completedCount} of ${course.totalModules} modules complete`;
+  const { content } = useTranslatedContent('progress-course-card', CARD_STRINGS);
+  const completedLabel = fillTemplate(content.modulesComplete, {
+    completed: course.completedCount,
+    total: course.totalModules,
+  });
   const nextStep = course.nextModule;
 
   return (
@@ -96,10 +116,10 @@ export default function ProgressCourseCard({ course }) {
     >
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginBottom: '1rem' }}>
         <span className="font-body" style={{ ...statusPillBase, ...standingStyle(course.standing) }}>
-          {STANDING_LABELS[course.standing]}
+          {content.standings[course.standing]}
         </span>
         <span className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.75rem', fontWeight: 300 }}>
-          {STANDING_NOTES[course.standing]}
+          {content.standingNotes[course.standing]}
         </span>
       </div>
 
@@ -113,7 +133,7 @@ export default function ProgressCourseCard({ course }) {
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem', marginBottom: '0.6rem' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Progress
+            {content.progress}
           </span>
           <span className="font-body" style={{ color: '#f8f0df', fontSize: '0.9rem', fontWeight: 500 }}>
             {completedLabel}
@@ -124,7 +144,7 @@ export default function ProgressCourseCard({ course }) {
           aria-valuenow={course.percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`${course.title} progress`}
+          aria-label={fillTemplate(content.progressAria, { title: course.title })}
           style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
         >
           <div style={{ width: `${course.percent}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
@@ -134,17 +154,17 @@ export default function ProgressCourseCard({ course }) {
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
         {course.enrolled && nextStep && (
           <Link to={`/courses/${course.slug}/${nextStep.route}`} className="font-body" style={primaryButtonStyle}>
-            Continue at {nextStep.number} &rarr;
+            {fillTemplate(content.continueAt, { number: nextStep.number })} &rarr;
           </Link>
         )}
         {course.enrolled && !nextStep && (
           <Link to={`/courses/${course.slug}/completion`} className="font-body" style={primaryButtonStyle}>
-            Review course completion &rarr;
+            {content.reviewCompletion} &rarr;
           </Link>
         )}
         {!course.enrolled && (
           <Link to={`/courses/${course.slug}`} className="font-body" style={primaryButtonStyle}>
-            Open course &rarr;
+            {content.openCourse} &rarr;
           </Link>
         )}
         <button
@@ -154,7 +174,7 @@ export default function ProgressCourseCard({ course }) {
           className="font-body"
           style={outlineButtonStyle}
         >
-          {open ? 'Hide modules' : 'Show all modules'}
+          {open ? content.hideModules : content.showModules}
           <ChevronDown
             size={14}
             aria-hidden="true"
@@ -194,7 +214,7 @@ export default function ProgressCourseCard({ course }) {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
                   <span className="font-body" style={{ ...statusPillBase, ...moduleStatusStyle(module.status) }}>
-                    {MODULE_STATUS_LABELS[module.status]}
+                    {content.moduleStatuses[module.status]}
                   </span>
                   {module.updatedAt && (
                     <span className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', fontWeight: 300 }}>
