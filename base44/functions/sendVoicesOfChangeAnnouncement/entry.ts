@@ -76,6 +76,13 @@ const parseEmails = (raw) => {
 };
 
 import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
+import {
+  getOrCreatePreference,
+  isStopped,
+  loadPreferences,
+  stopEmailsUrl,
+  stopFooter,
+} from '../../shared/email-preferences.js';
 
 export default async function (req) {
   try {
@@ -103,52 +110,97 @@ export default async function (req) {
     const info = await infoRes.json();
     const fromEmail = info.email;
 
+    // Learners who asked us to stop these emails are left out, and every
+    // learner's copy carries their own stop link. Addresses with no Tamu
+    // Academy account are still written to; they have no setting to read.
+    const users = await base44.asServiceRole.entities.User.list();
+    const learnerByEmail = {};
+    for (const registered of users || []) {
+      if (registered.email) learnerByEmail[String(registered.email).toLowerCase()] = registered;
+    }
+
+    const preferences = await loadPreferences(base44);
+    const recipients = [];
+    let stopped = 0;
+
+    for (const email of emails) {
+      const learner = learnerByEmail[email] || null;
+      const preference = learner ? preferences.byLearner.get(learner.id) || null : null;
+
+      if (isStopped(preference)) {
+        stopped++;
+        continue;
+      }
+
+      recipients.push({ email, learner, preference });
+    }
+
     if (dryRun) {
       return Response.json({
         dry_run: true,
-        eligible_count: emails.length,
+        eligible_count: recipients.length,
+        stopped,
         sender: fromEmail,
-        recipients: emails.map((email) => ({ email })),
+        recipients: recipients.map((recipient) => ({
+          email: recipient.email,
+          learner: !!recipient.learner,
+        })),
       });
     }
 
-    if (emails.length === 0) {
-      return Response.json({ sent: 0, failed: 0, eligible: 0, sender: fromEmail, tracked: true });
+    if (recipients.length === 0) {
+      return Response.json({ sent: 0, failed: 0, eligible: 0, stopped, sender: fromEmail, tracked: true });
     }
 
     // Create a tracking record per recipient before sending.
     const now = new Date().toISOString();
-    const records = emails.map((email) => ({
+    const records = recipients.map((recipient) => ({
       tracking_token: crypto.randomUUID(),
-      recipient_email: email,
+      recipient_email: recipient.email,
       message_type: messageType,
       sent_at: now,
       open_count: 0,
     }));
     await base44.asServiceRole.entities.EmailOpenEvent.bulkCreate(records);
 
-    const sendOne = async (email, token) => {
-      const html = message.html + trackingPixel(token);
-      const raw = buildRawMime('Tamu Academy', fromEmail, email, message.subject, message.text, html);
+    const sendOne = async (recipient, token) => {
       try {
+        const preference = recipient.learner
+          ? recipient.preference ||
+            (await getOrCreatePreference(base44, {
+              learnerId: recipient.learner.id,
+              email: recipient.learner.email,
+            }))
+          : null;
+
+        const footer = stopFooter({
+          url: preference ? stopEmailsUrl(preference.stop_token) : '',
+        });
+
+        const html = message.html + footer.html + trackingPixel(token);
+        const text = message.text + footer.text;
+        const raw = buildRawMime('Tamu Academy', fromEmail, recipient.email, message.subject, text, html);
+
         const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',
           headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ raw }),
         });
-        return { email, ok: res.ok };
+        return { email: recipient.email, ok: res.ok };
       } catch (e) {
-        return { email, ok: false, error: e.message };
+        return { email: recipient.email, ok: false, error: e.message };
       }
     };
 
     let sent = 0;
     let failed = 0;
     const errors = [];
-    for (let i = 0; i < emails.length; i += SEND_BATCH) {
-      const slice = emails.slice(i, i + SEND_BATCH);
+    for (let i = 0; i < recipients.length; i += SEND_BATCH) {
+      const slice = recipients.slice(i, i + SEND_BATCH);
       const tokenSlice = records.slice(i, i + SEND_BATCH);
-      const results = await Promise.all(slice.map((email, j) => sendOne(email, tokenSlice[j].tracking_token)));
+      const results = await Promise.all(
+        slice.map((recipient, j) => sendOne(recipient, tokenSlice[j].tracking_token))
+      );
       for (const r of results) {
         if (r.ok) sent++;
         else {
@@ -161,7 +213,8 @@ export default async function (req) {
     return Response.json({
       sent,
       failed,
-      eligible: emails.length,
+      eligible: recipients.length,
+      stopped,
       sender: fromEmail,
       tracked: true,
       errors,

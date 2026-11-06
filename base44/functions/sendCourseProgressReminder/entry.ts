@@ -36,6 +36,12 @@ import {
   getGmailSender,
   sendTrackedEmail,
 } from '../../shared/course-outreach.js';
+import {
+  getOrCreatePreference,
+  isStopped,
+  loadPreferences,
+  stopEmailsUrl,
+} from '../../shared/email-preferences.js';
 
 const ACTIVE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000; // still working: activity within 30 days
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000; // at most one reminder a fortnight
@@ -66,6 +72,9 @@ export default async function (req: Request): Promise<Response> {
     const users = await base44.asServiceRole.entities.User.list();
     const userMap = {};
     for (const u of users || []) userMap[u.id] = u;
+
+    // Who has asked us to stop these emails.
+    const preferences = await loadPreferences(base44);
 
     // Completed modules and latest activity, per learner + course.
     const byLearnerCourse = {};
@@ -117,9 +126,13 @@ export default async function (req: Request): Promise<Response> {
       const learner = userMap[enrollment.learner_id];
       if (!learner || !learner.email) continue;
 
+      // The learner asked us to stop these emails: leave them out entirely.
+      if (isStopped(preferences.byLearner.get(learner.id))) continue;
+
       targets.push({
         enrollment,
         learner,
+        preference: preferences.byLearner.get(learner.id) || null,
         doneCount,
         totalCount: required.length,
         nextRoute: required.find((route) => !completed.has(route)),
@@ -164,16 +177,25 @@ export default async function (req: Request): Promise<Response> {
         ? fillCopy(copy.moduleName, { n: moduleNumber[1] })
         : rawLabel;
 
-      const email = buildProgressEmail(copy, {
-        firstName: firstNameOf(resolvePreferredName(learner, learner.full_name)),
-        courseTitle,
-        doneCount,
-        totalCount,
-        nextLabel,
-        url: moduleUrl(enrollment.course_slug, nextRoute),
-      });
-
       try {
+        // The learner's own stop link, created on first use.
+        const preference =
+          target.preference ||
+          (await getOrCreatePreference(base44, {
+            learnerId: learner.id,
+            email: learner.email,
+          }));
+
+        const email = buildProgressEmail(copy, {
+          firstName: firstNameOf(resolvePreferredName(learner, learner.full_name)),
+          courseTitle,
+          doneCount,
+          totalCount,
+          nextLabel,
+          url: moduleUrl(enrollment.course_slug, nextRoute),
+          stopUrl: stopEmailsUrl(preference.stop_token),
+        });
+
         await sendTrackedEmail(base44, {
           accessToken,
           fromEmail,

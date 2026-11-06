@@ -1,16 +1,22 @@
 /**
- * sendInactiveLearnerCheckIn — finds learners with an active course
- * enrollment who have been inactive for more than 7 days (no ModuleProgress
- * update in that window) and sends them a motivational check-in email from
- * sustainthevoices@gmail.com (display name "Tex Wambui | Tamu Academy").
+ * sendInactiveLearnerCheckIn — one motivational email per learner per week,
+ * naming every course they have drifted from, from sustainthevoices@gmail.com
+ * (display name "Tex Wambui | Tamu Academy").
  *
- * A 7-day cooldown per enrollment (tracked via last_check_in_sent_at on
- * CourseEnrollment) prevents the same learner from receiving more than one
- * check-in per week.
+ * A learner is written to when at least one active enrollment has been
+ * inactive for 7 days. All of that learner's inactive courses travel in the
+ * same email, so a learner with four courses receives one message, not four.
+ *
+ * The per-learner bookkeeping lives on EmailPreference:
+ *   - last_check_in_at  at most one check-in a week, across all courses
+ *   - check_in_streak   check-ins sent without any course activity between
+ *                       them. Any activity resets it, and at three check-ins
+ *                       stop until the learner returns.
+ *   - status 'stopped'  the learner asked us to stop; nothing is sent.
  *
  * Invocation modes:
  *   1. Admin (dashboard): authenticated admin can run a dry_run to preview.
- *   2. Workflow (scheduled): unauthenticated call from the daily workflow.
+ *   2. Workflow (scheduled): daily scheduled call.
  *
  * Open tracking is recorded via EmailOpenEvent (message_type 'follow_up')
  * and the trackEmailOpen pixel endpoint.
@@ -24,11 +30,23 @@ import { SOKO_PEER_COURSE_SLUG } from '../../shared/sauti-za-soko-config.js';
 import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
 import { emailCopyCache, learnerLanguage } from '../../shared/email-localization.js';
 import { CHECK_IN_COPY, buildCheckInEmail } from '../../shared/learner-emails.js';
+import {
+  getOrCreatePreference,
+  isStopped,
+  loadPreferences,
+  stopEmailsUrl,
+  MAX_CHECK_INS_WITHOUT_ACTIVITY,
+} from '../../shared/email-preferences.js';
 
 const SITE_URL = 'https://tamuacademy.org';
 const FROM_NAME = 'Tex Wambui | Tamu Academy';
 const INACTIVITY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days between check-ins
+
+const courseTitleOf = (courseSlug) => {
+  const config = getCourseConfig(courseSlug);
+  return config ? config.title : courseSlug;
+};
 
 /**
  * Where the learner continues: the module they last touched, then the slug
@@ -75,31 +93,39 @@ export default async function (req: Request): Promise<Response> {
     const fromEmail = info.email;
 
     // --- Gather data ---
-    const enrollments = await base44.asServiceRole.entities.CourseEnrollment.filter({
-      status: 'active',
-    });
+    const [enrollments, allProgress, users] = await Promise.all([
+      base44.asServiceRole.entities.CourseEnrollment.filter({ status: 'active' }),
+      base44.asServiceRole.entities.ModuleProgress.list(),
+      base44.asServiceRole.entities.User.list(),
+    ]);
 
-    const allProgress = await base44.asServiceRole.entities.ModuleProgress.list();
+    // Latest activity per course, and per learner across every course.
     const progressMap = {};
+    const latestActivity = {};
     for (const p of allProgress || []) {
-      const key = `${p.learner_id}|${p.course_slug}`;
       const touched = p.updated_at || p.updated_date || p.created_date;
       if (!touched) continue;
+
+      const key = `${p.learner_id}|${p.course_slug}`;
       const current = progressMap[key];
       if (!current || new Date(touched) > new Date(current.touched)) {
         progressMap[key] = { touched, module_slug: p.module_slug };
       }
+
+      const learnerLatest = latestActivity[p.learner_id];
+      if (!learnerLatest || new Date(touched) > new Date(learnerLatest)) {
+        latestActivity[p.learner_id] = touched;
+      }
     }
 
-    const users = await base44.asServiceRole.entities.User.list();
     const userMap = {};
     for (const u of users || []) userMap[u.id] = u;
 
-    // --- Determine inactive targets ---
+    // --- Determine who is inactive, grouped by learner ---
     const now = Date.now();
     const inactiveThreshold = now - INACTIVITY_MS;
     const cooldownThreshold = now - COOLDOWN_MS;
-    const targets = [];
+    const groups = new Map();
 
     for (const e of enrollments || []) {
       const key = `${e.learner_id}|${e.course_slug}`;
@@ -120,11 +146,54 @@ export default async function (req: Request): Promise<Response> {
       const learner = userMap[e.learner_id];
       if (!learner || !learner.email) continue;
 
-      // The module they last touched is the truest place to resume, with the
-      // enrollment's saved slug as a fallback for older records.
-      const lastModule = progressMap[key]?.module_slug || e.last_module_slug || null;
+      const group = groups.get(e.learner_id) || { learner, courses: [] };
+      group.courses.push({
+        enrollment: e,
+        courseSlug: e.course_slug,
+        lastModule: progressMap[key]?.module_slug || e.last_module_slug || null,
+      });
+      groups.set(e.learner_id, group);
+    }
 
-      targets.push({ enrollment: e, learner, lastActivity, lastModule });
+    // --- Apply the learner's own settings and the check-in limit ---
+    const preferences = await loadPreferences(base44);
+    const targets = [];
+    const skipped = { stopped: 0, recent_check_in: 0, no_activity: 0 };
+
+    for (const [learnerId, group] of groups) {
+      const preference = preferences.byLearner.get(learnerId) || null;
+
+      if (isStopped(preference)) {
+        skipped.stopped++;
+        continue;
+      }
+
+      const lastCheckInMs = preference?.last_check_in_at
+        ? new Date(preference.last_check_in_at).getTime()
+        : null;
+
+      // One check-in a week for this learner, whichever courses are waiting.
+      if (lastCheckInMs && lastCheckInMs > cooldownThreshold) {
+        skipped.recent_check_in++;
+        continue;
+      }
+
+      // A check-in that went unanswered keeps the streak; any activity since
+      // the last one starts the count again.
+      let streak = Number(preference?.check_in_streak || 0);
+      if (!Number.isFinite(streak) || streak < 0) streak = 0;
+
+      const activityMs = latestActivity[learnerId]
+        ? new Date(latestActivity[learnerId]).getTime()
+        : null;
+      if (lastCheckInMs && activityMs && activityMs > lastCheckInMs) streak = 0;
+
+      if (streak >= MAX_CHECK_INS_WITHOUT_ACTIVITY) {
+        skipped.no_activity++;
+        continue;
+      }
+
+      targets.push({ learner: group.learner, preference, streak, courses: group.courses });
     }
 
     if (dryRun) {
@@ -132,24 +201,33 @@ export default async function (req: Request): Promise<Response> {
         dry_run: true,
         eligible_count: targets.length,
         sender: fromEmail,
+        skipped,
         targets: targets.map((t) => ({
           learner_id: t.learner.id,
           email: t.learner.email,
           name: t.learner.full_name,
           language: learnerLanguage(t.learner),
-          course_slug: t.enrollment.course_slug,
-          last_module: t.lastModule,
-          last_activity: t.lastActivity,
-          last_check_in: t.enrollment.last_check_in_sent_at || null,
+          courses: t.courses.map((c) => ({
+            course_slug: c.courseSlug,
+            last_module: c.lastModule,
+          })),
+          check_ins_without_activity: t.streak,
+          last_check_in: t.preference?.last_check_in_at || null,
         })),
       });
     }
 
     if (targets.length === 0) {
-      return Response.json({ sent: 0, failed: 0, eligible: 0, sender: fromEmail });
+      return Response.json({
+        sent: 0,
+        failed: 0,
+        eligible: 0,
+        sender: fromEmail,
+        skipped,
+      });
     }
 
-    // --- Create tracking records ---
+    // --- Create tracking records: one per learner, not one per course ---
     const nowIso = new Date().toISOString();
     const trackingRecords = targets.map((t) => ({
       tracking_token: crypto.randomUUID(),
@@ -165,34 +243,57 @@ export default async function (req: Request): Promise<Response> {
     let failed = 0;
     const errors = [];
     const copyFor = emailCopyCache(base44);
+
     for (let i = 0; i < targets.length; i++) {
-      const { enrollment, learner, lastModule } = targets[i];
-      const config = getCourseConfig(enrollment.course_slug);
-      const courseTitle = config ? config.title : enrollment.course_slug;
-      const url = resumeUrl(enrollment.course_slug, lastModule);
-      const copy = await copyFor(learnerLanguage(learner), CHECK_IN_COPY);
-      const { subject, text, html } = buildCheckInEmail(copy, {
-        learnerName: learner.full_name,
-        courseTitle,
-        url,
-      });
-      const finalHtml = html + trackingPixel(trackingRecords[i].tracking_token);
-      const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, subject, text, finalHtml);
+      const { learner, courses } = targets[i];
+
       try {
+        const preference =
+          targets[i].preference ||
+          (await getOrCreatePreference(base44, {
+            learnerId: learner.id,
+            email: learner.email,
+          }));
+
+        const resume = courses.map((c) => ({
+          title: courseTitleOf(c.courseSlug),
+          url: resumeUrl(c.courseSlug, c.lastModule),
+        }));
+
+        const copy = await copyFor(learnerLanguage(learner), CHECK_IN_COPY);
+        const email = buildCheckInEmail(copy, {
+          learnerName: learner.full_name,
+          courseTitle: resume[0].title,
+          url: resume[0].url,
+          courses: resume,
+          stopUrl: stopEmailsUrl(preference.stop_token),
+        });
+
+        const finalHtml = email.html + trackingPixel(trackingRecords[i].tracking_token);
+        const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, email.subject, email.text, finalHtml);
+
         const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',
           headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ raw }),
         });
-        if (res.ok) {
-          sent++;
-          await base44.asServiceRole.entities.CourseEnrollment.update(enrollment.id, {
-            last_check_in_sent_at: nowIso,
-          });
-        } else {
-          failed++;
-          errors.push({ email: learner.email, error: 'Gmail send failed' });
-        }
+        if (!res.ok) throw new Error('Gmail send failed');
+
+        sent++;
+
+        await base44.asServiceRole.entities.EmailPreference.update(preference.id, {
+          last_check_in_at: nowIso,
+          check_in_streak: targets[i].streak + 1,
+          learner_email: String(learner.email).toLowerCase(),
+        });
+
+        await Promise.all(
+          courses.map((c) =>
+            base44.asServiceRole.entities.CourseEnrollment.update(c.enrollment.id, {
+              last_check_in_sent_at: nowIso,
+            })
+          )
+        );
       } catch (e) {
         failed++;
         errors.push({ email: learner.email, error: e.message });
@@ -204,6 +305,7 @@ export default async function (req: Request): Promise<Response> {
       failed,
       eligible: targets.length,
       sender: fromEmail,
+      skipped,
       errors,
     });
   } catch (error) {

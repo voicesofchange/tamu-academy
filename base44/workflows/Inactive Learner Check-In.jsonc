@@ -1,5 +1,5 @@
 {
-  "description": "Sends a motivational check-in email to learners who have been inactive for more than 7 days. Runs daily at 9am Pacific.",
+  "description": "Sends one motivational check-in email per learner per week to learners inactive for more than 7 days, naming every course they have drifted from in a single message. Check-ins stop after three in a row with no course activity, and learners who asked us to stop these emails are left out. Runs daily at 9am Pacific.",
   "trigger": {
     "condition": null,
     "config": {

@@ -81,5 +81,6 @@ export const MyCourses = lazyPage(() => import('@/pages/MyCourses'));
 export const MotivationCoach = lazyPage(() => import('@/pages/MotivationCoach'));
 export const Welcome = lazyPage(() => import('@/pages/Welcome'));
 export const Profile = lazyPage(() => import('@/pages/Profile'));
+export const EmailPreferences = lazyPage(() => import('@/pages/EmailPreferences'));
 export const ProgressDashboard = lazyPage(() => import('@/pages/ProgressDashboard'));
 export const LearningHub = lazyPage(() => import('@/pages/LearningHub'));

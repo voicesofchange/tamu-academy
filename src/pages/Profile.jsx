@@ -5,6 +5,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import ProfileForm from '@/components/profile/ProfileForm';
+import EmailPreferencesCard from '@/components/profile/EmailPreferencesCard';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -21,6 +22,8 @@ const CONTENT = {
   detailsHeading: 'Profile and preferences',
   detailsBody:
     'Only your name is required. Everything else is optional and helps Tamu Academy understand who our learning community is.',
+  emailPrefsEyebrow: 'Email',
+  emailPrefsHeading: 'Which emails you receive',
   accountEyebrow: 'Account',
   accountHeading: 'Sign-in details',
   accountBody:
@@ -64,6 +67,10 @@ export default function Profile() {
           {c.detailsBody}
         </p>
         <ProfileForm onSaved={handleSaved} />
+      </PageSection>
+
+      <PageSection eyebrow={c.emailPrefsEyebrow} heading={c.emailPrefsHeading}>
+        <EmailPreferencesCard />
       </PageSection>
 
       <PageSection eyebrow={c.accountEyebrow} heading={c.accountHeading} tone="tinted">

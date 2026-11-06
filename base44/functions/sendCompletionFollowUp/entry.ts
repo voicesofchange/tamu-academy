@@ -32,6 +32,12 @@ import {
   getGmailSender,
   sendTrackedEmail,
 } from '../../shared/course-outreach.js';
+import {
+  getOrCreatePreference,
+  isStopped,
+  loadPreferences,
+  stopEmailsUrl,
+} from '../../shared/email-preferences.js';
 
 const FOLLOW_UP_DELAY_MS = 3 * 24 * 60 * 60 * 1000; // at least 3 days after completion
 
@@ -61,6 +67,9 @@ export default async function (req: Request): Promise<Response> {
     const userMap = {};
     for (const u of users || []) userMap[u.id] = u;
 
+    // Who has asked us to stop these emails.
+    const preferences = await loadPreferences(base44);
+
     const now = Date.now();
     const targets = [];
 
@@ -74,7 +83,15 @@ export default async function (req: Request): Promise<Response> {
       const learner = userMap[enrollment.learner_id];
       if (!learner || !learner.email) continue;
 
-      targets.push({ enrollment, learner, completedAt });
+      // The learner asked us to stop these emails: leave them out entirely.
+      if (isStopped(preferences.byLearner.get(learner.id))) continue;
+
+      targets.push({
+        enrollment,
+        learner,
+        preference: preferences.byLearner.get(learner.id) || null,
+        completedAt,
+      });
     }
 
     if (dryRun) {
@@ -107,15 +124,25 @@ export default async function (req: Request): Promise<Response> {
     for (const target of targets) {
       const { enrollment, learner } = target;
       const copy = await copyFor(learnerLanguage(learner), CELEBRATION_COPY);
-      const email = buildCelebrationEmail(copy, {
-        learnerName: resolvePreferredName(learner, learner.full_name),
-        courseTitle: courseTitleOf(enrollment.course_slug),
-        certificateLink: certificateUrl(enrollment.course_slug),
-        storiesLink: storiesUrl(),
-        coursesLink: coursesUrl(),
-      });
 
       try {
+        // The learner's own stop link, created on first use.
+        const preference =
+          target.preference ||
+          (await getOrCreatePreference(base44, {
+            learnerId: learner.id,
+            email: learner.email,
+          }));
+
+        const email = buildCelebrationEmail(copy, {
+          learnerName: resolvePreferredName(learner, learner.full_name),
+          courseTitle: courseTitleOf(enrollment.course_slug),
+          certificateLink: certificateUrl(enrollment.course_slug),
+          storiesLink: storiesUrl(),
+          coursesLink: coursesUrl(),
+          stopUrl: stopEmailsUrl(preference.stop_token),
+        });
+
         await sendTrackedEmail(base44, {
           accessToken,
           fromEmail,

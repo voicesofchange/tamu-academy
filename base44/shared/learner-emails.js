@@ -35,6 +35,23 @@ function shell(inner) {
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">${inner}</div>`;
 }
 
+/**
+ * The "stop these emails" footer. The link is the learner's own, so one tap
+ * turns reminders, check-ins, follow-ups and announcements off for them.
+ * Welcome emails and certificates never carry it and never consult it.
+ */
+function stopFooter(copy, stopUrl) {
+  if (!stopUrl) return { text: '', html: '' };
+  const line = copy.stopLine || 'You can stop these emails at any time.';
+  const label = copy.stopLabel || 'Stop these emails';
+  return {
+    text: `\n\n${line}\n${label}: ${stopUrl}`,
+    html:
+      `<p style="margin-top:1.5rem;font-size:0.85em;color:#4a3a2a;">${line}<br/>` +
+      `<a href="${stopUrl}" style="color:#D4A12A;">${label}</a></p>`,
+  };
+}
+
 const startsCourseLine = (title, url, label) =>
   `<p style="margin:0.75rem 0;"><strong style="color:#1A130E;">${title}</strong><br/>` +
   `<a href="${url}" style="color:#D4A12A;">${label}</a></p>`;
@@ -139,11 +156,14 @@ export const PROGRESS_COPY = {
   cta: 'Continue {module}',
   note:
     'There\u2019s no deadline and nothing to catch up on. Take it at your own pace, and write back anytime if a question comes up.',
+  stopLine: 'You can stop these emails at any time.',
+  stopLabel: 'Stop these emails',
   signoff: 'Asante,',
 };
 
-export function buildProgressEmail(copy, { firstName, courseTitle, doneCount, totalCount, nextLabel, url }) {
+export function buildProgressEmail(copy, { firstName, courseTitle, doneCount, totalCount, nextLabel, url, stopUrl }) {
   const greeting = fillCopy(copy.greeting, { name: firstName });
+  const footer = stopFooter(copy, stopUrl);
 
   const text = `${greeting}
 
@@ -155,7 +175,7 @@ ${url}
 
 ${copy.note}
 
-${signatureText(copy.signoff)}`;
+${signatureText(copy.signoff)}${footer.text}`;
 
   const html = shell(
     `<p>${greeting}</p>` +
@@ -163,7 +183,8 @@ ${signatureText(copy.signoff)}`;
       `<p>${fillCopy(copy.nextStep, { module: nextLabel })}</p>` +
       `<p><a href="${url}" style="color:#D4A12A;">${fillCopy(copy.cta, { module: nextLabel })}</a></p>` +
       `<p style="color:#4a3a2a;">${copy.note}</p>` +
-      signatureHtml(copy.signoff)
+      signatureHtml(copy.signoff) +
+      footer.html
   );
 
   return {
@@ -185,15 +206,42 @@ export const CHECK_IN_COPY = {
   cta: 'Continue your course',
   closing:
     'No pressure, no deadlines \u2014 just an open door. We believe in your capacity to grow, and we\u2019re here whenever you\u2019re ready to take the next step.',
+  whereYouLeftOffMany:
+    'Here are the courses waiting for you. Your progress is saved in each one, and you can pick any of them up right where you left off:',
+  stopLine: 'You can stop these emails at any time.',
+  stopLabel: 'Stop these emails',
   signoff: 'Asante,',
 };
 
-export function buildCheckInEmail(copy, { learnerName, courseTitle, url }) {
+export function buildCheckInEmail(copy, { learnerName, courseTitle, url, courses = [], stopUrl }) {
   const firstName = typeof learnerName === 'string' && learnerName.trim()
     ? learnerName.trim().split(' ')[0]
     : 'friend';
   const greeting = fillCopy(copy.greeting, { name: firstName });
-  const where = fillCopy(copy.whereYouLeftOff, { course: courseTitle });
+  const footer = stopFooter(copy, stopUrl);
+
+  // One email for every course the learner has drifted from, so a learner
+  // with several courses still hears from us only once.
+  const listed = Array.isArray(courses) ? courses.filter((c) => c && c.title && c.url) : [];
+  const several = listed.length > 1;
+
+  const where = several
+    ? copy.whereYouLeftOffMany || copy.whereYouLeftOff
+    : fillCopy(copy.whereYouLeftOff, { course: courseTitle });
+
+  const textCourses = several
+    ? listed.map((course) => `${course.title}\n${copy.cta}: ${course.url}`).join('\n\n')
+    : url;
+
+  const htmlCourses = several
+    ? listed
+        .map(
+          (course) =>
+            `<p style="margin:0.75rem 0;"><strong style="color:#1A130E;">${course.title}</strong><br/>` +
+            `<a href="${course.url}" style="color:#D4A12A;">${copy.cta}</a></p>`
+        )
+        .join('')
+    : `<p><a href="${url}" style="color:#D4A12A;">${copy.cta}</a></p>`;
 
   const text = `${greeting}
 
@@ -203,20 +251,21 @@ ${copy.reassurance}
 
 ${where}
 
-${url}
+${textCourses}
 
 ${copy.closing}
 
-${signatureText(copy.signoff)}`;
+${signatureText(copy.signoff)}${footer.text}`;
 
   const html = shell(
     `<p>${greeting}</p>` +
       `<p>${copy.opening}</p>` +
       `<p>${copy.reassurance}</p>` +
       `<p>${where}</p>` +
-      `<p><a href="${url}" style="color:#D4A12A;">${copy.cta}</a></p>` +
+      htmlCourses +
       `<p style="color:#4a3a2a;">${copy.closing}</p>` +
-      signatureHtml(copy.signoff)
+      signatureHtml(copy.signoff) +
+      footer.html
   );
 
   return { subject: copy.subject, text, html };
@@ -240,10 +289,13 @@ export const CELEBRATION_COPY = {
   keepBody: 'Our other course is free and self-paced.',
   keepCta: 'Explore the catalogue',
   thanks: 'Whatever you choose next, thank you for being part of this community.',
+  stopLine: 'You can stop these emails at any time.',
+  stopLabel: 'Stop these emails',
   signoff: 'Asante,',
 };
 
-export function buildCelebrationEmail(copy, { learnerName, courseTitle, certificateLink, storiesLink, coursesLink }) {
+export function buildCelebrationEmail(copy, { learnerName, courseTitle, certificateLink, storiesLink, coursesLink, stopUrl }) {
+  const footer = stopFooter(copy, stopUrl);
   const firstName = typeof learnerName === 'string' && learnerName.trim()
     ? learnerName.trim().split(' ')[0]
     : 'friend';
@@ -270,7 +322,7 @@ ${copy.thanks}
 
 ${signatureText(copy.signoff)}
 
-${SITE_URL}`;
+${SITE_URL}${footer.text}`;
 
   const html = shell(
     `<p>${greeting}</p>` +
@@ -283,7 +335,8 @@ ${SITE_URL}`;
       `<p><strong style="color:#1A130E;">${copy.keepTitle}</strong><br/>${copy.keepBody}<br/>` +
       `<a href="${coursesLink}" style="color:#D4A12A;">${copy.keepCta}</a></p>` +
       `<p style="color:#4a3a2a;">${copy.thanks}</p>` +
-      signatureHtml(copy.signoff)
+      signatureHtml(copy.signoff) +
+      footer.html
   );
 
   return {

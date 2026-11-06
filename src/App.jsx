@@ -40,6 +40,7 @@ import {
   Courses,
   EconomicsCertificate,
   EconomicsCourseCompletion,
+  EmailPreferences,
   GuideCredits,
   GuideInsights,
   GuidePrint,
@@ -128,6 +129,9 @@ const AuthenticatedApp = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      {/* Email preferences — opened from the "stop these emails" link in an
+          automated email, so it works without signing in. */}
+      <Route path="/email-preferences" element={<EmailPreferences />} />
       {/* Public course catalog and course overview pages — no login required to read about courses */}
       <Route path="/courses" element={<Courses />} />
       <Route path="/courses/understanding-african-economies-and-the-global-system" element={<UnderstandingAfricanEconomies />} />

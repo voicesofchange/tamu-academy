@@ -1,0 +1,84 @@
+{
+  "name": "EmailPreference",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "learner_email": {
+      "type": "string",
+      "title": "Learner Email"
+    },
+    "stop_token": {
+      "type": "string",
+      "title": "Stop Link Token",
+      "description": "Long random token carried by the 'stop these emails' link in every automated email. The link needs nothing else to work, and the token is never shown anywhere but that link and the learner's own profile."
+    },
+    "status": {
+      "type": "string",
+      "title": "Reminder Emails",
+      "description": "Stopped means no reminders, check-ins, course follow-ups or announcements. The welcome email and certificates are unaffected and always send.",
+      "enum": [
+        "active",
+        "stopped"
+      ],
+      "enumColors": [
+        "green",
+        "red"
+      ],
+      "default": "active"
+    },
+    "stopped_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Stopped At"
+    },
+    "resumed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Started Again At"
+    },
+    "last_check_in_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Last Check-In Sent At",
+      "description": "One inactive check-in per learner per week, measured across all of their courses together."
+    },
+    "check_in_streak": {
+      "type": "integer",
+      "title": "Check-Ins Without Activity",
+      "description": "How many check-ins have gone unanswered in a row. Any course activity resets it to zero, and at three check-ins stop until the learner returns.",
+      "default": 0,
+      "minimum": 0
+    }
+  },
+  "required": [
+    "learner_id",
+    "learner_email",
+    "stop_token",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
