@@ -1,4 +1,4 @@
-import { ARTICLES } from '@/lib/articles-data';
+import { PUBLISHED_ARTICLE_SLUGS } from '@/lib/published-article-slugs';
 
 /**
  * Tamu Academy — Site Mode (single source of truth)
@@ -35,9 +35,7 @@ export const LAUNCH_PUBLIC_PATHS = new Set([
 /**
  * Published article slugs. During soft-launch, only article detail routes
  * whose slug is in this set are public; in-development articles redirect to
- * "/". Derived from articles-data.js so this list stays in sync with the
- * source of truth instead of drifting.
+ * "/". The list lives on its own (published-article-slugs.js) so this guard
+ * never pulls article text into the initial download.
  */
-export const LAUNCH_PUBLISHED_ARTICLE_SLUGS = new Set(
-  ARTICLES.filter((a) => a.status === 'published').map((a) => a.slug)
-);
+export const LAUNCH_PUBLISHED_ARTICLE_SLUGS = new Set(PUBLISHED_ARTICLE_SLUGS);

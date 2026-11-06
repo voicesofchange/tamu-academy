@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { MotionConfig } from 'framer-motion'
@@ -10,92 +11,94 @@ import { DisplayModeProvider } from '@/lib/display-mode';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import SoftLaunchGate from '@/components/SoftLaunchGate';
+import AppLoadingSpinner from '@/components/AppLoadingSpinner';
 import ProtectedRoute from '@/components/ProtectedRoute';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
+// The homepage and the sign-in / sign-up screens ship in the main bundle.
+// Every other page is split out and fetched when its route is opened
+// (see src/lib/lazy-pages.js).
 import Landing from './pages/Landing';
-import LearnersGuide from './pages/LearnersGuide';
-import RemotePathway from './pages/RemotePathway';
-import GuideSection from './pages/GuideSection';
-import GuideInsights from './pages/GuideInsights';
-import GuideCredits from './pages/GuideCredits';
-import GuidePrint from './pages/GuidePrint';
-import About from './pages/About';
-import Courses from './pages/Courses';
-import UnderstandingAfricanEconomies from './pages/UnderstandingAfricanEconomies';
-import BuildingWealthTogether from './pages/BuildingWealthTogether';
-import BuildingWealthModule from './pages/BuildingWealthModule';
-import WealthCourseCompletion from './pages/WealthCourseCompletion';
-import WealthCertificate from './pages/WealthCertificate';
-import WealthCapstone from './pages/WealthCapstone';
-import SautiZaSoko from './pages/SautiZaSoko';
-import SokoModule from './pages/SokoModule';
-import SokoCourseCompletion from './pages/SokoCourseCompletion';
-import SokoCertificate from './pages/SokoCertificate';
-import SokoPeerFacilitator from './pages/SokoPeerFacilitator';
-import { SokoLabelsProvider } from '@/components/courses/soko/SokoLabelsProvider';
-import Module1Economics from './pages/Module1Economics';
-import Module2Economics from './pages/Module2Economics';
-import Module3Economics from './pages/Module3Economics';
-import Module4Economics from './pages/Module4Economics';
-import Module5Economics from './pages/Module5Economics';
-import Module6Economics from './pages/Module6Economics';
-import InterculturalAILeadershipLab from './pages/InterculturalAILeadershipLab';
-import Resources from './pages/Resources';
-import LearnerStories from './pages/LearnerStories';
-import CommunityInsights from './pages/CommunityInsights';
-import Videos from './pages/Videos';
-import Contact from './pages/Contact';
-import Articles from './pages/Articles';
-import TheRealCostOfAlwaysAchieving from './pages/articles/TheRealCostOfAlwaysAchieving';
-import WhyTherapyIsntEnough from './pages/articles/WhyTherapyIsntEnough';
-import CanPolicyMakeUsHappier from './pages/articles/CanPolicyMakeUsHappier';
-import WhoControlsTheGlobalEconomy from './pages/articles/WhoControlsTheGlobalEconomy';
-import IsTheICCBiasedAgainstAfricaArticle from './pages/articles/IsTheICCBiasedAgainstAfrica';
-import AfterTheGunsGoSilentArticle from './pages/articles/AfterTheGunsGoSilent';
-import ClimateIsAMentalHealthCrisisArticle from './pages/articles/ClimateIsAMentalHealthCrisis';
-import Privacy from './pages/Privacy';
-import Academy from './pages/Academy';
-import PartnershipInquiry from './pages/PartnershipInquiry';
-import UbuntuMentalHealth from './pages/UbuntuMentalHealth';
-import MhModule1 from './pages/MhModule1';
-import MhModule2 from './pages/MhModule2';
-import MhModule3 from './pages/MhModule3';
-import MhModule4 from './pages/MhModule4';
-import MhModule5 from './pages/MhModule5';
-import MhModule6 from './pages/MhModule6';
-import MhModule7 from './pages/MhModule7';
-import MhCourseCompletion from './pages/MhCourseCompletion';
-import MhCertificate from './pages/MhCertificate';
-import MhInsights from './pages/MhInsights';
-import EconomicsCourseCompletion from './pages/EconomicsCourseCompletion';
-import EconomicsCertificate from './pages/EconomicsCertificate';
-import MyCourses from './pages/MyCourses';
-import MotivationCoach from './pages/MotivationCoach';
-import Welcome from './pages/Welcome';
-import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import WaiyakiWaHinga from './pages/WaiyakiWaHinga';
-import WaiyakiModule from './pages/WaiyakiModule';
-import WaiyakiCourseCompletion from './pages/WaiyakiCourseCompletion';
-import WaiyakiCertificate from './pages/WaiyakiCertificate';
-import ProgressDashboard from './pages/ProgressDashboard';
-import LearningHub from './pages/LearningHub';
-import CertificateDesignSample from './pages/CertificateDesignSample';
+import {
+  About,
+  Academy,
+  AfterTheGunsGoSilentArticle,
+  Articles,
+  BuildingWealthModule,
+  BuildingWealthTogether,
+  CanPolicyMakeUsHappier,
+  CertificateDesignSample,
+  ClimateIsAMentalHealthCrisisArticle,
+  CommunityInsights,
+  Contact,
+  Courses,
+  EconomicsCertificate,
+  EconomicsCourseCompletion,
+  GuideCredits,
+  GuideInsights,
+  GuidePrint,
+  GuideSection,
+  InterculturalAILeadershipLab,
+  IsTheICCBiasedAgainstAfricaArticle,
+  LearnerStories,
+  LearnersGuide,
+  LearningHub,
+  MhCertificate,
+  MhCourseCompletion,
+  MhInsights,
+  MhModule1,
+  MhModule2,
+  MhModule3,
+  MhModule4,
+  MhModule5,
+  MhModule6,
+  MhModule7,
+  Module1Economics,
+  Module2Economics,
+  Module3Economics,
+  Module4Economics,
+  Module5Economics,
+  Module6Economics,
+  MotivationCoach,
+  MyCourses,
+  PartnershipInquiry,
+  Privacy,
+  Profile,
+  ProgressDashboard,
+  RemotePathway,
+  Resources,
+  SautiZaSoko,
+  SokoCertificate,
+  SokoCourseCompletion,
+  SokoModule,
+  SokoPeerFacilitator,
+  TheRealCostOfAlwaysAchieving,
+  UbuntuMentalHealth,
+  UnderstandingAfricanEconomies,
+  Videos,
+  WaiyakiCertificate,
+  WaiyakiCourseCompletion,
+  WaiyakiModule,
+  WaiyakiWaHinga,
+  WealthCapstone,
+  WealthCertificate,
+  WealthCourseCompletion,
+  Welcome,
+  WhoControlsTheGlobalEconomy,
+  WhyTherapyIsntEnough,
+} from '@/lib/lazy-pages';
+import { SokoLabelsProvider } from '@/components/courses/soko/SokoLabelsProvider';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <AppLoadingSpinner />;
   }
 
   // Handle authentication errors
@@ -229,7 +232,11 @@ function App() {
         <MotionConfig reducedMotion="user">
           <Router>
             <ScrollToTop />
-            <AuthenticatedApp />
+            {/* Pages are code-split: the same loading spinner covers the
+                session check and the download of a page's code. */}
+            <Suspense fallback={<AppLoadingSpinner />}>
+              <AuthenticatedApp />
+            </Suspense>
           </Router>
           <Toaster />
         </MotionConfig>
