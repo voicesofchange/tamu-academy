@@ -7,6 +7,15 @@ import PathwayStateLegend from '@/components/remote/PathwayStateLegend';
 import PathwayStage from '@/components/remote/PathwayStage';
 import RemoteOfflinePlan from '@/components/remote/RemoteOfflinePlan';
 import { PATHWAY_STAGES } from '@/lib/remote-pathway';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const PATHWAY_STRINGS = {
+  eyebrow: 'Remote Learners',
+  heading: 'The Remote Learner pathway',
+  subheading:
+    'Text-first study, material you can carry offline, and a clear line between what is saved to your account and what only exists on paper.',
+  stages: PATHWAY_STAGES,
+};
 
 /**
  * RemotePathway — the whole Remote Learner journey on one page: setting the
@@ -18,6 +27,8 @@ import { PATHWAY_STAGES } from '@/lib/remote-pathway';
  * the learner's work is saved to their account or only carried offline.
  */
 export default function RemotePathway() {
+  const { content } = useTranslatedContent('remote-pathway', PATHWAY_STRINGS);
+
   return (
     <PageLayout>
       <PageMeta
@@ -27,15 +38,15 @@ export default function RemotePathway() {
       />
 
       <PageHero
-        eyebrow="Remote Learners"
-        heading="The Remote Learner pathway"
-        subheading="Text-first study, material you can carry offline, and a clear line between what is saved to your account and what only exists on paper."
+        eyebrow={content.eyebrow}
+        heading={content.heading}
+        subheading={content.subheading}
       />
 
       <PathwayModeStatus />
       <PathwayStateLegend />
 
-      {PATHWAY_STAGES.map((stage) => (
+      {content.stages.map((stage) => (
         <PathwayStage key={stage.id} stage={stage} />
       ))}
 

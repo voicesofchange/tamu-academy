@@ -10,6 +10,7 @@ import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import ProgressCourseCard from '@/components/progress/ProgressCourseCard';
 import { useAuth } from '@/lib/AuthContext';
 import { LEARNER_COURSES, buildLearnerProgress, summariseProgress } from '@/lib/learner-progress';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const linkButtonStyle = {
   display: 'inline-flex',
@@ -26,6 +27,28 @@ const linkButtonStyle = {
   padding: '0.65rem 1.3rem',
 };
 
+/** The dashboard's own copy, translated once per session. */
+const PROGRESS_STRINGS = {
+  eyebrow: 'My Progress',
+  heading: 'Where you stand across every course',
+  subheading:
+    'All of your courses in one view: what you have completed, where you stopped, and what comes next.',
+  failedHeading: 'Your progress could not be loaded',
+  failedBody: 'Something went wrong while reading your progress. Please reload the page to try again.',
+  glanceEyebrow: 'At a glance',
+  glanceHeading: 'Your progress at a glance',
+  emptyBody:
+    'You have not started a course yet. Every course below is open, so pick the one whose opening question you would most like answered and your progress will appear here.',
+  allEyebrow: 'All courses',
+  allHeading: 'Every course and module',
+  offlineEyebrow: 'Studying offline',
+  offlineHeading: 'Take the summary with you',
+  offlineBody:
+    'The Learner Hub gathers each course\u2019s objectives, module summaries and a practical handbook into files you can save and read away from a connection.',
+  openHub: 'Open the Learner Hub',
+  backToCourses: 'Back to my courses',
+};
+
 /**
  * ProgressDashboard — the learner's own progress across every course.
  *
@@ -40,6 +63,7 @@ export default function ProgressDashboard() {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [progress, setProgress] = useState([]);
+  const { content } = useTranslatedContent('progress-dashboard', PROGRESS_STRINGS);
 
   useEffect(() => {
     if (!user?.id) return undefined;
@@ -75,9 +99,9 @@ export default function ProgressDashboard() {
         noindex
       />
       <PageHero
-        eyebrow="My Progress"
-        heading="Where you stand across every course"
-        subheading="All of your courses in one view: what you have completed, where you stopped, and what comes next."
+        eyebrow={content.eyebrow}
+        heading={content.heading}
+        subheading={content.subheading}
       />
 
       {loading ? (
@@ -86,25 +110,25 @@ export default function ProgressDashboard() {
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       ) : failed ? (
-        <PageSection heading="Your progress could not be loaded">
+        <PageSection heading={content.failedHeading}>
           <p className="font-body" style={{ color: 'rgba(243,234,216,0.75)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: 0 }}>
-            Something went wrong while reading your progress. Please reload the page to try again.
+            {content.failedBody}
           </p>
         </PageSection>
       ) : (
         <>
           {summary && (
-            <PageSection eyebrow="At a glance" heading="Your progress at a glance">
+            <PageSection eyebrow={content.glanceEyebrow} heading={content.glanceHeading}>
               <ProgressSummaryStrip summary={summary} />
               {!hasAnyProgress && (
                 <p className="font-body" style={{ color: 'rgba(243,234,216,0.75)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300, margin: '1.75rem 0 0' }}>
-                  You have not started a course yet. Every course below is open, so pick the one whose opening question you would most like answered and your progress will appear here.
+                  {content.emptyBody}
                 </p>
               )}
             </PageSection>
           )}
 
-          <PageSection eyebrow="All courses" heading="Every course and module">
+          <PageSection eyebrow={content.allEyebrow} heading={content.allHeading}>
             {progress.map((course) => (
               <ProgressCourseCard key={course.slug} course={course} />
             ))}
@@ -112,16 +136,16 @@ export default function ProgressDashboard() {
         </>
       )}
 
-      <PageSection eyebrow="Studying offline" heading="Take the summary with you">
+      <PageSection eyebrow={content.offlineEyebrow} heading={content.offlineHeading}>
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300, margin: '0 0 1.5rem' }}>
-          The Learner Hub gathers each course&rsquo;s objectives, module summaries and a practical handbook into files you can save and read away from a connection.
+          {content.offlineBody}
         </p>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <Link to="/learning-hub" className="font-body" style={linkButtonStyle}>
-            Open the Learner Hub &rarr;
+            {content.openHub} &rarr;
           </Link>
           <Link to="/my-courses" className="font-body" style={linkButtonStyle}>
-            Back to my courses &rarr;
+            {content.backToCourses} &rarr;
           </Link>
         </div>
       </PageSection>
