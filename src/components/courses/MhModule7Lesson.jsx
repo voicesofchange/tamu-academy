@@ -137,7 +137,7 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
             <iframe src={captionedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
           </div>
         )}
-        <CaptionsNote style={{ margin: '0 0 0.7rem' }} />
+        {!isDataSaver && <CaptionsNote style={{ margin: '0 0 0.7rem' }} />}
         <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', marginBottom: '0.4rem' }}>
           Direct link: <a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>Open on YouTube</a>
           {' · '}
