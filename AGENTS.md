@@ -59,7 +59,8 @@ not optional and not per-task; treat a change that breaks one as incomplete.
 3. **New pages load on demand.** Register every new page in
    `src/lib/lazy-pages.js` and import it from there in `src/App.jsx`. Only the
    homepage and the sign-in / sign-up screens belong in the main bundle.
-4. **New courses use the shared course template and registry.** Register the
+4. **New courses use the shared course template and registry** (from Phase 6
+   onward). Register the
    course in `base44/shared/course-template-config.js` so it appears in
    `COURSE_REGISTRY`; reuse `TemplateCourseModule` and the
    `enrollTemplateCourse` / `updateTemplateCourseProgress` /
