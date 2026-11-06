@@ -12,6 +12,7 @@ import {
   withoutAnswerKey,
 } from '../../shared/course-template-service.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { getModuleSources } from '../../shared/diaspora-remittance-sources.js';
 
 /**
  * getTemplateCourseModule — the single module endpoint for every course built
@@ -78,6 +79,10 @@ export default async function (req: Request): Promise<Response> {
     const row = await findProgressRow(base44, user.id, courseSlug, moduleRoute);
     const done = completedSteps(row, requirements);
 
+    // The module's source list is quoted material — titles and URLs as
+    // published — so it is attached after translation and never translated.
+    const sources = getModuleSources(courseSlug, moduleRoute);
+
     // Record the learner's first open of this module, apart from completion.
     // Administrators previewing content are not learners, so their opens are
     // not recorded.
@@ -93,6 +98,7 @@ export default async function (req: Request): Promise<Response> {
       course: await courseOutlineFor(base44, user.id, courseSlug),
       module: {
         ...translated,
+        ...(sources ? { sources: sources.sources, unsourced: sources.unsourced } : {}),
         route: moduleRoute,
         number: access.moduleMeta.number,
         requirements,

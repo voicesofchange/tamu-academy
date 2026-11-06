@@ -9,6 +9,7 @@ import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import TemplateCourseQuiz from '@/components/courses/template/TemplateCourseQuiz';
 import TemplateCourseProgress from '@/components/courses/template/TemplateCourseProgress';
+import ModuleSources from '@/components/courses/module/ModuleSources';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { fillTemplate } from '@/lib/i18n/fill-template';
 
@@ -41,6 +42,11 @@ const CONTENT = {
   modulesComplete: 'Course modules complete',
   allComplete: 'All modules complete',
   certificateReady: 'Your course certificate is ready when you are.',
+  sourcesEyebrow: 'Sources',
+  sourcesHeading: 'Sources',
+  unsourcedHeading: 'Unsourced claims',
+  unsourcedNote:
+    'The lesson makes the following points without a published source. They are listed here rather than given a citation.',
 };
 
 /**
@@ -181,6 +187,17 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       {module.reflection && (
         <ModuleLessonSection eyebrow={c.reflection} heading={c.reflection}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>{module.reflection}</p>
+        </ModuleLessonSection>
+      )}
+
+      {((module.sources && module.sources.length > 0) ||
+        (module.unsourced && module.unsourced.length > 0)) && (
+        <ModuleLessonSection eyebrow={c.sourcesEyebrow} heading={c.sourcesHeading}>
+          <ModuleSources
+            sources={module.sources}
+            unsourced={module.unsourced}
+            labels={{ unsourcedHeading: c.unsourcedHeading, unsourcedNote: c.unsourcedNote }}
+          />
         </ModuleLessonSection>
       )}
 
