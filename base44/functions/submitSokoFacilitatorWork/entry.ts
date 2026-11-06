@@ -1,9 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.52';
 import {
+  SOKO_COURSE_SLUG,
+  SOKO_CORE_MODULE_ROUTES,
   SOKO_PEER_COURSE_SLUG,
   getSokoModuleConfig,
+  getSokoModulePrerequisite,
   isSokoModulePublished,
-  deriveSokoCompletedKeys,
 } from '../../shared/sauti-za-soko-config.js';
 
 /**
@@ -108,12 +110,23 @@ export default async function(req: Request): Promise<Response> {
       if (!isPublished) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
+      // Module 8 sits on top of the core pathway. Where the course defines a
+      // preceding module, that one is the prerequisite; otherwise it is the
+      // last core module, so facilitator work cannot be recorded before the
+      // core pathway has been completed.
+      const prereqRoute = getSokoModulePrerequisite(courseSlug, 'module-8');
+      const prereqCourseSlug = prereqRoute ? courseSlug : SOKO_COURSE_SLUG;
+      const prereqModuleRoute =
+        prereqRoute || SOKO_CORE_MODULE_ROUTES[SOKO_CORE_MODULE_ROUTES.length - 1];
       const prereqRows = await base44.asServiceRole.entities.ModuleProgress.filter({
         learner_id: user.id,
-        course_slug: courseSlug,
-        module_slug: 'module-8',
+        course_slug: prereqCourseSlug,
+        module_slug: prereqModuleRoute,
+        status: 'completed',
       });
-      void prereqRows;
+      if (!prereqRows || prereqRows.length === 0) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     const isSubmission = action === 'submit';
