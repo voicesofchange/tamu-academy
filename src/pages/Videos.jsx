@@ -8,6 +8,8 @@ import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import PageMeta from '@/components/seo/PageMeta';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -155,13 +157,15 @@ const CONTENT = {
 // ── Inline Video Player ────────────────────────────────────────────────────────
 
 function VideoPlayer({ lesson, c }) {
+  const captionedUrl = useCaptionedEmbedUrl(`https://www.youtube.com/embed/${lesson.videoId}`);
+
   return (
     <div style={{ width: '100%' }}>
       {/* 16:9 responsive iframe wrapper */}
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)' }}>
         <iframe
           key={lesson.videoId}
-          src={`https://www.youtube.com/embed/${lesson.videoId}`}
+          src={captionedUrl}
           title={`Tamu Academy — ${lesson.title}`}
           referrerPolicy="strict-origin-when-cross-origin"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -169,6 +173,8 @@ function VideoPlayer({ lesson, c }) {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
         />
       </div>
+
+      <CaptionsNote />
 
       {/* Active video info */}
       <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>

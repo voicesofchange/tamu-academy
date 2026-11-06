@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -42,6 +44,7 @@ function youTubeEmbedUrl(url) {
 export default function WealthWatchStep({ watch, eyebrow, heading }) {
   const [playerOpen, setPlayerOpen] = useState(false);
   const embedUrl = youTubeEmbedUrl(watch.url);
+  const captionedUrl = useCaptionedEmbedUrl(embedUrl);
 
   return (
     <ModuleLessonSection eyebrow={eyebrow} heading={heading}>
@@ -69,7 +72,7 @@ export default function WealthWatchStep({ watch, eyebrow, heading }) {
       {playerOpen && embedUrl && (
         <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, marginBottom: '1.5rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', overflow: 'hidden' }}>
           <iframe
-            src={embedUrl}
+            src={captionedUrl}
             title={watch.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -78,6 +81,8 @@ export default function WealthWatchStep({ watch, eyebrow, heading }) {
           />
         </div>
       )}
+
+      {playerOpen && embedUrl && <CaptionsNote style={{ margin: '0 0 1.25rem' }} />}
 
       <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.85rem' }}>
         As you watch, notice

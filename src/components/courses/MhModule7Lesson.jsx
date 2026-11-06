@@ -17,6 +17,9 @@ import SaverMediaBlock from '@/components/display/SaverMediaBlock';
 import { useDisplayMode } from '@/lib/display-mode';
 import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { withCaptions } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -46,6 +49,7 @@ function renderParagraphs(paragraphs) {
 export default function MhModule7Lesson({ course, module: mod, lesson }) {
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const { isDataSaver } = useDisplayMode();
+  const { language } = useTranslation();
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
   const moduleSlug = mod.route;
@@ -107,6 +111,7 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
 
   function renderMediaSession(session) {
     const isReviewed = !!mediaReviewed[session.key];
+    const captionedUrl = withCaptions(session.embedUrl, language);
     return (
       <div key={session.key} style={{ marginBottom: '1.75rem' }}>
         <h3 className="font-heading" style={{ ...termHeading, fontSize: '1.1rem' }}>{session.title}</h3>
@@ -124,14 +129,15 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
             alternativeLabel="Read the written alternative"
           >
             <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
-              <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+              <iframe src={captionedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
             </div>
           </SaverMediaBlock>
         ) : (
           <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000', marginBottom: '0.6rem' }}>
-            <iframe src={session.embedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+            <iframe src={captionedUrl} title={session.title} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
           </div>
         )}
+        <CaptionsNote style={{ margin: '0 0 0.7rem' }} />
         <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', marginBottom: '0.4rem' }}>
           Direct link: <a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>Open on YouTube</a>
           {' · '}

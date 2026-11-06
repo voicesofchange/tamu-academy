@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 export default function VideoModal({ lesson, onClose }) {
+  const captionedUrl = useCaptionedEmbedUrl(lesson.videoUrl);
+
   // Close on Escape
   useEffect(() => {
     const handler = (e) => e.key === 'Escape' && onClose();
@@ -97,7 +101,7 @@ export default function VideoModal({ lesson, onClose }) {
           <div style={{ width: '100%', aspectRatio: '16 / 9', backgroundColor: '#12100C', position: 'relative' }}>
             {lesson.videoUrl ? (
               <iframe
-                src={lesson.videoUrl}
+                src={captionedUrl}
                 title={lesson.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -126,6 +130,11 @@ export default function VideoModal({ lesson, onClose }) {
                 </span>
               </div>
             )}
+          </div>
+
+          {/* Caption note — sits directly under the player */}
+          <div style={{ padding: '0.9rem 1.5rem 0' }}>
+            <CaptionsNote style={{ margin: 0 }} />
           </div>
 
           {/* Description */}

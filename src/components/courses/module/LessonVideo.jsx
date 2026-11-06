@@ -3,6 +3,8 @@ import VideoSourceCard from '@/components/courses/module/VideoSourceCard';
 import SaverMediaBlock from '@/components/display/SaverMediaBlock';
 import { useDisplayMode } from '@/lib/display-mode';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 const CONTENT = {
   comingSoon: 'Recorded lesson coming soon.',
@@ -17,6 +19,7 @@ const CONTENT = {
 export default function LessonVideo({ video, fallbackText }) {
   const { content: c } = useTranslatedContent('lesson-video', CONTENT);
   const { isDataSaver } = useDisplayMode();
+  const captionedUrl = useCaptionedEmbedUrl(video && video.embedUrl);
 
   if (!video) {
     return (
@@ -52,7 +55,7 @@ export default function LessonVideo({ video, fallbackText }) {
         }}
       >
         <iframe
-          src={video.embedUrl}
+          src={captionedUrl}
           title={title}
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -61,6 +64,7 @@ export default function LessonVideo({ video, fallbackText }) {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
         />
       </div>
+      <CaptionsNote />
       <p
         className="font-body"
         style={{

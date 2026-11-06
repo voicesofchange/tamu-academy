@@ -2,6 +2,8 @@ import React from 'react';
 import SaverMediaBlock from '@/components/display/SaverMediaBlock';
 import { useDisplayMode } from '@/lib/display-mode';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 const titleStyle = {
   color: 'rgba(243,234,216,0.62)',
@@ -31,6 +33,7 @@ const CONTENT = {
 export default function TamuLessonVideo({ video }) {
   const { content: c } = useTranslatedContent('tamu-lesson-video', CONTENT);
   const { isDataSaver } = useDisplayMode();
+  const captionedUrl = useCaptionedEmbedUrl(video && video.embedUrl);
 
   if (!video || !video.embedUrl) return null;
 
@@ -38,7 +41,7 @@ export default function TamuLessonVideo({ video }) {
     <>
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)', backgroundColor: '#000000' }}>
         <iframe
-          src={video.embedUrl}
+          src={captionedUrl}
           title={video.title}
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -48,6 +51,7 @@ export default function TamuLessonVideo({ video }) {
         />
       </div>
       <p className="font-body" style={titleStyle}>{video.title}</p>
+      <CaptionsNote />
     </>
   );
 

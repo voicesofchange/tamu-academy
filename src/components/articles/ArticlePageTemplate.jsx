@@ -5,6 +5,8 @@ import { ExternalLink } from 'lucide-react';
 import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import CaptionsNote from '@/components/videos/CaptionsNote';
 
 const BASE_URL = 'https://tamuacademy.org';
 
@@ -69,6 +71,9 @@ function ClosingNote({ text }) {
 
 export default function ArticlePageTemplate({ article }) {
   const { content: a } = useTranslatedContent(`article-${article.slug}`, article);
+  const captionedUrl = useCaptionedEmbedUrl(
+    article.videoId ? `https://www.youtube.com/embed/${article.videoId}` : null,
+  );
   const lastSection = a.sections?.[a.sections.length - 1];
 
   return (
@@ -190,7 +195,7 @@ export default function ArticlePageTemplate({ article }) {
           </p>
           <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)' }}>
             <iframe
-              src={`https://www.youtube.com/embed/${a.videoId}`}
+              src={captionedUrl}
               title={`Tamu Academy — ${a.videoTitle}`}
               referrerPolicy="strict-origin-when-cross-origin"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -198,6 +203,7 @@ export default function ArticlePageTemplate({ article }) {
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', display: 'block' }}
             />
           </div>
+          <CaptionsNote />
           <a
             href={`https://www.youtube.com/watch?v=${a.videoId}`}
             target="_blank"
