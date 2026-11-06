@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
-import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import KnowledgeCheck from '@/components/courses/module/KnowledgeCheck';

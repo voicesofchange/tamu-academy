@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
-import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
@@ -12,7 +10,7 @@ import MhKijaniScenario from '@/components/courses/MhKijaniScenario';
 import MhAmplifyLab from '@/components/courses/MhAmplifyLab';
 import MhModule6KnowledgeCheck from '@/components/courses/MhModule6KnowledgeCheck';
 import MhModule6Progress from '@/components/courses/MhModule6Progress';
-import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import { GoldDivider } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';

@@ -1,9 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import PageMeta from '@/components/seo/PageMeta';
 import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
-import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
@@ -14,7 +12,7 @@ import MhPrivateReflection from '@/components/courses/MhPrivateReflection';
 import MhKnowledgeCheck from '@/components/courses/MhKnowledgeCheck';
 import MhModuleCompletion from '@/components/courses/MhModuleCompletion';
 import MhModuleNav from '@/components/courses/MhModuleNav';
-import { GoldDivider, ModuleEmblem } from '@/components/courses/MhLessonOrnaments';
+import { GoldDivider } from '@/components/courses/MhLessonOrnaments';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };

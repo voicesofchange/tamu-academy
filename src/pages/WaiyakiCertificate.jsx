@@ -5,7 +5,7 @@ import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
 import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
-import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',

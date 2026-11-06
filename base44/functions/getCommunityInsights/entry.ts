@@ -106,6 +106,18 @@ export default async function(req) {
     // completion signal. A course appears once anyone has enrolled in it.
     let moduleFunnel = [];
     if (isAdmin) {
+      // Administrator accounts are staff, not learners. Their enrollments,
+      // module opens and module completions are left out of every funnel
+      // figure, so the counts describe learners only. Existing records are
+      // kept exactly as they are: nothing is deleted, only not counted.
+      const adminRows = await base44.asServiceRole.entities.User.filter({ role: 'admin' });
+      const adminIds = new Set((adminRows || []).map((row) => row.id));
+      const learnerRows = (rows) => (rows || []).filter((row) => row && !adminIds.has(row.learner_id));
+
+      const funnelEnrollments = learnerRows(enrollments);
+      const funnelOpens = learnerRows(moduleOpens);
+      const funnelProgress = learnerRows(moduleProgress);
+
       const learnersWhere = (rows, matches) => {
         const ids = new Set();
         for (const row of rows || []) {
@@ -115,7 +127,7 @@ export default async function(req) {
       };
 
       const courseMap = new Map();
-      for (const enrollment of enrollments) {
+      for (const enrollment of funnelEnrollments) {
         if (!enrollment.course_slug || courseMap.has(enrollment.course_slug)) continue;
         courseMap.set(enrollment.course_slug, {
           slug: enrollment.course_slug,
@@ -128,20 +140,20 @@ export default async function(req) {
         .map((course) => ({
           slug: course.slug,
           title: course.title,
-          enrolled: learnersWhere(enrollments, (e) => e.course_slug === course.slug).size,
+          enrolled: learnersWhere(funnelEnrollments, (e) => e.course_slug === course.slug).size,
           completedCourse: learnersWhere(
-            enrollments,
+            funnelEnrollments,
             (e) => e.course_slug === course.slug && e.status === 'completed',
           ).size,
           modules: course.moduleRoutes.map((route) => ({
             slug: route,
             label: moduleLabel(route),
             opened: learnersWhere(
-              moduleOpens,
+              funnelOpens,
               (m) => m.course_slug === course.slug && m.module_slug === route,
             ).size,
             completed: learnersWhere(
-              moduleProgress,
+              funnelProgress,
               (m) =>
                 m.course_slug === course.slug &&
                 m.module_slug === route &&
