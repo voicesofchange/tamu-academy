@@ -4,10 +4,14 @@
  *
  * Imported ONLY by Base44 backend functions. Never imported by src/.
  *
- * The wording, links and artwork live here so the sending function only has to
- * decide who receives it. Delivery goes through the app's connected Gmail
- * account (see course-outreach.js), which is why the message is written as
- * email-safe HTML here rather than as a platform template.
+ * The wording lives in EVENT_INVITATION_COPY, which is sent to the translator
+ * when a recipient reads another language (see email-localization.js). Event
+ * facts — the date, the time, the venue, the course titles and every link —
+ * are never translated, so the details always match the flyer.
+ *
+ * Delivery goes through the app's connected Gmail account (see
+ * course-outreach.js), which is why the message is written as email-safe HTML
+ * here rather than as a platform template.
  *
  * Visual identity follows the event flyer: cream ground, forest green, gold.
  */
@@ -30,40 +34,87 @@ const REGISTER_URL =
  */
 export const EVENT_FROM_ADDRESS = 'tex@sustainthevoices.org';
 
-const BENEFITS = [
-  'Connect with our community',
-  'Explore free online courses',
-  'Learn at your own pace',
-  'Earn a certificate upon successful course completion',
-];
+/** Event facts. Never translated. */
+const EVENT_FACTS = {
+  date: 'Saturday 21 November 2026',
+  time: '9:00 AM East Africa Time',
+  speaker: 'Tex Wambui, MPA',
+};
 
 const COURSES = [
   {
     title: 'Understanding African Economies and the Global System',
     url: `${SITE_URL}/courses/understanding-african-economies-and-the-global-system`,
-    summary: 'Six modules on how African economies work and how they connect to the global system.',
   },
   {
     title: 'Mental Health, Community and Culture',
     url: `${SITE_URL}/courses/mental-health-community-and-culture`,
-    summary: 'Seven modules on mental health grounded in African thought and community practice.',
   },
   {
     title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
     url: `${SITE_URL}/courses/waiyaki-wa-hinga`,
-    summary: 'Five modules on a nineteenth century Kikuyu leader and the record that survives of him.',
   },
   {
     title: 'Building Wealth Together: Money, Enterprise and Community Leadership',
     url: `${SITE_URL}/courses/building-wealth-together`,
-    summary: 'Nine modules on household money, small enterprise and shared community risk.',
   },
   {
     title: 'Sauti za Soko: Markets, Climate and Community Power',
     url: `${SITE_URL}/courses/sauti-za-soko`,
-    summary: 'Seven modules built with young market vendors in Kiambu.',
   },
 ];
+
+/** Every translatable string of the invitation, as flat keys. */
+export const EVENT_INVITATION_COPY = {
+  subject: EVENT_INVITATION_SUBJECT,
+  eyebrow: 'Voices of Change and Tamu Academy',
+  headline: 'Learning Without Barriers.',
+  deck: 'A Voices of Change community learning event in partnership with Tamu Academy.',
+  dateLabel: 'Date',
+  timeLabel: 'Time',
+  costLabel: 'Cost',
+  costValue: 'Free and open to all',
+  speakerLine: 'Speaker: Tex Wambui, MPA. Hosted on Google Meet.',
+  joinCta: 'Join on Google Meet',
+  registerCta: 'Register for the event',
+  thanks: 'Thank you, {name}. Your place is registered, and we are looking forward to meeting you.',
+  registrationNote:
+    'This registration form is how people sign up for the event. If you would like to bring a colleague, a friend or a family member along, share it with them.',
+  introAbout:
+    'Tamu Academy is a free online learning platform developed through Waiyaki House. Our courses are open now, so you are welcome to create a free learner account and begin at your own pace before we meet.',
+  benefitsLabel: 'Benefits',
+  benefit1: 'Connect with our community',
+  benefit2: 'Explore free online courses',
+  benefit3: 'Learn at your own pace',
+  benefit4: 'Earn a certificate upon successful course completion',
+  coursesLabel: 'Featured courses',
+  coursesLead: 'These courses are open now, and every one of them is free.',
+  summary1: 'Six modules on how African economies work and how they connect to the global system.',
+  summary2: 'Seven modules on mental health grounded in African thought and community practice.',
+  summary3: 'Five modules on a nineteenth century Kikuyu leader and the record that survives of him.',
+  summary4: 'Nine modules on household money, small enterprise and shared community risk.',
+  summary5: 'Seven modules built with young market vendors in Kiambu.',
+  accountLabel: 'Your free account',
+  accountBody:
+    'The course pages are open to read. To enrol and work through the lessons, create a free learner account.',
+  accountCta: 'Create a free account',
+  guideNote: 'Once you are signed in, the {guide} walks you through the platform and how to study.',
+  guideLinkText: "Learner's Guide",
+  sessionNote:
+    'During the session we will introduce Voices of Change and Tamu Academy, talk through the courses that are open now, and look ahead to what is coming.',
+  closing: 'We look forward to seeing you there.',
+  regards: 'Warm regards,',
+  textEventDetails: 'EVENT DETAILS',
+  textDate: 'Date',
+  textTime: 'Time',
+  textPlatform: 'Platform',
+  textSpeaker: 'Speaker',
+  textCost: 'Cost',
+  textBenefits: 'BENEFITS',
+  textCourses: 'FEATURED COURSES',
+  textAccount: 'YOUR FREE ACCOUNT',
+  textJoin: 'Join on Google Meet',
+};
 
 /** The greeting name, kept safe for HTML. */
 function greetingName(firstName) {
@@ -74,6 +125,13 @@ function greetingName(firstName) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+/** Fill {placeholders} in translated copy. */
+function fill(template, vars = {}) {
+  return String(template == null ? '' : template).replace(/\{(\w+)\}/g, (match, key) =>
+    Object.prototype.hasOwnProperty.call(vars, key) ? String(vars[key]) : match
+  );
 }
 
 function factCell(label, value) {
@@ -108,25 +166,30 @@ function benefitCard(text) {
   );
 }
 
-function courseCard(course) {
+function courseCard(course, summary) {
   return (
     '<div class="course" style="background:#ffffff;border:1px solid #e6dcc4;border-left:3px solid #d4af37;' +
     'border-radius:14px;padding:16px 18px;margin-bottom:12px;font-size:15px;line-height:1.55;">' +
     `<a href="${course.url}" style="color:#283e29;text-decoration:none;font-weight:700;">${course.title}</a><br/>` +
-    `<span style="color:#3f5140;font-size:14px;">${course.summary}</span></div>`
+    `<span style="color:#3f5140;font-size:14px;">${summary}</span></div>`
   );
 }
 
 /** The invitation as email-safe HTML. */
-export function buildEventInvitationHtml({ firstName } = {}) {
+export function buildEventInvitationHtml({ firstName, copy = EVENT_INVITATION_COPY, language = 'en' } = {}) {
   const name = greetingName(firstName);
+  const benefits = [copy.benefit1, copy.benefit2, copy.benefit3, copy.benefit4];
+  const summaries = [copy.summary1, copy.summary2, copy.summary3, copy.summary4, copy.summary5];
+  const guidePhrase = fill(copy.guideNote, {
+    guide: `<a href="${SITE_URL}/learners-guide">${copy.guideLinkText}</a>`,
+  });
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${language}">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${EVENT_INVITATION_SUBJECT}</title>
+<title>${copy.subject}</title>
 <style>
   body { margin:0; padding:0; background:#f7f3e8; }
   a { color:#8a6a15; }
@@ -150,9 +213,9 @@ export function buildEventInvitationHtml({ firstName } = {}) {
 </td></tr>
 
 <tr><td class="gutter" style="padding:38px 32px 22px;text-align:center;">
-  <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:#8a6a15;padding-bottom:12px;">Voices of Change and Tamu Academy</div>
-  <div class="hero" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:44px;line-height:1.08;color:#283e29;padding-bottom:14px;">Learning Without Barriers.</div>
-  <div style="font-size:17px;line-height:1.55;color:#3f5140;">A Voices of Change community learning event in partnership with Tamu Academy.</div>
+  <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:#8a6a15;padding-bottom:12px;">${copy.eyebrow}</div>
+  <div class="hero" style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:44px;line-height:1.08;color:#283e29;padding-bottom:14px;">${copy.headline}</div>
+  <div style="font-size:17px;line-height:1.55;color:#3f5140;">${copy.deck}</div>
 </td></tr>
 
 <tr><td class="gutter" style="padding:4px 32px 26px;text-align:center;">
@@ -162,52 +225,52 @@ export function buildEventInvitationHtml({ firstName } = {}) {
 <tr><td class="gutter" style="padding:0 32px 18px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#283e29;border-radius:18px;">
     <tr>
-      ${factCell('Date', 'Saturday<br/>21 November 2026')}
-      ${factCell('Time', '9:00 AM<br/>East Africa Time')}
-      ${factCell('Cost', 'Free<br/>open to all')}
+      ${factCell(copy.dateLabel, EVENT_FACTS.date)}
+      ${factCell(copy.timeLabel, EVENT_FACTS.time)}
+      ${factCell(copy.costLabel, copy.costValue)}
     </tr>
   </table>
 </td></tr>
 
-<tr><td class="gutter" style="padding:0 32px 18px;text-align:center;font-size:14px;color:#3f5140;">Speaker: Tex Wambui, MPA. Hosted on Google Meet.</td></tr>
+<tr><td class="gutter" style="padding:0 32px 18px;text-align:center;font-size:14px;color:#3f5140;">${copy.speakerLine}</td></tr>
 
 <tr><td class="gutter" style="padding:0 32px 26px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-      <td class="stack" width="50%" style="padding-right:6px;">${button(JOIN_URL, 'Join on Google Meet', '#283e29', '#f7f3e8', true)}</td>
-      <td class="stack" width="50%" style="padding-left:6px;">${button(REGISTER_URL, 'Register for the event', '#d9a02d', '#283e29', true)}</td>
+      <td class="stack" width="50%" style="padding-right:6px;">${button(JOIN_URL, copy.joinCta, '#283e29', '#f7f3e8', true)}</td>
+      <td class="stack" width="50%" style="padding-left:6px;">${button(REGISTER_URL, copy.registerCta, '#d9a02d', '#283e29', true)}</td>
     </tr>
   </table>
 </td></tr>
 
 <tr><td class="gutter" style="padding:0 32px 26px;font-size:16px;line-height:1.75;color:#283e29;">
-  <p style="margin:0 0 14px;">Thank you, ${name}. Your place is registered, and we are looking forward to meeting you.</p>
-  <p style="margin:0 0 14px;">This registration form is how people sign up for the event. If you would like to bring a colleague, a friend or a family member along, share it with them.</p>
-  <p style="margin:0;">Tamu Academy is a free online learning platform developed through Waiyaki House. Our courses are open now, so you are welcome to create a free learner account and begin at your own pace before we meet.</p>
+  <p style="margin:0 0 14px;">${fill(copy.thanks, { name })}</p>
+  <p style="margin:0 0 14px;">${copy.registrationNote}</p>
+  <p style="margin:0;">${copy.introAbout}</p>
 </td></tr>
 
-<tr><td class="gutter" style="padding:0 32px 16px;">${sectionLabel('Benefits')}</td></tr>
-<tr><td class="gutter" style="padding:0 32px;">${BENEFITS.map(benefitCard).join('')}</td></tr>
+<tr><td class="gutter" style="padding:0 32px 16px;">${sectionLabel(copy.benefitsLabel)}</td></tr>
+<tr><td class="gutter" style="padding:0 32px;">${benefits.map(benefitCard).join('')}</td></tr>
 
-<tr><td class="gutter" style="padding:12px 32px 16px;">${sectionLabel('Featured courses')}</td></tr>
-<tr><td class="gutter" style="padding:0 32px 14px;font-size:14px;color:#3f5140;">These courses are open now, and every one of them is free.</td></tr>
-<tr><td class="gutter" style="padding:0 32px;">${COURSES.map(courseCard).join('')}</td></tr>
+<tr><td class="gutter" style="padding:12px 32px 16px;">${sectionLabel(copy.coursesLabel)}</td></tr>
+<tr><td class="gutter" style="padding:0 32px 14px;font-size:14px;color:#3f5140;">${copy.coursesLead}</td></tr>
+<tr><td class="gutter" style="padding:0 32px;">${COURSES.map((course, index) => courseCard(course, summaries[index])).join('')}</td></tr>
 
 <tr><td class="gutter" style="padding:14px 32px 26px;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid #e6dcc4;border-radius:16px;">
     <tr><td style="padding:22px;">
-      ${sectionLabel('Your free account')}
-      <p style="margin:18px 0;font-size:16px;line-height:1.75;color:#283e29;">The course pages are open to read. To enrol and work through the lessons, create a free learner account.</p>
-      ${button(`${SITE_URL}/register`, 'Create a free account', '#d9a02d', '#283e29', true)}
-      <p style="margin:18px 0 0;font-size:14px;line-height:1.7;color:#3f5140;">Once you are signed in, the <a href="${SITE_URL}/learners-guide">Learner's Guide</a> walks you through the platform and how to study.</p>
+      ${sectionLabel(copy.accountLabel)}
+      <p style="margin:18px 0;font-size:16px;line-height:1.75;color:#283e29;">${copy.accountBody}</p>
+      ${button(`${SITE_URL}/register`, copy.accountCta, '#d9a02d', '#283e29', true)}
+      <p style="margin:18px 0 0;font-size:14px;line-height:1.7;color:#3f5140;">${guidePhrase}</p>
     </td></tr>
   </table>
 </td></tr>
 
 <tr><td class="gutter" style="padding:0 32px 30px;font-size:16px;line-height:1.75;color:#283e29;">
-  <p style="margin:0 0 14px;">During the session we will introduce Voices of Change and Tamu Academy, talk through the courses that are open now, and look ahead to what is coming.</p>
-  <p style="margin:0 0 14px;">We look forward to seeing you there.</p>
-  <p style="margin:16px 0 0;">Warm regards,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy and Voices of Change</p>
+  <p style="margin:0 0 14px;">${copy.sessionNote}</p>
+  <p style="margin:0 0 14px;">${copy.closing}</p>
+  <p style="margin:16px 0 0;">${copy.regards}<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy and Voices of Change</p>
 </td></tr>
 
 <tr><td class="gutter" style="background:#283e29;border-radius:0 0 24px 24px;padding:26px 32px 28px;text-align:center;">
@@ -223,53 +286,56 @@ export function buildEventInvitationHtml({ firstName } = {}) {
 }
 
 /** The same invitation for readers whose mail client shows plain text. */
-export function buildEventInvitationText({ firstName } = {}) {
+export function buildEventInvitationText({ firstName, copy = EVENT_INVITATION_COPY } = {}) {
   const raw = typeof firstName === 'string' ? firstName.trim() : '';
   const name = raw || 'friend';
 
-  const courseLines = COURSES.map((course) => `- ${course.title}\n  ${course.summary}\n  ${course.url}`).join(
-    '\n'
-  );
-  const benefitLines = BENEFITS.map((benefit) => `- ${benefit}`).join('\n');
+  const benefits = [copy.benefit1, copy.benefit2, copy.benefit3, copy.benefit4];
+  const summaries = [copy.summary1, copy.summary2, copy.summary3, copy.summary4, copy.summary5];
 
-  return `Learning Without Barriers.
-A Voices of Change community learning event in partnership with Tamu Academy.
+  const courseLines = COURSES.map(
+    (course, index) => `- ${course.title}\n  ${summaries[index]}\n  ${course.url}`
+  ).join('\n');
+  const benefitLines = benefits.map((benefit) => `- ${benefit}`).join('\n');
 
-Thank you, ${name}. Your place is registered, and we are looking forward to meeting you.
+  return `${copy.headline}
+${copy.deck}
 
-EVENT DETAILS
-Date: Saturday, 21 November 2026
-Time: 9:00 AM East Africa Time
-Platform: Google Meet
-Speaker: Tex Wambui, MPA
-Cost: Free and open to all
+${fill(copy.thanks, { name })}
 
-Join on Google Meet: ${JOIN_URL}
+${copy.textEventDetails}
+${copy.textDate}: ${EVENT_FACTS.date}
+${copy.textTime}: ${EVENT_FACTS.time}
+${copy.textPlatform}: Google Meet
+${copy.textSpeaker}: ${EVENT_FACTS.speaker}
+${copy.textCost}: ${copy.costValue}
 
-This registration form is how people sign up for the event. If you would like to bring a colleague, a friend or a family member along, share it with them:
+${copy.textJoin}: ${JOIN_URL}
+
+${copy.registrationNote}
 ${REGISTER_URL}
 
-BENEFITS
+${copy.textBenefits}
 ${benefitLines}
 
-FEATURED COURSES
-These courses are open now, and every one of them is free.
+${copy.textCourses}
+${copy.coursesLead}
 ${courseLines}
 
-YOUR FREE ACCOUNT
-The course pages are open to read. To enrol and work through the lessons, create a free learner account:
+${copy.textAccount}
+${copy.accountBody}
 ${SITE_URL}/register
 
-Once you are signed in, the Learner's Guide walks you through the platform:
+${fill(copy.guideNote, { guide: copy.guideLinkText })}
 ${SITE_URL}/learners-guide
 
-Tamu Academy is a free online learning platform developed through Waiyaki House. Our courses are open now, so you are welcome to create a free learner account and begin at your own pace before we meet.
+${copy.introAbout}
 
-During the session we will introduce Voices of Change and Tamu Academy, talk through the courses that are open now, and look ahead to what is coming.
+${copy.sessionNote}
 
-We look forward to seeing you there.
+${copy.closing}
 
-Warm regards,
+${copy.regards}
 Tex Wambui, MPA
 Tamu Academy and Voices of Change
 ${SITE_URL}`;

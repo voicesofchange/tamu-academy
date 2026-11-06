@@ -21,9 +21,10 @@
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { getGmailSender, sendTrackedEmail } from '../../shared/course-outreach.js';
+import { emailCopyCache, learnerLanguage } from '../../shared/email-localization.js';
 import {
   EVENT_FROM_ADDRESS,
-  EVENT_INVITATION_SUBJECT,
+  EVENT_INVITATION_COPY,
   buildEventInvitationHtml,
   buildEventInvitationText,
 } from '../../shared/event-invitation-email.js';
@@ -67,6 +68,19 @@ export default async function (req: Request): Promise<Response> {
 
     const batch = targets.slice(0, MAX_PER_RUN);
 
+    // --- Which language each recipient reads ---
+    // A registered learner hears in the language they chose; everyone else
+    // receives the English invitation.
+    const languageByEmail = {};
+    try {
+      const users = await base44.asServiceRole.entities.User.list();
+      for (const u of users || []) {
+        if (u && u.email) languageByEmail[String(u.email).toLowerCase()] = learnerLanguage(u);
+      }
+    } catch (error) {
+      console.warn('[sendEventInvitation] learner language lookup failed:', error && error.message);
+    }
+
     // --- The Gmail account the invitation is sent from ---
     let sender;
     try {
@@ -86,7 +100,11 @@ export default async function (req: Request): Promise<Response> {
         mailbox: sender.fromEmail,
         eligible: batch.length,
         remaining_after: Math.max(0, targets.length - batch.length),
-        recipients: batch.map((t) => ({ email: t.email, first_name: t.firstName })),
+        recipients: batch.map((t) => ({
+          email: t.email,
+          first_name: t.firstName,
+          language: languageByEmail[t.email] || 'en',
+        })),
       });
     }
 
@@ -94,21 +112,28 @@ export default async function (req: Request): Promise<Response> {
     let sent = 0;
     let failed = 0;
     const errors = [];
+    const copyFor = emailCopyCache(base44);
 
     for (let i = 0; i < batch.length; i += SEND_BATCH) {
       const slice = batch.slice(i, i + SEND_BATCH);
       const results = await Promise.allSettled(
-        slice.map((recipient) =>
-          sendTrackedEmail(base44, {
+        slice.map(async (recipient) => {
+          const language = languageByEmail[recipient.email] || 'en';
+          const copy = await copyFor(language, EVENT_INVITATION_COPY);
+          return sendTrackedEmail(base44, {
             accessToken: sender.accessToken,
             fromEmail: EVENT_FROM_ADDRESS,
             to: recipient.email,
-            subject: EVENT_INVITATION_SUBJECT,
-            text: buildEventInvitationText({ firstName: recipient.firstName }),
-            html: buildEventInvitationHtml({ firstName: recipient.firstName }),
+            subject: copy.subject,
+            text: buildEventInvitationText({ firstName: recipient.firstName, copy }),
+            html: buildEventInvitationHtml({
+              firstName: recipient.firstName,
+              copy,
+              language,
+            }),
             messageType: MESSAGE_TYPE,
-          })
-        )
+          });
+        })
       );
 
       results.forEach((result, index) => {

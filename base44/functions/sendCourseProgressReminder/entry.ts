@@ -26,10 +26,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { getRequiredModuleRoutes } from '../../shared/course-registry.js';
 import { resolvePreferredName } from '../../shared/learner-name.js';
+import { emailCopyCache, fillCopy, learnerLanguage } from '../../shared/email-localization.js';
+import { PROGRESS_COPY, buildProgressEmail } from '../../shared/learner-emails.js';
 import {
-  SIGNATURE_TEXT,
-  SIGNATURE_HTML,
-  emailShell,
   firstNameOf,
   courseTitleOf,
   moduleLabel,
@@ -40,35 +39,6 @@ import {
 
 const ACTIVE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000; // still working: activity within 30 days
 const COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000; // at most one reminder a fortnight
-
-const buildEmail = ({ learnerName, courseTitle, doneCount, totalCount, nextLabel, url }) => {
-  const firstName = firstNameOf(learnerName);
-  const subject = `Your progress in ${courseTitle}, ${nextLabel} is next`;
-
-  const text = `Dear ${firstName},
-
-You're making real progress. You've completed ${doneCount} of ${totalCount} modules in ${courseTitle}. Well done.
-
-Your next step is ${nextLabel}:
-
-${url}
-
-There's no deadline and nothing to catch up on. Take it at your own pace, and write back anytime if a question comes up.
-
-Asante,
-${SIGNATURE_TEXT}`;
-
-  const html = emailShell(
-    `<p>Dear ${firstName},</p>` +
-      `<p>You're making real progress. You've completed <strong>${doneCount} of ${totalCount} modules</strong> in ${courseTitle}. Well done.</p>` +
-      `<p>Your next step is <strong>${nextLabel}</strong>:</p>` +
-      `<p><a href="${url}" style="color:#D4A12A;">Continue ${nextLabel}</a></p>` +
-      `<p style="color:#4a3a2a;">There's no deadline and nothing to catch up on. Take it at your own pace, and write back anytime if a question comes up.</p>` +
-      SIGNATURE_HTML
-  );
-
-  return { subject, text, html };
-};
 
 export default async function (req: Request): Promise<Response> {
   try {
@@ -180,14 +150,22 @@ export default async function (req: Request): Promise<Response> {
     let failed = 0;
     const errors = [];
     const sentAt = new Date().toISOString();
+    const copyFor = emailCopyCache(base44);
 
     for (const target of targets) {
       const { enrollment, learner, doneCount, totalCount, nextRoute } = target;
       const courseTitle = courseTitleOf(enrollment.course_slug);
-      const nextLabel = moduleLabel(enrollment.course_slug, nextRoute);
+      const copy = await copyFor(learnerLanguage(learner), PROGRESS_COPY);
 
-      const email = buildEmail({
-        learnerName: resolvePreferredName(learner, learner.full_name),
+      // "Module 3" is interface wording, so it follows the email's language.
+      const rawLabel = moduleLabel(enrollment.course_slug, nextRoute);
+      const moduleNumber = /^Module (\d+)$/.exec(rawLabel);
+      const nextLabel = moduleNumber
+        ? fillCopy(copy.moduleName, { n: moduleNumber[1] })
+        : rawLabel;
+
+      const email = buildProgressEmail(copy, {
+        firstName: firstNameOf(resolvePreferredName(learner, learner.full_name)),
         courseTitle,
         doneCount,
         totalCount,

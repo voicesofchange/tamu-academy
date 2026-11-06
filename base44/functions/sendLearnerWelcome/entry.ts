@@ -3,6 +3,11 @@
  * to registered learners from sustainthevoices@gmail.com (display name
  * "Tex Wambui | Tamu Academy").
  *
+ * The email is written in the language saved on each learner's profile, with
+ * English wherever no translation is available (see email-localization.js and
+ * learner-emails.js). The learner's name and the course titles always arrive
+ * exactly as recorded.
+ *
  * Two invocation modes:
  *   1. Admin broadcast (dashboard): no learner_id → sends to every user
  *      with role 'user'. Requires admin auth.
@@ -29,10 +34,11 @@ import {
 } from '../../shared/mental-health-certificate.js';
 
 import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
+import { emailCopyCache, learnerLanguage } from '../../shared/email-localization.js';
+import { WELCOME_COPY, buildWelcomeEmail } from '../../shared/learner-emails.js';
 
 const SITE_URL = 'https://tamuacademy.org';
 const FROM_NAME = 'Tex Wambui | Tamu Academy';
-const SUBJECT = 'Welcome to Tamu Academy — let\u2019s begin';
 
 const COURSE_MAP = {
   [ECONOMICS_CERTIFICATE_COURSE_SLUG]: {
@@ -51,89 +57,10 @@ const firstModuleUrl = (slug) => {
   return `${SITE_URL}/courses/${slug}/${c.firstModuleRoute}`;
 };
 
-const SIGNATURE_TEXT = `Tex Wambui, MPA
-Tamu Academy
-Voices of Change
-https://tamuacademy.org`;
-
-const buildEmail = (learnerName, enrollments) => {
-  const firstName = learnerName ? learnerName.split(' ')[0] : 'friend';
-  const hasEnrollments = enrollments.length > 0;
-
-  if (hasEnrollments) {
-    const courseLines = enrollments.map((e) => {
-      const c = COURSE_MAP[e.course_slug];
-      const title = c ? c.title : e.course_slug;
-      return { title, url: firstModuleUrl(e.course_slug) };
-    });
-
-    const textCourses = courseLines
-      .map((c) => `${c.title}\nStart here: ${c.url}`)
-      .join('\n\n');
-
-    const htmlCourses = courseLines
-      .map(
-        (c) =>
-          `<p style="margin:0.75rem 0;"><strong style="color:#1A130E;">${c.title}</strong><br/><a href="${c.url}" style="color:#D4A12A;">Start your first module</a></p>`
-      )
-      .join('');
-
-    const text = `Dear ${firstName},
-
-Welcome to Tamu Academy — thank you for joining our community of learners. We're glad you're here.
-
-You're enrolled and ready to begin. Here's how to start:
-
-${textCourses}
-
-Each module includes a short lesson, reflection prompts, and a knowledge check. Work at your own pace — there's no deadline, and you can return whenever you're ready.
-
-We're with you every step of the way.
-
-Asante,
-${SIGNATURE_TEXT}`;
-
-    const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">
-<p>Dear ${firstName},</p>
-<p>Welcome to Tamu Academy — thank you for joining our community of learners. We're glad you're here.</p>
-<p>You're enrolled and ready to begin. Here's how to start:</p>
-${htmlCourses}
-<p style="color:#4a3a2a;">Each module includes a short lesson, reflection prompts, and a knowledge check. Work at your own pace — there's no deadline, and you can return whenever you're ready.</p>
-<p style="color:#4a3a2a;">We're with you every step of the way.</p>
-<p>Asante,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>Voices of Change<br/><a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>
-</div>`;
-
-    return { text, html };
-  }
-
-  const coursesUrl = `${SITE_URL}/courses`;
-  const text = `Dear ${firstName},
-
-Welcome to Tamu Academy — thank you for joining our community of learners. We're glad you're here.
-
-You haven't enrolled in a course yet, and that's perfectly okay. Here's where to begin:
-
-Explore our courses: ${coursesUrl}
-
-We currently offer two courses — Understanding African Economies and the Global System, and Mental Health, Community and Culture — with more on the way. Each is self-paced and free to start.
-
-When you're ready, choose the course that speaks to you and begin your first module.
-
-Asante,
-${SIGNATURE_TEXT}`;
-
-  const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">
-<p>Dear ${firstName},</p>
-<p>Welcome to Tamu Academy — thank you for joining our community of learners. We're glad you're here.</p>
-<p>You haven't enrolled in a course yet, and that's perfectly okay. Here's where to begin:</p>
-<p><a href="${coursesUrl}" style="color:#D4A12A;">Explore our courses</a></p>
-<p style="color:#4a3a2a;">We currently offer two courses — Understanding African Economies and the Global System, and Mental Health, Community and Culture — with more on the way. Each is self-paced and free to start.</p>
-<p style="color:#4a3a2a;">When you're ready, choose the course that speaks to you and begin your first module.</p>
-<p>Asante,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>Voices of Change<br/><a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>
-</div>`;
-
-  return { text, html };
-};
+/** The courses named in the welcome copy, exactly as recorded. */
+const CATALOGUE_COURSES = Object.values(COURSE_MAP)
+  .map((course) => course.title)
+  .join(' and ');
 
 export default async function (req: Request): Promise<Response> {
   try {
@@ -180,6 +107,7 @@ export default async function (req: Request): Promise<Response> {
           id: u.id,
           email: u.email,
           name: u.full_name,
+          language: learnerLanguage(u),
         })),
       });
     }
@@ -215,15 +143,33 @@ export default async function (req: Request): Promise<Response> {
     await base44.asServiceRole.entities.EmailOpenEvent.bulkCreate(records);
 
     // --- Send ---
+    // One translation per language for the whole run.
+    const copyFor = emailCopyCache(base44);
     let sent = 0;
     let failed = 0;
     const errors = [];
     for (let i = 0; i < recipients.length; i++) {
       const learner = recipients[i];
       const learnerEnrollments = enrollmentsByLearner[learner.id] || [];
-      const { text, html } = buildEmail(learner.full_name, learnerEnrollments);
+      const copy = await copyFor(learnerLanguage(learner), WELCOME_COPY);
+
+      const enrolledCourses = learnerEnrollments.map((e) => {
+        const c = COURSE_MAP[e.course_slug];
+        return {
+          title: c ? c.title : e.course_slug,
+          url: firstModuleUrl(e.course_slug),
+        };
+      });
+
+      const { subject, text, html } = buildWelcomeEmail(copy, {
+        learnerName: learner.full_name,
+        enrolledCourses,
+        catalogueCourses: CATALOGUE_COURSES,
+        catalogueUrl: `${SITE_URL}/courses`,
+      });
+
       const finalHtml = html + trackingPixel(records[i].tracking_token);
-      const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, SUBJECT, text, finalHtml);
+      const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, subject, text, finalHtml);
       try {
         const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',

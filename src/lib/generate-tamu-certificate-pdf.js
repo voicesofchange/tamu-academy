@@ -5,18 +5,11 @@ import {
   CERT_SLATE_RGB,
   CERT_LOGO_URL,
   CERT_ACADEMY_NAME,
-  CERT_ACADEMY_ATTRIBUTION,
-  CERT_HEADING,
-  CERT_PRESENTED_TO,
-  CERT_COMPLETION_LEAD,
-  CERT_OFFERED_THROUGH,
   CERT_AUTHORIZER_NAME,
-  CERT_AUTHORIZER_ROLE,
-  CERT_DATE_LABEL,
-  CERT_ID_LABEL,
   formatCertificateDate,
   resolveCertificateId,
 } from '@/lib/certificate-design';
+import { certificateLocale, loadCertificateCopy } from '@/lib/certificate-copy';
 
 /**
  * generateTamuCertificatePDF — the official Tamu Academy Certificate of
@@ -81,7 +74,10 @@ export async function generateTamuCertificatePDF({
   const rightEdge = pageWidth - 24;
   const leftEdge = 24;
 
-  const completedDate = formatCertificateDate(completedAt);
+  // The fixed wording is drawn in the learner's language; the learner's name
+  // and the course title are drawn exactly as recorded.
+  const { copy, language } = await loadCertificateCopy();
+  const completedDate = formatCertificateDate(completedAt, certificateLocale(language));
   const displayId = resolveCertificateId(certificateId, isPreview);
 
   // ── Ground ──────────────────────────────────────────────────────────────
@@ -139,14 +135,17 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_ACADEMY_ATTRIBUTION, cx, mastheadBaseline + 6.5, { align: 'center' });
+  doc.text(copy.academyAttribution, cx, mastheadBaseline + 6.5, { align: 'center' });
 
   // ── Main heading ────────────────────────────────────────────────────────
   const headingBaseline = mastheadBaseline + 24;
   doc.setFont('times', 'bold');
   doc.setFontSize(25);
   doc.setTextColor(...CERT_NAVY_RGB);
-  doc.text(CERT_HEADING.toUpperCase(), cx, headingBaseline, { align: 'center', charSpace: 1 });
+  doc.text(String(copy.heading).toUpperCase(), cx, headingBaseline, {
+    align: 'center',
+    charSpace: 1,
+  });
 
   // Short gold accent line beneath the heading.
   const accentY = headingBaseline + 6;
@@ -179,7 +178,7 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_PRESENTED_TO, cx, y, { align: 'center' });
+  doc.text(copy.presentedTo, cx, y, { align: 'center' });
   y += 9;
 
   doc.setFont('times', 'bold');
@@ -191,7 +190,7 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_COMPLETION_LEAD, cx, y, { align: 'center' });
+  doc.text(copy.completionLead, cx, y, { align: 'center' });
   y += 7.5;
 
   doc.setFont('times', 'bold');
@@ -203,7 +202,7 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(8.5);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_OFFERED_THROUGH, cx, y, { align: 'center' });
+  doc.text(copy.offeredThrough, cx, y, { align: 'center' });
 
   // ── Footer ──────────────────────────────────────────────────────────────
   const dividerY = pageHeight - 50;
@@ -243,13 +242,13 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(doc.splitTextToSize(CERT_AUTHORIZER_ROLE, 66), leftEdge, ruleY + 12.5);
+  doc.text(doc.splitTextToSize(copy.authorizerRole, 66), leftEdge, ruleY + 12.5);
 
   // Date and identifier — right.
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_DATE_LABEL, rightEdge, ruleY + 2, { align: 'right' });
+  doc.text(copy.dateLabel, rightEdge, ruleY + 2, { align: 'right' });
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
@@ -259,7 +258,7 @@ export async function generateTamuCertificatePDF({
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...CERT_SLATE_RGB);
-  doc.text(CERT_ID_LABEL, rightEdge, ruleY + 13, { align: 'right' });
+  doc.text(copy.idLabel, rightEdge, ruleY + 13, { align: 'right' });
 
   doc.setFont('courier', 'bold');
   doc.setFontSize(7.5);

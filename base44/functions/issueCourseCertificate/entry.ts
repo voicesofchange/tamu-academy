@@ -2,6 +2,12 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { getCourseConfig, getRequiredModuleRoutes } from '../../shared/course-registry.js';
 import { generateCertificatePdfBase64 } from '../../shared/certificate-pdf.js';
 import { resolvePreferredName } from '../../shared/learner-name.js';
+import { learnerLanguage, localizeEmailCopy } from '../../shared/email-localization.js';
+import { CERTIFICATE_EMAIL_COPY, buildCertificateEmail } from '../../shared/learner-emails.js';
+import {
+  certificateLocale,
+  localizeCertificateLabels,
+} from '../../shared/certificate-copy.js';
 
 /**
  * issueCourseCertificate — workflow-facing backend function.
@@ -154,22 +160,18 @@ export default async function(req: Request): Promise<Response> {
       const learner = await base44.asServiceRole.entities.User.get(learnerId);
       const learnerEmail = learner?.email;
       if (learnerEmail) {
-        const firstName = learnerName ? learnerName.split(' ')[0] : 'there';
-        const subject = `Your Tamu Academy Certificate — ${courseTitle}`;
-        const textBody =
-          `Dear ${firstName},\n\n` +
-          `Congratulations on completing ${courseTitle}! Your certificate of completion is attached to this email as a PDF.\n\n` +
-          `You can also access it anytime from My Courses after signing in at https://tamuacademy.org\n\n` +
-          `Asante for learning with us,\n` +
-          `Tex Wambui, MPA\nTamu Academy\nhttps://tamuacademy.org`;
-        const htmlBody =
-          `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">` +
-          `<p>Dear ${firstName},</p>` +
-          `<p>Congratulations on completing <strong>${courseTitle}</strong>! Your certificate of completion is attached to this email as a PDF.</p>` +
-          `<p style="color:#4a3a2a;">You can also access it anytime from My Courses after signing in at <a href="https://tamuacademy.org" style="color:#D4A12A;">tamuacademy.org</a>.</p>` +
-          `<p>Asante for learning with us,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>` +
-          `<a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>` +
-          `</div>`;
+        // The email and the attached certificate are written in the
+        // learner's own language; the learner's name and the course title are
+        // the certificate's recorded values and are never translated.
+        const language = learnerLanguage(learner);
+        const copy = await localizeEmailCopy(base44, language, CERTIFICATE_EMAIL_COPY);
+        const { subject, text: textBody, html: htmlBody } = buildCertificateEmail(copy, {
+          learnerName,
+          courseTitle,
+        });
+
+        const labels = await localizeCertificateLabels(base44, language);
+        const locale = certificateLocale(language);
 
         // Generate the certificate PDF as base64 for attachment.
         const moduleCount = getRequiredModuleRoutes(courseSlug).length || 6;
@@ -180,6 +182,8 @@ export default async function(req: Request): Promise<Response> {
             completedAt: completedAtValue,
             completionStatement: courseConfig.completionStatement,
             certificateId,
+            copy: labels,
+            locale,
           },
           moduleCount
         );

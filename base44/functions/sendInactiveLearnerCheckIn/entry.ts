@@ -22,10 +22,11 @@ import {
 } from '../../shared/course-registry.js';
 import { SOKO_PEER_COURSE_SLUG } from '../../shared/sauti-za-soko-config.js';
 import { buildRawMime, trackingPixel } from '../../shared/gmail-mime.js';
+import { emailCopyCache, learnerLanguage } from '../../shared/email-localization.js';
+import { CHECK_IN_COPY, buildCheckInEmail } from '../../shared/learner-emails.js';
 
 const SITE_URL = 'https://tamuacademy.org';
 const FROM_NAME = 'Tex Wambui | Tamu Academy';
-const SUBJECT = 'A gentle nudge from Tamu Academy — your journey continues';
 const INACTIVITY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days between check-ins
 
@@ -46,42 +47,6 @@ const resumeUrl = (courseSlug, lastModuleSlug) => {
 
   if (moduleSlug) return `${SITE_URL}/courses/${courseSlug}/${moduleSlug}`;
   return `${SITE_URL}/courses/${courseSlug}`;
-};
-
-const SIGNATURE_TEXT = `Tex Wambui, MPA
-Tamu Academy
-Voices of Change
-https://tamuacademy.org`;
-
-const buildEmail = (learnerName, courseTitle, url) => {
-  const firstName = learnerName ? learnerName.split(' ')[0] : 'friend';
-
-  const text = `Dear ${firstName},
-
-It's been a little while since you last visited Tamu Academy — and we wanted to check in.
-
-Learning is a journey, not a race. Life gets busy, and stepping away is natural. What matters is that you come back when you're ready.
-
-You're partway through ${courseTitle}, and your progress is saved. Whenever you're ready, you can pick up right where you left off:
-
-${url}
-
-No pressure, no deadlines — just an open door. We believe in your capacity to grow, and we're here whenever you're ready to take the next step.
-
-Asante,
-${SIGNATURE_TEXT}`;
-
-  const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#1A130E;line-height:1.7;max-width:600px;">
-<p>Dear ${firstName},</p>
-<p>It's been a little while since you last visited Tamu Academy — and we wanted to check in.</p>
-<p>Learning is a journey, not a race. Life gets busy, and stepping away is natural. What matters is that you come back when you're ready.</p>
-<p>You're partway through <strong style="color:#1A130E;">${courseTitle}</strong>, and your progress is saved. Whenever you're ready, you can pick up right where you left off:</p>
-<p><a href="${url}" style="color:#D4A12A;">Continue your course</a></p>
-<p style="color:#4a3a2a;">No pressure, no deadlines — just an open door. We believe in your capacity to grow, and we're here whenever you're ready to take the next step.</p>
-<p>Asante,<br/><strong>Tex Wambui, MPA</strong><br/>Tamu Academy<br/>Voices of Change<br/><a href="https://tamuacademy.org" style="color:#D4A12A;">https://tamuacademy.org</a></p>
-</div>`;
-
-  return { text, html };
 };
 
 export default async function (req: Request): Promise<Response> {
@@ -171,6 +136,7 @@ export default async function (req: Request): Promise<Response> {
           learner_id: t.learner.id,
           email: t.learner.email,
           name: t.learner.full_name,
+          language: learnerLanguage(t.learner),
           course_slug: t.enrollment.course_slug,
           last_module: t.lastModule,
           last_activity: t.lastActivity,
@@ -198,14 +164,20 @@ export default async function (req: Request): Promise<Response> {
     let sent = 0;
     let failed = 0;
     const errors = [];
+    const copyFor = emailCopyCache(base44);
     for (let i = 0; i < targets.length; i++) {
       const { enrollment, learner, lastModule } = targets[i];
       const config = getCourseConfig(enrollment.course_slug);
       const courseTitle = config ? config.title : enrollment.course_slug;
       const url = resumeUrl(enrollment.course_slug, lastModule);
-      const { text, html } = buildEmail(learner.full_name, courseTitle, url);
+      const copy = await copyFor(learnerLanguage(learner), CHECK_IN_COPY);
+      const { subject, text, html } = buildCheckInEmail(copy, {
+        learnerName: learner.full_name,
+        courseTitle,
+        url,
+      });
       const finalHtml = html + trackingPixel(trackingRecords[i].tracking_token);
-      const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, SUBJECT, text, finalHtml);
+      const raw = buildRawMime(FROM_NAME, fromEmail, learner.email, subject, text, finalHtml);
       try {
         const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',

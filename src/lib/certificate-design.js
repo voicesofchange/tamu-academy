@@ -101,10 +101,13 @@ export const CERTIFICATE_SAMPLES = [
   },
 ];
 
-/** Formats a completion timestamp the way the certificate presents it. */
-export function formatCertificateDate(value) {
+/**
+ * Formats a completion timestamp the way the certificate presents it, in the
+ * locale that matches the certificate's language (English by default).
+ */
+export function formatCertificateDate(value, locale = 'en-US') {
   if (!value) return '';
-  return new Date(value).toLocaleDateString('en-US', {
+  return new Date(value).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

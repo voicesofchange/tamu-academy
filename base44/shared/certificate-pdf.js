@@ -35,17 +35,22 @@ const LOGO_URL =
   'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c6e9f2fb7_logo.png';
 
 const ACADEMY_NAME = 'TAMU ACADEMY';
-const ACADEMY_ATTRIBUTION = 'An educational initiative of Waiyaki House';
-const HEADING = 'CERTIFICATE OF COMPLETION';
-const PRESENTED_TO = 'This certificate is presented to';
-const COMPLETION_LEAD = 'For successfully completing the self-paced course';
-const OFFERED_THROUGH =
-  'Offered through Tamu Academy, an educational initiative of Waiyaki House.';
 const AUTHORIZER_NAME = 'Tex Wambui, MPA';
-const AUTHORIZER_ROLE = 'Founder and Course Developer, Tamu Academy';
-const DATE_LABEL = 'Date of Completion';
-const ID_LABEL = 'Certificate ID';
 const PREVIEW_ID = 'PREVIEW-NOT-A-REAL-ID';
+
+// The fixed wording around the learner's name and course title. Callers pass
+// this copy translated into the learner's language (see certificate-copy.js);
+// these English labels are the fallback.
+const DEFAULT_LABELS = {
+  heading: 'Certificate of Completion',
+  presentedTo: 'This certificate is presented to',
+  completionLead: 'For successfully completing the self-paced course',
+  offeredThrough: 'Offered through Tamu Academy, an educational initiative of Waiyaki House.',
+  academyAttribution: 'An educational initiative of Waiyaki House',
+  authorizerRole: 'Founder and Course Developer, Tamu Academy',
+  dateLabel: 'Date of Completion',
+  idLabel: 'Certificate ID',
+};
 
 const NUMBER_WORDS = {
   1: ['one', 'ONE'],
@@ -97,8 +102,11 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   const rightEdge = pageWidth - 24;
   const leftEdge = 24;
 
+  const labels = data.copy || DEFAULT_LABELS;
+  const locale = data.locale || 'en-US';
+
   const completedDate = data.completedAt
-    ? new Date(data.completedAt).toLocaleDateString('en-US', {
+    ? new Date(data.completedAt).toLocaleDateString(locale, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -146,14 +154,17 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(...SLATE);
-  doc.text(ACADEMY_ATTRIBUTION, cx, mastheadBaseline + 6.5, { align: 'center' });
+  doc.text(labels.academyAttribution, cx, mastheadBaseline + 6.5, { align: 'center' });
 
   // ── Main heading ────────────────────────────────────────────────────────
   const headingBaseline = mastheadBaseline + 24;
   doc.setFont('times', 'bold');
   doc.setFontSize(25);
   doc.setTextColor(...NAVY);
-  doc.text(HEADING, cx, headingBaseline, { align: 'center', charSpace: 1 });
+  doc.text(String(labels.heading).toUpperCase(), cx, headingBaseline, {
+    align: 'center',
+    charSpace: 1,
+  });
 
   // Short gold accent line beneath the heading.
   const accentY = headingBaseline + 6;
@@ -181,7 +192,7 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...SLATE);
-  doc.text(PRESENTED_TO, cx, y, { align: 'center' });
+  doc.text(labels.presentedTo, cx, y, { align: 'center' });
   y += 9;
 
   doc.setFont('times', 'bold');
@@ -193,7 +204,7 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(...SLATE);
-  doc.text(COMPLETION_LEAD, cx, y, { align: 'center' });
+  doc.text(labels.completionLead, cx, y, { align: 'center' });
   y += 7.5;
 
   doc.setFont('times', 'bold');
@@ -205,7 +216,7 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(8.5);
   doc.setTextColor(...SLATE);
-  doc.text(OFFERED_THROUGH, cx, y, { align: 'center' });
+  doc.text(labels.offeredThrough, cx, y, { align: 'center' });
 
   // ── Footer ──────────────────────────────────────────────────────────────
   const dividerY = pageHeight - 50;
@@ -232,13 +243,13 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...SLATE);
-  doc.text(doc.splitTextToSize(AUTHORIZER_ROLE, 66), leftEdge, ruleY + 12.5);
+  doc.text(doc.splitTextToSize(labels.authorizerRole, 66), leftEdge, ruleY + 12.5);
 
   // Date and identifier — right.
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...SLATE);
-  doc.text(DATE_LABEL, rightEdge, ruleY + 2, { align: 'right' });
+  doc.text(labels.dateLabel, rightEdge, ruleY + 2, { align: 'right' });
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
@@ -248,7 +259,7 @@ export async function generateCertificatePdfBase64(data, moduleCount = 6) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(...SLATE);
-  doc.text(ID_LABEL, rightEdge, ruleY + 13, { align: 'right' });
+  doc.text(labels.idLabel, rightEdge, ruleY + 13, { align: 'right' });
 
   doc.setFont('courier', 'bold');
   doc.setFontSize(7.5);

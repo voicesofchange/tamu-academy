@@ -6,18 +6,11 @@ import {
   CERT_SLATE,
   CERT_LOGO_URL,
   CERT_ACADEMY_NAME,
-  CERT_ACADEMY_ATTRIBUTION,
-  CERT_HEADING,
-  CERT_PRESENTED_TO,
-  CERT_COMPLETION_LEAD,
-  CERT_OFFERED_THROUGH,
   CERT_AUTHORIZER_NAME,
-  CERT_AUTHORIZER_ROLE,
-  CERT_DATE_LABEL,
-  CERT_ID_LABEL,
   formatCertificateDate,
   resolveCertificateId,
 } from '@/lib/certificate-design';
+import { certificateLocale, useCertificateCopy } from '@/lib/certificate-copy';
 
 const serif = "'Cormorant Garamond', Georgia, serif";
 
@@ -46,7 +39,10 @@ export default function TamuCertificateDocument({
   certificateId,
   isPreview = false,
 }) {
-  const completedDate = formatCertificateDate(completedAt);
+  // The fixed wording follows the learner's language; the learner's name and
+  // the course title are the certificate's recorded values and never change.
+  const { copy, language } = useCertificateCopy();
+  const completedDate = formatCertificateDate(completedAt, certificateLocale(language));
   const displayId = resolveCertificateId(certificateId, isPreview);
 
   return (
@@ -105,7 +101,7 @@ export default function TamuCertificateDocument({
             margin: '0.3rem 0 0',
           }}
         >
-          {CERT_ACADEMY_ATTRIBUTION}
+          {copy.academyAttribution}
         </p>
       </header>
 
@@ -124,7 +120,7 @@ export default function TamuCertificateDocument({
             lineHeight: 1.15,
           }}
         >
-          {CERT_HEADING}
+          {copy.heading}
         </h1>
         <div
           aria-hidden="true"
@@ -143,7 +139,7 @@ export default function TamuCertificateDocument({
           className="tamu-cert-slate"
           style={{ fontSize: 'clamp(0.68rem, 1.2vw, 0.9rem)', color: CERT_SLATE, margin: 0 }}
         >
-          {CERT_PRESENTED_TO}
+          {copy.presentedTo}
         </p>
         <p
           className="tamu-cert-navy"
@@ -168,7 +164,7 @@ export default function TamuCertificateDocument({
             margin: 'clamp(0.7rem, 1.8vw, 1.3rem) 0 0',
           }}
         >
-          {CERT_COMPLETION_LEAD}
+          {copy.completionLead}
         </p>
         <p
           className="tamu-cert-navy"
@@ -192,7 +188,7 @@ export default function TamuCertificateDocument({
             margin: 'clamp(0.35rem, 1vw, 0.7rem) 0 0',
           }}
         >
-          {CERT_OFFERED_THROUGH}
+          {copy.offeredThrough}
         </p>
       </section>
 
@@ -248,7 +244,7 @@ export default function TamuCertificateDocument({
                 margin: '0.2rem 0 0',
               }}
             >
-              {CERT_AUTHORIZER_ROLE}
+              {copy.authorizerRole}
             </p>
           </div>
 
@@ -258,7 +254,7 @@ export default function TamuCertificateDocument({
               className="tamu-cert-slate"
               style={{ fontSize: 'clamp(0.54rem, 0.9vw, 0.7rem)', color: CERT_SLATE, margin: 0 }}
             >
-              {CERT_DATE_LABEL}
+              {copy.dateLabel}
             </p>
             <p
               className="tamu-cert-navy"
@@ -275,7 +271,7 @@ export default function TamuCertificateDocument({
               className="tamu-cert-slate"
               style={{ fontSize: 'clamp(0.54rem, 0.9vw, 0.7rem)', color: CERT_SLATE, margin: 0 }}
             >
-              {CERT_ID_LABEL}
+              {copy.idLabel}
             </p>
             <p
               className="tamu-cert-navy"

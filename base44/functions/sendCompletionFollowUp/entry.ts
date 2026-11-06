@@ -22,12 +22,9 @@
  */
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 import { resolvePreferredName } from '../../shared/learner-name.js';
+import { emailCopyCache, learnerLanguage } from '../../shared/email-localization.js';
+import { CELEBRATION_COPY, buildCelebrationEmail } from '../../shared/learner-emails.js';
 import {
-  SITE_URL,
-  SIGNATURE_TEXT,
-  SIGNATURE_HTML,
-  emailShell,
-  firstNameOf,
   courseTitleOf,
   certificateUrl,
   storiesUrl,
@@ -37,53 +34,6 @@ import {
 } from '../../shared/course-outreach.js';
 
 const FOLLOW_UP_DELAY_MS = 3 * 24 * 60 * 60 * 1000; // at least 3 days after completion
-
-const buildEmail = ({ learnerName, courseTitle, certificateLink }) => {
-  const firstName = firstNameOf(learnerName);
-  const subject = `Congratulations again on completing ${courseTitle}`;
-
-  const storiesLink = storiesUrl();
-  const coursesLink = coursesUrl();
-
-  const text = `Dear ${firstName},
-
-Congratulations again on completing ${courseTitle}. Finishing a course takes real commitment, and we're glad you chose to learn with Tamu Academy.
-
-Your certificate is yours to keep and share, and it stays available to you:
-
-${certificateLink}
-
-If you'd like to stay connected, there are two easy next steps.
-
-Share your experience. A few words from you help other learners decide whether this course is for them:
-${storiesLink}
-
-Keep learning. Our other course is free and self-paced:
-${coursesLink}
-
-Whatever you choose next, thank you for being part of this community.
-
-Asante,
-${SIGNATURE_TEXT}
-
-${SITE_URL}`;
-
-  const html = emailShell(
-    `<p>Dear ${firstName},</p>` +
-      `<p>Congratulations again on completing <strong>${courseTitle}</strong>. Finishing a course takes real commitment, and we're glad you chose to learn with Tamu Academy.</p>` +
-      `<p>Your certificate is yours to keep and share, and it stays available to you:</p>` +
-      `<p><a href="${certificateLink}" style="color:#D4A12A;">View your certificate</a></p>` +
-      `<p style="color:#4a3a2a;">If you'd like to stay connected, there are two easy next steps.</p>` +
-      `<p><strong style="color:#1A130E;">Share your experience</strong><br/>A few words from you help other learners decide whether this course is for them.<br/>` +
-      `<a href="${storiesLink}" style="color:#D4A12A;">Tell us how it went</a></p>` +
-      `<p><strong style="color:#1A130E;">Keep learning</strong><br/>Our other course is free and self-paced.<br/>` +
-      `<a href="${coursesLink}" style="color:#D4A12A;">Explore the catalogue</a></p>` +
-      `<p style="color:#4a3a2a;">Whatever you choose next, thank you for being part of this community.</p>` +
-      SIGNATURE_HTML
-  );
-
-  return { subject, text, html };
-};
 
 export default async function (req: Request): Promise<Response> {
   try {
@@ -136,6 +86,7 @@ export default async function (req: Request): Promise<Response> {
           learner_id: t.learner.id,
           name: resolvePreferredName(t.learner, t.learner.full_name),
           email: t.learner.email,
+          language: learnerLanguage(t.learner),
           course_slug: t.enrollment.course_slug,
           detail: `${courseTitleOf(t.enrollment.course_slug)}, completed ${String(t.completedAt).slice(0, 10)}`,
         })),
@@ -151,13 +102,17 @@ export default async function (req: Request): Promise<Response> {
     let failed = 0;
     const errors = [];
     const sentAt = new Date().toISOString();
+    const copyFor = emailCopyCache(base44);
 
     for (const target of targets) {
       const { enrollment, learner } = target;
-      const email = buildEmail({
+      const copy = await copyFor(learnerLanguage(learner), CELEBRATION_COPY);
+      const email = buildCelebrationEmail(copy, {
         learnerName: resolvePreferredName(learner, learner.full_name),
         courseTitle: courseTitleOf(enrollment.course_slug),
         certificateLink: certificateUrl(enrollment.course_slug),
+        storiesLink: storiesUrl(),
+        coursesLink: coursesUrl(),
       });
 
       try {
