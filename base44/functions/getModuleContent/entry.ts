@@ -4,7 +4,38 @@ import {
   isEconomicsModulePublished,
   getEconomicsModulePrerequisite,
 } from '../../shared/economics-course-config.js';
-import { translateModuleContent } from '../../shared/translate-content.js';
+import { translateCourseSections } from '../../shared/course-translation.js';
+
+/**
+ * The learner-facing sections of an economics module that are translated:
+ * the lesson framing, the objectives and key concepts, the recorded lesson
+ * titles, the case study, the applied and policy activities, the watching
+ * questions, the reflection questions, the knowledge check (questions and
+ * options — never the answer key), the closing text and the completion
+ * requirements. Routes, numbers, statuses, URLs, the time estimate, the
+ * passing score and the source citations stay in English.
+ */
+const TRANSLATED_SECTIONS = [
+  'title',
+  'description',
+  'competency',
+  'overview',
+  'learningObjectives',
+  'keyConcepts',
+  'video',
+  'media',
+  'explanation',
+  'watchingQuestions',
+  'caseStudy',
+  'activity',
+  'policyActivity',
+  'reflectionQuestions',
+  'quiz',
+  'closingText',
+  'courseClosingText',
+  'completionRequirements',
+  'endOfCourse',
+];
 
 /**
  * Role-gated endpoint that returns the full, in-development module content
@@ -109,7 +140,15 @@ Deno.serve(async (req) => {
       };
     }
 
-    const translatedContent = await translateModuleContent(base44, moduleContent, language);
+    // Answer keys are already stripped above, so nothing sent for translation
+    // can carry a correct index. Every field falls back to its English text
+    // if translation fails; learner progress is neither read nor written here.
+    const translatedContent = await translateCourseSections(
+      base44,
+      moduleContent,
+      language,
+      TRANSLATED_SECTIONS,
+    );
     return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getModuleContent] Unexpected error:', error && error.message);

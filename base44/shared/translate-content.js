@@ -46,9 +46,11 @@ function stripCodeFences(text) {
  * @param {Object} base44 - The Base44 client (with asServiceRole)
  * @param {Object} texts - Object whose string values should be translated
  * @param {string} language - The target language code ('en', 'sw', 'es', ...)
+ * @param {string} [instructions] - Extra rules appended to the translator's
+ *   instructions, e.g. protected names and terms that must not be translated.
  * @returns {Promise<Object>} The translated texts object
  */
-export async function translateTextBatch(base44, texts, language) {
+export async function translateTextBatch(base44, texts, language, instructions = '') {
   if (!language || language === 'en') return texts;
   const languageName = LANGUAGE_NAMES[language];
   if (!languageName) return texts;
@@ -81,7 +83,7 @@ export async function translateTextBatch(base44, texts, language) {
     return { ...texts, ...cached };
   }
 
-  const fresh = await callTranslator(base44, missing, languageName);
+  const fresh = await callTranslator(base44, missing, languageName, instructions);
   await storeTranslations(base44, missing, fresh, language);
   return { ...texts, ...cached, ...fresh };
 }
@@ -143,8 +145,12 @@ async function storeTranslations(base44, sources, translated, language) {
   }
 }
 
-/** Send one batch to the model. Returns only the keys it actually translated. */
-async function callTranslator(base44, texts, languageName) {
+/**
+ * Send one batch to the model. Returns only the keys it actually translated.
+ * The cached lookup uses the same source text, so any protection applied by
+ * the caller is stable between runs.
+ */
+async function callTranslator(base44, texts, languageName, instructions = '') {
   try {
     const prompt = [
       `You are a professional translator for an educational platform.`,
@@ -154,6 +160,7 @@ async function callTranslator(base44, texts, languageName) {
       `2. Keep any HTML tags intact — only translate the text inside them.`,
       `3. Do NOT translate URLs, email addresses, or code snippets.`,
       `4. Return ONLY a valid JSON object with the same keys and structure. No markdown, no code fence, no explanation.`,
+      ...(instructions ? ['', instructions] : []),
       ``,
       JSON.stringify(texts),
     ].join('\n');
