@@ -81,6 +81,12 @@ const KIPPRA_DIGITAL_CREDIT = {
   url: 'https://kippra.or.ke/regulation-of-digital-credit-providers-in-kenya-policy-issues-and-options/5/',
 };
 
+const WORLD_BANK_LENDING = {
+  title: 'Lending interest rate (%) — Kenya',
+  publisher: 'World Bank Open Data',
+  url: 'https://data.worldbank.org/indicator/FR.INR.LEND?locations=KE&most_recent_value_desc=true',
+};
+
 const DW_MOBILE_LENDERS = {
   title: 'Millions of Kenyans indebted to mobile app lenders',
   publisher: 'Deutsche Welle',
@@ -306,6 +312,10 @@ export const WEALTH_MODULE_SOURCES = {
         ...KIPPRA_DIGITAL_CREDIT,
       },
       {
+        claim: 'In 2021, the year of that study, the World Bank put Kenya\u2019s average bank lending rate at about 12 per cent.',
+        ...WORLD_BANK_LENDING,
+      },
+      {
         claim:
           'Debt collectors have contacted borrowers\u2019 family and social circles to pressure them into repaying.',
         ...DW_MOBILE_LENDERS,
@@ -317,12 +327,6 @@ export const WEALTH_MODULE_SOURCES = {
       },
     ],
     unsourced: [
-      {
-        claim:
-          'In Kenya a typical bank loan costs around 12 to 14 per cent a year, while a mobile app loan can cost anywhere from 75 to 395 per cent a year.',
-        note:
-          'No published source was found for this exact pair of figures. The verified published figures are a 280.5 per cent average annual rate across four unregulated providers (Competition Authority of Kenya, 2021) and a World Bank lending rate for Kenya of 16.6 per cent in 2024. This passage should be checked and corrected before the module is relied on.',
-      },
       {
         claim: 'The productive capital test \u2014 does it pay for itself, and can you survive if it goes wrong.',
         note: 'The test as stated is the course\u2019s own framework, not a published rule.',

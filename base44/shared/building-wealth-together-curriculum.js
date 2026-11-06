@@ -361,7 +361,7 @@ export const WEALTH_MODULE_CONTENT = {
           heading: 'How predatory lending works',
           paragraphs: [
             'Predatory lenders design products that are easy to enter and hard to exit. Warning signs include fast approval with no questions about your ability to repay; fees and interest quoted per week or per month, so the annual cost stays hidden; automatic rollover, where you pay a fee to extend instead of reducing the debt; and pressure and shaming, through calls to your family, threats, or blacklisting.',
-            'This is not only an American problem. In Kenya, for example, reporting has noted that while a typical bank loan costs around 12 to 14 percent a year, a mobile app loan can cost anywhere from 75 to 395 percent a year, and some debt collectors have contacted borrowers\u2019 friends and congregants to shame them.',
+            'This is not only an American problem. In Kenya, for example, the Competition Authority studied the digital credit market in 2021 and found an average annual percentage rate of 280.5 percent among four unregulated providers. In the same year, the World Bank put the average bank lending rate in Kenya at about 12 percent. Debt collectors have also contacted borrowers\u2019 family and friends to shame them into repaying.',
           ],
         },
         {
