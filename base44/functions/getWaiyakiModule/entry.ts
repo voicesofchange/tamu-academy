@@ -9,6 +9,7 @@ import {
 } from '../../shared/waiyaki-config.js';
 import { WAIYAKI_COURSE_TITLE } from '../../shared/waiyaki-curriculum.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
+import { recordModuleOpened } from '../../shared/module-open-tracking.js';
 
 /**
  * The learner-facing sections of a Waiyaki wa Hinga module that are
@@ -141,6 +142,17 @@ export default async function(req: Request): Promise<Response> {
         moduleTitle: moduleContent.title,
       },
     );
+
+    // Record the learner's first open of this module, apart from completion.
+    // Administrators previewing content are not learners, so their opens are
+    // not recorded.
+    if (!isAdmin) {
+      await recordModuleOpened(base44, {
+        learnerId: user.id,
+        courseSlug,
+        moduleSlug: moduleRoute,
+      });
+    }
 
     return Response.json({ module: translatedContent });
   } catch (error) {

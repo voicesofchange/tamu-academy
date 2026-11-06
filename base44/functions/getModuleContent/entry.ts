@@ -5,6 +5,7 @@ import {
   getEconomicsModulePrerequisite,
 } from '../../shared/economics-course-config.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
+import { recordModuleOpened } from '../../shared/module-open-tracking.js';
 
 /**
  * The learner-facing sections of an economics module that are translated:
@@ -155,6 +156,17 @@ Deno.serve(async (req) => {
         moduleTitle: moduleContent.title || rawContent.title,
       },
     );
+    // Record the learner's first open of this module, apart from completion.
+    // Administrators previewing content are not learners, so their opens are
+    // not recorded.
+    if (!isAdmin) {
+      await recordModuleOpened(base44, {
+        learnerId: user.id,
+        courseSlug,
+        moduleSlug: moduleRoute,
+      });
+    }
+
     return Response.json({ module: translatedContent });
   } catch (error) {
     console.error('[getModuleContent] Unexpected error:', error && error.message);

@@ -1,0 +1,52 @@
+{
+  "name": "ModuleOpen",
+  "type": "object",
+  "properties": {
+    "learner_id": {
+      "type": "string",
+      "title": "Learner ID"
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course Slug"
+    },
+    "module_slug": {
+      "type": "string",
+      "title": "Module Slug"
+    },
+    "opened_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "First Opened At",
+      "description": "When the learner first opened this module. Written once per learner, course and module, and never updated by completion."
+    }
+  },
+  "required": [
+    "learner_id",
+    "course_slug",
+    "module_slug",
+    "opened_at"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

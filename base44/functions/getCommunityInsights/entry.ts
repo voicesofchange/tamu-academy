@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
+import { COURSE_REGISTRY, getRequiredModuleRoutes } from '../../shared/course-registry.js';
 
 const COURSE_SLUGS = [
   'understanding-african-economies-and-the-global-system',
@@ -21,10 +22,13 @@ export default async function(req) {
 
     // ContactInquiry is admin-only under RLS; only fetch it for admins so its
     // geographic distribution is never exposed to ordinary learners.
-    const [enrollments, certificates, moduleProgress, stories, inquiries] = await Promise.all([
-      base44.asServiceRole.entities.CourseEnrollment.list('-created_date', 500),
+    const [enrollments, certificates, moduleProgress, moduleOpens, stories, inquiries] = await Promise.all([
+      base44.asServiceRole.entities.CourseEnrollment.list('-created_date', 2000),
       base44.asServiceRole.entities.CourseCertificate.list('-created_date', 500),
-      base44.asServiceRole.entities.ModuleProgress.list('-created_date', 500),
+      base44.asServiceRole.entities.ModuleProgress.list('-created_date', 2000),
+      isAdmin
+        ? base44.asServiceRole.entities.ModuleOpen.list('-opened_at', 5000)
+        : Promise.resolve([]),
       base44.asServiceRole.entities.LearnerStory.list('-created_date', 500),
       isAdmin
         ? base44.asServiceRole.entities.ContactInquiry.list('-created_date', 500)
@@ -88,6 +92,59 @@ export default async function(req) {
       return a.module.localeCompare(b.module);
     });
 
+    // Learner funnel per course — administrators only. Every figure counts
+    // distinct learners, and "opened Module 1" comes from ModuleOpen, which is
+    // written when a module is first opened, so it is never a completion
+    // signal. A course appears once anyone has enrolled in it.
+    let moduleFunnel = [];
+    if (isAdmin) {
+      const learnersWhere = (rows, matches) => {
+        const ids = new Set();
+        for (const row of rows || []) {
+          if (row && row.learner_id && matches(row)) ids.add(row.learner_id);
+        }
+        return ids;
+      };
+
+      const courseMap = new Map();
+      for (const enrollment of enrollments) {
+        if (!enrollment.course_slug || courseMap.has(enrollment.course_slug)) continue;
+        courseMap.set(enrollment.course_slug, {
+          slug: enrollment.course_slug,
+          title: COURSE_REGISTRY[enrollment.course_slug]?.title || enrollment.course_slug,
+          firstModule: getRequiredModuleRoutes(enrollment.course_slug)[0] || null,
+        });
+      }
+
+      moduleFunnel = [...courseMap.values()]
+        .map((course) => ({
+          slug: course.slug,
+          title: course.title,
+          moduleOne: course.firstModule,
+          enrolled: learnersWhere(enrollments, (e) => e.course_slug === course.slug).size,
+          openedModuleOne: course.firstModule
+            ? learnersWhere(
+                moduleOpens,
+                (m) => m.course_slug === course.slug && m.module_slug === course.firstModule,
+              ).size
+            : 0,
+          completedModuleOne: course.firstModule
+            ? learnersWhere(
+                moduleProgress,
+                (m) =>
+                  m.course_slug === course.slug &&
+                  m.module_slug === course.firstModule &&
+                  m.status === 'completed',
+              ).size
+            : 0,
+          completedCourse: learnersWhere(
+            enrollments,
+            (e) => e.course_slug === course.slug && e.status === 'completed',
+          ).size,
+        }))
+        .sort((a, b) => b.enrolled - a.enrolled);
+    }
+
     // Geographic reach — derived from ContactInquiry (admin-only). Only
     // populated for admins; empty for ordinary learners.
     const geoMap = {};
@@ -138,6 +195,7 @@ export default async function(req) {
       enrollmentTrend,
       courseBreakdown,
       moduleMilestones,
+      moduleFunnel,
       geographicReach,
       storyStats,
       recentMilestones,

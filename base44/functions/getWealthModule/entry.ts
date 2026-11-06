@@ -7,6 +7,7 @@ import {
 } from '../../shared/building-wealth-together-config.js';
 import { getWealthModuleContent } from '../../shared/building-wealth-together-curriculum.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
+import { recordModuleOpened } from '../../shared/module-open-tracking.js';
 
 /**
  * The learner-facing sections translated for a learner whose language is not
@@ -156,6 +157,17 @@ export default async function(req: Request): Promise<Response> {
         moduleTitle: moduleContent.title,
       },
     );
+
+    // Record the learner's first open of this module, apart from completion.
+    // Administrators previewing content are not learners, so their opens are
+    // not recorded.
+    if (!isAdmin) {
+      await recordModuleOpened(base44, {
+        learnerId: user.id,
+        courseSlug,
+        moduleSlug: moduleRoute,
+      });
+    }
 
     return Response.json({ module: translated });
   } catch (error) {

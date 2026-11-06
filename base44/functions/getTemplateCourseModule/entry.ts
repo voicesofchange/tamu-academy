@@ -11,6 +11,7 @@ import {
   templateModuleRequirements,
   withoutAnswerKey,
 } from '../../shared/course-template-service.js';
+import { recordModuleOpened } from '../../shared/module-open-tracking.js';
 
 /**
  * getTemplateCourseModule — the single module endpoint for every course built
@@ -76,6 +77,17 @@ export default async function (req: Request): Promise<Response> {
 
     const row = await findProgressRow(base44, user.id, courseSlug, moduleRoute);
     const done = completedSteps(row, requirements);
+
+    // Record the learner's first open of this module, apart from completion.
+    // Administrators previewing content are not learners, so their opens are
+    // not recorded.
+    if (user.role !== 'admin') {
+      await recordModuleOpened(base44, {
+        learnerId: user.id,
+        courseSlug,
+        moduleSlug: moduleRoute,
+      });
+    }
 
     return Response.json({
       course: await courseOutlineFor(base44, user.id, courseSlug),

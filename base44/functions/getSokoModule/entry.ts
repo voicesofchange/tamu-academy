@@ -8,6 +8,7 @@ import {
   getSokoCompletionRequirements,
 } from '../../shared/sauti-za-soko-config.js';
 import { translateTextBatch } from '../../shared/translate-content.js';
+import { recordModuleOpened } from '../../shared/module-open-tracking.js';
 
 /**
  * Access-gated endpoint that returns one Sauti za Soko module. The content
@@ -261,6 +262,17 @@ export default async function(req: Request): Promise<Response> {
 
       moduleContent = applyTranslatedStrings(moduleContent, READING_SECTIONS, readingTranslated);
       moduleContent = applyTranslatedStrings(moduleContent, PRACTICE_SECTIONS, practiceTranslated);
+    }
+
+    // Record the learner's first open of this module, apart from completion.
+    // Administrators previewing content are not learners, so their opens are
+    // not recorded.
+    if (!isAdmin) {
+      await recordModuleOpened(base44, {
+        learnerId: user.id,
+        courseSlug,
+        moduleSlug: moduleRoute,
+      });
     }
 
     return Response.json({ module: moduleContent });

@@ -8,6 +8,7 @@ import InsightStatCard from '@/components/insights/InsightStatCard';
 import TranslationReviewCard from '@/components/insights/TranslationReviewCard';
 import EnrollmentTrendChart from '@/components/insights/EnrollmentTrendChart';
 import CourseBreakdownChart from '@/components/insights/CourseBreakdownChart';
+import CourseFunnelTable from '@/components/insights/CourseFunnelTable';
 import ModuleMilestonesChart from '@/components/insights/ModuleMilestonesChart';
 import DiasporaProgressMap from '@/components/insights/DiasporaProgressMap';
 import FollowUpInquiries from '@/components/insights/FollowUpInquiries';
@@ -201,6 +202,22 @@ export default function CommunityInsights() {
             <p style={{ ...bodyText, marginBottom: '1.5rem' }}>{t('insights.courseIntro')}</p>
             <CourseBreakdownChart data={data.courseBreakdown} labels={chartLabels} />
           </PageSection>
+
+          {isAdmin && data.moduleFunnel && data.moduleFunnel.length > 0 && (
+            <PageSection heading={t('insights.funnelHeading')}>
+              <p style={{ ...bodyText, marginBottom: '1.5rem' }}>{t('insights.funnelIntro')}</p>
+              <CourseFunnelTable
+                rows={data.moduleFunnel}
+                labels={{
+                  course: t('insights.funnelCourse'),
+                  enrolled: t('insights.funnelEnrolled'),
+                  opened: t('insights.funnelOpened'),
+                  completedModule: t('insights.funnelCompletedModule'),
+                  completedCourse: t('insights.funnelCompletedCourse'),
+                }}
+              />
+            </PageSection>
+          )}
 
           {data.moduleMilestones.length > 0 && (
             <PageSection heading={t('insights.moduleHeading')}>
