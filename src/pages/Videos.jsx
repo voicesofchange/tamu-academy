@@ -12,6 +12,7 @@ import { withCaptions } from '@/lib/youtube-captions';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import CaptionsNote from '@/components/videos/CaptionsNote';
 import CaptionLanguagePicker from '@/components/videos/CaptionLanguagePicker';
+import VideoModal from '@/components/videos/VideoModal';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -291,6 +292,7 @@ function LessonCard({ lesson, isActive, onSelect }) {
 export default function Videos() {
   const [activeLessonIdx, setActiveLessonIdx] = useState(0);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [modalLesson, setModalLesson] = useState(null);
   const { content: c } = useTranslatedContent('videos', CONTENT);
 
   // Merge translated text back with non-translatable video data
@@ -379,7 +381,7 @@ export default function Videos() {
                   <LessonCard
                     lesson={lesson}
                     isActive={i === activeLessonIdx}
-                    onSelect={() => setActiveLessonIdx(i)}
+                    onSelect={() => { setActiveLessonIdx(i); setModalLesson(translatedLessons[i]); }}
                   />
                 </div>
               ))}
@@ -434,7 +436,11 @@ export default function Videos() {
             {filteredLessons.map((lesson, i) => (
               <button
                 key={lesson.id}
-                onClick={() => { setActiveLessonIdx(translatedLessons.findIndex(l => l.id === lesson.id)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                onClick={() => {
+                  setActiveLessonIdx(translatedLessons.findIndex(l => l.id === lesson.id));
+                  setModalLesson(lesson);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 aria-pressed={activeLesson.id === lesson.id}
                 className="tamu-card"
                 style={{
@@ -507,6 +513,10 @@ export default function Videos() {
           </Link>
         </div>
       </motion.div>
+
+      {modalLesson && (
+        <VideoModal lesson={modalLesson} onClose={() => setModalLesson(null)} />
+      )}
     </PageLayout>
   );
 }
