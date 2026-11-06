@@ -13,22 +13,13 @@ import {
   WEALTH_TRACKS_WITH_MODULES,
   WEALTH_CAPSTONE_OPTIONS,
 } from '@/lib/building-wealth-together-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse, restoreTracks } from '@/lib/i18n/restore-course';
 
-const course = BUILDING_WEALTH_TOGETHER_COURSE;
-const COURSE_PATH = `/courses/${course.slug}`;
+const BASE_COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
+const COURSE_PATH = `/courses/${BASE_COURSE.slug}`;
 
 const lightBody = { color: '#725a46', fontSize: '15px', lineHeight: 1.75, fontWeight: 300 };
-
-const courseFacts = [
-  ['Learning area', course.pillar],
-  ['Level', course.level],
-  ['Format', course.format],
-  ['Modules', String(course.modulesCount)],
-  ['Learning tracks', '3'],
-  ['Estimated time', course.estimatedCompletion],
-  ['Certificate', course.certificate],
-  ['Access', course.access],
-];
 
 /**
  * Building Wealth Together — the public course page.
@@ -39,6 +30,25 @@ const courseFacts = [
  * nothing protected is in the page a visitor receives.
  */
 export default function BuildingWealthTogether() {
+  // The course's own text is translated — its title, description, who it is
+  // for, outcomes, and each module's title and summary in its track. The slug
+  // and module routes are restored afterwards so every card keeps its link.
+  const { content } = useTranslatedContent('wealth-course-overview', BASE_COURSE);
+  const course = restoreCourse(content, BASE_COURSE);
+  const { content: trackContent } = useTranslatedContent('wealth-course-tracks', WEALTH_TRACKS_WITH_MODULES);
+  const tracks = restoreTracks(trackContent, WEALTH_TRACKS_WITH_MODULES);
+
+  const courseFacts = [
+    ['Learning area', course.pillar],
+    ['Level', course.level],
+    ['Format', course.format],
+    ['Modules', String(course.modulesCount)],
+    ['Learning tracks', '3'],
+    ['Estimated time', course.estimatedCompletion],
+    ['Certificate', course.certificate],
+    ['Access', course.access],
+  ];
+
   return (
     <CourseOverviewLayout
       heroEyebrow="Course"
@@ -88,8 +98,8 @@ export default function BuildingWealthTogether() {
           the one that fits your goals before the capstone. Every module is open in this course: the
           pathway is a study focus, not a lock.
         </p>
-        {WEALTH_TRACKS_WITH_MODULES.map((track, ti) => (
-          <div key={track.id} style={{ marginBottom: ti < WEALTH_TRACKS_WITH_MODULES.length - 1 ? '2.75rem' : 0 }}>
+        {tracks.map((track, ti) => (
+          <div key={track.id} style={{ marginBottom: ti < tracks.length - 1 ? '2.75rem' : 0 }}>
             <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
               {track.audience}
             </span>

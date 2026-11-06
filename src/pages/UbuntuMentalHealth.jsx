@@ -9,6 +9,7 @@ import CourseOverviewLayout from '@/components/courses/CourseOverviewLayout';
 import CourseOverviewSection from '@/components/courses/CourseOverviewSection';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const lightBody = { color: '#725a46', fontSize: '15px', lineHeight: 1.75, fontWeight: 300 };
@@ -49,7 +50,11 @@ const CONTENT = {
 
 export default function UbuntuMentalHealth() {
   const { content: c } = useTranslatedContent('mh-course-overview', CONTENT);
-  const course = MENTAL_HEALTH_COURSE;
+  // The course's own text is translated too: its title, description, who it is
+  // for, outcomes and each module's title and summary. Structural values (slug,
+  // module routes and numbers) are restored afterwards.
+  const { content: courseContent } = useTranslatedContent('mh-course-data', MENTAL_HEALTH_COURSE);
+  const course = restoreCourse(courseContent, MENTAL_HEALTH_COURSE);
 
   const courseFacts = [
     [c.factLabels.learningArea, course.learningArea],

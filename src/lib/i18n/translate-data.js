@@ -47,6 +47,10 @@ const SKIP_KEYS = new Set([
   'exercise_id',
   'field_id',
   'learner_id',
+  // Module identifiers and publication flags are compared in code and never
+  // read as prose, so they are never sent for translation.
+  'prerequisite',
+  'publicationStatus',
   'formatVersion',
   'publishedAt',
   // Table row labels are the key a learner's answers are stored under.

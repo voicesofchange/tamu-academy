@@ -4,6 +4,8 @@ import CoursePageTemplate from '@/components/courses/CoursePageTemplate';
 import WaiyakiCourseProgress from '@/components/courses/waiyaki/WaiyakiCourseProgress';
 import WaiyakiSources from '@/components/courses/waiyaki/WaiyakiSources';
 import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
 
 const sourceLink = {
   display: 'inline-flex',
@@ -28,8 +30,16 @@ const sourceLink = {
  * (the bibliography is server-side only), and each module card carries a link
  * to that section, so the sources are reachable from the overview and from
  * every module entry.
+ *
+ * The course's own text — its title, description, who it is for, outcomes and
+ * each module's title and summary — is translated through the shared system.
+ * The protected name in the title (Waiyaki wa Hinga) is held verbatim by the
+ * translation endpoint. The slug and module routes are restored afterwards.
  */
 export default function WaiyakiWaHinga() {
+  const { content } = useTranslatedContent('waiyaki-course-overview', WAIYAKI_COURSE);
+  const course = restoreCourse(content, WAIYAKI_COURSE);
+
   // undefined = still loading, null = could not be loaded, object = ready.
   const [sources, setSources] = useState(undefined);
 
@@ -51,7 +61,7 @@ export default function WaiyakiWaHinga() {
   return (
     <div className="tamu-waiyaki-overview">
       <CoursePageTemplate
-        course={WAIYAKI_COURSE}
+        course={course}
         progressSlot={<WaiyakiCourseProgress />}
         moduleFooter={
           <a href="#course-sources" className="font-body" style={sourceLink}>

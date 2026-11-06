@@ -10,17 +10,24 @@ import {
   SAUTI_ZA_SOKO_COURSE_SLUG,
   SAUTI_ZA_SOKO_PEER_TRACK,
 } from '@/lib/sauti-za-soko-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
 
 /**
  * Sauti za Soko — the course overview page. It reuses the shared course
  * overview layout and supplies its own progress component, plus a section
  * describing the optional Peer Facilitator track.
+ *
+ * The course's own text is translated through the shared system; the course
+ * name (Sauti za Soko) is on the do-not-translate list and comes back exactly
+ * as written. The slug and module routes are restored afterwards.
  */
 export default function SautiZaSoko() {
   const labels = useSokoLabels();
+  const { content } = useTranslatedContent('soko-course-overview', SAUTI_ZA_SOKO_COURSE);
   return (
     <CoursePageTemplate
-      course={SAUTI_ZA_SOKO_COURSE}
+      course={restoreCourse(content, SAUTI_ZA_SOKO_COURSE)}
       progressSlot={<SokoCourseProgress />}
     >
       <CourseOverviewSection

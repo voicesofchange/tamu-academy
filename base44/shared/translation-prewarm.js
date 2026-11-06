@@ -17,6 +17,10 @@
  * Quizzes travel with their module, so knowledge checks are prepared in the
  * same pass. Answer keys are stripped first and are never sent for translation.
  *
+ * The public course overview pages and the two homepage sections are prepared
+ * first, from the same English their pages send, so a visitor reading a course
+ * in their language never waits for a first-time translation.
+ *
  * Imported ONLY by Base44 backend functions. Never imported by src/.
  */
 
@@ -44,8 +48,10 @@ import {
 import {
   translateCourseSections,
   collectTranslatableStrings,
+  PAGE_TRANSLATION_INSTRUCTIONS,
 } from './course-translation.js';
 import { translateTextBatch } from './translate-content.js';
+import { PAGE_COPY_STRINGS } from './page-copy.js';
 import { localizeEmailCopy } from './email-localization.js';
 import { localizeCertificateLabels } from './certificate-copy.js';
 import {
@@ -142,6 +148,48 @@ const SOKO_PRACTICE_SECTIONS = [
 
 /** The fixed wording of every automated email and of the certificate sheet. */
 const EMAIL_COPIES = [WELCOME_COPY, PROGRESS_COPY, CHECK_IN_COPY, CELEBRATION_COPY, CERTIFICATE_EMAIL_COPY];
+
+/** Page copy is sent in batches the endpoint can answer in one model call. */
+const PAGE_COPY_BATCH_CHARS = 14000;
+
+function chunkPageCopy(strings, maxChars = PAGE_COPY_BATCH_CHARS) {
+  const batches = [];
+  let current = {};
+  let chars = 0;
+
+  strings.forEach((text, index) => {
+    if (chars + text.length > maxChars && Object.keys(current).length > 0) {
+      batches.push(current);
+      current = {};
+      chars = 0;
+    }
+    current[`text_${index}`] = text;
+    chars += text.length;
+  });
+
+  if (Object.keys(current).length > 0) batches.push(current);
+  return batches;
+}
+
+/**
+ * Prepare the public course overview pages and the two homepage sections.
+ * Uses the same instructions as the page endpoint, so protected names come
+ * back verbatim and the strings land in the cache the pages read from.
+ */
+async function preparePageCopy(base44, language) {
+  let prepared = 0;
+
+  for (const batch of chunkPageCopy(PAGE_COPY_STRINGS)) {
+    try {
+      await translateTextBatch(base44, batch, language, PAGE_TRANSLATION_INSTRUCTIONS);
+      prepared += Object.keys(batch).length;
+    } catch (error) {
+      console.warn('[translation-prewarm] page copy failed:', error && error.message);
+    }
+  }
+
+  return prepared;
+}
 
 /** Remove the quiz answer key before any content is prepared. */
 function stripAnswerKeys(content) {
@@ -297,12 +345,19 @@ export async function runTranslationPrewarm(base44, options = {}) {
   const jobs = moduleJobs();
   const total = jobs.length * languages.length;
   let prepared = 0;
+  let pageStringsPrepared = 0;
   let stopped = false;
 
   for (const language of languages) {
     if (stopped) break;
 
     await prepareFixedCopy(base44, language);
+
+    // The public course overview pages and the homepage sections are what a
+    // visitor reads first, so they are prepared before the module pass.
+    if (Date.now() - startedAt <= timeBudgetMs) {
+      pageStringsPrepared += await preparePageCopy(base44, language);
+    }
 
     for (const job of jobs) {
       if (Date.now() - startedAt > timeBudgetMs) {
@@ -326,6 +381,8 @@ export async function runTranslationPrewarm(base44, options = {}) {
 
   return {
     languages,
+    pageStringsPrepared,
+    pageStringsTotal: PAGE_COPY_STRINGS.length * languages.length,
     modulesPrepared: prepared,
     modulesTotal: total,
     remaining: Math.max(total - prepared, 0),

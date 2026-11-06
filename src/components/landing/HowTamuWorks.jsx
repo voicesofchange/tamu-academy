@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Compass, UserPlus, BookOpen, Award } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const STEPS = [
   {
@@ -26,7 +27,21 @@ const STEPS = [
   },
 ];
 
+/**
+ * The section's words in English. The steps keep their icons outside this
+ * object, so translating the wording never changes the order or the picture.
+ */
+const TEXT = {
+  eyebrow: 'How It Works',
+  heading: 'Four steps from curious to certified.',
+  stepLabel: 'Step',
+  cta: 'Start at Step 1',
+  steps: STEPS.map(({ label, desc }) => ({ label, desc })),
+};
+
 export default function HowTamuWorks() {
+  const { content: text } = useTranslatedContent('home-how-it-works', TEXT);
+
   return (
     <section
       id="how-tamu-works"
@@ -44,10 +59,10 @@ export default function HowTamuWorks() {
           style={{ marginBottom: '2.75rem' }}
         >
           <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-            How It Works
+            {text.eyebrow}
           </p>
           <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
-            Four steps from curious to certified.
+            {text.heading}
           </h2>
         </motion.div>
 
@@ -60,6 +75,7 @@ export default function HowTamuWorks() {
         >
           {STEPS.map((step, i) => {
             const Icon = step.icon;
+            const copy = (text.steps && text.steps[i]) || step;
             return (
               <motion.div
                 key={step.label}
@@ -92,15 +108,15 @@ export default function HowTamuWorks() {
                   </span>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <span className="font-body" style={{ color: 'rgba(232,184,91,0.72)', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, lineHeight: 1 }}>
-                      Step {i + 1}
+                      {text.stepLabel} {i + 1}
                     </span>
                     <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.2rem', fontWeight: 500, margin: 0, lineHeight: 1.2 }}>
-                      {step.label}
+                      {copy.label}
                     </h3>
                   </div>
                 </div>
                 <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: 0, paddingLeft: '3.65rem' }}>
-                  {step.desc}
+                  {copy.desc}
                 </p>
               </motion.div>
             );
@@ -131,7 +147,7 @@ export default function HowTamuWorks() {
               padding: '0.7rem 1.5rem',
             }}
           >
-            Start at Step 1 →
+            {text.cta} →
           </Link>
         </motion.div>
       </div>

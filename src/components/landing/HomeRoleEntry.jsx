@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GraduationCap, Compass, Users, Building2, Heart } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 /**
  * HomeRoleEntry — the audience front door.
@@ -51,8 +52,20 @@ const ROLES = [
   },
 ];
 
+/**
+ * The section's own words in English. Each entry point keeps its icon and its
+ * destination outside this object, so a translation can change the wording but
+ * never where a card sends someone.
+ */
+const TEXT = {
+  eyebrow: 'Begin Here',
+  heading: 'Wherever you are coming from, there is a path in.',
+  roles: ROLES.map(({ label, desc, cta }) => ({ label, desc, cta })),
+};
+
 export default function HomeRoleEntry() {
   const { isAuthenticated } = useAuth();
+  const { content: text } = useTranslatedContent('home-role-entry', TEXT);
 
   return (
     <section
@@ -72,10 +85,10 @@ export default function HomeRoleEntry() {
         style={{ marginBottom: '2.5rem' }}
       >
         <p className="font-body" style={{ color: 'var(--tamu-gold)', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-          Begin Here
+          {text.eyebrow}
         </p>
         <h2 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
-          Wherever you are coming from, there is a path in.
+          {text.heading}
         </h2>
       </motion.div>
 
@@ -88,6 +101,7 @@ export default function HomeRoleEntry() {
       >
         {ROLES.map((role, i) => {
           const Icon = role.icon;
+          const copy = (text.roles && text.roles[i]) || role;
           const destination = !isAuthenticated && role.signedOutTo ? role.signedOutTo : role.to;
           return (
             <motion.div
@@ -121,10 +135,10 @@ export default function HomeRoleEntry() {
                 <Icon size={18} style={{ color: 'var(--tamu-gold)' }} strokeWidth={1.5} />
               </div>
               <h3 className="font-heading" style={{ color: 'var(--tamu-ink)', fontSize: '1.15rem', fontWeight: 500, margin: '0 0 0.6rem', lineHeight: 1.25 }}>
-                {role.label}
+                {copy.label}
               </h3>
               <p className="font-body" style={{ color: 'rgba(243,234,216,0.68)', fontSize: '0.88rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1.25rem', flexGrow: 1 }}>
-                {role.desc}
+                {copy.desc}
               </p>
               <Link
                 to={destination}
@@ -141,7 +155,7 @@ export default function HomeRoleEntry() {
                   gap: '0.4rem',
                 }}
               >
-                {role.cta} →
+                {copy.cta} →
               </Link>
             </motion.div>
           );

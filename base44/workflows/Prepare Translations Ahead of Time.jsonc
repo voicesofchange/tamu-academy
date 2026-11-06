@@ -17,7 +17,7 @@
       "ends_after_count": null
     }
   },
-  "description": "Keeps the Kiswahili, Spanish and French translations of every course module, quiz, automated email and certificate warm, so a learner never waits for a first-time translation. Catches newly published or changed course content, never overwrites a reviewed translation, and never changes English content.",
+  "description": "Keeps the Kiswahili, Spanish and French translations of the public course overview pages, the homepage sections, every course module, quiz, automated email and certificate warm, so a learner never waits for a first-time translation. Catches newly published or changed content, never overwrites a reviewed translation, and never changes English content.",
   "definition": {
     "document": {
       "dsl": "1.0.0",
