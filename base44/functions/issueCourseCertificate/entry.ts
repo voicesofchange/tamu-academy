@@ -8,6 +8,12 @@ import {
   certificateLocale,
   localizeCertificateLabels,
 } from '../../shared/certificate-copy.js';
+import {
+  createCertificateRecord,
+  findExistingCertificate,
+  issueLearnerCertificate,
+  learnerCertificateBodyError,
+} from '../../shared/certificate-issuance.js';
 
 /**
  * issueCourseCertificate — workflow-facing backend function.
@@ -63,6 +69,23 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
+    // --- Learner path ---
+    // A learner's own certificate page calls this with just the course slug;
+    // everything is derived from their session by the shared issuance module.
+    // A request carrying learner_id is the admin/workflow path below.
+    if (!body.learner_id && typeof body.courseSlug === 'string') {
+      const bodyError = learnerCertificateBodyError(body);
+      if (bodyError) {
+        return Response.json({ error: bodyError }, { status: 400 });
+      }
+      const learner = await base44.auth.me().catch(() => null);
+      if (!learner) {
+        return Response.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      const result = await issueLearnerCertificate(base44, { user: learner, body });
+      return Response.json(result.body, { status: result.status });
+    }
+
     const learnerId = String(body.learner_id || '');
     const courseSlug = String(body.course_slug || '');
 
@@ -99,17 +122,12 @@ export default async function(req: Request): Promise<Response> {
     const enrollment = enrollmentRows[0];
 
     // Idempotency guard — double-check no certificate exists.
-    const existingCerts = await base44.asServiceRole.entities.CourseCertificate.filter({
-      learner_id: learnerId,
-      course_slug: courseSlug,
-    });
-
-    if (Array.isArray(existingCerts) && existingCerts.length > 0) {
-      const cert = existingCerts[0];
+    const existingCert = await findExistingCertificate(base44, learnerId, courseSlug);
+    if (existingCert) {
       return Response.json({
         certificate_created: false,
         certificate_already_existed: true,
-        certificate_id: cert.certificate_id,
+        certificate_id: existingCert.certificate_id,
       });
     }
 
@@ -131,25 +149,16 @@ export default async function(req: Request): Promise<Response> {
     const completedAtValue = enrollment.completed_at || new Date().toISOString();
     const enrollmentId = enrollment.id;
 
-    // Generate opaque certificate ID and verification code.
-    // Neither value exposes the learner's email or any database ID.
-    const certificateId = crypto.randomUUID();
-    const verificationCode = 'TAMU-' + crypto.randomUUID().replace(/-/g, '').substring(0, 8).toUpperCase();
-    const issuedAt = new Date().toISOString();
-
-    // Create the certificate record.
-    const created = await base44.asServiceRole.entities.CourseCertificate.create({
-      learner_id: learnerId,
-      course_slug: courseSlug,
-      certificate_id: certificateId,
-      verification_code: verificationCode,
-      learner_name: learnerName,
-      course_title: courseTitle,
-      course_enrollment_id: enrollmentId,
-      completed_at: completedAtValue,
-      issued_at: issuedAt,
-      status: 'valid',
-      completion_statement: courseConfig.completionStatement,
+    // The shared issuance module generates the opaque certificate ID and
+    // verification code (neither exposes the learner's email or a database
+    // ID) and writes the record with this course's wording.
+    const { created, certificateId, verificationCode } = await createCertificateRecord(base44, {
+      learnerId,
+      courseSlug,
+      learnerName,
+      completedAt: completedAtValue,
+      enrollmentId,
+      withVerificationCode: true,
     });
 
     // Email the learner a notification with the certificate attached as a

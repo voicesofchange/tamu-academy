@@ -16,11 +16,13 @@ import {
   MENTAL_HEALTH_CERTIFICATE_STATEMENT,
   MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES,
 } from './mental-health-certificate.js';
+import { isModulePublished } from './mental-health-curriculum.js';
 import {
   ECONOMICS_CERTIFICATE_COURSE_SLUG,
   ECONOMICS_CERTIFICATE_COURSE_TITLE,
   ECONOMICS_CERTIFICATE_STATEMENT,
   ECONOMICS_CERTIFICATE_MODULE_ROUTES,
+  isEconomicsModulePublished,
 } from './economics-course-config.js';
 import {
   SOKO_COURSE_SLUG,
@@ -32,6 +34,7 @@ import {
   SOKO_PEER_CERTIFICATE_STATEMENT,
   SOKO_PEER_MODULE_ROUTES,
   checkSokoCourseCompletionRequirements,
+  isSokoModulePublished,
 } from './sauti-za-soko-config.js';
 import {
   WAIYAKI_CERTIFICATE_COURSE_SLUG,
@@ -39,12 +42,14 @@ import {
   WAIYAKI_CERTIFICATE_STATEMENT,
   WAIYAKI_CERTIFICATE_MODULE_ROUTES,
   checkWaiyakiCourseCompletionRequirements,
+  isWaiyakiCoursePublished,
 } from './waiyaki-config.js';
 import {
   WEALTH_CERTIFICATE_COURSE_SLUG,
   WEALTH_CERTIFICATE_COURSE_TITLE,
   WEALTH_CERTIFICATE_STATEMENT,
   WEALTH_MODULE_ROUTES,
+  isWealthModulePublished,
 } from './building-wealth-together-config.js';
 
 export const COURSE_REGISTRY = {
@@ -53,35 +58,87 @@ export const COURSE_REGISTRY = {
     title: MENTAL_HEALTH_CERTIFICATE_COURSE_TITLE,
     completionStatement: MENTAL_HEALTH_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES,
+    isPublished: (slug) =>
+      MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES.some((route) => isModulePublished(slug, route)),
+    certificate: {
+      includeEnrollmentId: false,
+      verificationCode: false,
+      requiresCompletedEnrollment: false,
+      extraRequirements: 'none',
+      finalizesEnrollment: false,
+    },
   },
   [ECONOMICS_CERTIFICATE_COURSE_SLUG]: {
     slug: ECONOMICS_CERTIFICATE_COURSE_SLUG,
     title: ECONOMICS_CERTIFICATE_COURSE_TITLE,
     completionStatement: ECONOMICS_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: ECONOMICS_CERTIFICATE_MODULE_ROUTES,
+    isPublished: (slug) =>
+      ECONOMICS_CERTIFICATE_MODULE_ROUTES.some((route) =>
+        isEconomicsModulePublished(slug, route),
+      ),
+    certificate: {
+      includeEnrollmentId: false,
+      verificationCode: false,
+      requiresCompletedEnrollment: false,
+      extraRequirements: 'none',
+      finalizesEnrollment: false,
+    },
   },
   // Sauti za Soko core course and its optional Peer Facilitator track are
-  // separate courses, so they are certified separately.
+  // separate courses, so they are certified separately. Both require the
+  // server-side completed enrollment the course-level requirements set.
   [SOKO_COURSE_SLUG]: {
     slug: SOKO_COURSE_SLUG,
     title: SOKO_COURSE_TITLE,
     completionStatement: SOKO_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: SOKO_CORE_MODULE_ROUTES,
+    isPublished: (slug) =>
+      SOKO_CORE_MODULE_ROUTES.some((route) => isSokoModulePublished(slug, route)),
+    certificate: {
+      includeEnrollmentId: true,
+      verificationCode: false,
+      requiresCompletedEnrollment: true,
+      extraRequirements: 'none',
+      finalizesEnrollment: false,
+      completionPendingMessage:
+        'Your course is not yet marked complete. Finish your My Soko Action Plan sections, a peer discussion and the final reflection, then finalise your course.',
+    },
   },
   [SOKO_PEER_COURSE_SLUG]: {
     slug: SOKO_PEER_COURSE_SLUG,
     title: SOKO_PEER_COURSE_TITLE,
     completionStatement: SOKO_PEER_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: SOKO_PEER_MODULE_ROUTES,
+    isPublished: (slug) =>
+      SOKO_PEER_MODULE_ROUTES.some((route) => isSokoModulePublished(slug, route)),
+    certificate: {
+      includeEnrollmentId: true,
+      verificationCode: false,
+      requiresCompletedEnrollment: true,
+      extraRequirements: 'none',
+      finalizesEnrollment: false,
+      completionPendingMessage:
+        'Your course is not yet marked complete. Finish your My Soko Action Plan sections, a peer discussion and the final reflection, then finalise your course.',
+    },
   },
   // The Waiyaki wa Hinga Heritage and Leadership Collection course. Its
   // completion needs the five modules AND the final assessment AND the
   // written project, which checkExtraCompletionRequirements enforces below.
+  // The whole course must be published before it certifies.
   [WAIYAKI_CERTIFICATE_COURSE_SLUG]: {
     slug: WAIYAKI_CERTIFICATE_COURSE_SLUG,
     title: WAIYAKI_CERTIFICATE_COURSE_TITLE,
     completionStatement: WAIYAKI_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: WAIYAKI_CERTIFICATE_MODULE_ROUTES,
+    isPublished: (slug) => isWaiyakiCoursePublished(slug),
+    certificate: {
+      includeEnrollmentId: true,
+      verificationCode: true,
+      requiresCompletedEnrollment: false,
+      extraRequirements: 'waiyaki',
+      finalizesEnrollment: true,
+    },
   },
   // Building Wealth Together. All nine modules are required — the course
   // material's own completion rule is that every module is finished — and
@@ -93,6 +150,15 @@ export const COURSE_REGISTRY = {
     title: WEALTH_CERTIFICATE_COURSE_TITLE,
     completionStatement: WEALTH_CERTIFICATE_STATEMENT,
     requiredModuleRoutes: WEALTH_MODULE_ROUTES,
+    isPublished: (slug) =>
+      WEALTH_MODULE_ROUTES.some((route) => isWealthModulePublished(slug, route)),
+    certificate: {
+      includeEnrollmentId: false,
+      verificationCode: false,
+      requiresCompletedEnrollment: false,
+      extraRequirements: 'wealth-capstone',
+      finalizesEnrollment: false,
+    },
   },
 };
 
