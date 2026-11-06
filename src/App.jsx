@@ -79,6 +79,7 @@ import {
   TheRealCostOfAlwaysAchieving,
   UbuntuMentalHealth,
   UnderstandingAfricanEconomies,
+  TranslationReview,
   Videos,
   WaiyakiCertificate,
   WaiyakiCourseCompletion,
@@ -190,6 +191,8 @@ const AuthenticatedApp = () => {
         {/* Administrator-only review sheet for the official certificate design.
             Demonstration data only — no certificate record is created. */}
         <Route path="/admin/certificate-design" element={<CertificateDesignSample />} />
+        {/* Administrator-only review of the cached course translations */}
+        <Route path="/admin/translation-review" element={<TranslationReview />} />
       </Route>
       {/* Retired mental health course slug — redirect to corrected course identity */}
       <Route path="/courses/ubuntu-and-mental-health" element={<Navigate to="/courses/mental-health-community-and-culture" replace />} />

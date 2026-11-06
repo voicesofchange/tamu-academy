@@ -61,6 +61,7 @@ export default async function(req: Request): Promise<Response> {
         { options: WEALTH_CAPSTONE_FORMATS },
         language,
         ['options'],
+        { courseSlug: WEALTH_COURSE_SLUG, moduleSlug: 'capstone', moduleTitle: 'Capstone' },
       );
       options = translatedOptions.options;
     }
@@ -95,6 +96,7 @@ export default async function(req: Request): Promise<Response> {
         { formatLabel, sections: optionSections },
         language,
         ['formatLabel', 'sections'],
+        { courseSlug: WEALTH_COURSE_SLUG, moduleSlug: 'capstone', moduleTitle: 'Capstone' },
       );
       formatLabel = translated.formatLabel;
       optionSections = translated.sections;

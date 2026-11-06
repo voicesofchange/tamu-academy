@@ -9,6 +9,7 @@
  */
 
 import { allowRequest } from './rate-limit.js';
+import { buildSourceKey } from './translation-review.js';
 
 // The model is only asked to translate strings that are not already cached.
 // New strings are capped per hour so the cost of the translation endpoint is
@@ -50,7 +51,7 @@ function stripCodeFences(text) {
  *   instructions, e.g. protected names and terms that must not be translated.
  * @returns {Promise<Object>} The translated texts object
  */
-export async function translateTextBatch(base44, texts, language, instructions = '') {
+export async function translateTextBatch(base44, texts, language, instructions = '', context = null) {
   if (!language || language === 'en') return texts;
   const languageName = LANGUAGE_NAMES[language];
   if (!languageName) return texts;
@@ -60,13 +61,13 @@ export async function translateTextBatch(base44, texts, language, instructions =
 
   // Anything already translated for this language is served from the cache,
   // so a page is translated once and repeated views never reach the model.
-  const cached = await readTranslationCache(base44, texts, keys, language);
+  const cached = await readTranslationCache(base44, texts, keys, language, context);
   const missing = {};
   for (const key of keys) {
-    if (cached[key] === undefined) missing[key] = texts[key];
+    if (cached.texts[key] === undefined) missing[key] = texts[key];
   }
   if (Object.keys(missing).length === 0) {
-    return { ...texts, ...cached };
+    return { ...texts, ...cached.texts };
   }
 
   // Bound the model's cost regardless of who calls this endpoint: once the
@@ -80,12 +81,12 @@ export async function translateTextBatch(base44, texts, language, instructions =
   });
   if (!mayTranslate) {
     console.warn('[translateTextBatch] New-translation budget reached — serving cached text only');
-    return { ...texts, ...cached };
+    return { ...texts, ...cached.texts };
   }
 
   const fresh = await callTranslator(base44, missing, languageName, instructions);
-  await storeTranslations(base44, missing, fresh, language);
-  return { ...texts, ...cached, ...fresh };
+  await storeTranslations(base44, missing, fresh, language, context, cached.rows);
+  return { ...texts, ...cached.texts, ...fresh };
 }
 
 /** Hash a source string so a translation can be matched without duplicating the English. */
@@ -95,50 +96,217 @@ async function hashSource(text) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** Look up previously stored translations for this batch. Best effort only. */
-async function readTranslationCache(base44, texts, keys, language) {
+/**
+ * Look up previously stored translations for this batch. Best effort only.
+ *
+ * With a course context, entries are found by their stable source key, so a
+ * translation can be followed across rewrites of its English text: a matching
+ * hash is served from the cache, a differing hash flags the stored translation
+ * as outdated so it is redone and reviewed again. Rows without a key (page
+ * text, and everything translated before review existed) keep the hash lookup.
+ */
+async function readTranslationCache(base44, texts, keys, language, context = null) {
   const found = {};
+  const rows = new Map();
+  const hashes = {};
   try {
-    const hashes = {};
     for (const key of keys) hashes[key] = await hashSource(String(texts[key]));
-    const unique = [...new Set(Object.values(hashes))];
-    const rows = [];
-    for (let i = 0; i < unique.length; i += 40) {
-      const page = await base44.asServiceRole.entities.TranslationCache.filter({
-        language,
-        source_hash: { $in: unique.slice(i, i + 40) },
-      });
-      if (Array.isArray(page)) rows.push(...page);
-    }
-    const byHash = new Map(rows.map((row) => [row.source_hash, row.translated_text]));
-    for (const key of keys) {
-      const value = byHash.get(hashes[key]);
-      if (typeof value === 'string' && value.length > 0) found[key] = value;
-    }
   } catch (err) {
-    console.warn('[translateTextBatch] Cache read failed:', err && err.message);
+    console.warn('[translateTextBatch] Cache hashing failed:', err && err.message);
+    return { texts: found, rows };
   }
-  return found;
+
+  const keyed = context && context.courseSlug && context.moduleSlug
+    ? keys
+        .map((key) => ({ key, sourceKey: buildSourceKey(context.courseSlug, context.moduleSlug, key) }))
+        .filter((entry) => entry.sourceKey)
+    : [];
+
+  if (keyed.length > 0) {
+    try {
+      const unique = [...new Set(keyed.map((entry) => entry.sourceKey))];
+      for (let i = 0; i < unique.length; i += 40) {
+        const page = await base44.asServiceRole.entities.TranslationCache.filter({
+          language,
+          source_key: { $in: unique.slice(i, i + 40) },
+        });
+        const pageRows = Array.isArray(page) ? page : (page && page.items) || [];
+        for (const row of pageRows) rows.set(row.source_key, row);
+      }
+
+      const stale = [];
+      for (const entry of keyed) {
+        const row = rows.get(entry.sourceKey);
+        if (!row) continue;
+        if (row.source_hash === hashes[entry.key]) {
+          if (typeof row.translated_text === 'string' && row.translated_text.length > 0) {
+            found[entry.key] = row.translated_text;
+          }
+        } else if (row.status !== 'outdated') {
+          // The English changed. Flag the stored translation so it is redone
+          // and reviewed again; the text itself is left exactly as it was.
+          stale.push({ id: row.id, status: 'outdated' });
+          row.status = 'outdated';
+        }
+      }
+      if (stale.length > 0) {
+        await base44.asServiceRole.entities.TranslationCache.bulkUpdate(stale).catch((err) => {
+          console.warn('[translateTextBatch] Outdated flag failed:', err && err.message);
+        });
+      }
+    } catch (err) {
+      console.warn('[translateTextBatch] Keyed cache read failed:', err && err.message);
+    }
+  }
+
+  // Anything with no keyed entry falls back to the shared hash cache.
+  const legacyKeys = keys.filter((key) => {
+    if (found[key] !== undefined) return false;
+    const sourceKey = context && context.courseSlug && context.moduleSlug
+      ? buildSourceKey(context.courseSlug, context.moduleSlug, key)
+      : null;
+    return !sourceKey || !rows.has(sourceKey);
+  });
+
+  if (legacyKeys.length > 0) {
+    try {
+      const unique = [...new Set(legacyKeys.map((key) => hashes[key]))];
+      const hashRows = [];
+      for (let i = 0; i < unique.length; i += 40) {
+        const page = await base44.asServiceRole.entities.TranslationCache.filter({
+          language,
+          source_hash: { $in: unique.slice(i, i + 40) },
+        });
+        const pageRows = Array.isArray(page) ? page : (page && page.items) || [];
+        hashRows.push(...pageRows);
+      }
+      const byHash = new Map();
+      for (const row of hashRows) {
+        if (typeof row.translated_text === 'string' && row.translated_text.length > 0) {
+          byHash.set(row.source_hash, row);
+        }
+      }
+
+      // A course translation cached before review existed is given its unit
+      // identity here, so it appears in review and gains a reviewer's lock.
+      const upgrades = [];
+      for (const key of legacyKeys) {
+        const row = byHash.get(hashes[key]);
+        if (!row) continue;
+        found[key] = row.translated_text;
+        if (!context || !context.courseSlug || !context.moduleSlug) continue;
+        if (row.source_key) continue;
+
+        const sourceKey = buildSourceKey(context.courseSlug, context.moduleSlug, key);
+        if (!sourceKey || rows.has(sourceKey)) continue;
+
+        const english = typeof context.toSourceText === 'function'
+          ? context.toSourceText(String(texts[key])) || String(texts[key])
+          : String(texts[key]);
+
+        const upgraded = {
+          ...row,
+          source_key: sourceKey,
+          source_text: english,
+          course_slug: context.courseSlug,
+          module_slug: context.moduleSlug,
+          module_title: context.moduleTitle || null,
+          field_path: key,
+          status: row.status || 'unreviewed',
+        };
+        rows.set(sourceKey, upgraded);
+        upgrades.push({
+          id: row.id,
+          source_key: sourceKey,
+          source_text: english,
+          course_slug: context.courseSlug,
+          module_slug: context.moduleSlug,
+          module_title: context.moduleTitle || null,
+          field_path: key,
+          status: upgraded.status,
+        });
+      }
+
+      if (upgrades.length > 0) {
+        await base44.asServiceRole.entities.TranslationCache.bulkUpdate(upgrades).catch((err) => {
+          console.warn('[translateTextBatch] Cache upgrade failed:', err && err.message);
+        });
+      }
+    } catch (err) {
+      console.warn('[translateTextBatch] Cache read failed:', err && err.message);
+    }
+  }
+
+  return { texts: found, rows };
 }
 
-/** Persist newly translated strings. Best effort — a failure never blocks the page. */
-async function storeTranslations(base44, sources, translated, language) {
+/**
+ * Persist newly translated strings. Best effort — a failure never blocks the page.
+ *
+ * A reviewed translation is never replaced automatically: it is skipped here
+ * whatever its hash, so only an administrator can change its text.
+ */
+async function storeTranslations(base44, sources, translated, language, context = null, rows = new Map()) {
   try {
-    const seen = new Set();
-    const rows = [];
+    const creates = [];
+    const updates = [];
+    const seenKeys = new Set();
+    const seenHashes = new Set();
+
     for (const [key, value] of Object.entries(translated)) {
       const source = sources[key];
       if (typeof source !== 'string' || source.length === 0) continue;
       // A result identical to the source means it was not translated —
       // caching that would serve English forever.
       if (typeof value !== 'string' || value.length === 0 || value === source) continue;
+
       const hash = await hashSource(source);
-      if (seen.has(hash)) continue;
-      seen.add(hash);
-      rows.push({ language, source_hash: hash, translated_text: value });
+      const sourceKey = context && context.courseSlug && context.moduleSlug
+        ? buildSourceKey(context.courseSlug, context.moduleSlug, key)
+        : null;
+
+      if (!sourceKey) {
+        if (seenHashes.has(hash)) continue;
+        seenHashes.add(hash);
+        creates.push({ language, source_hash: hash, translated_text: value });
+        continue;
+      }
+
+      const existing = rows.get(sourceKey);
+      if (existing && existing.status === 'reviewed') continue;
+      if (seenKeys.has(sourceKey)) continue;
+      seenKeys.add(sourceKey);
+
+      // The English shown to reviewers has its protected names restored; the
+      // hash still matches the protected text used for lookups.
+      const english = typeof context.toSourceText === 'function'
+        ? context.toSourceText(source) || source
+        : source;
+
+      const record = {
+        language,
+        source_hash: hash,
+        translated_text: value,
+        source_key: sourceKey,
+        source_text: english,
+        course_slug: context.courseSlug,
+        module_slug: context.moduleSlug,
+        module_title: context.moduleTitle || null,
+        field_path: key,
+        status: 'unreviewed',
+        reviewed_at: null,
+        reviewed_by: null,
+      };
+
+      if (existing) updates.push({ id: existing.id, ...record });
+      else creates.push(record);
     }
-    if (rows.length > 0) {
-      await base44.asServiceRole.entities.TranslationCache.bulkCreate(rows);
+
+    if (updates.length > 0) {
+      await base44.asServiceRole.entities.TranslationCache.bulkUpdate(updates);
+    }
+    if (creates.length > 0) {
+      await base44.asServiceRole.entities.TranslationCache.bulkCreate(creates);
     }
   } catch (err) {
     console.warn('[translateTextBatch] Cache write failed:', err && err.message);

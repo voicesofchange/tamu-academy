@@ -5,6 +5,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import InsightStatCard from '@/components/insights/InsightStatCard';
+import TranslationReviewCard from '@/components/insights/TranslationReviewCard';
 import EnrollmentTrendChart from '@/components/insights/EnrollmentTrendChart';
 import CourseBreakdownChart from '@/components/insights/CourseBreakdownChart';
 import ModuleMilestonesChart from '@/components/insights/ModuleMilestonesChart';
@@ -74,6 +75,10 @@ export default function CommunityInsights() {
 
       {isAdmin && (
         <>
+          <PageSection>
+            <TranslationReviewCard />
+          </PageSection>
+
           <PageSection>
             <FollowUpInquiries />
           </PageSection>

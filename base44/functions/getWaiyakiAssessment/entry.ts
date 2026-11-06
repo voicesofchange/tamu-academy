@@ -142,6 +142,7 @@ export default async function(req: Request): Promise<Response> {
       { assessment, projectOptions },
       language,
       TRANSLATED_SECTIONS,
+      { courseSlug, moduleSlug: 'assessment', moduleTitle: 'Assessment' },
     );
 
     return Response.json({

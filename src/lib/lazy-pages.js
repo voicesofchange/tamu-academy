@@ -60,6 +60,7 @@ export const Resources = lazy(() => import('@/pages/Resources'));
 export const LearnerStories = lazy(() => import('@/pages/LearnerStories'));
 export const CommunityInsights = lazy(() => import('@/pages/CommunityInsights'));
 export const Videos = lazy(() => import('@/pages/Videos'));
+export const TranslationReview = lazy(() => import('@/pages/TranslationReview'));
 export const Contact = lazy(() => import('@/pages/Contact'));
 export const Articles = lazy(() => import('@/pages/Articles'));
 export const TheRealCostOfAlwaysAchieving = lazy(() => import('@/pages/articles/TheRealCostOfAlwaysAchieving'));

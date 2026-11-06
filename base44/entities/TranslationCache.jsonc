@@ -9,12 +9,69 @@
     "source_hash": {
       "type": "string",
       "title": "Source Text Hash",
-      "description": "SHA-256 hash of the original English string, so identical text is translated only once per language."
+      "description": "SHA-256 hash of the English text this translation was made from. A different hash means the English has changed."
     },
     "translated_text": {
       "type": "string",
       "format": "textarea",
       "title": "Translated Text"
+    },
+    "source_key": {
+      "type": "string",
+      "title": "Translation Unit",
+      "description": "Stable identity of the curriculum string: course, module and field path. The English may be rewritten, but the key stays the same, so an existing translation is flagged as outdated instead of being silently reused."
+    },
+    "source_text": {
+      "type": "string",
+      "format": "textarea",
+      "title": "English Source",
+      "description": "The English text this translation was made from, shown beside it on the Translation Review page."
+    },
+    "course_slug": {
+      "type": "string",
+      "title": "Course"
+    },
+    "module_slug": {
+      "type": "string",
+      "title": "Module"
+    },
+    "module_title": {
+      "type": "string",
+      "title": "Module Title"
+    },
+    "field_path": {
+      "type": "string",
+      "title": "Field Path"
+    },
+    "status": {
+      "type": "string",
+      "title": "Review Status",
+      "description": "A reviewed translation is never overwritten automatically. When its English changes it becomes outdated, is re-translated, and returns as unreviewed for a fresh review.",
+      "enum": [
+        "unreviewed",
+        "reviewed",
+        "outdated"
+      ],
+      "enumColors": [
+        "yellow",
+        "green",
+        "red"
+      ],
+      "default": "unreviewed"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Reviewed At"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "title": "Reviewed By"
+    },
+    "review_notes": {
+      "type": "string",
+      "format": "textarea",
+      "title": "Review Notes"
     }
   },
   "required": [

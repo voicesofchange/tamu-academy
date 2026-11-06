@@ -149,6 +149,11 @@ Deno.serve(async (req) => {
       moduleContent,
       language,
       TRANSLATED_SECTIONS,
+      {
+        courseSlug,
+        moduleSlug: moduleRoute,
+        moduleTitle: moduleContent.title || rawContent.title,
+      },
     );
     return Response.json({ module: translatedContent });
   } catch (error) {

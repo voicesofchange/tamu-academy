@@ -150,6 +150,11 @@ export default async function(req: Request): Promise<Response> {
       moduleContent,
       language,
       TRANSLATED_SECTIONS,
+      {
+        courseSlug,
+        moduleSlug: moduleRoute,
+        moduleTitle: moduleContent.title,
+      },
     );
 
     return Response.json({ module: translated });

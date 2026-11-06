@@ -259,10 +259,13 @@ function batchStrings(fields) {
  * @param {Object} content - Module content, answer keys already stripped.
  * @param {string} language - Target language code ('en', 'sw', 'es', ...).
  * @param {string[]} sections - Top-level sections that may be translated.
+ * @param {Object} [context] - Which course and module this is, so each cached
+ *   translation can be reviewed, corrected and flagged when its English
+ *   changes: { courseSlug, moduleSlug, moduleTitle }.
  * @returns {Promise<Object>} The module with translated fields; English
  *   wherever a translation was unavailable.
  */
-export async function translateCourseSections(base44, content, language, sections) {
+export async function translateCourseSections(base44, content, language, sections, context = null) {
   if (!content || !language || language === 'en') return content;
   if (!COURSE_TRANSLATABLE_LANGUAGES.has(language)) return content;
   if (!Array.isArray(sections) || sections.length === 0) return content;
@@ -274,9 +277,16 @@ export async function translateCourseSections(base44, content, language, section
     const protectedFields = {};
     for (const [path, value] of Object.entries(fields)) protectedFields[path] = protectTerms(value);
 
+    // Reviewers see the English with its protected names restored, not tokens.
+    const reviewContext = context && context.courseSlug && context.moduleSlug
+      ? { ...context, toSourceText: (text) => restoreTerms(text) || text }
+      : null;
+
     const batches = batchStrings(protectedFields);
     const results = await Promise.all(
-      batches.map((batch) => translateTextBatch(base44, batch, language, TRANSLATOR_INSTRUCTIONS)),
+      batches.map((batch) =>
+        translateTextBatch(base44, batch, language, TRANSLATOR_INSTRUCTIONS, reviewContext),
+      ),
     );
 
     const translated = {};
