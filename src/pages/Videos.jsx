@@ -8,8 +8,10 @@ import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
 import PageMeta from '@/components/seo/PageMeta';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
-import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import { withCaptions } from '@/lib/youtube-captions';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 import CaptionsNote from '@/components/videos/CaptionsNote';
+import CaptionLanguagePicker from '@/components/videos/CaptionLanguagePicker';
 
 // ── First Lesson Collection ────────────────────────────────────────────────────
 // Videos presented in prescribed order. videoUrl uses YouTube Privacy-Enhanced Mode.
@@ -157,14 +159,16 @@ const CONTENT = {
 // ── Inline Video Player ────────────────────────────────────────────────────────
 
 function VideoPlayer({ lesson, c }) {
-  const captionedUrl = useCaptionedEmbedUrl(`https://www.youtube.com/embed/${lesson.videoId}`);
+  const { language } = useTranslation();
+  const [captionLang, setCaptionLang] = useState(language);
+  const captionedUrl = withCaptions(`https://www.youtube.com/embed/${lesson.videoId}`, captionLang);
 
   return (
     <div style={{ width: '100%' }}>
       {/* 16:9 responsive iframe wrapper */}
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', backgroundColor: '#12100C', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(232,184,91,0.18)' }}>
         <iframe
-          key={lesson.videoId}
+          key={`${lesson.videoId}-${captionLang}`}
           src={captionedUrl}
           title={`Tamu Academy — ${lesson.title}`}
           referrerPolicy="strict-origin-when-cross-origin"
@@ -174,7 +178,10 @@ function VideoPlayer({ lesson, c }) {
         />
       </div>
 
-      <CaptionsNote />
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
+        <CaptionsNote />
+        <CaptionLanguagePicker value={captionLang} onChange={setCaptionLang} style={{ marginTop: '0.6rem' }} />
+      </div>
 
       {/* Active video info */}
       <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>

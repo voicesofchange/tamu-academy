@@ -1,11 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
+import { withCaptions } from '@/lib/youtube-captions';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 import CaptionsNote from '@/components/videos/CaptionsNote';
+import CaptionLanguagePicker from '@/components/videos/CaptionLanguagePicker';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const CONTENT = {
+  closeVideo: 'Close video',
+  comingSoon: 'Coming soon',
+  reflectionQuestions: 'Reflection Questions',
+  duration: 'Duration',
+};
 
 export default function VideoModal({ lesson, onClose }) {
-  const captionedUrl = useCaptionedEmbedUrl(lesson.videoUrl);
+  const { content: c } = useTranslatedContent('video-modal', CONTENT);
+  const { language } = useTranslation();
+  const [captionLang, setCaptionLang] = useState(language);
+  const captionedUrl = withCaptions(lesson.videoUrl, captionLang);
 
   // Close on Escape
   useEffect(() => {
@@ -78,7 +91,7 @@ export default function VideoModal({ lesson, onClose }) {
             </div>
             <button
               onClick={onClose}
-              aria-label="Close video"
+              aria-label={c.closeVideo}
               style={{
                 flexShrink: 0,
                 background: 'none',
@@ -101,6 +114,7 @@ export default function VideoModal({ lesson, onClose }) {
           <div style={{ width: '100%', aspectRatio: '16 / 9', backgroundColor: '#12100C', position: 'relative' }}>
             {lesson.videoUrl ? (
               <iframe
+                key={captionLang}
                 src={captionedUrl}
                 title={lesson.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -126,15 +140,16 @@ export default function VideoModal({ lesson, onClose }) {
                   <line x1="2" y1="24" x2="46" y2="24" stroke="rgba(232,184,91,0.1)" strokeWidth="1" strokeDasharray="3 4" />
                 </svg>
                 <span className="font-body" style={{ color: 'rgba(232,184,91,0.72)', fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500 }}>
-                  Coming soon
+                  {c.comingSoon}
                 </span>
               </div>
             )}
           </div>
 
           {/* Caption note — sits directly under the player */}
-          <div style={{ padding: '0.9rem 1.5rem 0' }}>
+          <div style={{ padding: '0.9rem 1.5rem 0', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
             <CaptionsNote style={{ margin: 0 }} />
+            {lesson.videoUrl && <CaptionLanguagePicker value={captionLang} onChange={setCaptionLang} />}
           </div>
 
           {/* Description */}
@@ -146,7 +161,7 @@ export default function VideoModal({ lesson, onClose }) {
             {lesson.discussionQuestions?.length > 0 && (
               <div>
                 <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
-                  Reflection Questions
+                  {c.reflectionQuestions}
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                   {lesson.discussionQuestions.map((q, i) => (
@@ -160,7 +175,7 @@ export default function VideoModal({ lesson, onClose }) {
 
             {lesson.duration && (
               <p className="font-body" style={{ color: 'rgba(243,234,216,0.35)', fontSize: '0.78rem', fontWeight: 300, margin: 0 }}>
-                Duration: {lesson.duration}
+                {c.duration}: {lesson.duration}
               </p>
             )}
           </div>
