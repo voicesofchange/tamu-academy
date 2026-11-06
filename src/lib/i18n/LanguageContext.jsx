@@ -1,7 +1,10 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
+import { base44 } from '@/api/base44Client';
+import { appParams } from '@/lib/app-params';
 import en from './translations/en';
 import sw from './translations/sw';
 import es from './translations/es';
+import fr from './translations/fr';
 
 /**
  * Supported languages. 'en' is the default and fallback.
@@ -11,16 +14,17 @@ export const LANGUAGES = [
   { code: 'en', label: 'English', nativeLabel: 'English' },
   { code: 'sw', label: 'Swahili', nativeLabel: 'Kiswahili' },
   { code: 'es', label: 'Spanish', nativeLabel: 'Español' },
+  { code: 'fr', label: 'French', nativeLabel: 'Français' },
 ];
 
-const DICTIONARIES = { en, sw, es };
+const DICTIONARIES = { en, sw, es, fr };
 const STORAGE_KEY = 'tamu_language';
 const DEFAULT_LANGUAGE = 'en';
 
 /**
  * Detect the user's preferred language from browser settings.
  * Checks navigator.languages and navigator.language, matching against
- * our supported language codes (en, sw, es). Returns null if no match.
+ * our supported language codes (en, sw, es, fr). Returns null if no match.
  */
 function detectBrowserLanguage() {
   try {
@@ -34,13 +38,10 @@ function detectBrowserLanguage() {
     for (const lang of candidates) {
       if (!lang) continue;
       const lower = lang.toLowerCase();
-      // Exact match (e.g. 'sw', 'es', 'en')
+      // Primary subtag matches a dictionary directly, so regional variants
+      // (sw-KE, es-MX, fr-SN, fr-CI, …) resolve to their base language.
       const primary = lower.split('-')[0];
       if (DICTIONARIES[primary]) return primary;
-      // Swahili regional variants: sw-KE, sw-TZ
-      if (primary === 'sw') return 'sw';
-      // Spanish regional variants: es-ES, es-MX, es-AR, etc.
-      if (primary === 'es') return 'es';
     }
   } catch {
     // navigator may be unavailable in some environments
@@ -63,30 +64,72 @@ function resolveKey(dict, key) {
   }, dict);
 }
 
+/**
+ * The language saved on a signed-in learner's profile, when it is one this
+ * app serves. Returns null when they have not chosen one.
+ */
+function readProfileLanguage(user) {
+  const direct = user ? user.preferred_language : undefined;
+  const nested = user && user.data && typeof user.data === 'object'
+    ? user.data.preferred_language
+    : undefined;
+  const value = typeof direct === 'string' && direct ? direct : nested;
+  return typeof value === 'string' && DICTIONARIES[value] ? value : null;
+}
+
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(DEFAULT_LANGUAGE);
 
-  // Load persisted language on mount, or detect from browser on first visit
   useEffect(() => {
+    let cancelled = false;
+
+    // A choice saved in this browser wins, so a visitor keeps what they picked.
+    let initial = null;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && DICTIONARIES[saved]) {
-        setLanguageState(saved);
-        return;
-      }
+      if (saved && DICTIONARIES[saved]) initial = saved;
     } catch {
       // localStorage may be unavailable (private mode) — fall through to detection
     }
-    // No saved preference — detect from browser settings
-    const detected = detectBrowserLanguage();
-    if (detected && detected !== DEFAULT_LANGUAGE) {
-      setLanguageState(detected);
-      try {
-        localStorage.setItem(STORAGE_KEY, detected);
-      } catch {
-        // Ignore storage errors
+
+    // Otherwise detect from the browser's own language settings.
+    if (!initial) {
+      initial = detectBrowserLanguage();
+      if (initial) {
+        try {
+          localStorage.setItem(STORAGE_KEY, initial);
+        } catch {
+          // Ignore storage errors
+        }
       }
     }
+    if (initial && initial !== DEFAULT_LANGUAGE) setLanguageState(initial);
+
+    // A signed-in learner's profile language takes precedence, so the choice
+    // they made on one device follows them to every other device.
+    if (appParams.token) {
+      (async () => {
+        let user = null;
+        try {
+          user = await base44.auth.me();
+        } catch {
+          user = null;
+        }
+        if (cancelled || !user) return;
+        const profileLanguage = readProfileLanguage(user);
+        if (!profileLanguage) return;
+        setLanguageState(profileLanguage);
+        try {
+          localStorage.setItem(STORAGE_KEY, profileLanguage);
+        } catch {
+          // Ignore storage errors
+        }
+      })();
+    }
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const setLanguage = useCallback((code) => {
@@ -96,6 +139,13 @@ export function LanguageProvider({ children }) {
       localStorage.setItem(STORAGE_KEY, code);
     } catch {
       // Ignore storage errors
+    }
+    // Signed-in learners carry their choice with their profile. A visitor has
+    // no token, so nothing is sent for them.
+    if (appParams.token) {
+      base44.auth.updateMe({ preferred_language: code }).catch(() => {
+        // The language still applies in this browser if the save fails.
+      });
     }
   }, []);
 

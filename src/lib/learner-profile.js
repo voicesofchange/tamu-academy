@@ -48,6 +48,7 @@ export const LANGUAGE_OPTIONS = [
   { value: 'en', label: 'English' },
   { value: 'es', label: 'Español' },
   { value: 'sw', label: 'Kiswahili' },
+  { value: 'fr', label: 'Français' },
 ];
 
 export const PROFILE_FIELDS = [
