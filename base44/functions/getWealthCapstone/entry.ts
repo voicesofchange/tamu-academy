@@ -45,9 +45,24 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
+    const language = typeof body.language === 'string' ? body.language : 'en';
+
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug.trim() : '';
     if (courseSlug !== WEALTH_COURSE_SLUG) {
       return Response.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Only the option labels and the section prompts are translated. The
+    // learner's own written answers are never sent for translation.
+    let options = WEALTH_CAPSTONE_FORMATS;
+    if (language !== 'en') {
+      const translatedOptions = await translateCourseSections(
+        base44,
+        { options: WEALTH_CAPSTONE_FORMATS },
+        language,
+        ['options'],
+      );
+      options = translatedOptions.options;
     }
 
     const rows = await base44.asServiceRole.entities.WealthCapstone.filter({
@@ -57,10 +72,7 @@ export default async function(req: Request): Promise<Response> {
     const row = rows && rows.length > 0 ? rows[0] : null;
 
     if (!row) {
-      return Response.json({
-        options: WEALTH_CAPSTONE_FORMATS,
-        capstone: null,
-      });
+      return Response.json({ options, capstone: null });
     }
 
     let sections: Record<string, string> = {};
@@ -75,12 +87,25 @@ export default async function(req: Request): Promise<Response> {
 
     const option = getWealthCapstoneOption(row.capstone_format);
 
+    let formatLabel = option ? option.label : row.capstone_format;
+    let optionSections = option ? option.sections : [];
+    if (language !== 'en' && option) {
+      const translated = await translateCourseSections(
+        base44,
+        { formatLabel, sections: optionSections },
+        language,
+        ['formatLabel', 'sections'],
+      );
+      formatLabel = translated.formatLabel;
+      optionSections = translated.sections;
+    }
+
     return Response.json({
-      options: WEALTH_CAPSTONE_FORMATS,
+      options,
       capstone: {
         format: row.capstone_format,
-        formatLabel: option ? option.label : row.capstone_format,
-        sections: option ? option.sections : [],
+        formatLabel,
+        sections: optionSections,
         title: row.title || '',
         answers: sections,
         filledCount: typeof row.filled_count === 'number' ? row.filled_count : 0,

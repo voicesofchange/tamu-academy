@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslation } from '@/lib/i18n/LanguageContext';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.7, fontWeight: 300 };
 
@@ -56,6 +57,7 @@ const saveStyle = {
  * recorded the first time every section carries an answer.
  */
 export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
+  const { language } = useTranslation();
   const [state, setState] = useState({ status: 'loading', options: [], capstone: null });
   const [format, setFormat] = useState(null);
   const [answers, setAnswers] = useState({});
@@ -66,7 +68,7 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
 
   const load = useCallback(async () => {
     try {
-      const res = await base44.functions.invoke('getWealthCapstone', { courseSlug });
+      const res = await base44.functions.invoke('getWealthCapstone', { courseSlug, language });
       const data = res && res.data ? res.data : null;
       if (!data) {
         setState({ status: 'error', options: [], capstone: null });
@@ -81,7 +83,7 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
     } catch (err) {
       setState({ status: 'error', options: [], capstone: null });
     }
-  }, [courseSlug]);
+  }, [courseSlug, language]);
 
   useEffect(() => { load(); }, [load]);
 
