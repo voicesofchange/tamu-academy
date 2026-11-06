@@ -51,8 +51,13 @@ import {
   WEALTH_MODULE_ROUTES,
   isWealthModulePublished,
 } from './building-wealth-together-config.js';
+import { TEMPLATE_COURSE_CONFIGS } from './course-template-config.js';
 
 export const COURSE_REGISTRY = {
+  // Courses built with the course template register themselves through their
+  // own registry entry (see course-template-config.js). They are listed first
+  // so a course defined below can never be shadowed by a template entry.
+  ...TEMPLATE_COURSE_CONFIGS,
   [MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG]: {
     slug: MENTAL_HEALTH_CERTIFICATE_COURSE_SLUG,
     title: MENTAL_HEALTH_CERTIFICATE_COURSE_TITLE,

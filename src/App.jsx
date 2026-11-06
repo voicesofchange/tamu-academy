@@ -80,6 +80,7 @@ import {
   UbuntuMentalHealth,
   UnderstandingAfricanEconomies,
   TranslationReview,
+  TemplateCourseModule,
   Videos,
   WaiyakiCertificate,
   WaiyakiCourseCompletion,
@@ -161,6 +162,11 @@ const AuthenticatedApp = () => {
         <Route path="/courses/building-wealth-together/certificate" element={<WealthCertificate />} />
         <Route path="/courses/building-wealth-together/capstone" element={<WealthCapstone />} />
         <Route path="/courses/building-wealth-together/:moduleRoute" element={<BuildingWealthModule />} />
+        {/* Course template — the single module page for every course registered in
+            base44/shared/course-template-config.js. The page 404s any slug the
+            registry does not hold, and the course's own static routes above always
+            win over this one. */}
+        <Route path="/courses/:courseSlug/:moduleRoute" element={<TemplateCourseModule />} />
         <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
         <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
         <Route path="/courses/mental-health-community-and-culture/module-3" element={<MhModule3 />} />
