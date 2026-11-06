@@ -11,6 +11,7 @@ import WealthWatchStep from '@/components/courses/wealth/WealthWatchStep';
 import WealthWorkedExample from '@/components/courses/wealth/WealthWorkedExample';
 import WealthConceptCheck from '@/components/courses/wealth/WealthConceptCheck';
 import WealthModuleProgress from '@/components/courses/wealth/WealthModuleProgress';
+import ModuleSources from '@/components/courses/module/ModuleSources';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -191,6 +192,21 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         heading="Reflection"
         items={module.reflection ? [module.reflection] : []}
       />
+
+      {((module.sources && module.sources.length > 0) ||
+        (module.unsourced && module.unsourced.length > 0)) && (
+        <ModuleLessonSection eyebrow="Sources" heading="Sources">
+          <ModuleSources
+            sources={module.sources}
+            unsourced={module.unsourced}
+            labels={{
+              unsourcedHeading: 'Unsourced claims',
+              unsourcedNote:
+                'The lesson makes the following points without a published source. They are listed here rather than given a citation.',
+            }}
+          />
+        </ModuleLessonSection>
+      )}
 
       <ModuleLessonSection eyebrow="Requirements" heading="Completion Requirements">
         <WealthModuleProgress

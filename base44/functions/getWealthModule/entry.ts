@@ -8,6 +8,7 @@ import {
 import { getWealthModuleContent } from '../../shared/building-wealth-together-curriculum.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { getWealthModuleSources } from '../../shared/building-wealth-together-sources.js';
 
 /**
  * The learner-facing sections translated for a learner whose language is not
@@ -169,7 +170,15 @@ export default async function(req: Request): Promise<Response> {
       });
     }
 
-    return Response.json({ module: translated });
+    // The source list is quoted material — titles and URLs as published — so it
+    // is attached after translation and never translated.
+    const sources = getWealthModuleSources(courseSlug, moduleRoute);
+
+    return Response.json({
+      module: sources
+        ? { ...translated, sources: sources.sources, unsourced: sources.unsourced }
+        : translated,
+    });
   } catch (error) {
     console.error('[getWealthModule] Unexpected error:', error && error.message);
     return Response.json({ error: 'Internal error' }, { status: 500 });
