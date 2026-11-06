@@ -190,12 +190,17 @@ async function readTranslationCache(base44, texts, keys, language, context = nul
       // A course translation cached before review existed is given its unit
       // identity here, so it appears in review and gains a reviewer's lock.
       const upgrades = [];
+      const upgradedRowIds = new Set();
       for (const key of legacyKeys) {
         const row = byHash.get(hashes[key]);
         if (!row) continue;
         found[key] = row.translated_text;
         if (!context || !context.courseSlug || !context.moduleSlug) continue;
         if (row.source_key) continue;
+        // Two fields can share identical English, so one legacy row is never
+        // given two identities; the second field keeps being served by hash.
+        if (upgradedRowIds.has(row.id)) continue;
+        upgradedRowIds.add(row.id);
 
         const sourceKey = buildSourceKey(context.courseSlug, context.moduleSlug, key);
         if (!sourceKey || rows.has(sourceKey)) continue;
@@ -303,7 +308,21 @@ async function storeTranslations(base44, sources, translated, language, context 
     }
 
     if (updates.length > 0) {
-      await base44.asServiceRole.entities.TranslationCache.bulkUpdate(updates);
+      // Re-check the stored rows just before writing: an administrator may
+      // have marked one reviewed while this run was in progress, and a
+      // reviewed translation is never replaced automatically.
+      const ids = updates.map((row) => row.id);
+      const current = await base44.asServiceRole.entities.TranslationCache.filter({
+        id: { $in: ids },
+      });
+      const currentRows = Array.isArray(current) ? current : (current && current.items) || [];
+      const reviewedNow = new Set(
+        currentRows.filter((row) => row.status === 'reviewed').map((row) => row.id),
+      );
+      const safeUpdates = updates.filter((row) => !reviewedNow.has(row.id));
+      if (safeUpdates.length > 0) {
+        await base44.asServiceRole.entities.TranslationCache.bulkUpdate(safeUpdates);
+      }
     }
     if (creates.length > 0) {
       await base44.asServiceRole.entities.TranslationCache.bulkCreate(creates);

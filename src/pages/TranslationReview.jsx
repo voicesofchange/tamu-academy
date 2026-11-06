@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import TranslationCounts from '@/components/admin/TranslationCounts';
 import TranslationRow from '@/components/admin/TranslationRow';
 import TranslationCsvTools from '@/components/admin/TranslationCsvTools';
+import PrewarmTranslationsCard from '@/components/admin/PrewarmTranslationsCard';
 import {
   REVIEW_LANGUAGES,
   courseLabel,
@@ -242,6 +243,8 @@ export default function TranslationReview() {
 
               <TranslationCsvTools onExport={handleExport} onImport={handleImport} busy={busy || loading} />
             </div>
+
+            <PrewarmTranslationsCard onDone={() => load(language)} />
 
             {message && (
               <p

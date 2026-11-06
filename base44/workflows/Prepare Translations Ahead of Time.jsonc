@@ -1,0 +1,45 @@
+{
+  "name": "Prepare Translations Ahead of Time",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "*/15 * * * *",
+      "one_time_date": null,
+      "timezone": "America/Los_Angeles",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "description": "Keeps the Kiswahili, Spanish and French translations of every course module, quiz, automated email and certificate warm, so a learner never waits for a first-time translation. Catches newly published or changed course content, never overwrites a reviewed translation, and never changes English content.",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "prepare_translations_ahead_of_time",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "prepare_translations": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "prewarmTranslations",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Prepare translations",
+            "description": "Translate modules, quizzes, emails and certificates ahead of time"
+          }
+        }
+      }
+    ]
+  }
+}
