@@ -152,50 +152,64 @@ export default async function (req: Request): Promise<Response> {
       return Response.json({ preview_sent: testTo, sender: FROM_ADDRESS });
     }
 
-    // --- The guest list, read from the registration form ---
-    let accessToken: string;
-    try {
-      const connection = await base44.asServiceRole.connectors.getConnection('googleforms');
-      accessToken = connection.accessToken;
-    } catch (error: any) {
-      console.error('[sendEventReminder] forms connection error:', error && error.message);
-      return Response.json(
-        { error: 'The Google Forms account could not be reached. Reconnect Google Forms and try again.' },
-        { status: 502 }
-      );
-    }
-
-    let targets: { email: string; firstName: string }[] = [];
+    // --- The guest list ---
+    // An explicit list supplied by an administrator is used as given. Otherwise
+    // the list is read from the registration form itself.
+    const targets: { email: string; firstName: string }[] = [];
     let formTitle = '';
-    try {
-      const { titles, formTitle: title } = await questionTitles(accessToken, REGISTER_FORM_ID);
-      formTitle = title;
-      const responses = await listResponses(accessToken, REGISTER_FORM_ID);
 
+    if (Array.isArray(body.recipients) && body.recipients.length > 0) {
       const seen = new Set<string>();
-      for (const response of responses) {
-        const email = String(
-          response.respondentEmail || answerByTitle(response, titles, /e-?mail/i) || ''
-        )
-          .trim()
-          .toLowerCase();
+      for (const raw of body.recipients) {
+        const email = String(raw || '').trim().toLowerCase();
         if (!EMAIL_RE.test(email) || seen.has(email)) continue;
         seen.add(email);
-        targets.push({
-          email,
-          firstName: firstNameOf(answerByTitle(response, titles, /name/i)),
-        });
+        targets.push({ email, firstName: '' });
       }
-    } catch (error: any) {
-      console.error('[sendEventReminder] form read error:', error && error.message);
-      return Response.json(
-        {
-          error:
-            'The event registration form could not be read. The connected Google account needs access to the form that owns these signups.',
-          details: error && error.message,
-        },
-        { status: 502 }
-      );
+      formTitle = 'Guest list provided directly';
+    } else {
+      let accessToken: string;
+      try {
+        const connection = await base44.asServiceRole.connectors.getConnection('googleforms');
+        accessToken = connection.accessToken;
+      } catch (error: any) {
+        console.error('[sendEventReminder] forms connection error:', error && error.message);
+        return Response.json(
+          { error: 'The Google Forms account could not be reached. Reconnect Google Forms and try again.' },
+          { status: 502 }
+        );
+      }
+
+      try {
+        const { titles, formTitle: title } = await questionTitles(accessToken, REGISTER_FORM_ID);
+        formTitle = title;
+        const responses = await listResponses(accessToken, REGISTER_FORM_ID);
+
+        const seen = new Set<string>();
+        for (const response of responses) {
+          const email = String(
+            response.respondentEmail || answerByTitle(response, titles, /e-?mail/i) || ''
+          )
+            .trim()
+            .toLowerCase();
+          if (!EMAIL_RE.test(email) || seen.has(email)) continue;
+          seen.add(email);
+          targets.push({
+            email,
+            firstName: firstNameOf(answerByTitle(response, titles, /name/i)),
+          });
+        }
+      } catch (error: any) {
+        console.error('[sendEventReminder] form read error:', error && error.message);
+        return Response.json(
+          {
+            error:
+              'The event registration form could not be read. The connected Google account needs access to the form that owns these signups.',
+            details: error && error.message,
+          },
+          { status: 502 }
+        );
+      }
     }
 
     if (targets.length === 0) {
