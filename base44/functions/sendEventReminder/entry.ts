@@ -108,6 +108,50 @@ export default async function (req: Request): Promise<Response> {
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
     if (user.role !== 'admin') return Response.json({ error: 'Forbidden' }, { status: 403 });
 
+    // --- The sending account ---
+    let sender: { accessToken: string; fromEmail: string };
+    try {
+      sender = await getGmailSender(base44);
+    } catch (error: any) {
+      console.error('[sendEventReminder] gmail connection error:', error && error.message);
+      return Response.json(
+        { error: 'The connected Gmail account could not be reached. Reconnect Gmail and try again.' },
+        { status: 502 }
+      );
+    }
+
+    // --- Which language each recipient reads (registered learners only) ---
+    const languageByEmail: Record<string, string> = {};
+    try {
+      const users = await base44.asServiceRole.entities.User.list();
+      for (const u of users || []) {
+        if (u && u.email) languageByEmail[String(u.email).toLowerCase()] = learnerLanguage(u);
+      }
+    } catch (error: any) {
+      console.warn('[sendEventReminder] learner language lookup failed:', error && error.message);
+    }
+
+    const copyFor = emailCopyCache(base44);
+
+    // --- A single preview copy to one address ---
+    const testTo = String(body.test_to || '').trim().toLowerCase();
+    if (testTo) {
+      if (!EMAIL_RE.test(testTo)) {
+        return Response.json({ error: 'test_to must be a valid email address.' }, { status: 400 });
+      }
+      const copy = await copyFor(languageByEmail[testTo] || 'en', EVENT_REMINDER_COPY);
+      await sendTrackedEmail(base44, {
+        accessToken: sender.accessToken,
+        fromEmail: FROM_ADDRESS,
+        to: testTo,
+        subject: `[Preview] ${copy.subject}`,
+        text: buildEventReminderText({ firstName: 'friend', copy }),
+        html: buildEventReminderHtml({ firstName: 'friend', copy }),
+        messageType: MESSAGE_TYPE,
+      });
+      return Response.json({ preview_sent: testTo, sender: FROM_ADDRESS });
+    }
+
     // --- The guest list, read from the registration form ---
     let accessToken: string;
     try {
@@ -159,50 +203,6 @@ export default async function (req: Request): Promise<Response> {
     }
 
     const batch = targets.slice(0, MAX_PER_RUN);
-
-    // --- The sending account ---
-    let sender: { accessToken: string; fromEmail: string };
-    try {
-      sender = await getGmailSender(base44);
-    } catch (error: any) {
-      console.error('[sendEventReminder] gmail connection error:', error && error.message);
-      return Response.json(
-        { error: 'The connected Gmail account could not be reached. Reconnect Gmail and try again.' },
-        { status: 502 }
-      );
-    }
-
-    // --- Which language each recipient reads (registered learners only) ---
-    const languageByEmail: Record<string, string> = {};
-    try {
-      const users = await base44.asServiceRole.entities.User.list();
-      for (const u of users || []) {
-        if (u && u.email) languageByEmail[String(u.email).toLowerCase()] = learnerLanguage(u);
-      }
-    } catch (error: any) {
-      console.warn('[sendEventReminder] learner language lookup failed:', error && error.message);
-    }
-
-    const copyFor = emailCopyCache(base44);
-
-    // --- A single preview copy to one address ---
-    const testTo = String(body.test_to || '').trim().toLowerCase();
-    if (testTo) {
-      if (!EMAIL_RE.test(testTo)) {
-        return Response.json({ error: 'test_to must be a valid email address.' }, { status: 400 });
-      }
-      const copy = await copyFor(languageByEmail[testTo] || 'en', EVENT_REMINDER_COPY);
-      await sendTrackedEmail(base44, {
-        accessToken: sender.accessToken,
-        fromEmail: FROM_ADDRESS,
-        to: testTo,
-        subject: `[Preview] ${copy.subject}`,
-        text: buildEventReminderText({ firstName: 'friend', copy }),
-        html: buildEventReminderHtml({ firstName: 'friend', copy }),
-        messageType: MESSAGE_TYPE,
-      });
-      return Response.json({ preview_sent: testTo, sender: FROM_ADDRESS, guest_count: targets.length });
-    }
 
     // --- Admin review before sending ---
     if (body.dry_run === true) {
