@@ -723,3 +723,17 @@ select option {
     color: #586475 !important;
   }
 }
+/* ── Page heroes and breadcrumbs (PageHero, PageBreadcrumbs) ─────────────
+   The hero matches the homepage and course heroes: left-aligned with the
+   page's reading column, a faint gold glow, and room for the fixed header
+   (two rows, ~104px, above 860px; one 59px bar below). Breadcrumbs sit
+   below the header, and a hero that follows them closes the gap. */
+.tamu-page-hero { position: relative; overflow: hidden; padding: 130px clamp(1.5rem, 6vw, 4rem) 3.5rem; margin-bottom: 3rem; }
+.tamu-page-hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 75% 60% at 22% 30%, rgba(217,155,55,0.10) 0%, transparent 65%); }
+.tamu-page-crumbs { padding: 124px clamp(1.5rem, 6vw, 4rem) 0; }
+.tamu-page-crumbs > div { max-width: 900px; margin: 0 auto; }
+.tamu-page-crumbs + .tamu-page-hero { padding-top: 1.25rem; }
+@media (max-width: 860px) {
+  .tamu-page-hero { padding-top: 96px; }
+  .tamu-page-crumbs { padding-top: 84px; }
+}

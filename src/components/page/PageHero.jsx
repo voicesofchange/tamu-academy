@@ -8,15 +8,16 @@ import { motion } from 'framer-motion';
  */
 export default function PageHero({ eyebrow, heading, subheading }) {
   return (
-    <div style={{ padding: '8rem clamp(1.5rem, 6vw, 4rem) 4rem', marginBottom: '4rem' }}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+    <div className="tamu-page-hero">
+      <div aria-hidden="true" className="tamu-page-hero-glow" />
+      <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto' }}>
         {eyebrow && (
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="font-body"
-            style={{ color: 'var(--tamu-gold)', fontSize: '0.7rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1.25rem' }}
+            style={{ color: 'var(--tamu-gold)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, display: 'block', marginBottom: '1rem' }}
           >
             {eyebrow}
           </motion.span>
@@ -26,7 +27,7 @@ export default function PageHero({ eyebrow, heading, subheading }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
           className="font-heading"
-          style={{ color: 'var(--tamu-ink)', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1.25rem', maxWidth: '820px' }}
+          style={{ color: 'var(--tamu-ink)', fontSize: 'clamp(2.1rem, 4.4vw, 52px)', fontWeight: 400, lineHeight: 1.08, letterSpacing: '-0.02em', margin: '0 0 1.25rem', maxWidth: '820px' }}
         >
           {heading}
         </motion.h1>
@@ -42,8 +43,8 @@ export default function PageHero({ eyebrow, heading, subheading }) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
-            className="font-heading"
-            style={{ color: 'rgba(232,184,91,0.9)', fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.6, margin: 0, maxWidth: '680px' }}
+            className="font-body"
+            style={{ color: '#ddcfbb', fontSize: 'clamp(1rem, 1.4vw, 17px)', lineHeight: 1.7, margin: 0, maxWidth: '680px' }}
           >
             {subheading}
           </motion.p>

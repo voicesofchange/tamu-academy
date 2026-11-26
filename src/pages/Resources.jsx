@@ -5,6 +5,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
+import { useTranslation } from '@/lib/i18n';
 import ResourceCard from '@/components/resources/ResourceCard';
 import { RESOURCE_AREAS, getResourcesByArea, getActiveResourceCount } from '@/lib/resources-data';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
@@ -23,6 +24,7 @@ const CONTENT = {
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Resources() {
+  const { t } = useTranslation();
   const activeCount = getActiveResourceCount();
   const { content: c } = useTranslatedContent('resources', CONTENT);
 
@@ -33,7 +35,7 @@ export default function Resources() {
         description="A curated collection of free educational resources across Tamu Academy's six learning areas — AI, intercultural leadership, policy, economics, climate, and communication."
         path="/resources"
       />
-      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Resources' }]} />
+      <PageBreadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('nav.resources') }]} />
 
       <PageHero
         eyebrow={c.heroEyebrow}

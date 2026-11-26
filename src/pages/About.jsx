@@ -6,6 +6,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
+import { useTranslation } from '@/lib/i18n';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import PartnershipPathway from '@/components/partnerships/PartnershipPathway';
 
@@ -63,6 +64,7 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '1rem', lineHeight
 const bodyTextClass = 'font-body';
 
 export default function About() {
+  const { t } = useTranslation();
   const { content: c } = useTranslatedContent('about', CONTENT);
 
   return (
@@ -72,7 +74,7 @@ export default function About() {
         description="Tamu Academy is a diaspora-rooted online learning platform that develops expert-led courses with subject-matter experts and knowledge holders across mental health, economics, AI, and public policy."
         path="/about"
       />
-      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'About' }]} />
+      <PageBreadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('nav.about') }]} />
 
       <PageHero
         eyebrow={c.heroEyebrow}
