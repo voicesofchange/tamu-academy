@@ -65,6 +65,10 @@ const MODE_OPTIONS = ['private', 'fictional'];
  * SokoModuleProgress — the completion requirements and completion control
  * for one Sauti za Soko module. The knowledge-check and activity
  * requirements are verified server-side and never self-attested here.
+ *
+ * Inside the course player the footer's "Mark Complete & Continue" completes
+ * the module, so the player passes showCompleteButton={false}; `onChange`
+ * tells the player when a step was saved so its outline and footer refresh.
  */
 export default function SokoModuleProgress({
   courseSlug,
@@ -72,6 +76,8 @@ export default function SokoModuleProgress({
   completionRequirements,
   activityLabel,
   refreshTrigger = 0,
+  showCompleteButton = true,
+  onChange,
 }) {
   const labels = useSokoLabels();
   const [progress, setProgress] = useState(null);
@@ -117,6 +123,7 @@ export default function SokoModuleProgress({
       if (res?.data && Array.isArray(res.data.completedKeys)) {
         setProgress((prev) => (prev ? { ...prev, completedKeys: res.data.completedKeys } : prev));
       }
+      if (onChange) onChange();
     } catch (err) {
       setStatusMessage({ type: 'error', text: labels.progressSaveError });
     } finally {
@@ -134,6 +141,7 @@ export default function SokoModuleProgress({
       if (data && data.completed) {
         setProgress((prev) => (prev ? { ...prev, moduleCompleted: true, completedAt: data.completedAt } : prev));
         setStatusMessage({ type: 'success', text: labels.progressAllComplete });
+        if (onChange) onChange();
       } else if (data && data.missingRequirement) {
         setStatusMessage({ type: 'error', text: data.missingRequirement });
       } else if (data && data.missing && data.missing.length > 0) {
@@ -249,7 +257,7 @@ export default function SokoModuleProgress({
         })}
       </div>
 
-      <div style={{ marginTop: '1.5rem' }}>
+      {showCompleteButton && <div style={{ marginTop: '1.5rem' }}>
         <button
           type="button"
           disabled={!allComplete || completionPending || progress.moduleCompleted}
@@ -264,7 +272,7 @@ export default function SokoModuleProgress({
         >
           {completionPending ? labels.progressSaving : labels.progressCompleteModule}
         </button>
-      </div>
+      </div>}
 
       {statusMessage && (
         <p

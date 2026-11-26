@@ -1,60 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 import { fillTemplate } from '@/lib/i18n/fill-template';
-import { useTemplatePlayerLabels } from '@/components/courses/template/TemplatePlayerLabelsProvider';
-import { REQUIREMENT_LABEL_KEYS, stepAnchorId } from '@/components/courses/template/template-player-steps';
+import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 
 /**
- * TemplateCourseFooterBar — the bar that stays at the bottom of the screen
- * while a template course module is read.
+ * CourseCompleteFooter — the bar that stays at the bottom of the screen while
+ * a module is read, in every course that uses the course player.
  *
- * "Mark Complete & Continue" asks completeTemplateCourseModule to complete
- * the module. The server decides: when a requirement is still outstanding it
- * comes back in `missing`, the module stays incomplete and the bar names what
- * is left. Once the module is complete the learner moves on to the next one.
+ * "Mark Complete & Continue" runs the course's own `onComplete`, which calls
+ * that course's server-side completion function and resolves to one of:
+ *   { completed: true }
+ *   { completed: false, missing: ['Reflection', …] }   (already readable names)
+ *   { completed: false, message: '…' }
+ * The server decides: when something is outstanding the module stays
+ * incomplete and the bar says what is left. Once the module is complete the
+ * learner moves on to `next.path` (the next module, or the course's
+ * completion page); with no next step, `onCompleted` refreshes the page.
  * A completed module shows a plain "Continue". Nothing is completed from the
  * browser alone.
+ *
+ * Props: moduleKey (resets the message when the module changes), number,
+ * title, completed, canSave, onComplete, onCompleted, next: { path, title }.
  */
-export default function TemplateCourseFooterBar({ course, module, onRefresh }) {
-  const L = useTemplatePlayerLabels();
+export default function CourseCompleteFooter({
+  moduleKey,
+  number,
+  title,
+  completed = false,
+  canSave = false,
+  onComplete,
+  onCompleted,
+  next = null,
+}) {
+  const L = useCoursePlayerLabels();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
 
-  useEffect(() => { setMessage(null); }, [module.route]);
+  useEffect(() => { setMessage(null); }, [moduleKey]);
 
-  const index = course.modules.findIndex((item) => item.route === module.route);
-  const next = index >= 0 && index < course.modules.length - 1 ? course.modules[index + 1] : null;
-  const progress = module.progress || {};
-  const completed = !!progress.completed;
-  const canSave = !!progress.canRecordProgress;
-  const nextPath = next ? `/courses/${course.slug}/${next.route}` : null;
-
-  const stepName = (step) => L[REQUIREMENT_LABEL_KEYS[step]] || String(step).replace(/_/g, ' ');
+  const nextPath = next && next.path ? next.path : null;
 
   async function completeAndContinue() {
+    if (!onComplete) return;
     setBusy(true);
     setMessage(null);
     try {
-      const res = await base44.functions.invoke('completeTemplateCourseModule', {
-        courseSlug: course.slug,
-        moduleRoute: module.route,
-      });
-      const data = res && res.data ? res.data : null;
-      if (data && data.completed) {
+      const result = (await onComplete()) || {};
+      if (result.completed) {
         if (nextPath) navigate(nextPath);
-        else if (onRefresh) await onRefresh();
-      } else if (data && Array.isArray(data.missing) && data.missing.length > 0) {
-        setMessage({ tone: 'warn', text: fillTemplate(L.stillNeeds, { steps: data.missing.map(stepName).join(', ') }) });
+        else if (onCompleted) await onCompleted();
+      } else if (Array.isArray(result.missing) && result.missing.length > 0) {
+        setMessage(fillTemplate(L.stillNeeds, { steps: result.missing.join(', ') }));
         const target = document.getElementById(stepAnchorId('requirements'));
         if (target && typeof target.scrollIntoView === 'function') target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        setMessage({ tone: 'warn', text: L.completeFailed });
+        setMessage(result.message || L.completeFailed);
       }
     } catch (err) {
-      setMessage({ tone: 'warn', text: L.completeFailed });
+      setMessage(L.completeFailed);
     } finally {
       setBusy(false);
     }
@@ -89,20 +95,20 @@ export default function TemplateCourseFooterBar({ course, module, onRefresh }) {
   }
 
   return (
-    <div className="tpl-footer" role="region" aria-label={module.title}>
+    <div className="tpl-footer" role="region" aria-label={title}>
       <style>{FOOTER_CSS}</style>
       <div className="tpl-footer-row">
         <div style={{ minWidth: 0, flex: '1 1 auto' }}>
           <p className="font-body tpl-footer-module">
-            {module.number} · {module.title}
+            {number} · {title}
             {completed && <span className="tpl-footer-badge">{L.moduleDone}</span>}
           </p>
           <p className="font-body tpl-footer-sub" aria-live="polite">
             {message
-              ? <span style={{ color: '#e8955c' }}>{message.text}</span>
+              ? <span style={{ color: '#e8955c' }}>{message}</span>
               : !canSave && !completed
                 ? <span id="tpl-footer-preview">{L.previewOnly}</span>
-                : next ? fillTemplate(L.nextUp, { title: `${next.number} — ${next.title}` }) : null}
+                : next && next.title ? fillTemplate(L.nextUp, { title: next.title }) : null}
           </p>
         </div>
         {action}

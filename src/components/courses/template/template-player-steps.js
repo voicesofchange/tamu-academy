@@ -5,9 +5,11 @@
  * A step the module does not carry is left out, as the lesson leaves it out.
  */
 
-export const STEP_ANCHOR_PREFIX = 'tpl-step-';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 
-/** Label key (in TEMPLATE_PLAYER_LABELS) for each completion requirement. */
+export { stepAnchorId };
+
+/** Label key (in COURSE_PLAYER_LABELS) for each completion requirement. */
 export const REQUIREMENT_LABEL_KEYS = {
   media: 'stepMedia',
   lesson: 'stepLesson',
@@ -16,10 +18,6 @@ export const REQUIREMENT_LABEL_KEYS = {
   knowledge_check: 'stepKnowledgeCheck',
   reflection: 'stepReflection',
 };
-
-export function stepAnchorId(id) {
-  return `${STEP_ANCHOR_PREFIX}${id}`;
-}
 
 export function moduleSteps(module) {
   if (!module) return [];

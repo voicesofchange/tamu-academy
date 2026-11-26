@@ -12,9 +12,26 @@ import SokoDiscussionPrompt from '@/components/courses/soko/SokoDiscussionPrompt
 import SokoModuleProgress from '@/components/courses/soko/SokoModuleProgress';
 import SokoModuleNav from '@/components/courses/soko/SokoModuleNav';
 import ModuleHero from '@/components/courses/module/ModuleHero';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
+
+/**
+ * The module's frame: the shared course player when a `player` is given,
+ * otherwise the single reading column. Defined once, outside the template,
+ * so the lesson is never remounted on a re-render (a half-answered knowledge
+ * check keeps its answers).
+ */
+function SokoModuleFrame({ player, moduleRoute, children }) {
+  if (!player) return <ModuleLessonLayout>{children}</ModuleLessonLayout>;
+  return (
+    <CoursePlayer course={player.course} currentRoute={moduleRoute} steps={player.steps} footer={player.footer}>
+      {children}
+    </CoursePlayer>
+  );
+}
 
 /**
  * SokoExpandedTemplate — the learning template for Sauti za Soko modules.
@@ -32,6 +49,13 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
  *
  * Every section heading and instruction is read from the pathway label set,
  * so a learner who selects a language reads the whole module in it.
+ *
+ * With a `player` prop ({ course, steps, footer }) the module renders inside
+ * the shared course player — outline, progress bar and "Mark Complete &
+ * Continue" footer — instead of the single reading column; the footer then
+ * completes the module. Without it (the Peer Facilitator page) the layout is
+ * unchanged. `onProgressChange` is called whenever a step is saved, so the
+ * player can refresh. Each section carries a tpl-step-* anchor either way.
  */
 export default function SokoExpandedTemplate({
   course,
@@ -48,6 +72,8 @@ export default function SokoExpandedTemplate({
   canSave = false,
   facilitatorSlot = null,
   onActivitySaved,
+  player = null,
+  onProgressChange,
 }) {
   const labels = useSokoLabels();
   const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
@@ -55,9 +81,13 @@ export default function SokoExpandedTemplate({
   const modulePath = courseSlug === course.slug ? `${coursePath}/${moduleRoute}` : null;
   const activity = module.activity;
   const isFacilitatorModule = moduleRoute === 'module-8';
+  const handleActivitySaved = (...args) => {
+    if (onActivitySaved) onActivitySaved(...args);
+    if (onProgressChange) onProgressChange();
+  };
 
   return (
-    <ModuleLessonLayout>
+    <SokoModuleFrame player={player} moduleRoute={moduleRoute}>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={module.competency || module.description}
@@ -72,7 +102,7 @@ export default function SokoExpandedTemplate({
         coursePath={coursePath}
         moduleLabel={module.number}
       />
-      {moduleCount > 1 && <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} />}
+      {!player && moduleCount > 1 && <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} />}
 
       {/* 1. Title, status and competency */}
       <ModuleHero
@@ -86,7 +116,7 @@ export default function SokoExpandedTemplate({
 
       {/* 2. Learning objectives */}
       {module.learningObjectives && module.learningObjectives.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.objectivesEyebrow} heading={labels.objectivesHeading}>
+        <ModuleLessonSection id={stepAnchorId('objectives')} eyebrow={labels.objectivesEyebrow} heading={labels.objectivesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.learningObjectives.map((o, i) => (
               <li key={i} style={{ marginBottom: '0.6rem' }}>{o}</li>
@@ -97,7 +127,7 @@ export default function SokoExpandedTemplate({
 
       {/* 3. Tamu Academy introduction */}
       {module.overview && module.overview.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.introEyebrow} heading={labels.introHeading}>
+        <ModuleLessonSection id={stepAnchorId('introduction')} eyebrow={labels.introEyebrow} heading={labels.introHeading}>
           {module.overview.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
@@ -106,14 +136,14 @@ export default function SokoExpandedTemplate({
 
       {/* 4. Context notes for learners new to the setting */}
       {module.contextNotes && module.contextNotes.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.contextEyebrow} heading={labels.contextHeading}>
+        <ModuleLessonSection id={stepAnchorId('context')} eyebrow={labels.contextEyebrow} heading={labels.contextHeading}>
           <SokoContextNotes notes={module.contextNotes} />
         </ModuleLessonSection>
       )}
 
       {/* 5. Key concepts */}
       {module.keyConcepts && module.keyConcepts.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.conceptsEyebrow} heading={labels.conceptsHeading}>
+        <ModuleLessonSection id={stepAnchorId('concepts')} eyebrow={labels.conceptsEyebrow} heading={labels.conceptsHeading}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
             {module.keyConcepts.map((concept) => (
               <div key={concept.term}>
@@ -134,7 +164,7 @@ export default function SokoExpandedTemplate({
 
       {/* 6. The Kiambu market case */}
       {module.localCase && (
-        <ModuleLessonSection eyebrow={labels.caseEyebrow} heading={module.localCase.title}>
+        <ModuleLessonSection id={stepAnchorId('case')} eyebrow={labels.caseEyebrow} heading={module.localCase.title}>
           <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', letterSpacing: '0.06em', color: 'rgba(232,184,91,0.75)', marginBottom: '1.1rem' }}>
             {module.localCase.location}
           </p>
@@ -168,31 +198,31 @@ export default function SokoExpandedTemplate({
 
       {/* 7. International comparison and global examples */}
       {module.internationalComparison && (
-        <ModuleLessonSection eyebrow={labels.comparisonEyebrow} heading={labels.comparisonHeading}>
+        <ModuleLessonSection id={stepAnchorId('comparison')} eyebrow={labels.comparisonEyebrow} heading={labels.comparisonHeading}>
           <SokoInternationalComparison comparison={module.internationalComparison} />
         </ModuleLessonSection>
       )}
 
       {/* 8. My Soko Action Plan section (or the facilitator record) */}
       {isFacilitatorModule && facilitatorSlot ? (
-        <ModuleLessonSection eyebrow={labels.facilitatorRecordEyebrow} heading={labels.facilitatorRecordHeading}>
+        <ModuleLessonSection id={stepAnchorId('action-plan')} eyebrow={labels.facilitatorRecordEyebrow} heading={labels.facilitatorRecordHeading}>
           {facilitatorSlot}
         </ModuleLessonSection>
       ) : activity ? (
-        <ModuleLessonSection eyebrow={labels.actionPlanEyebrow} heading={activity.title}>
+        <ModuleLessonSection id={stepAnchorId('action-plan')} eyebrow={labels.actionPlanEyebrow} heading={activity.title}>
           <SokoActionPlanActivity
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
             activity={activity}
             canSave={canSave}
-            onSaved={onActivitySaved}
+            onSaved={handleActivitySaved}
           />
         </ModuleLessonSection>
       ) : null}
 
       {/* 9. Kiswahili discussion prompt */}
       {module.kiswahiliPrompt && (
-        <ModuleLessonSection eyebrow={labels.discussionEyebrow} heading={labels.discussionHeading}>
+        <ModuleLessonSection id={stepAnchorId('discussion')} eyebrow={labels.discussionEyebrow} heading={labels.discussionHeading}>
           <SokoDiscussionPrompt
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
@@ -204,7 +234,7 @@ export default function SokoExpandedTemplate({
 
       {/* 10. Knowledge check */}
       {module.quiz && (
-        <ModuleLessonSection eyebrow={labels.checkEyebrow} heading={labels.checkHeading}>
+        <ModuleLessonSection id={stepAnchorId('knowledge-check')} eyebrow={labels.checkEyebrow} heading={labels.checkHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
             {labels.checkIntro}
           </p>
@@ -213,14 +243,17 @@ export default function SokoExpandedTemplate({
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
             graderFunction="checkSokoKnowledgeCheck"
-            onPassed={() => setQuizPassedTrigger((t) => t + 1)}
+            onPassed={() => {
+              setQuizPassedTrigger((t) => t + 1);
+              if (onProgressChange) onProgressChange();
+            }}
           />
         </ModuleLessonSection>
       )}
 
       {/* 11. Reflection prompts */}
       {module.reflectionQuestions && module.reflectionQuestions.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.reflectEyebrow} heading={labels.reflectHeading}>
+        <ModuleLessonSection id={stepAnchorId('reflection')} eyebrow={labels.reflectEyebrow} heading={labels.reflectHeading}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.88rem', marginBottom: '1.1rem' }}>
             {labels.reflectIntro}
           </p>
@@ -234,7 +267,7 @@ export default function SokoExpandedTemplate({
 
       {/* 12. Completion requirements */}
       {Array.isArray(module.completionRequirements) && module.completionRequirements.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.requirementsEyebrow} heading={labels.requirementsHeading}>
+        <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow={labels.requirementsEyebrow} heading={labels.requirementsHeading}>
           <SokoModuleProgress
             courseSlug={courseSlug}
             moduleRoute={moduleRoute}
@@ -243,13 +276,15 @@ export default function SokoExpandedTemplate({
               ? labels.requirementActivityFacilitator
               : labels.requirementActivityCore}
             refreshTrigger={quizPassedTrigger}
+            showCompleteButton={!player}
+            onChange={onProgressChange}
           />
         </ModuleLessonSection>
       )}
 
       {/* 13. Module closing */}
       {module.closingText && module.closingText.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.closingEyebrow} heading={labels.closingHeading}>
+        <ModuleLessonSection id={stepAnchorId('closing')} eyebrow={labels.closingEyebrow} heading={labels.closingHeading}>
           {module.closingText.map((para, i) => (
             <p key={i} className="font-body" style={{ ...bodyText, marginBottom: '1.15rem' }}>{para}</p>
           ))}
@@ -267,7 +302,7 @@ export default function SokoExpandedTemplate({
 
       {/* 14. Sources */}
       {module.sources && module.sources.length > 0 && (
-        <ModuleLessonSection eyebrow={labels.sourcesEyebrow} heading={labels.sourcesHeading}>
+        <ModuleLessonSection id={stepAnchorId('sources')} eyebrow={labels.sourcesEyebrow} heading={labels.sourcesHeading}>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
             {module.sources.map((s, i) => (
               <li key={i} style={{ marginBottom: '0.5rem' }}>{s}</li>
@@ -286,6 +321,6 @@ export default function SokoExpandedTemplate({
         nextLabel={nextLabel}
         endOfCourse={module.endOfCourse}
       />
-    </ModuleLessonLayout>
+    </SokoModuleFrame>
   );
 }

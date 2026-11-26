@@ -7,10 +7,12 @@ import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import TemplateCourseQuiz from '@/components/courses/template/TemplateCourseQuiz';
 import TemplateCourseProgress from '@/components/courses/template/TemplateCourseProgress';
-import TemplateCoursePlayer from '@/components/courses/template/TemplateCoursePlayer';
-import TemplateCourseFooterBar from '@/components/courses/template/TemplateCourseFooterBar';
-import { stepAnchorId } from '@/components/courses/template/template-player-steps';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
+import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import { moduleSteps, stepAnchorId, REQUIREMENT_LABEL_KEYS } from '@/components/courses/template/template-player-steps';
 import ModuleSources from '@/components/courses/module/ModuleSources';
+import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { fillTemplate } from '@/lib/i18n/fill-template';
 
@@ -63,7 +65,7 @@ const CONTENT = {
  * the quiz answer keys and translated the content. Only this layout's own
  * labels are translated here; the module's content arrives already translated.
  *
- * It renders inside TemplateCoursePlayer — the course outline on the left, the
+ * It renders inside the shared CoursePlayer — the course outline on the left, the
  * course progress bar above and the "Mark Complete & Continue" bar below.
  * Each section carries a tpl-step-* anchor so the outline can link to it.
  */
@@ -77,6 +79,25 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
     ? fillTemplate(c.nextModule, { number: nextModule.number, title: nextModule.title })
     : c.modulesComplete;
   const isLastModule = !nextModule;
+  const L = useCoursePlayerLabels();
+
+  // The footer's completion: the server decides, and names any requirement
+  // that is still outstanding.
+  const completeModule = async () => {
+    const res = await base44.functions.invoke('completeTemplateCourseModule', {
+      courseSlug: course.slug,
+      moduleRoute: module.route,
+    });
+    const data = res && res.data ? res.data : {};
+    if (data.completed) return { completed: true };
+    if (Array.isArray(data.missing) && data.missing.length > 0) {
+      return {
+        completed: false,
+        missing: data.missing.map((step) => L[REQUIREMENT_LABEL_KEYS[step]] || String(step).replace(/_/g, ' ')),
+      };
+    }
+    return { completed: false };
+  };
 
   // Moving to another module starts at its top, not at the old scroll position.
   useEffect(() => {
@@ -84,10 +105,22 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
   }, [module.route]);
 
   return (
-    <TemplateCoursePlayer
+    <CoursePlayer
       course={course}
-      module={module}
-      footer={<TemplateCourseFooterBar course={course} module={module} onRefresh={onRefresh} />}
+      currentRoute={module.route}
+      steps={moduleSteps(module)}
+      footer={
+        <CourseCompleteFooter
+          moduleKey={module.route}
+          number={module.number}
+          title={module.title}
+          completed={!!(module.progress && module.progress.completed)}
+          canSave={!!(module.progress && module.progress.canRecordProgress)}
+          onComplete={completeModule}
+          onCompleted={onRefresh}
+          next={nextModule ? { path: `/courses/${course.slug}/${nextModule.route}`, title: `${nextModule.number} — ${nextModule.title}` } : null}
+        />
+      }
     >
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
@@ -237,6 +270,6 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
             : null
         }
       />
-    </TemplateCoursePlayer>
+    </CoursePlayer>
   );
 }
