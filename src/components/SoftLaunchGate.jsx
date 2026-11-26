@@ -4,7 +4,6 @@ import { canViewInDevelopment } from '@/lib/module-access';
 import {
   LAUNCH_MODE,
   LAUNCH_PUBLIC_PATHS,
-  LAUNCH_PUBLISHED_ARTICLE_SLUGS,
 } from '@/lib/site-mode';
 
 /**
@@ -21,12 +20,7 @@ import {
  * restoring the original full website without rebuilding the router.
  */
 function isPathAllowed(pathname) {
-  if (LAUNCH_PUBLIC_PATHS.has(pathname)) return true;
-  if (pathname.startsWith('/articles/')) {
-    const slug = pathname.slice('/articles/'.length);
-    return LAUNCH_PUBLISHED_ARTICLE_SLUGS.has(slug);
-  }
-  return false;
+  return LAUNCH_PUBLIC_PATHS.has(pathname);
 }
 
 export default function SoftLaunchGate() {

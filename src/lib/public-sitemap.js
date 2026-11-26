@@ -2,8 +2,8 @@
  * Tamu Academy — public sitemap (single source of truth)
  *
  * The sitemap is generated from the same data the site renders: the course
- * overview objects in their track files and the article list. Nothing here is
- * hand-maintained, so a course or article that is published in the app appears
+ * overview objects in their track files. Nothing here is
+ * hand-maintained, so a course that is published in the app appears
  * in the sitemap the next time the app is built and published.
  *
  * Imported by vite.config.js, which writes public/sitemap.xml on every build.
@@ -11,8 +11,6 @@
  * certificates, the Learner's Guide, admin pages).
  */
 
-import { ARTICLES } from './articles-data.js';
-import { PUBLISHED_ARTICLE_SLUGS } from './published-article-slugs.js';
 import { ECONOMICS_COURSE } from './economics-tracks.js';
 import { MENTAL_HEALTH_COURSE } from './mental-health-tracks.js';
 import { WAIYAKI_COURSE } from './waiyaki-tracks.js';
@@ -45,16 +43,9 @@ const STATIC_PAGES = [
   { path: '/privacy', changefreq: 'yearly', priority: 0.3 },
 ];
 
-/** Published articles — the same list the site's article routes expose. */
-export function getPublishedArticles() {
-  return ARTICLES.filter(
-    (article) => article.status === 'published' && PUBLISHED_ARTICLE_SLUGS.includes(article.slug),
-  );
-}
-
 /**
- * Every public URL, with its crawl hints. Course overviews and articles are
- * derived, so publishing either one adds it here automatically.
+ * Every public URL, with its crawl hints. Course overviews are
+ * derived, so publishing one adds it here automatically.
  */
 export function buildSitemapEntries() {
   const entries = [...STATIC_PAGES];
@@ -67,16 +58,6 @@ export function buildSitemapEntries() {
       path: `/courses/${course.slug}`,
       changefreq: 'monthly',
       priority: 0.8,
-    });
-  }
-
-  for (const article of getPublishedArticles()) {
-    entries.push({
-      path: `/articles/${article.slug}`,
-      changefreq: 'monthly',
-      priority: 0.7,
-      // Only a real publication date, never an invented one.
-      lastmod: article.publicationDateISO || null,
     });
   }
 

@@ -28,12 +28,9 @@ import ResetPassword from './pages/ResetPassword';
 import {
   About,
   Academy,
-  AfterTheGunsGoSilentArticle,
   BuildingWealthModule,
   BuildingWealthTogether,
-  CanPolicyMakeUsHappier,
   CertificateDesignSample,
-  ClimateIsAMentalHealthCrisisArticle,
   CourseAccessDeck,
   CommunityInsights,
   Contact,
@@ -46,7 +43,6 @@ import {
   GuidePrint,
   GuideSection,
   InterculturalAILeadershipLab,
-  IsTheICCBiasedAgainstAfricaArticle,
   LearnerStories,
   LearnersGuide,
   LearningHub,
@@ -79,7 +75,6 @@ import {
   SokoCourseCompletion,
   SokoModule,
   SokoPeerFacilitator,
-  TheRealCostOfAlwaysAchieving,
   UbuntuMentalHealth,
   UnderstandingAfricanEconomies,
   TranslationReview,
@@ -93,8 +88,6 @@ import {
   WealthCertificate,
   WealthCourseCompletion,
   Welcome,
-  WhoControlsTheGlobalEconomy,
-  WhyTherapyIsntEnough,
 } from '@/lib/lazy-pages';
 import { SokoLabelsProvider } from '@/components/courses/soko/SokoLabelsProvider';
 
@@ -223,13 +216,6 @@ const AuthenticatedApp = () => {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/academy" element={<Academy />} />
       <Route path="/partnership-inquiry" element={<PartnershipInquiry />} />
-      <Route path="/articles/the-real-cost-of-always-achieving" element={<TheRealCostOfAlwaysAchieving />} />
-      <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
-      <Route path="/articles/can-policy-make-us-happier" element={<CanPolicyMakeUsHappier />} />
-      <Route path="/articles/who-controls-the-global-economy" element={<WhoControlsTheGlobalEconomy />} />
-      <Route path="/articles/is-the-icc-biased-against-africa" element={<IsTheICCBiasedAgainstAfricaArticle />} />
-      <Route path="/articles/after-the-guns-go-silent" element={<AfterTheGunsGoSilentArticle />} />
-      <Route path="/articles/climate-is-a-mental-health-crisis" element={<ClimateIsAMentalHealthCrisisArticle />} />
       {/* Retired routes — redirects */}
       <Route path="/programmes" element={<Navigate to="/courses" replace />} />
       <Route path="/learning-areas" element={<Navigate to="/courses#learning-areas" replace />} />
