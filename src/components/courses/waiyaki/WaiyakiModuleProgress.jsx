@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -75,6 +76,9 @@ export default function WaiyakiModuleProgress({
   completionPath,
   message,
 }) {
+  // In the course player the footer completes the module.
+  const frame = useModuleFrame();
+  const inPlayer = !!(frame && frame.inPlayer);
   const keys = completedKeys || [];
   const allDone = REQUIREMENTS.every((item) => keys.includes(item.key));
 
@@ -181,27 +185,29 @@ export default function WaiyakiModuleProgress({
                 )}
               </>
             ) : (
-              <button
-                type="button"
-                disabled={!allDone || completing}
-                onClick={onComplete}
-                className="font-body"
-                style={{
-                  border: 'none',
-                  padding: '0.7rem 1.7rem',
-                  fontSize: '0.82rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  borderRadius: '2px',
-                  fontFamily: 'inherit',
-                  color: allDone && !completing ? '#24150f' : 'rgba(243,234,216,0.4)',
-                  backgroundColor: allDone && !completing ? '#e8b85b' : 'rgba(232,184,91,0.15)',
-                  cursor: allDone && !completing ? 'pointer' : 'not-allowed',
-                }}
-              >
-                {completing ? 'Saving...' : 'Complete module'}
-              </button>
+              inPlayer ? null : (
+                <button
+                  type="button"
+                  disabled={!allDone || completing}
+                  onClick={onComplete}
+                  className="font-body"
+                  style={{
+                    border: 'none',
+                    padding: '0.7rem 1.7rem',
+                    fontSize: '0.82rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    borderRadius: '2px',
+                    fontFamily: 'inherit',
+                    color: allDone && !completing ? '#24150f' : 'rgba(243,234,216,0.4)',
+                    backgroundColor: allDone && !completing ? '#e8b85b' : 'rgba(232,184,91,0.15)',
+                    cursor: allDone && !completing ? 'pointer' : 'not-allowed',
+                  }}
+                >
+                  {completing ? 'Saving...' : 'Complete module'}
+                </button>
+              )
             )}
           </div>
         </>
