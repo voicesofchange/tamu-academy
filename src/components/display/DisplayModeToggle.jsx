@@ -4,8 +4,10 @@ import { useDisplayMode } from '@/lib/display-mode';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
-  standard: 'Standard',
-  dataSaver: 'Data-Saver',
+  // The control names the feature and its state, so it reads as a switch
+  // rather than an unexplained label.
+  dataSaverOff: 'Data Saver: Off',
+  dataSaverOn: 'Data Saver: On',
   enableLabel: 'Switch on Data-Saver mode: lesson text only, no media downloaded',
   disableLabel: 'Switch off Data-Saver mode and return to the full experience',
   hint: 'Data-Saver keeps lessons to text, with recordings loaded only when you ask for them.',
@@ -23,7 +25,7 @@ export default function DisplayModeToggle({ variant = 'pill' }) {
   const { isDataSaver, setMode } = useDisplayMode();
   const { content: c } = useTranslatedContent('display-mode-toggle', CONTENT);
 
-  const label = isDataSaver ? c.dataSaver : c.standard;
+  const label = isDataSaver ? c.dataSaverOn : c.dataSaverOff;
   const ariaLabel = isDataSaver ? c.disableLabel : c.enableLabel;
   const Icon = isDataSaver ? Feather : Gauge;
 

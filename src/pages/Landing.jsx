@@ -1,12 +1,9 @@
 import React from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import TopNav from '@/components/landing/TopNav';
-import Hero from '@/components/landing/Hero';
+import HomeDiscovery from '@/components/landing/HomeDiscovery';
 import HomeRoleEntry from '@/components/landing/HomeRoleEntry';
-import HowTamuWorks from '@/components/landing/HowTamuWorks';
 import HomeProofStats from '@/components/landing/HomeProofStats';
-import CourseTracks from '@/components/landing/CourseTracks';
-import LivingKnowledgeMap from '@/components/landing/LivingKnowledgeMap';
 import HomeLearnerVoices from '@/components/landing/HomeLearnerVoices';
 import HomePurpose from '@/components/landing/HomePurpose';
 import HomeGoDeeper from '@/components/landing/HomeGoDeeper';
@@ -42,25 +39,20 @@ export default function Landing() {
       />
       <TopNav />
       <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
-        {/* 1. Hero — mission-first promise */}
-        <Hero />
-        {/* 2. Role-based entry — "Begin as a…" */}
-        <HomeRoleEntry />
-        {/* 3. How it works — 4 numbered steps */}
-        <HowTamuWorks />
-        {/* 4. Proof stats — clean stat row */}
+        {/* 1. Course discovery first: short action hero, live search, topic
+               pills and the course grid they filter */}
+        <HomeDiscovery />
+        {/* 2. Live figures and how learning works */}
         <HomeProofStats />
-        {/* 5. Learning areas */}
-        <CourseTracks />
-        {/* 6. Knowledge connections */}
-        <LivingKnowledgeMap />
-        {/* 7. Learner voices */}
+        {/* 3. Role-based entry — "Begin as a…" */}
+        <HomeRoleEntry />
+        {/* 4. Learner voices */}
         <HomeLearnerVoices />
-        {/* 8. Values — mission & interdisciplinary purpose */}
+        {/* 5. Mission, philosophy and cultural framing, near the end */}
         <HomePurpose />
-        {/* 9. Go deeper — open learning resources */}
+        {/* 6. Open learning resources */}
         <HomeGoDeeper />
-        {/* 10. Final CTA */}
+        {/* 7. Final call to action */}
         <HomeFinalCTA />
       </main>
       <SiteFooter />

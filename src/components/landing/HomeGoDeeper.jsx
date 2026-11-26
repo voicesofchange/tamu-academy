@@ -2,19 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
-const RESOURCES = [
-  {
-    icon: BookOpen,
-    label: 'Study',
-    title: 'Open Learning Resources',
-    desc: 'Guides, worksheets, and reflective tools to support your learning journey.',
-    cta: 'View Resources',
-    to: '/resources',
-  },
-];
+const CONTENT = {
+  eyebrow: 'Go Deeper',
+  heading: 'Start learning right now — no account needed.',
+  label: 'Study',
+  title: 'Open Learning Resources',
+  desc: 'Guides, worksheets, and reflective tools to support your learning journey.',
+  cta: 'View Resources',
+};
 
 export default function HomeGoDeeper() {
+  const { content: c } = useTranslatedContent('home-go-deeper', CONTENT);
+  const RESOURCES = [
+    { icon: BookOpen, label: c.label, title: c.title, desc: c.desc, cta: c.cta, to: '/resources' },
+  ];
   return (
     <section
       id="go-deeper"
@@ -34,10 +37,10 @@ export default function HomeGoDeeper() {
           style={{ marginBottom: '2.75rem' }}
         >
           <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-            Go Deeper
+            {c.eyebrow}
           </p>
           <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
-            Start learning right now — no account needed.
+            {c.heading}
           </h2>
         </motion.div>
 
