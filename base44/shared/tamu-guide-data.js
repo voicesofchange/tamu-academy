@@ -37,6 +37,50 @@ export const TAMU_GUIDE_COURSES = [
     level: 'Foundational',
     format: 'Self-paced with private reflection',
   },
+  {
+    slug: 'building-wealth-together',
+    title: 'Building Wealth Together: Money, Enterprise and Community Leadership',
+    shortDescription:
+      'A nine-module course that starts with community: managing your own money, starting and sustaining an enterprise, and leading groups that handle shared money and shared risk.',
+    moduleCount: 9,
+    estimatedTime: 'Approximately 2\u20133 hours per module, plus the capstone',
+    overviewRoute: '/courses/building-wealth-together',
+    level: 'Applied',
+    format: 'Self-paced, with a capstone project',
+  },
+  {
+    slug: 'sauti-za-soko',
+    title: 'Sauti za Soko: Markets, Climate and Community Power',
+    shortDescription:
+      'A seven-module course built with young market vendors in Kiambu, and written so that learners anywhere can follow it: reading markets, managing cash, anticipating weather risk, engaging county government, organising collectively and planning for the long term.',
+    moduleCount: 7,
+    estimatedTime: 'Approximately 6\u20138 hours',
+    overviewRoute: '/courses/sauti-za-soko',
+    level: 'Applied',
+    format: 'Self-paced, with an optional peer discussion',
+  },
+  {
+    slug: 'diaspora-remittance-economy',
+    title: 'The Diaspora Remittance Economy',
+    shortDescription:
+      'A three-module course on the money that crosses borders between families: what a remittance is, what it costs to send, and what happens where it lands.',
+    moduleCount: 3,
+    estimatedTime: 'Approximately 2 hours',
+    overviewRoute: '/courses/diaspora-remittance-economy',
+    level: 'Foundational',
+    format: 'Self-paced',
+  },
+  {
+    slug: 'waiyaki-wa-hinga',
+    title: 'Waiyaki wa Hinga: Leadership, Resistance and Historical Memory',
+    shortDescription:
+      'A five-module research and memory course on a nineteenth-century Kikuyu leader, the beginnings of colonial rule in Kenya, and the long argument over what his life means.',
+    moduleCount: 5,
+    estimatedTime: 'Approximately 4\u20135 hours',
+    overviewRoute: '/courses/waiyaki-wa-hinga',
+    level: 'Research-based',
+    format: 'Self-paced, with a final assessment and a written project',
+  },
 ];
 
 export const TAMU_GUIDE_RESOURCES = [

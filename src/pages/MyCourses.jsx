@@ -11,6 +11,7 @@ import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { SAUTI_ZA_SOKO_COURSE, SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 import { DIASPORA_REMITTANCE_COURSE } from '@/lib/diaspora-remittance-tracks';
+import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
 import { buildCourseProgress } from '@/lib/learner-progress';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
@@ -35,6 +36,7 @@ const COURSE_META = {
   [SAUTI_ZA_SOKO_COURSE_SLUG]: SAUTI_ZA_SOKO_COURSE,
   [WAIYAKI_COURSE_SLUG]: WAIYAKI_COURSE,
   [DIASPORA_REMITTANCE_COURSE.slug]: DIASPORA_REMITTANCE_COURSE,
+  [BUILDING_WEALTH_TOGETHER_COURSE.slug]: BUILDING_WEALTH_TOGETHER_COURSE,
 };
 
 const ALL_COURSES = [
@@ -43,6 +45,7 @@ const ALL_COURSES = [
   SAUTI_ZA_SOKO_COURSE,
   WAIYAKI_COURSE,
   DIASPORA_REMITTANCE_COURSE,
+  BUILDING_WEALTH_TOGETHER_COURSE,
 ];
 
 /**
@@ -102,6 +105,16 @@ const COURSE_VISUALS = {
       { icon: 'Layers', label: '3 modules' },
       { icon: 'Clock', label: 'Self-paced' },
       { icon: 'BarChart', label: 'Foundational' },
+    ],
+  },
+  [BUILDING_WEALTH_TOGETHER_COURSE.slug]: {
+    number: '02',
+    icon: 'Users',
+    accent: 'rgba(217,155,55,0.30)',
+    meta: [
+      { icon: 'Layers', label: '9 modules' },
+      { icon: 'Clock', label: 'Self-paced' },
+      { icon: 'BarChart', label: 'Applied' },
     ],
   },
 };
@@ -188,7 +201,7 @@ export default function MyCourses() {
     let cancelled = false;
     (async () => {
       try {
-        const [mhRes, econRes, sokoRes, waiyakiRes, pubRes, diasporaEnrollments, diasporaModuleProgress] = await Promise.all([
+        const [mhRes, econRes, sokoRes, waiyakiRes, pubRes, diasporaEnrollments, diasporaModuleProgress, wealthRes] = await Promise.all([
           base44.functions.invoke('getMentalHealthCourseCompletion', { courseSlug: MENTAL_HEALTH_COURSE.slug }),
           base44.functions.invoke('getEconomicsCourseCompletion', { courseSlug: ECONOMICS_COURSE.slug }),
           base44.functions.invoke('getSokoCourseCompletion', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG }),
@@ -203,6 +216,10 @@ export default function MyCourses() {
           user?.id
             ? base44.entities.ModuleProgress.filter({ learner_id: user.id, course_slug: DIASPORA_REMITTANCE_COURSE.slug })
             : [],
+          // A failure here leaves the other courses showing.
+          base44.functions
+            .invoke('getWealthCourseCompletion', { courseSlug: BUILDING_WEALTH_TOGETHER_COURSE.slug })
+            .catch(() => null),
         ]);
         if (cancelled) return;
         setPubStatus(pubRes?.data?.courses || {});
@@ -211,6 +228,7 @@ export default function MyCourses() {
         if (econRes?.data?.hasEnrollment) enrolled.push({ slug: ECONOMICS_COURSE.slug, completion: econRes.data });
         if (sokoRes?.data?.hasEnrollment) enrolled.push({ slug: SAUTI_ZA_SOKO_COURSE_SLUG, completion: sokoRes.data });
         if (waiyakiRes?.data?.hasEnrollment) enrolled.push({ slug: WAIYAKI_COURSE_SLUG, completion: waiyakiRes.data });
+        if (wealthRes?.data?.hasEnrollment) enrolled.push({ slug: BUILDING_WEALTH_TOGETHER_COURSE.slug, completion: wealthRes.data });
 
         const diaspora = buildCourseProgress(
           DIASPORA_REMITTANCE_COURSE,

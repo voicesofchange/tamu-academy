@@ -68,6 +68,7 @@ export const TEMPLATE_COURSE_REGISTRY = {
   // A working demonstration of the template. Read it, then delete it when you
   // add your own course. Its second module is unpublished on purpose, so you
   // can see the publication gate and the prerequisite chain in action.
+  // It is marked internal and closed to learner enrollment.
   'template-example': {
     slug: 'template-example',
     title: 'Template Example Course: Reading a Community Economy',
@@ -75,7 +76,10 @@ export const TEMPLATE_COURSE_REGISTRY = {
     track: 'Template Course',
     completionStatement:
       'This certifies that the learner named below has completed every module of the Template Example Course, including the module lessons, activities, knowledge checks and reflections. This certificate confirms completion of an educational course. It does not constitute professional licensing, accreditation or authorisation to provide financial, legal or business advice.',
-    enrollmentOpen: true,
+    // Demo only: closed to learners (administrators can still enroll to
+    // review it) and left out of public course lists.
+    internal: true,
+    enrollmentOpen: false,
     certificate: {
       includeEnrollmentId: true,
       verificationCode: true,
