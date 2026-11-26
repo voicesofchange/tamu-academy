@@ -17,7 +17,6 @@ export default {
     myProgress: 'Ma progression',
     learningHub: 'Espace apprenant',
     myProfile: 'Mon profil',
-    ourFoundation: 'Nos fondements',
     myLearning: 'Mon apprentissage',
     privacy: 'Confidentialité',
     stories: 'Témoignages',

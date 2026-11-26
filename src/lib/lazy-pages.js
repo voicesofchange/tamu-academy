@@ -66,7 +66,6 @@ export const CommunityInsights = lazyPage(() => import('@/pages/CommunityInsight
 export const TranslationReview = lazyPage(() => import('@/pages/TranslationReview'));
 export const Contact = lazyPage(() => import('@/pages/Contact'));
 export const Privacy = lazyPage(() => import('@/pages/Privacy'));
-export const Academy = lazyPage(() => import('@/pages/Academy'));
 export const PartnershipInquiry = lazyPage(() => import('@/pages/PartnershipInquiry'));
 
 export const MyCourses = lazyPage(() => import('@/pages/MyCourses'));

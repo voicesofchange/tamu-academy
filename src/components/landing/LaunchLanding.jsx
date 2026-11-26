@@ -7,7 +7,6 @@ import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const CONTENT = {
   navAttr: 'A Waiyaki House learning venture',
-  exploreAcademy: 'Explore the Academy',
   joinEarlyAccess: 'Join Early Access',
   headline1: "Tamu — 'Sweet' learning",
   headline2: 'for a connected world.',
@@ -178,20 +177,6 @@ export default function LaunchLanding() {
             flexWrap: 'wrap',
           }}
         >
-          <Link
-            to="/academy"
-            className="font-body launch-nav-link"
-            style={{
-              color: 'rgba(243,234,216,0.85)',
-              fontSize: '0.72rem',
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              fontWeight: 500,
-              textDecoration: 'none',
-            }}
-          >
-            {c.exploreAcademy}
-          </Link>
           <a
             href="#early-access"
             className="font-body launch-nav-join"
@@ -303,28 +288,6 @@ export default function LaunchLanding() {
             >
               {c.joinEarlyAccess}
             </a>
-            <Link
-              to="/academy"
-              className="font-body launch-cta-secondary"
-              style={{
-                display: 'inline-block',
-                color: '#f8f0df',
-                backgroundColor: 'transparent',
-                fontSize: '0.72rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                fontWeight: 500,
-                fontFamily: "'DM Sans', sans-serif",
-                border: '1px solid rgba(232,184,91,0.5)',
-                borderRadius: '3px',
-                padding: '0.8rem 1.55rem',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                transition: 'border-color 0.25s ease, color 0.25s ease',
-              }}
-            >
-              {c.exploreAcademy}
-            </Link>
           </div>
 
           {/* Early Access form */}
@@ -848,16 +811,12 @@ export default function LaunchLanding() {
           outline-offset: 3px;
         }
         .launch-cta-primary:focus-visible,
-        .launch-cta-secondary:focus-visible,
-        .launch-nav-link:focus-visible,
         .launch-nav-join:focus-visible {
           outline: 2px solid rgba(232,184,91,0.7);
           outline-offset: 3px;
         }
         .launch-cta-primary:hover { background-color: rgba(232,184,91,0.85); }
-        .launch-cta-secondary:hover { border-color: rgba(232,184,91,0.85); color: #e8b85b; }
         .launch-nav-join:hover { background-color: rgba(232,184,91,0.85); }
-        .launch-nav-link:hover { color: #e8b85b; }
         @media (max-width: 600px) {
           .launch-topnav-attr { display: none; }
         }
@@ -866,8 +825,7 @@ export default function LaunchLanding() {
           .launch-actions > a { text-align: center; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .launch-cta-primary,
-          .launch-cta-secondary { transition: none !important; }
+          .launch-cta-primary { transition: none !important; }
         }
         .launch-label:focus-within {
           outline: none;

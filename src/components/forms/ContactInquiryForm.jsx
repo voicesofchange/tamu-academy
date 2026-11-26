@@ -91,7 +91,6 @@ const CONTENT = {
   successMessage: 'Your inquiry has been received. Tamu Academy will review the information you provided as capacity allows.',
   successHeadingPartnership: 'Thank you for reaching out.',
   successMessagePartnership: 'Your partnership inquiry has been received. The Tamu Academy team will review the information and follow up using the contact details you provided.',
-  returnToAcademy: 'Return to the Academy',
   returnToHomepage: 'Return to the Homepage',
   exploreProgrammes: 'Explore Programmes',
 };
@@ -274,14 +273,8 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           {isPartnership ? (
             <>
               <Link
-                to="/academy"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
-              >
-                {c.returnToAcademy}
-              </Link>
-              <Link
                 to="/"
-                style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', backgroundColor: 'transparent', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
+                style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.2rem' }}
               >
                 {c.returnToHomepage}
               </Link>

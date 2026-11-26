@@ -23,7 +23,6 @@ export const LAUNCH_MODE = false;
  */
 export const LAUNCH_PUBLIC_PATHS = new Set([
   '/',
-  '/academy',
   '/partnership-inquiry',
   '/privacy',
 ]);
