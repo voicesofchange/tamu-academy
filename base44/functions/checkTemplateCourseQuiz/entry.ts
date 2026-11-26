@@ -21,6 +21,10 @@ import {
  *   - Learners need a published module, an enrollment and a completed
  *     prerequisite. An admin records progress only while enrolled and published.
  *   - A pass sets quiz_passed (never unsets it) and knowledge_check_completed_at.
+ *   - Every accepted submission whose progress is recorded also writes one
+ *     QuizAttempt (learner_id, course_slug, module_slug, score,
+ *     total_questions, passed, submitted_at), as the Mental Health and Waiyaki
+ *     graders do. Administrator previews that record no progress write none.
  */
 export default async function (req: Request): Promise<Response> {
   try {
@@ -124,6 +128,23 @@ export default async function (req: Request): Promise<Response> {
 
     if (canRecordProgress) {
       const now = new Date().toISOString();
+
+      // One attempt record per accepted submission. A failure to write it is
+      // logged and never costs the learner their graded result or progress.
+      try {
+        await base44.asServiceRole.entities.QuizAttempt.create({
+          learner_id: user.id,
+          course_slug: courseSlug,
+          module_slug: moduleSlug,
+          score,
+          total_questions: totalQuestions,
+          passed,
+          submitted_at: now,
+        });
+      } catch (err) {
+        console.error('[checkTemplateCourseQuiz] Failed to record attempt:', err && err.message);
+      }
+
       const row = await findProgressRow(base44, user.id, courseSlug, moduleSlug);
       if (!row) {
         await base44.asServiceRole.entities.ModuleProgress.create({

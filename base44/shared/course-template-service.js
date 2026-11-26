@@ -25,6 +25,7 @@ import {
   getTemplateModuleContent,
   getTemplateModuleRequirements,
 } from './course-template-curriculum.js';
+import { computeCourseProgress } from './enrollment-progress.js';
 
 /**
  * Learner-facing module sections the shared translation layer may translate.
@@ -206,7 +207,16 @@ export async function recordLastSection(
   });
 }
 
-/** The course outline and each module's state for one learner. */
+/**
+ * The course outline and each module's state for one learner.
+ *
+ * Each module also reports its prerequisite and whether it is locked for
+ * this learner (unpublished, or its prerequisite not yet complete), so the
+ * player's outline can show a lock before the learner tries to open it. The
+ * course-level progress is the same figure the learner's CourseEnrollment
+ * carries (computeCourseProgress), so the bar and the enrollment never
+ * disagree.
+ */
 export async function courseOutlineFor(base44, learnerId, courseSlug) {
   const course = getTemplateCourse(courseSlug);
   if (!course) return null;
@@ -220,20 +230,33 @@ export async function courseOutlineFor(base44, learnerId, courseSlug) {
     if (row && row.module_slug) byRoute.set(row.module_slug, row);
   }
 
+  const isCompleted = (route) => {
+    const row = byRoute.get(route);
+    return !!(row && row.status === 'completed' && row.completed_at);
+  };
+  const progress = computeCourseProgress(courseSlug, Array.isArray(rows) ? rows : []);
+
   return {
     slug: course.slug,
     title: course.title,
     pillar: course.pillar,
     track: course.track,
+    progressPercentage: progress.progress_percentage ?? 0,
+    completedModules: progress.completed_modules,
+    totalModules: progress.total_modules,
     modules: course.modules.map((module) => {
       const row = byRoute.get(module.route) || null;
+      const prerequisite = getTemplateModulePrerequisite(courseSlug, module.route);
+      const published = !!module.published;
       return {
         route: module.route,
         number: module.number,
         title: module.title,
-        published: !!module.published,
+        published,
         status: row ? row.status : 'not_started',
-        completed: !!(row && row.status === 'completed' && row.completed_at),
+        completed: isCompleted(module.route),
+        prerequisite: prerequisite || null,
+        locked: !published || (!!prerequisite && !isCompleted(prerequisite)),
       };
     }),
   };

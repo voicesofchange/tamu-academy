@@ -13,15 +13,20 @@ import StructuredData from '@/components/seo/StructuredData';
  * ModuleLessonLayout) compose this frame instead of each repeating it, so the
  * background, landmarks and accessibility affordances stay identical across
  * the whole site. Callers vary only their own `main` box through `mainStyle`.
+ *
+ * `overflowX` defaults to 'hidden'. A page with sticky parts (the template
+ * course player) passes 'clip', which also stops sideways scrolling but,
+ * unlike 'hidden', does not turn the frame into a scroll container — so
+ * position: sticky keeps working inside it.
  */
-export default function SiteShell({ children, mainStyle }) {
+export default function SiteShell({ children, mainStyle, overflowX = 'hidden' }) {
   return (
     <div
       style={{
         backgroundColor: 'var(--tamu-espresso)',
         minHeight: '100vh',
         width: '100%',
-        overflowX: 'hidden',
+        overflowX,
         fontFamily: 'var(--font-body)',
       }}
     >
