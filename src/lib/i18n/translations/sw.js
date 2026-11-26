@@ -72,7 +72,9 @@ export default {
     pathIntro: 'Kozi hufuata mfuatilio wazi, ukiendelea kutoka dhana za msingi hadi hatua ya matumizi.',
     modules: 'Moduli',
     modulesIntro:
-      'Moduli sita zinazohusiana zinajenga muundo. Kila moduli ina masomo yaliyorekodiwa, maelezo ya maandishi, maswali ya tafakari, na ukaguzi wa maarifa.',
+      'Moduli {count} zinazohusiana zinajenga muundo. Kila moduli ina masomo yaliyorekodiwa, maelezo ya maandishi, maswali ya tafakari, na ukaguzi wa maarifa.',
+    // Spelled-out module counts that fill {count} in modulesIntro.
+    moduleCountWords: { 2: 'mbili', 3: 'tatu', 4: 'nne', 5: 'tano', 6: 'sita', 7: 'saba', 8: 'nane', 9: 'tisa', 10: 'kumi' },
     milestone: 'Hatua ya Matumizi',
     progress: 'Maendeleo ya Mwanafunzi',
     certificate: 'Cheti',
