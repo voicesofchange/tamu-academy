@@ -15,20 +15,7 @@
  *     registry (has a completion statement) AND is live (enrollment
  *     open AND at least one published module).
  */
-import {
-  MENTAL_HEALTH_COURSE_SLUG,
-  isEnrollmentOpen as isMhEnrollmentOpen,
-  isModulePublished as isMhModulePublished,
-} from '../../shared/mental-health-curriculum.js';
-import {
-  MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES,
-} from '../../shared/mental-health-certificate.js';
-import {
-  ECONOMICS_COURSE_SLUG,
-  ECONOMICS_MODULE_ROUTES,
-  isEconomicsEnrollmentOpen,
-  isEconomicsModulePublished,
-} from '../../shared/economics-course-config.js';
+import { coursePublicationStatuses } from '../../shared/course-publication-status.js';
 import { getCourseConfig } from '../../shared/course-registry.js';
 import {
   TAMU_GUIDE_COURSES,
@@ -38,25 +25,9 @@ import {
 
 export default async function(_req: Request): Promise<Response> {
   try {
-    // Publication status per course (mirrors getPublicationStatus).
-    const mhPublishedCount = MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES.filter(
-      (r) => isMhModulePublished(MENTAL_HEALTH_COURSE_SLUG, r)
-    ).length;
-    const mhEnrollmentOpen = isMhEnrollmentOpen();
-    const mhTotalModules = MENTAL_HEALTH_CERTIFICATE_MODULE_ROUTES.length;
-    const mhIsLive = mhEnrollmentOpen && mhPublishedCount > 0;
-
-    const econPublishedCount = ECONOMICS_MODULE_ROUTES.filter(
-      (r) => isEconomicsModulePublished(ECONOMICS_COURSE_SLUG, r)
-    ).length;
-    const econEnrollmentOpen = isEconomicsEnrollmentOpen();
-    const econTotalModules = ECONOMICS_MODULE_ROUTES.length;
-    const econIsLive = econEnrollmentOpen && econPublishedCount > 0;
-
-    const pubStatus: Record<string, { enrollmentOpen: boolean; publishedModuleCount: number; totalModules: number; isLive: boolean }> = {
-      [MENTAL_HEALTH_COURSE_SLUG]: { enrollmentOpen: mhEnrollmentOpen, publishedModuleCount: mhPublishedCount, totalModules: mhTotalModules, isLive: mhIsLive },
-      [ECONOMICS_COURSE_SLUG]: { enrollmentOpen: econEnrollmentOpen, publishedModuleCount: econPublishedCount, totalModules: econTotalModules, isLive: econIsLive },
-    };
+    // Publication status for every course, from the same helper
+    // getPublicationStatus uses.
+    const pubStatus = coursePublicationStatuses();
 
     // Build the public course list, enriching each entry with live
     // publication status and server-verified certificate availability.

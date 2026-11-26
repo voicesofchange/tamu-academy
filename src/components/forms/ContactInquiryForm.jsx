@@ -23,6 +23,11 @@ const PROGRAMME_OPTIONS = [
   'Not Sure Yet',
 ];
 
+// Still valid values for ContactInquiry.programme_interest (saved inquiries
+// keep them), but no longer offered: the First Lessons video series was
+// retired with the Videos page.
+const HIDDEN_PROGRAMME_OPTIONS = new Set(['Tamu Academy First Lessons']);
+
 const REFERRAL_OPTIONS = [
   'Search engine',
   'Social media',
@@ -72,6 +77,7 @@ const CONTENT = {
   updatesConsent: 'I would like to receive occasional updates about Tamu Academy programmes and resources.',
   privacyAck: 'I understand that the information I provide will be used to review and respond to my inquiry.',
   privacyNotice: 'Tamu Academy will use the information submitted through this form to understand and respond to your inquiry. Please do not include sensitive personal, financial, medical, immigration, or identification information.',
+  privacyPolicyLink: 'Read our Privacy Policy.',
   submitting: 'Submitting…',
   submit: 'Submit Inquiry',
   errorBanner: 'We could not submit your inquiry. Please review the form and try again.',
@@ -425,7 +431,11 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           style={{ ...inputStyle, cursor: 'pointer' }}
         >
           <option value="">{c.selectProgramme}</option>
-          {PROGRAMME_OPTIONS.map((p, i) => <option key={p} value={p}>{c.programmeOptions[i]}</option>)}
+          {PROGRAMME_OPTIONS.map((p, i) => (
+            HIDDEN_PROGRAMME_OPTIONS.has(p) && form.programme_interest !== p
+              ? null
+              : <option key={p} value={p}>{c.programmeOptions[i]}</option>
+          ))}
         </select>
       </div>
 
@@ -504,7 +514,10 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Privacy notice */}
       <p className="font-body" style={{ color: 'rgba(243,234,216,0.58)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginBottom: '1.75rem' }}>
-        {c.privacyNotice}
+        {c.privacyNotice}{' '}
+        <Link to="/privacy" style={{ color: '#e8b85b', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          {c.privacyPolicyLink}
+        </Link>
       </p>
 
       <button
