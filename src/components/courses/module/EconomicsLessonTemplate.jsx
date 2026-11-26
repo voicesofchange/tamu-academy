@@ -14,10 +14,32 @@ import EconomicsMediaSection, { normalizeLessonVideos } from '@/components/cours
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import EconomicsAppliedActivity from '@/components/courses/module/EconomicsAppliedActivity';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const tpl = (str, vars) => str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+/**
+ * The module's frame: the shared course player when a `player` is given,
+ * otherwise the single reading column. Defined once, outside the template,
+ * so the lesson is never remounted on a re-render (a half-answered knowledge
+ * check keeps its answers).
+ */
+function EconomicsModuleFrame({ player, moduleRoute, children }) {
+  if (!player) return <ModuleLessonLayout>{children}</ModuleLessonLayout>;
+  return (
+    <CoursePlayer course={player.course} currentRoute={moduleRoute} steps={player.steps} footer={player.footer}>
+      {children}
+    </CoursePlayer>
+  );
+}
+
+/** An anchor the course player's outline can jump to. */
+function Step({ id, children }) {
+  return <div id={stepAnchorId(id)}>{children}</div>;
+}
 
 const CONTENT = {
   moduleCompetency: 'Module Competency',
@@ -79,8 +101,15 @@ const CONTENT = {
  * role-gated getModuleContent backend function, the quiz answer key never
  * reaches the browser, and progress, completion and navigation continue to
  * run through the same shared components as before.
+ *
+ * With a `player` prop ({ course, steps, footer }) the module renders inside
+ * the shared course player — outline, progress bar and "Mark Complete &
+ * Continue" footer — and the footer completes the module.
+ * `onProgressChange` is called whenever a step is saved or the knowledge
+ * check is passed, so the player can refresh. Without `player` the layout is
+ * unchanged.
  */
-export default function EconomicsLessonTemplate({ course, module }) {
+export default function EconomicsLessonTemplate({ course, module, player = null, onProgressChange }) {
   const { content: c } = useTranslatedContent('econ-lesson-template', CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${module.route}`;
@@ -102,7 +131,7 @@ export default function EconomicsLessonTemplate({ course, module }) {
   const hasWrittenQuestion = quizQuestions.some((q) => q.written);
 
   return (
-    <ModuleLessonLayout>
+    <EconomicsModuleFrame player={player} moduleRoute={module.route}>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={module.competency}
@@ -117,7 +146,7 @@ export default function EconomicsLessonTemplate({ course, module }) {
         coursePath={coursePath}
         moduleLabel={module.number}
       />
-      <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} />
+      {!player && <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} />}
 
       <ModuleHero
         courseSlug={course.slug}
@@ -128,63 +157,75 @@ export default function EconomicsLessonTemplate({ course, module }) {
         metaItems={[{ icon: 'Clock', label: `${c.estimatedTime}: ${module.estimatedTime}` }]}
       />
 
-      <ModuleTextSection
-        eyebrow={c.objectivesEyebrow}
-        heading={c.objectivesHeading}
-        items={module.learningObjectives}
-      />
-
-      <ModuleTextSection
-        eyebrow={c.introEyebrow}
-        heading={c.introHeading}
-        paragraphs={module.overview}
-      />
-
-      {hasMedia && (
-        <EconomicsMediaSection
-          module={module}
-          eyebrow={c.mediaEyebrow}
-          heading={c.mediaHeading}
-          intro={c.mediaIntro}
-        />
-      )}
-
-      {hasMedia && (
+      <Step id="objectives">
         <ModuleTextSection
-          eyebrow={c.watchEyebrow}
-          heading={c.watchHeading}
-          intro={c.watchIntro}
-          items={module.watchingQuestions}
+          eyebrow={c.objectivesEyebrow}
+          heading={c.objectivesHeading}
+          items={module.learningObjectives}
         />
+      </Step>
+
+      <Step id="introduction">
+        <ModuleTextSection
+          eyebrow={c.introEyebrow}
+          heading={c.introHeading}
+          paragraphs={module.overview}
+        />
+      </Step>
+
+      {hasMedia && (
+        <Step id="media">
+          <EconomicsMediaSection
+            module={module}
+            eyebrow={c.mediaEyebrow}
+            heading={c.mediaHeading}
+            intro={c.mediaIntro}
+          />
+        </Step>
       )}
 
-      <ModuleTextSection
-        eyebrow={c.explanationEyebrow}
-        heading={c.explanationHeading}
-        paragraphs={module.explanation}
-      />
+      {hasMedia && (
+        <Step id="while-watching">
+          <ModuleTextSection
+            eyebrow={c.watchEyebrow}
+            heading={c.watchHeading}
+            intro={c.watchIntro}
+            items={module.watchingQuestions}
+          />
+        </Step>
+      )}
+
+      <Step id="explanation">
+        <ModuleTextSection
+          eyebrow={c.explanationEyebrow}
+          heading={c.explanationHeading}
+          paragraphs={module.explanation}
+        />
+      </Step>
 
       {Array.isArray(module.keyConcepts) && module.keyConcepts.length > 0 && (
-        <ModuleLessonSection eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
+        <ModuleLessonSection id={stepAnchorId('concepts')} eyebrow={c.conceptsEyebrow} heading={c.conceptsHeading}>
           <EconomicsKeyConcepts concepts={module.keyConcepts} examplePrefix={c.examplePrefix} />
         </ModuleLessonSection>
       )}
 
       {module.caseStudy && (
-        <ModuleLessonSection eyebrow={c.caseStudyEyebrow} heading={c.caseStudyHeading}>
+        <ModuleLessonSection id={stepAnchorId('case-study')} eyebrow={c.caseStudyEyebrow} heading={c.caseStudyHeading}>
           <AfricanCaseStudy caseStudy={module.caseStudy} />
         </ModuleLessonSection>
       )}
 
-      <EconomicsAppliedActivity
-        module={module}
-        courseSlug={course.slug}
-        eyebrow={c.activityEyebrow}
-        purposePrefix={c.purposePrefix}
-      />
+      <Step id="activity">
+        <EconomicsAppliedActivity
+          module={module}
+          courseSlug={course.slug}
+          eyebrow={c.activityEyebrow}
+          purposePrefix={c.purposePrefix}
+        />
+      </Step>
 
       {module.quiz && (
-        <ModuleLessonSection eyebrow={c.checkEyebrow} heading={c.checkHeading}>
+        <ModuleLessonSection id={stepAnchorId('knowledge-check')} eyebrow={c.checkEyebrow} heading={c.checkHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
             {tpl(c.checkIntro, {
               passingScore: module.quiz.passingScore,
@@ -196,33 +237,42 @@ export default function EconomicsLessonTemplate({ course, module }) {
             quiz={module.quiz}
             courseSlug={course.slug}
             moduleRoute={module.route}
-            onPassed={() => setQuizPassedTrigger((t) => t + 1)}
+            onPassed={() => {
+              setQuizPassedTrigger((t) => t + 1);
+              if (onProgressChange) onProgressChange();
+            }}
           />
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection
-        eyebrow={c.reflectEyebrow}
-        heading={c.reflectHeading}
-        items={module.reflectionQuestions}
-      />
+      <Step id="reflection">
+        <ModuleTextSection
+          eyebrow={c.reflectEyebrow}
+          heading={c.reflectHeading}
+          items={module.reflectionQuestions}
+        />
+      </Step>
 
       {Array.isArray(module.completionRequirements) && module.completionRequirements.length > 0 && (
-        <ModuleLessonSection eyebrow={c.requirementsEyebrow} heading={c.requirementsHeading}>
+        <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow={c.requirementsEyebrow} heading={c.requirementsHeading}>
           <EconomicsModuleProgress
             courseSlug={course.slug}
             moduleRoute={module.route}
             completionRequirements={module.completionRequirements}
             refreshTrigger={quizPassedTrigger}
+            showCompleteButton={!player}
+            onChange={onProgressChange}
           />
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection
-        eyebrow={c.closingEyebrow}
-        heading={c.closingHeading}
-        paragraphs={module.closingText}
-      />
+      <Step id="closing">
+        <ModuleTextSection
+          eyebrow={c.closingEyebrow}
+          heading={c.closingHeading}
+          paragraphs={module.closingText}
+        />
+      </Step>
 
       <ModuleTextSection
         eyebrow={c.courseClosingEyebrow}
@@ -230,12 +280,14 @@ export default function EconomicsLessonTemplate({ course, module }) {
         paragraphs={module.courseClosingText}
       />
 
-      <ModuleTextSection
-        eyebrow={c.sourcesEyebrow}
-        heading={c.sourcesHeading}
-        items={module.sources}
-        placeholder={c.sourcesPlaceholder}
-      />
+      <Step id="sources">
+        <ModuleTextSection
+          eyebrow={c.sourcesEyebrow}
+          heading={c.sourcesHeading}
+          items={module.sources}
+          placeholder={c.sourcesPlaceholder}
+        />
+      </Step>
 
       <ModuleNav
         coursePath={coursePath}
@@ -245,6 +297,6 @@ export default function EconomicsLessonTemplate({ course, module }) {
         nextLabel={nextLabel}
         endOfCourse={module.endOfCourse}
       />
-    </ModuleLessonLayout>
+    </EconomicsModuleFrame>
   );
 }
