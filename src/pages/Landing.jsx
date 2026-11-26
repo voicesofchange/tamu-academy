@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import TopNav from '@/components/landing/TopNav';
 import HomeDiscovery from '@/components/landing/HomeDiscovery';
-import HomeRoleEntry from '@/components/landing/HomeRoleEntry';
 import HomeProofStats from '@/components/landing/HomeProofStats';
+import HomeHowItWorks from '@/components/landing/HomeHowItWorks';
+import HomeLearningAreas from '@/components/landing/HomeLearningAreas';
 import HomeLearnerVoices from '@/components/landing/HomeLearnerVoices';
 import HomePurpose from '@/components/landing/HomePurpose';
-import HomeGoDeeper from '@/components/landing/HomeGoDeeper';
 import HomeFinalCTA from '@/components/landing/HomeFinalCTA';
 import SiteFooter from '@/components/landing/SiteFooter';
 
@@ -18,6 +18,18 @@ import LaunchLanding from '@/components/landing/LaunchLanding';
 import { LAUNCH_MODE } from '@/lib/site-mode';
 
 export default function Landing() {
+  // The learning-area filter is shared by the course grid and the learning
+  // areas section, which sets it and scrolls back to the grid.
+  const [area, setArea] = useState('all');
+  const showArea = (id) => {
+    setArea(id);
+    const grid = document.getElementById('home-courses');
+    if (grid) {
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      grid.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    }
+  };
+
   if (LAUNCH_MODE) {
     return <LaunchLanding />;
   }
@@ -39,19 +51,19 @@ export default function Landing() {
       />
       <TopNav />
       <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
-        {/* 1. Course discovery first: short action hero, live search, topic
-               pills and the course grid they filter */}
-        <HomeDiscovery />
-        {/* 2. Live figures and how learning works */}
+        {/* 1. Short action hero with search, then the featured course grid
+               with its learning-area filter, on parchment */}
+        <HomeDiscovery area={area} onAreaChange={setArea} />
+        {/* 2. Live figures */}
         <HomeProofStats />
-        {/* 3. Role-based entry — "Begin as a…" */}
-        <HomeRoleEntry />
-        {/* 4. Learner voices */}
+        {/* 3. The four learner steps */}
+        <HomeHowItWorks />
+        {/* 4. The five learning areas; each filters the grid above */}
+        <HomeLearningAreas onSelect={showArea} />
+        {/* 5. Learner voices */}
         <HomeLearnerVoices />
-        {/* 5. Mission, philosophy and cultural framing, near the end */}
+        {/* 6. Mission, philosophy and cultural framing, near the end */}
         <HomePurpose />
-        {/* 6. Open learning resources */}
-        <HomeGoDeeper />
         {/* 7. Final call to action */}
         <HomeFinalCTA />
       </main>

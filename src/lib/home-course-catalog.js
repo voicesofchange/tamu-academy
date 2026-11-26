@@ -75,12 +75,10 @@ export const HOME_STATS = {
 };
 
 /**
- * The course titles and summaries as one stable object for
- * useTranslatedContent (course and place names are protected by the
- * translation layer and come back as written).
+ * The titles and summaries of the courses in development, as one stable
+ * object for useTranslatedContent. Live courses' text is translated through
+ * the shared course facts (src/lib/course-facts.js).
  */
 export const HOME_COURSE_TEXT = Object.fromEntries(
-  HOME_COURSES.map((c) => [c.slug, { title: c.title, description: c.description }]),
+  HOME_COURSES.filter((c) => !c.live).map((c) => [c.slug, { title: c.title, description: c.description }]),
 );
-
-export const HOME_AREA_TEXT = Object.fromEntries(HOME_LEARNING_AREAS.map((a) => [a.id, a.label]));
