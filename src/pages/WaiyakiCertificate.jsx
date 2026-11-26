@@ -88,6 +88,7 @@ export default function WaiyakiCertificate() {
       courseTitle: state.data.courseTitle,
       completedAt: state.data.completedAt,
       certificateId: state.data.certificateId,
+      verificationCode: state.data.verificationCode || null,
       isPreview: state.data.preview === true,
     });
   };

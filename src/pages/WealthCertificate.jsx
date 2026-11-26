@@ -132,6 +132,7 @@ export default function WealthCertificate() {
                 courseTitle: data.courseTitle,
                 completedAt: data.completedAt,
                 certificateId: data.certificateId,
+                verificationCode: data.verificationCode || null,
                 isPreview,
               })
             }

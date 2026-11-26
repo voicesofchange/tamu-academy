@@ -8,6 +8,7 @@ import {
   CERT_AUTHORIZER_NAME,
   formatCertificateDate,
   resolveCertificateId,
+  certificateVerifyUrl,
 } from '@/lib/certificate-design';
 import { certificateLocale, loadCertificateCopy } from '@/lib/certificate-copy';
 
@@ -24,7 +25,9 @@ import { certificateLocale, loadCertificateCopy } from '@/lib/certificate-copy';
  * and pushes the blocks below it down inside a centred band, so nothing
  * overlaps the gold divider or the footer.
  *
- * Deliberately absent until verification exists: no QR code is drawn.
+ * A certificate that carries a verification code also gets a QR code, centred
+ * in the footer, that opens its public page at tamuacademy.org/verify. It is
+ * drawn as vector squares like the rest of the sheet, so it scans at any size.
  * Deliberately absent always: no handwritten signature image is fabricated.
  */
 
@@ -57,11 +60,56 @@ function loadCertificateLogo() {
   });
 }
 
+/**
+ * Draw the verification QR code centred on `cx`, with its label and the
+ * code itself underneath. The code is encoded with medium error correction
+ * on a white quiet zone, and dark modules are merged into horizontal runs so
+ * the PDF stays small.
+ */
+async function drawVerificationQr(doc, { url, code, label, cx, top }) {
+  const mod = await import('qrcode');
+  const QRCode = mod.default || mod;
+  const qr = QRCode.create(url, { errorCorrectionLevel: 'M' });
+  const count = qr.modules.size;
+  const size = 17; // mm
+  const quiet = 1.2; // mm of white around the symbol
+  const cell = size / count;
+  const left = cx - size / 2;
+
+  doc.setFillColor(255, 255, 255);
+  doc.rect(left - quiet, top - quiet, size + quiet * 2, size + quiet * 2, 'F');
+
+  doc.setFillColor(...CERT_NAVY_RGB);
+  for (let row = 0; row < count; row += 1) {
+    let runStart = -1;
+    for (let col = 0; col <= count; col += 1) {
+      const dark = col < count && qr.modules.get(row, col);
+      if (dark && runStart < 0) runStart = col;
+      if (!dark && runStart >= 0) {
+        // A hair of overlap closes the seams some viewers draw between cells.
+        doc.rect(left + runStart * cell, top + row * cell, (col - runStart) * cell + 0.01, cell + 0.01, 'F');
+        runStart = -1;
+      }
+    }
+  }
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(...CERT_SLATE_RGB);
+  doc.text(label, cx, top + size + quiet + 3.2, { align: 'center' });
+
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(...CERT_NAVY_RGB);
+  doc.text(code, cx, top + size + quiet + 6.6, { align: 'center' });
+}
+
 export async function generateTamuCertificatePDF({
   learnerName,
   courseTitle,
   completedAt,
   certificateId,
+  verificationCode = null,
   isPreview = false,
   fileName = 'tamu-academy-certificate.pdf',
 }) {
@@ -210,22 +258,13 @@ export async function generateTamuCertificatePDF({
   doc.setLineWidth(0.6);
   doc.line(cx - 30, dividerY, cx - 4, dividerY);
   doc.line(cx + 4, dividerY, cx + 30, dividerY);
+  // The gold diamond between the two rules, drawn as two triangles exactly as
+  // base44/shared/certificate-pdf.js draws it. (The doc.lines() call this
+  // replaces passed one extra level of nesting, which jsPDF 4 read as a curve
+  // and rejected, so the download threw before saving.)
   doc.setFillColor(...CERT_GOLD_RGB);
-  doc.lines(
-    [
-      [
-        [0, 1.4],
-        [1.4, 0],
-        [0, -1.4],
-        [-1.4, 0],
-      ],
-    ],
-    cx,
-    dividerY,
-    [1, 1],
-    'F',
-    false,
-  );
+  doc.triangle(cx, dividerY - 1.4, cx + 1.4, dividerY, cx, dividerY + 1.4, 'F');
+  doc.triangle(cx, dividerY + 1.4, cx - 1.4, dividerY, cx, dividerY - 1.4, 'F');
 
   const ruleY = pageHeight - 42;
   doc.setDrawColor(...CERT_SLATE_RGB);
@@ -264,6 +303,17 @@ export async function generateTamuCertificatePDF({
   doc.setFontSize(7.5);
   doc.setTextColor(...CERT_NAVY_RGB);
   doc.text(displayId, rightEdge, ruleY + 17.5, { align: 'right' });
+
+  // Verification QR code — centre, only for a real certificate with a code.
+  if (verificationCode && !isPreview) {
+    await drawVerificationQr(doc, {
+      url: certificateVerifyUrl(verificationCode),
+      code: verificationCode,
+      label: copy.verifyLabel || 'Scan to verify',
+      cx,
+      top: ruleY - 4,
+    });
+  }
 
   doc.save(fileName);
 }

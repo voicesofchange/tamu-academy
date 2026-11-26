@@ -99,6 +99,7 @@ export default function EconomicsCertificate() {
       courseTitle: state.data.courseTitle,
       completedAt: state.data.completedAt,
       certificateId: state.data.certificateId,
+      verificationCode: state.data.verificationCode || null,
       isPreview: state.data.preview === true,
     });
   };

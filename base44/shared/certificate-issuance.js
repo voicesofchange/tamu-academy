@@ -71,10 +71,48 @@ export async function findExistingCertificate(base44, learnerId, courseSlug) {
   return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
 }
 
+/**
+ * A new public verification code: "TAMU-" and eight upper-case hex
+ * characters. It carries nothing about the learner, and a code already on
+ * file is never reused.
+ */
+export async function generateVerificationCode(base44) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const code = 'TAMU-' + crypto.randomUUID().replace(/-/g, '').substring(0, 8).toUpperCase();
+    const clash = await base44.asServiceRole.entities.CourseCertificate.filter({ verification_code: code });
+    if (!Array.isArray(clash) || clash.length === 0) return code;
+  }
+  throw new Error('Could not generate a unique verification code');
+}
+
+/**
+ * Give an existing certificate a verification code when its course now uses
+ * one and the record was issued before it did. Only the empty
+ * verification_code (and an empty status) are filled in; every value the
+ * certificate already carries stays exactly as it is.
+ */
+export async function ensureVerificationCode(base44, cert, rules) {
+  if (!cert || cert.verification_code || !rules || rules.verificationCode !== true) return cert;
+  try {
+    const verificationCode = await generateVerificationCode(base44);
+    const patch = { verification_code: verificationCode };
+    if (!cert.status) patch.status = 'valid';
+    await base44.asServiceRole.entities.CourseCertificate.update(cert.id, patch);
+    return { ...cert, ...patch };
+  } catch (err) {
+    // A certificate is still returned without one; the next visit retries.
+    console.warn('[certificate-issuance] Could not add a verification code:', err && err.message);
+    return cert;
+  }
+}
+
 /** The learner-facing (camelCase) certificate payload returned by the pages. */
 export function certificateResponse(cert) {
   return {
     certificateId: cert.certificate_id,
+    // The learner's own public verification code, printed on the PDF as a QR
+    // code. Absent for courses that do not issue one.
+    verificationCode: cert.verification_code || null,
     learnerName: cert.learner_name,
     courseTitle: cert.course_title,
     completedAt: cert.completed_at,
@@ -137,9 +175,7 @@ export async function createCertificateRecord(
   if (!config) throw new Error('Unknown course');
 
   const certificateId = crypto.randomUUID();
-  const verificationCode = withVerificationCode
-    ? 'TAMU-' + crypto.randomUUID().replace(/-/g, '').substring(0, 8).toUpperCase()
-    : null;
+  const verificationCode = withVerificationCode ? await generateVerificationCode(base44) : null;
   const issuedAt = new Date().toISOString();
 
   const record = {
@@ -290,7 +326,10 @@ export async function issueLearnerCertificate(
 
   // --- Idempotency: an existing certificate is returned unchanged ---
   const existing = await findExistingCertificate(base44, user.id, courseSlug);
-  if (existing) return { status: 200, body: certificateResponse(existing) };
+  if (existing) {
+    const current = await ensureVerificationCode(base44, existing, rules);
+    return { status: 200, body: certificateResponse(current) };
+  }
 
   // --- Courses whose certificate requires a completed enrollment ---
   let completedEnrollment = null;
@@ -314,7 +353,7 @@ export async function issueLearnerCertificate(
     : latestModuleCompletionAt(routes, progressMap);
   if (!completedAt) completedAt = new Date().toISOString();
 
-  const { created, certificateId, issuedAt } = await createCertificateRecord(base44, {
+  const { created, certificateId, verificationCode, issuedAt } = await createCertificateRecord(base44, {
     learnerId: user.id,
     courseSlug,
     learnerName,
@@ -357,6 +396,7 @@ export async function issueLearnerCertificate(
     status: 200,
     body: {
       certificateId: (created && created.certificate_id) || certificateId,
+      verificationCode: (created && created.verification_code) || verificationCode || null,
       learnerName: (created && created.learner_name) || learnerName.trim(),
       courseTitle: (created && created.course_title) || config.title,
       completedAt: (created && created.completed_at) || completedAt,

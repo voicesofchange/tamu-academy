@@ -21,6 +21,7 @@ export const CERT_TEXT = {
   authorizerRole: 'Founder and Course Developer, Tamu Academy',
   dateLabel: 'Date of Completion',
   idLabel: 'Certificate ID',
+  verifyLabel: 'Scan to verify',
 };
 
 /** Locale used to write the completion date, per certificate language. */
