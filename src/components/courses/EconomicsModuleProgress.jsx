@@ -102,11 +102,19 @@ const CONTENT = {
   },
 };
 
+/**
+ * Inside the course player the footer's "Mark Complete & Continue" completes
+ * the module, so the player passes showCompleteButton={false}; `onChange`
+ * tells the player when a step was saved so its outline and footer refresh.
+ * Both default to the standalone behaviour.
+ */
 export default function EconomicsModuleProgress({
   courseSlug,
   moduleRoute,
   completionRequirements,
   refreshTrigger = 0,
+  showCompleteButton = true,
+  onChange,
 }) {
   const { content: c } = useTranslatedContent('econ-module-progress', CONTENT);
   const [progress, setProgress] = useState(null);
@@ -160,6 +168,7 @@ export default function EconomicsModuleProgress({
           prev ? { ...prev, completedKeys: data.completedKeys } : prev,
         );
       }
+      if (onChange) onChange();
     } catch (err) {
       setStatusMessage({ type: 'error', text: c.errSave });
     } finally {
@@ -183,6 +192,7 @@ export default function EconomicsModuleProgress({
           prev ? { ...prev, moduleCompleted: true, completedAt: data.completedAt } : prev,
         );
         setStatusMessage({ type: 'success', text: c.moduleCompleteMsg });
+        if (onChange) onChange();
       } else if (data && data.missing) {
         setStatusMessage({ type: 'error', text: c.errMissing });
       }
@@ -337,7 +347,7 @@ export default function EconomicsModuleProgress({
             })}
           </div>
 
-          <div style={{ marginTop: '1.5rem' }}>
+          {showCompleteButton && <div style={{ marginTop: '1.5rem' }}>
             <button
               type="button"
               disabled={!allComplete || completionPending || progress.moduleCompleted}
@@ -361,7 +371,7 @@ export default function EconomicsModuleProgress({
             >
               {completionPending ? c.saving : c.completeModule}
             </button>
-          </div>
+          </div>}
 
           {statusMessage && (
             <p
