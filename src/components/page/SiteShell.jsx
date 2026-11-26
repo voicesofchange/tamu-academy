@@ -9,7 +9,7 @@ import StructuredData from '@/components/seo/StructuredData';
  * surface: skip link, structured data, top navigation, a focusable `main`
  * landmark, and the site footer.
  *
- * The page-specific shells (PageLayout, CourseOverviewLayout,
+ * The page-specific shells (PageLayout, CoursePageTemplate,
  * ModuleLessonLayout) compose this frame instead of each repeating it, so the
  * background, landmarks and accessibility affordances stay identical across
  * the whole site. Callers vary only their own `main` box through `mainStyle`.

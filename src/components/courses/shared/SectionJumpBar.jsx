@@ -32,9 +32,10 @@ export const jumpTargetStyle = {
  * root element for jumpTargetStyle and sticky side cards.
  *
  * Props: sections (ids, default COURSE_SECTIONS) or items ([{ id, label }])
- * for custom labels; surface ('dark' | 'light').
+ * for custom labels; surface ('dark' | 'light'); inColumn (the bar sits in a
+ * page column rather than spanning the page, so it drops its own gutter).
  */
-export default function SectionJumpBar({ sections = COURSE_SECTIONS, items = null, surface = 'dark' }) {
+export default function SectionJumpBar({ sections = COURSE_SECTIONS, items = null, surface = 'dark', inColumn = false }) {
   const { content: c } = useTranslatedContent('section-jump-bar', CONTENT);
   const list = items || sections.map((id) => ({ id, label: c[id] || id }));
   const barRef = useRef(null);
@@ -85,10 +86,16 @@ export default function SectionJumpBar({ sections = COURSE_SECTIONS, items = nul
     return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); };
   }, [ids]);
 
-  // Keep the active tab visible when the row scrolls sideways.
+  // Keep the active tab visible when the row scrolls sideways. Only the row
+  // moves: scrollIntoView would also scroll the page to the bar.
   useEffect(() => {
-    const tab = barRef.current && barRef.current.querySelector('[aria-current="true"]');
-    if (tab && tab.scrollIntoView) tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    const list = barRef.current && barRef.current.querySelector('.sjb-list');
+    const tab = list && list.querySelector('[aria-current="true"]');
+    if (!list || !tab) return;
+    const left = tab.offsetLeft - list.offsetLeft;
+    const right = left + tab.offsetWidth;
+    if (left < list.scrollLeft) list.scrollLeft = left;
+    else if (right > list.scrollLeft + list.clientWidth) list.scrollLeft = right - list.clientWidth;
   }, [active]);
 
   const jump = (event, id) => {
@@ -102,7 +109,7 @@ export default function SectionJumpBar({ sections = COURSE_SECTIONS, items = nul
   };
 
   return (
-    <nav ref={barRef} className={`sjb${surface === 'light' ? ' is-light' : ''}`} aria-label={c.label}>
+    <nav ref={barRef} className={`sjb${surface === 'light' ? ' is-light' : ''}${inColumn ? ' is-column' : ''}`} aria-label={c.label}>
       <style>{SJB_CSS}</style>
       <ul className="sjb-list">
         {list.map(({ id, label }) => (
@@ -129,6 +136,8 @@ const SJB_CSS = `
 .sjb.is-light { --sjb-bg: rgba(250,246,236,0.97); --sjb-line: #dcc8a8; --sjb-text: #725a46; --sjb-active: #9b5d1d; }
 .sjb-list { list-style: none; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 3.5rem); max-width: 1200px; display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; }
 .sjb-list::-webkit-scrollbar { display: none; }
+.sjb.is-column .sjb-list { padding: 0; max-width: none; }
+.sjb.is-column li:first-child .sjb-tab { padding-left: 0; }
 .sjb-tab { display: block; white-space: nowrap; padding: 0.95rem 0.85rem 0.85rem; color: var(--sjb-text); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; border-bottom: 2px solid transparent; }
 .sjb-tab:hover { color: var(--sjb-active); }
 .sjb-tab[aria-current="true"] { color: var(--sjb-active); border-bottom-color: var(--sjb-active); font-weight: 600; }
