@@ -34,9 +34,8 @@ const CONTENT = {
   courseDesignIntro: 'Each open Tamu Academy course includes the following. Courses still in development will follow the same design:',
   openLearningEyebrow: 'Open Learning',
   openLearningHeading: 'Begin with Free Open Learning',
-  openLearningBody: 'Begin with freely available Tamu Academy videos and articles exploring wellbeing, public policy, economics, institutions, culture, and global systems.',
-  watchVideos: 'Watch Videos',
-  readArticles: 'Read Articles',
+  openLearningBody: 'Begin with freely available Tamu Academy guides, worksheets, and reflective tools exploring wellbeing, public policy, economics, institutions, culture, and global systems.',
+  viewResources: 'View Resources',
   courseAreas: [
     {
       id: 'mind-and-wellbeing',
@@ -288,7 +287,6 @@ export default function Courses() {
             <p className="font-body" style={{ fontSize: 'clamp(1rem,1.5vw,18px)', lineHeight: 1.7, color: '#ddcfbb', maxWidth: '640px', margin: 0 }}>{c.heroSubheading}</p>
             <div style={{ display: 'flex', gap: '14px', marginTop: '32px', flexWrap: 'wrap' }}>
               <a href="#learning-areas" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.exploreCourse} →</a>
-              <Link to="/videos" className="tamu-journey-secondary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.watchVideos}</Link>
             </div>
           </motion.div>
           <motion.div {...rise(0.32)} style={{ position: 'relative', zIndex: 1, marginTop: '52px', display: 'flex', alignItems: 'center', gap: '13px', color: '#c6b59e', fontSize: '12px' }} className="font-body">
@@ -405,8 +403,7 @@ export default function Courses() {
               </div>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-              <Link to="/videos" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.watchVideos} →</Link>
-              <Link to="/articles" className="tamu-journey-secondary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.readArticles} →</Link>
+              <Link to="/resources" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.viewResources} →</Link>
             </div>
           </div>
         </section>

@@ -124,23 +124,7 @@ export default function Programmes() {
         subheading="Tamu Academy develops learning programmes that combine accessible video content, community dialogue, practical knowledge, and real-world application."
       />
 
-      {/* ── 1. Current Learning ─────────────────────────────────────────────── */}
-      <PageSection eyebrow="Current Learning" heading="Tamu Academy First Lessons">
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          Free introductory videos exploring wellbeing, institutions, public policy, economics, culture, and global systems.
-        </p>
-        <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-          This is Tamu Academy's first publicly available learning collection. The videos introduce the ideas, questions, and perspectives that will shape future Tamu Academy learning pathways.
-        </p>
-        <Link
-          to="/videos"
-          style={{ display: 'inline-flex', alignItems: 'center', color: '#24150f', backgroundColor: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid #e8b85b', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-        >
-          Watch the First Lessons →
-        </Link>
-      </PageSection>
-
-      {/* ── 2. Flagship Learning Pathway ────────────────────────────────────── */}
+      {/* ── 1. Flagship Learning Pathway ────────────────────────────────────── */}
       <PageSection eyebrow="Flagship Learning Pathway Under Development">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -169,7 +153,7 @@ export default function Programmes() {
         </motion.div>
       </PageSection>
 
-      {/* ── 3. Proposed First Pilot ─────────────────────────────────────────── */}
+      {/* ── 2. Proposed First Pilot ─────────────────────────────────────────── */}
       <PageSection eyebrow="Proposed First Pilot">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

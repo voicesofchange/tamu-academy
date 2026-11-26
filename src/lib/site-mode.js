@@ -1,5 +1,3 @@
-import { PUBLISHED_ARTICLE_SLUGS } from '@/lib/published-article-slugs';
-
 /**
  * Tamu Academy — Site Mode (single source of truth)
  *
@@ -19,7 +17,7 @@ export const LAUNCH_MODE = false;
 
 /**
  * Exact public paths allowed during soft-launch. Any pathname not in this
- * set (and not a published article detail route) redirects to "/" for
+ * set redirects to "/" for
  * ordinary public visitors. Static assets and system files do not pass
  * through the React router and are unaffected.
  */
@@ -28,14 +26,4 @@ export const LAUNCH_PUBLIC_PATHS = new Set([
   '/academy',
   '/partnership-inquiry',
   '/privacy',
-  '/articles',
-  '/videos',
 ]);
-
-/**
- * Published article slugs. During soft-launch, only article detail routes
- * whose slug is in this set are public; in-development articles redirect to
- * "/". The list lives on its own (published-article-slugs.js) so this guard
- * never pulls article text into the initial download.
- */
-export const LAUNCH_PUBLISHED_ARTICLE_SLUGS = new Set(PUBLISHED_ARTICLE_SLUGS);

@@ -16,7 +16,7 @@ const CONTENT = {
   whyHeading: 'Why Tamu Academy Exists',
   whyP1: 'Tamu Academy is a diaspora-rooted online learning platform. It develops courses with subject-matter experts and knowledge holders, providing instructional design, editorial review, production, accessibility, publishing, and distribution so that expert knowledge reaches learners wherever they are.',
   whyP2: 'Serious conversations about public policy, economics, governance, culture, wellbeing, and global affairs are often concentrated in universities, professional institutions, and exclusive networks. Tamu Academy works to change that — making these conversations more accessible to learners from different educational, cultural, and socioeconomic backgrounds.',
-  whyP3: 'Courses may serve individuals, facilitated cohorts, universities, institutions, and community organizations. Free videos and articles provide an open-learning entry point for anyone ready to begin.',
+  whyP3: 'Courses may serve individuals, facilitated cohorts, universities, institutions, and community organizations. Free open learning resources provide an entry point for anyone ready to begin.',
   pillarsHeading: 'Three Pillars of Learning',
   pillarsIntro: "Tamu Academy organises its learning around three interconnected areas that reflect what young people most need to understand in order to navigate and shape the world around them.",
   pillars: [
@@ -51,9 +51,7 @@ const CONTENT = {
   diasporaP2: 'The diaspora is not a single culture. It is a global community of extraordinary cultural, linguistic, geographic, and intellectual diversity — home to thousands of languages, communities, and traditions of knowledge and governance. Tamu Academy draws inspiration from that diversity while engaging with learners and issues from across the world.',
   diasporaP3: 'We approach global issues through lenses that are often underrepresented in mainstream educational spaces — and we believe that doing so produces richer, more honest, and more useful learning for everyone.',
   currentHeading: 'What Is Currently Available',
-  currentP1: "Tamu Academy's first publicly available learning is a collection of free introductory videos — the Tamu Academy First Lessons — exploring wellbeing, institutions, public policy, economics, culture, and global systems. These are accompanied by a growing collection of written articles designed for reflection and further study.",
   currentP2: 'Three expert-led courses are open now, with enrollment and certificates available: Mental Health, Community and Culture; Understanding African Economies and the Global System; and Sauti za Soko: Markets, Climate and Community Power. Courses in AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection remain in development.',
-  ctaWatch: 'Watch the First Lessons →',
   ctaExplore: 'Explore Courses →',
   currentStageLabel: 'Current Stage',
   currentStageP: 'Tamu Academy has opened its first three expert-led courses across mind and wellbeing and economics and development, while its public video and article collections continue to grow. Courses in AI and digital futures, public policy and governance, and the Waiyaki wa Hinga Heritage and Leadership Collection are in development, and the proposed pilot Ubuntu and the Public Good is prepared for potential collaboration with educational and community institutions.',
@@ -159,9 +157,7 @@ export default function About() {
 
       {/* Current Learning */}
       <PageSection heading={c.currentHeading} tone="tinted">
-        <p className={bodyTextClass} style={bodyText}>{c.currentP1}</p>
-        <p className={bodyTextClass} style={{ ...bodyText, marginTop: '1rem', marginBottom: '1.25rem' }}>{c.currentP2}</p>
-        <Link to="/videos" style={{ display: 'inline-flex', alignItems: 'center', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, border: '1px solid rgba(232,184,91,0.35)', borderRadius: '2px', padding: '0.55rem 1.1rem', marginRight: '1rem' }}>{c.ctaWatch}</Link>
+        <p className={bodyTextClass} style={{ ...bodyText, marginBottom: '1.25rem' }}>{c.currentP2}</p>
         <Link to="/courses" style={{ display: 'inline-flex', alignItems: 'center', color: 'rgba(243,234,216,0.6)', fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>{c.ctaExplore}</Link>
       </PageSection>
 
