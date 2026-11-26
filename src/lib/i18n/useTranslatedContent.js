@@ -5,6 +5,32 @@ import { applyStrings, chunkStrings, flattenStrings } from './translate-data';
 
 const CACHE_PREFIX = 'tamu_page_tr_';
 
+// Requests in flight, by cache key: components that ask for the same content
+// at the same time (a grid of cards sharing one fact table) share one set of
+// translatePageContent calls instead of sending one each.
+const inFlight = new Map();
+
+function fetchTranslations(cacheKey, fields, language) {
+  if (inFlight.has(cacheKey)) return inFlight.get(cacheKey);
+  const request = (async () => {
+    const merged = {};
+    for (const chunk of chunkStrings(fields)) {
+      const res = await base44.functions.invoke('translatePageContent', {
+        texts: chunk,
+        language,
+      });
+      Object.assign(merged, chunk, res?.data?.translations || {});
+    }
+    return merged;
+  })();
+  inFlight.set(cacheKey, request);
+  request.then(
+    () => inFlight.delete(cacheKey),
+    () => inFlight.delete(cacheKey),
+  );
+  return request;
+}
+
 /**
  * useTranslatedContent — translates a page's text content object when a
  * non-English language is selected. Returns the original content for 'en',
@@ -65,16 +91,9 @@ export function useTranslatedContent(pageKey, content) {
         return;
       }
 
-      const merged = {};
+      let merged;
       try {
-        for (const chunk of chunkStrings(fields)) {
-          const res = await base44.functions.invoke('translatePageContent', {
-            texts: chunk,
-            language,
-          });
-          if (cancelled) return;
-          Object.assign(merged, chunk, res?.data?.translations || {});
-        }
+        merged = await fetchTranslations(cacheKey, fields, language);
       } catch {
         if (cancelled) return;
         // The endpoint refused or failed: keep this page in English.

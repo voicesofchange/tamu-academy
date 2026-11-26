@@ -4,6 +4,7 @@ import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-
 import { SAUTI_ZA_SOKO_COURSE } from '@/lib/sauti-za-soko-tracks';
 import { DIASPORA_REMITTANCE_COURSE } from '@/lib/diaspora-remittance-tracks';
 import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
+import { LEARNING_AREAS, getCourseFacts } from '@/lib/course-facts';
 
 /**
  * The homepage's course discovery data: the five learning areas, every live
@@ -12,37 +13,36 @@ import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
  * A live course's title, summary and module count are read from its own
  * course data (src/lib/*-tracks.js) — the same objects its overview page
  * renders — so the homepage cards and the stats strip cannot disagree with
- * the course pages. Only the presentation (area, icon, accent) is set here.
+ * the course pages. Area, icon and accent come from src/lib/course-facts.js.
  * The two courses in development have no course data yet, so their wording
  * matches the Courses page.
  */
 
-export const HOME_LEARNING_AREAS = [
-  { id: 'economics-and-development', label: 'Economics & Development' },
-  { id: 'mind-and-wellbeing', label: 'Mind & Wellbeing' },
-  { id: 'waiyaki-wa-hinga', label: 'Waiyaki wa Hinga Heritage & Leadership' },
-  { id: 'ai-technology-and-digital-futures', label: 'AI, Technology & Digital Futures' },
-  { id: 'public-policy-and-governance', label: 'Public Policy & Governance' },
-];
+export const HOME_LEARNING_AREAS = LEARNING_AREAS;
 
-const live = (course, area, icon, accent) => ({
-  slug: course.slug,
-  title: course.title,
-  description: course.subtitle || course.description,
-  moduleCount: Number(course.modulesCount) || (course.modules || []).length,
-  area,
-  icon,
-  accent,
-  live: true,
-});
+// Area, icon and accent come from course-facts, shared with the catalog and
+// the course pages.
+const live = (course) => {
+  const facts = getCourseFacts(course.slug);
+  return {
+    slug: course.slug,
+    title: course.title,
+    description: course.subtitle || course.description,
+    moduleCount: facts.moduleCount,
+    area: facts.areaId,
+    icon: facts.icon,
+    accent: facts.accent,
+    live: true,
+  };
+};
 
 export const HOME_COURSES = [
-  live(MENTAL_HEALTH_COURSE, 'mind-and-wellbeing', 'Heart', 'rgba(197,90,56,0.55)'),
-  live(ECONOMICS_COURSE, 'economics-and-development', 'TrendingUp', 'rgba(217,155,55,0.5)'),
-  live(BUILDING_WEALTH_TOGETHER_COURSE, 'economics-and-development', 'Users', 'rgba(186,120,48,0.55)'),
-  live(SAUTI_ZA_SOKO_COURSE, 'economics-and-development', 'Store', 'rgba(152,120,52,0.55)'),
-  live(DIASPORA_REMITTANCE_COURSE, 'economics-and-development', 'Banknote', 'rgba(200,140,60,0.5)'),
-  live(WAIYAKI_COURSE, 'waiyaki-wa-hinga', 'Scroll', 'rgba(197,130,50,0.5)'),
+  live(MENTAL_HEALTH_COURSE),
+  live(ECONOMICS_COURSE),
+  live(BUILDING_WEALTH_TOGETHER_COURSE),
+  live(SAUTI_ZA_SOKO_COURSE),
+  live(DIASPORA_REMITTANCE_COURSE),
+  live(WAIYAKI_COURSE),
   {
     slug: 'ai-literacy-for-african-and-diaspora-leaders',
     title: 'AI Literacy for African and Diaspora Leaders',
