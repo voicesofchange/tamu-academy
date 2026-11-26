@@ -1,7 +1,6 @@
 import React from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
@@ -18,9 +17,6 @@ const CONTENT = {
   introP1: "As Tamu Academy's programmes develop, this space will grow into a public learning resource that is curated, connected to real conversations, and accessible to learners from different backgrounds and contexts.",
   introP2: 'Resources include open courses, articles, discussion materials, policy explainers, data tools, practical guides, and curated reading recommendations. Original Tamu Academy materials will be added as they become available.',
   areasHeading: 'Resource Areas',
-  videoSeriesHeading: 'Tamu Academy Video Series',
-  videoSeriesP: 'The Tamu Academy First Lessons are available now: an original series of free lessons exploring wellbeing, public policy, global affairs, intercultural leadership, and the ideas shaping our world — in accessible and engaging formats for young people and curious learners. Further episodes are in development.',
-  videosAvailable: 'Watch the First Lessons',
   externalNotice: "External resources are selected for their educational value and connection to Tamu Academy's learning areas. They are created and maintained by their respective organizations. Availability, content, and access requirements may change.",
 };
 
@@ -155,29 +151,6 @@ export default function Resources() {
             );
           })}
         </div>
-      </PageSection>
-
-      {/* Tamu Video Series — prepared slot for original content */}
-      <PageSection heading={c.videoSeriesHeading}>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.025)' }}
-        >
-          <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
-            {c.videoSeriesP}
-          </p>
-          <Link
-            to="/videos"
-            className="font-body"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, textDecoration: 'none', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', padding: '0.65rem 1.3rem' }}
-          >
-            {c.videosAvailable}
-            <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </motion.div>
       </PageSection>
 
       {/* External resource notice */}

@@ -8,8 +8,6 @@ import {
   TrendingUp,
   Library,
   Landmark,
-  Video,
-  FileText,
   FolderOpen,
   Wifi,
   Quote,
@@ -57,8 +55,6 @@ export const LEARNER_CORE_LINKS = [
 
 // Reading and programme destinations.
 export const READING_LINKS = [
-  { key: 'nav.videos', to: '/videos', icon: Video },
-  { key: 'nav.articles', to: '/articles', icon: FileText },
   { key: 'nav.resources', to: '/resources', icon: FolderOpen },
   { key: 'nav.remotePathway', to: '/remote-pathway', icon: Wifi },
   { key: 'nav.stories', to: '/stories', icon: Quote },

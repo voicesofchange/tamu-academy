@@ -17,7 +17,7 @@ const ROLES = [
   {
     icon: GraduationCap,
     label: 'A Learner',
-    desc: 'Explore free videos and articles, then enroll in expert-led courses with certificates.',
+    desc: 'Explore free open learning resources, then enroll in expert-led courses with certificates.',
     cta: 'Explore Courses',
     to: '/courses',
   },

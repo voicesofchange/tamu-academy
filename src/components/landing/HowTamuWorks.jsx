@@ -8,7 +8,7 @@ const STEPS = [
   {
     icon: Compass,
     label: 'Explore',
-    desc: 'Browse courses, watch free videos, and read articles — no account needed to start.',
+    desc: 'Browse courses and free open learning resources — no account needed to start.',
   },
   {
     icon: UserPlus,

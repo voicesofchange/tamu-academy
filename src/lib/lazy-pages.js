@@ -63,10 +63,8 @@ export const CourseAccessDeck = lazyPage(() => import('@/pages/CourseAccessDeck'
 export const Resources = lazyPage(() => import('@/pages/Resources'));
 export const LearnerStories = lazyPage(() => import('@/pages/LearnerStories'));
 export const CommunityInsights = lazyPage(() => import('@/pages/CommunityInsights'));
-export const Videos = lazyPage(() => import('@/pages/Videos'));
 export const TranslationReview = lazyPage(() => import('@/pages/TranslationReview'));
 export const Contact = lazyPage(() => import('@/pages/Contact'));
-export const Articles = lazyPage(() => import('@/pages/Articles'));
 export const TheRealCostOfAlwaysAchieving = lazyPage(() => import('@/pages/articles/TheRealCostOfAlwaysAchieving'));
 export const WhyTherapyIsntEnough = lazyPage(() => import('@/pages/articles/WhyTherapyIsntEnough'));
 export const CanPolicyMakeUsHappier = lazyPage(() => import('@/pages/articles/CanPolicyMakeUsHappier'));

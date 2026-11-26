@@ -58,7 +58,7 @@ export default function Landing() {
         <HomeLearnerVoices />
         {/* 8. Values — mission & interdisciplinary purpose */}
         <HomePurpose />
-        {/* 9. Go deeper — articles, videos, resources */}
+        {/* 9. Go deeper — open learning resources */}
         <HomeGoDeeper />
         {/* 10. Final CTA */}
         <HomeFinalCTA />

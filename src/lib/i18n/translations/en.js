@@ -8,8 +8,6 @@ export default {
     home: 'Home',
     about: 'About',
     courses: 'Courses',
-    videos: 'Videos',
-    articles: 'Articles',
     resources: 'Resources',
     remotePathway: 'Remote Pathway',
     contact: 'Contact',
@@ -36,7 +34,6 @@ export default {
     description:
       'Join a global learning community exploring mental health, economics, artificial intelligence, public policy, culture, and history through expert-led courses and perspectives from across the world.',
     ctaExplore: 'Explore Courses',
-    ctaOpenLearning: 'Start with Open Learning',
     explore: 'Explore',
     scrollLabel: 'Scroll down to explore',
   },

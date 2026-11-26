@@ -70,8 +70,6 @@ export const TAMU_GUIDE_NAV = [
   { label: 'Home', path: '/' },
   { label: 'Courses', path: '/courses' },
   { label: 'Resources', path: '/resources' },
-  { label: 'Articles', path: '/articles' },
-  { label: 'Videos', path: '/videos' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
   { label: 'Create account', path: '/register' },

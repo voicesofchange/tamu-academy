@@ -29,7 +29,6 @@ import {
   About,
   Academy,
   AfterTheGunsGoSilentArticle,
-  Articles,
   BuildingWealthModule,
   BuildingWealthTogether,
   CanPolicyMakeUsHappier,
@@ -86,7 +85,6 @@ import {
   TranslationReview,
   TemplateCourseModule,
   DiasporaRemittanceEconomy,
-  Videos,
   WaiyakiCertificate,
   WaiyakiCourseCompletion,
   WaiyakiModule,
@@ -221,12 +219,10 @@ const AuthenticatedApp = () => {
       {/* The Remote Learner journey — text-first study, offline material, and the pathway to a certificate */}
       <Route path="/remote-pathway" element={<RemotePathway />} />
       <Route path="/stories" element={<LearnerStories />} />
-      <Route path="/videos" element={<Videos />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/academy" element={<Academy />} />
       <Route path="/partnership-inquiry" element={<PartnershipInquiry />} />
-      <Route path="/articles" element={<Articles />} />
       <Route path="/articles/the-real-cost-of-always-achieving" element={<TheRealCostOfAlwaysAchieving />} />
       <Route path="/articles/why-therapy-isnt-enough" element={<WhyTherapyIsntEnough />} />
       <Route path="/articles/can-policy-make-us-happier" element={<CanPolicyMakeUsHappier />} />

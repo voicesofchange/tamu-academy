@@ -464,16 +464,6 @@ export default function ArticlePageTemplate({ article }) {
 
       {/* ── Back links ───────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
-        <Link to="/articles" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>
-          ← All Articles
-        </Link>
-        <Link to="/videos" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
-          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>
-          Watch Episodes →
-        </Link>
         <Link to="/resources" className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.color = '#e8b85b'}
           onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(243,234,216,0.5)'}>

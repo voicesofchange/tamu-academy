@@ -165,20 +165,6 @@ export default function Hero() {
           >
             {t('hero.ctaExplore')}
           </Link>
-          <Link
-            to="/videos"
-            style={{
-              display: 'inline-flex', alignItems: 'center',
-              color: '#e8b85b',
-              backgroundColor: 'transparent',
-              fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase',
-              textDecoration: 'none', fontWeight: 500,
-              border: '1px solid rgba(232,184,91,0.45)',
-              borderRadius: '2px', padding: '0.7rem 1.5rem',
-            }}
-          >
-            {t('hero.ctaOpenLearning')}
-          </Link>
         </motion.div>
 
         {/* Scroll nudge */}

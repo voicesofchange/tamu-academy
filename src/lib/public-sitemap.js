@@ -35,8 +35,6 @@ export const PUBLIC_COURSES = [
 const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: 1.0 },
   { path: '/courses', changefreq: 'monthly', priority: 0.9 },
-  { path: '/articles', changefreq: 'weekly', priority: 0.8 },
-  { path: '/videos', changefreq: 'weekly', priority: 0.8 },
   { path: '/about', changefreq: 'monthly', priority: 0.8 },
   { path: '/resources', changefreq: 'monthly', priority: 0.7 },
   { path: '/remote-pathway', changefreq: 'monthly', priority: 0.7 },

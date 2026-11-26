@@ -9,8 +9,6 @@ export default {
     home: 'Accueil',
     about: 'À propos',
     courses: 'Cours',
-    videos: 'Vidéos',
-    articles: 'Articles',
     resources: 'Ressources',
     remotePathway: 'Parcours à distance',
     contact: 'Contact',
@@ -37,7 +35,6 @@ export default {
     description:
       "Rejoignez une communauté d'apprentissage mondiale qui explore la santé mentale, l'économie, l'intelligence artificielle, les politiques publiques, la culture et l'histoire à travers des cours dirigés par des experts et des perspectives venues du monde entier.",
     ctaExplore: 'Explorer les cours',
-    ctaOpenLearning: "Commencer avec l'apprentissage ouvert",
     explore: 'Explorer',
     scrollLabel: 'Faites défiler pour explorer',
   },

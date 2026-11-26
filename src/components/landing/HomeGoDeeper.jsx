@@ -1,25 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { PlayCircle, FileText, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 const RESOURCES = [
-  {
-    icon: PlayCircle,
-    label: 'Watch',
-    title: "Tamu Academy's First Lessons",
-    desc: 'Free introductory videos exploring wellbeing, institutions, policy, economics, and global systems.',
-    cta: 'Watch Videos',
-    to: '/videos',
-  },
-  {
-    icon: FileText,
-    label: 'Read',
-    title: 'Explore Ideas Beyond the Episode',
-    desc: 'Articles that go deeper on mental health, African economics, global policy, and social change.',
-    cta: 'Read Articles',
-    to: '/articles',
-  },
   {
     icon: BookOpen,
     label: 'Study',
@@ -60,7 +44,7 @@ export default function HomeGoDeeper() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 420px))',
             gap: '1.1rem',
           }}
         >

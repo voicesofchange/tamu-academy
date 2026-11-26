@@ -8,8 +8,6 @@ export default {
     home: 'Nyumbani',
     about: 'Kuhusu',
     courses: 'Kozi',
-    videos: 'Video',
-    articles: 'Makala',
     resources: 'Rasilimali',
     remotePathway: 'Njia ya Mbali',
     contact: 'Wasiliana',
@@ -36,7 +34,6 @@ export default {
     description:
       'Jiunge na jamii ya kujifunza ya kimataifa inayochunguza afya ya akili, uchumi, akili bandia, sera za umma, utamaduni, na historia kupitia kozi zinazoongozwa na wataalam na mitazamo kutoka kote ulimwenguni.',
     ctaExplore: 'Chunguza Kozi',
-    ctaOpenLearning: 'Anza na Kujifunza Wazi',
     explore: 'Chunguza',
     scrollLabel: 'Skrini chini kuchunguza',
   },

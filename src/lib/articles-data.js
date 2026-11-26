@@ -94,7 +94,7 @@ export const ARTICLES = [
           'We treat achievement as a debt we can never pay off. But the bill was never real. We wrote it ourselves, which means we can set down the pen. You do not owe anyone an unpayable debt for the gift of your own life. You only have to be brave enough to live it well.',
         ],
         pullQuote: 'Love does not want to be repaid. Love wants to be lived.',
-        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world. Watch the related episode through the [Tamu Academy Videos page](/videos).\n\nOn Ubuntu and Afrocentric thought, readers may look to Molefi Kete Asante\'s work on Afrocentricity and the broader literature on Nguni Bantu philosophy.',
+        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world.\n\nOn Ubuntu and Afrocentric thought, readers may look to Molefi Kete Asante\'s work on Afrocentricity and the broader literature on Nguni Bantu philosophy.',
       },
     ],
     keyTakeaways: [
@@ -211,7 +211,7 @@ export const ARTICLES = [
           'Seek the professional support you need. And, where it is safe, build connection with people you trust. You were never meant to heal alone.',
         ],
         pullQuote: 'Find your village. That is the other half.',
-        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world. Watch the related episode through the [Tamu Academy Videos page](/videos).',
+        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world.',
       },
     ],
     keyTakeaways: [
@@ -378,7 +378,7 @@ export const ARTICLES = [
           'A government cannot give you a good life. But it can decide whether you have to live it alone. That — not the happiness number — is the thing worth measuring.',
         ],
         pullQuote: 'A government cannot give you a good life. But it can decide whether you have to live it alone.',
-        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world. Watch the related episode through the [Tamu Academy Videos page](/videos).',
+        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world.',
       },
     ],
     keyTakeaways: [
@@ -515,7 +515,7 @@ export const ARTICLES = [
           'The question is who gets to redesign it. And that is still being decided.',
         ],
         pullQuote: 'The question is who gets to redesign it.',
-        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world. Watch the related episode through the [Tamu Academy Videos page](/videos).',
+        closingNote: 'This essay is part of Tamu Academy, an African-rooted learning platform exploring the mind, power, culture, public policy, economics, institutions, and the wider world.',
       },
     ],
     keyTakeaways: [
