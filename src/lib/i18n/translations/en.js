@@ -21,6 +21,7 @@ export default {
     stories: 'Stories',
     insights: 'Insights',
     explore: 'Explore',
+    readingGroup: 'Reading & Programmes',
     signIn: 'Sign In',
     signOut: 'Sign Out',
     createAccount: 'Create Account',

@@ -21,6 +21,7 @@ export default {
     stories: 'Historias',
     insights: 'Análisis',
     explore: 'Explorar',
+    readingGroup: 'Lecturas y programas',
     signIn: 'Iniciar Sesión',
     signOut: 'Cerrar Sesión',
     createAccount: 'Crear Cuenta',
