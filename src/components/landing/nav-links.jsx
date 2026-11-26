@@ -11,6 +11,7 @@ import {
   Quote,
   Info,
   Mail,
+  Compass,
 } from 'lucide-react';
 
 /**
@@ -22,9 +23,11 @@ import {
  * collections — grouped, not blended, so each audience reads one clear menu.
  */
 
-// The Academy's public pages — shown to everyone, in this order. There is no
-// Home tab: the Tamu Academy wordmark links home.
+// The Academy's public pages — shown to everyone, in this order. Explore is
+// the homepage (course search, featured courses and learning areas); the
+// Tamu Academy wordmark links there too.
 export const PUBLIC_LINKS = [
+  { key: 'nav.explore', to: '/', icon: Compass },
   { key: 'nav.about', to: '/about', icon: Info },
   { key: 'nav.courses', to: '/courses', icon: GraduationCap },
   { key: 'nav.contact', to: '/contact', icon: Mail },

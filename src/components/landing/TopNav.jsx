@@ -88,7 +88,7 @@ export default function TopNav() {
       ? [
           { key: 'learner', label: t('nav.myLearning'), links: LEARNER_LINKS },
           { key: 'public', links: PUBLIC_LINKS },
-          { key: 'reading', label: t('nav.explore'), links: READING_LINKS },
+          { key: 'reading', label: t('nav.readingGroup'), links: READING_LINKS },
         ]
       : [{ key: 'learning', links: LEARNER_CORE_LINKS }];
 

@@ -21,6 +21,7 @@ export default {
     stories: 'Hadithi',
     insights: 'Maarifa',
     explore: 'Chunguza',
+    readingGroup: 'Usomaji na Programu',
     signIn: 'Ingia',
     signOut: 'Toka',
     createAccount: 'Fungua Akaunti',

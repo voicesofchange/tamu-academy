@@ -22,6 +22,7 @@ export default {
     stories: 'Témoignages',
     insights: 'Analyses',
     explore: 'Explorer',
+    readingGroup: 'Lectures et programmes',
     signIn: 'Se connecter',
     signOut: 'Se déconnecter',
     createAccount: 'Créer un compte',
