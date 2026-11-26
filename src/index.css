@@ -71,6 +71,11 @@ html {
   .tamu-lesson-layout {
     grid-template-columns: 1fr !important;
   }
+  /* Presenter material under a deck slide stacks rather than sitting in two
+     narrow columns on a phone. */
+  .deck-presenter-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @layer base {

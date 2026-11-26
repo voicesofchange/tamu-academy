@@ -35,6 +35,7 @@ import {
   CanPolicyMakeUsHappier,
   CertificateDesignSample,
   ClimateIsAMentalHealthCrisisArticle,
+  CourseAccessDeck,
   CommunityInsights,
   Contact,
   Courses,
@@ -208,6 +209,8 @@ const AuthenticatedApp = () => {
         {/* Administrator-only review sheet for the official certificate design.
             Demonstration data only — no certificate record is created. */}
         <Route path="/admin/certificate-design" element={<CertificateDesignSample />} />
+        {/* Administrator-only presenter's copy of the course-access deck */}
+        <Route path="/admin/course-access-deck" element={<CourseAccessDeck />} />
         {/* Administrator-only review of the cached course translations */}
         <Route path="/admin/translation-review" element={<TranslationReview />} />
       </Route>

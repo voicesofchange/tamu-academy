@@ -58,6 +58,7 @@ export const WaiyakiModule = lazyPage(() => import('@/pages/WaiyakiModule'));
 export const WaiyakiCourseCompletion = lazyPage(() => import('@/pages/WaiyakiCourseCompletion'));
 export const WaiyakiCertificate = lazyPage(() => import('@/pages/WaiyakiCertificate'));
 export const CertificateDesignSample = lazyPage(() => import('@/pages/CertificateDesignSample'));
+export const CourseAccessDeck = lazyPage(() => import('@/pages/CourseAccessDeck'));
 
 export const Resources = lazyPage(() => import('@/pages/Resources'));
 export const LearnerStories = lazyPage(() => import('@/pages/LearnerStories'));
