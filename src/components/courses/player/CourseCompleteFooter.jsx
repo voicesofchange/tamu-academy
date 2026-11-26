@@ -22,7 +22,9 @@ import { stepAnchorId } from '@/components/courses/player/step-anchors';
  * browser alone.
  *
  * Props: moduleKey (resets the message when the module changes), number,
- * title, completed, canSave, onComplete, onCompleted, next: { path, title }.
+ * title, completed, canSave, onComplete, onCompleted, next: { path, title },
+ * requirementsAnchor (the element to scroll to when something is missing;
+ * defaults to the tpl-step-requirements section).
  */
 export default function CourseCompleteFooter({
   moduleKey,
@@ -33,6 +35,7 @@ export default function CourseCompleteFooter({
   onComplete,
   onCompleted,
   next = null,
+  requirementsAnchor = null,
 }) {
   const L = useCoursePlayerLabels();
   const navigate = useNavigate();
@@ -54,7 +57,7 @@ export default function CourseCompleteFooter({
         else if (onCompleted) await onCompleted();
       } else if (Array.isArray(result.missing) && result.missing.length > 0) {
         setMessage(fillTemplate(L.stillNeeds, { steps: result.missing.join(', ') }));
-        const target = document.getElementById(stepAnchorId('requirements'));
+        const target = document.getElementById(requirementsAnchor || stepAnchorId('requirements'));
         if (target && typeof target.scrollIntoView === 'function') target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
         setMessage(result.message || L.completeFailed);
