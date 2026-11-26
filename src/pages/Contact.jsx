@@ -5,6 +5,7 @@ import PageLayout from '@/components/page/PageLayout';
 import PageHero from '@/components/page/PageHero';
 import PageSection from '@/components/page/PageSection';
 import PageBreadcrumbs from '@/components/page/PageBreadcrumbs';
+import { useTranslation } from '@/lib/i18n';
 import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
@@ -33,6 +34,7 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
 const mutedText = { color: 'rgba(243,234,216,0.52)', fontSize: '0.85rem', lineHeight: 1.75, fontWeight: 300 };
 
 export default function Contact() {
+  const { t } = useTranslation();
   const { content: c } = useTranslatedContent('contact', CONTENT);
 
   return (
@@ -42,7 +44,7 @@ export default function Contact() {
         description="Contact Tamu Academy, express interest in proposed programmes, contribute as a facilitator, or discuss a community or institutional partnership."
         path="/contact"
       />
-      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Contact' }]} />
+      <PageBreadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('nav.contact') }]} />
 
       <PageHero
         eyebrow={c.heroEyebrow}
@@ -51,7 +53,7 @@ export default function Contact() {
       />
 
       <PageSection>
-        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>{c.introP}</p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '720px', margin: 0 }}>{c.introP}</p>
       </PageSection>
 
       {/* Who we hear from */}

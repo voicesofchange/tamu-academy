@@ -16,7 +16,7 @@ export default function LearnerStories() {
         description={t('stories.pageDescription')}
         path="/stories"
       />
-      <PageBreadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Stories' }]} />
+      <PageBreadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('nav.stories') }]} />
 
       <PageSection
         eyebrow={t('stories.eyebrow')}

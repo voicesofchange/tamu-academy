@@ -8,15 +8,17 @@ import StructuredData from '@/components/seo/StructuredData';
 import TopNav from '@/components/landing/TopNav';
 import SiteFooter from '@/components/landing/SiteFooter';
 import JourneyTrackCard from '@/components/courses/journey/JourneyTrackCard';
-import CoursePreviewCard from '@/components/courses/journey/CoursePreviewCard';
+import CourseCard from '@/components/courses/shared/CourseCard';
+import { useCourseFactText } from '@/components/courses/shared/useCourseFacts';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+import { HOME_STATS } from '@/lib/home-course-catalog';
+import { Check } from 'lucide-react';
 import { ECONOMICS_DEVELOPMENT_TRACKS } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
-import { normalizeStatus } from '@/lib/course-status';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 import PartnershipPathway from '@/components/partnerships/PartnershipPathway';
 
 const HERO_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/c5d7236bd_generated_12fdce95.jpg';
-const LESSON_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/43088212a_generated_88d7dc5c.jpg';
 const PROGRESS_IMG = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/992b69285_generated_83ba5579.jpg';
 
 const CONTENT = {
@@ -26,7 +28,10 @@ const CONTENT = {
   heritageLabel: 'Heritage and Leadership Collection',
   learningAreaLabel: 'Learning Area',
   heritageNote: 'A distinctive Tamu Academy collection bringing together research, oral history, and African-centered interpretation.',
-  exploreCourse: 'Explore the Course',
+  heroStats: '{courses} live courses · {areas} learning areas · {modules} certificate modules',
+  jumpLabel: 'Jump to a learning area',
+  liveCount: '{count} live',
+  comingSoon: 'Coming soon',
   competencyTracks: 'Competency-Based Learning Tracks',
   nowAvailable: 'Available now',
   courseDesignEyebrow: 'Course Design',
@@ -36,6 +41,8 @@ const CONTENT = {
   openLearningHeading: 'Begin with Free Open Learning',
   openLearningBody: 'Begin with freely available Tamu Academy guides, worksheets, and reflective tools exploring wellbeing, public policy, economics, institutions, culture, and global systems.',
   viewResources: 'View Resources',
+  statAreas: 'Learning Areas',
+  statComponents: 'Course Components',
   courseAreas: [
     {
       id: 'mind-and-wellbeing',
@@ -242,6 +249,7 @@ const eyebrowStyle = (color) => ({ color, fontSize: '11px', fontWeight: 700, let
 
 export default function Courses() {
   const { content: c } = useTranslatedContent('courses', CONTENT);
+  const facts = useCourseFactText();
   const [pubStatus, setPubStatus] = useState({});
 
   useEffect(() => {
@@ -259,13 +267,6 @@ export default function Courses() {
     return () => { cancelled = true; };
   }, []);
 
-  function statusFor(course) {
-    if (!course.slug) return course.status;
-    const ps = pubStatus[course.slug];
-    if (ps && ps.isLive) return normalizeStatus(c.nowAvailable);
-    return normalizeStatus(course.status);
-  }
-
   return (
     <div style={{ background: '#24150f', minHeight: '100vh', overflowX: 'hidden' }}>
       <PageMeta
@@ -273,45 +274,64 @@ export default function Courses() {
         description="Explore Tamu Academy's open courses in mental health, economics, markets and heritage, and the courses in development across artificial intelligence and public policy."
         path="/courses"
       />
+      <style>{CATALOG_CSS}</style>
       <SkipLink />
       <StructuredData />
       <TopNav />
       <main id="tamu-main" tabIndex={-1} style={{ outline: 'none' }}>
 
         {/* Hero */}
-        <section style={{ position: 'relative', minHeight: '610px', padding: '130px clamp(1.5rem,6vw,88px) 82px', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
-          <div aria-hidden style={{ position: 'absolute', inset: 0, background: `linear-gradient(90deg, rgba(36,21,15,0.97) 0%, rgba(36,21,15,0.78) 48%, rgba(36,21,15,0.25) 100%), url(${HERO_IMG}) center/cover`, opacity: 0.92 }} />
-          <motion.div {...rise(0.2)} style={{ position: 'relative', zIndex: 1, maxWidth: '690px' }}>
+        <section className="cat-hero" aria-labelledby="courses-heading">
+          <div aria-hidden className="cat-hero-bg" style={{ background: `linear-gradient(90deg, rgba(36,21,15,0.97) 0%, rgba(36,21,15,0.82) 52%, rgba(36,21,15,0.35) 100%), url(${HERO_IMG}) center/cover` }} />
+          <motion.div {...rise(0.15)} className="cat-inner cat-hero-inner">
             <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.heroEyebrow}</span>
-            <h1 className="font-heading" style={{ fontWeight: 400, fontSize: 'clamp(2.4rem,5.2vw,68px)', lineHeight: 1.02, letterSpacing: '-0.035em', margin: '18px 0 25px', color: '#f8f0df' }}>{c.heroHeading}</h1>
-            <p className="font-body" style={{ fontSize: 'clamp(1rem,1.5vw,18px)', lineHeight: 1.7, color: '#ddcfbb', maxWidth: '640px', margin: 0 }}>{c.heroSubheading}</p>
-            <div style={{ display: 'flex', gap: '14px', marginTop: '32px', flexWrap: 'wrap' }}>
-              <a href="#learning-areas" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.exploreCourse} →</a>
-            </div>
-          </motion.div>
-          <motion.div {...rise(0.32)} style={{ position: 'relative', zIndex: 1, marginTop: '52px', display: 'flex', alignItems: 'center', gap: '13px', color: '#c6b59e', fontSize: '12px' }} className="font-body">
-            <span>01</span>
-            <div aria-hidden style={{ height: '2px', width: 'min(245px, 40vw)', background: 'linear-gradient(90deg, #d99b37 0 32%, rgba(243,234,216,0.2) 32%)', boxShadow: '0 0 10px rgba(217,155,55,0.28)' }} />
-            <span>Learning journey</span>
+            <h1 id="courses-heading" className="font-heading cat-title">{c.heroHeading}</h1>
+            <p className="font-body cat-sub">{c.heroSubheading}</p>
+            <p className="font-body cat-stats">{fillTemplate(c.heroStats, { courses: HOME_STATS.liveCourses, areas: HOME_STATS.learningAreas, modules: HOME_STATS.certificateModules })}</p>
+            <nav aria-label={c.jumpLabel} className="cat-jump">
+              {c.courseAreas.map((area) => {
+                const live = area.courses.filter((course) => course.slug).length;
+                return (
+                  <a key={area.id} href={`#${area.id}`} className="font-body cat-jump-link">
+                    {facts.area(area.id) || area.area}
+                    <span className="cat-jump-count">{live ? fillTemplate(c.liveCount, { count: live }) : c.comingSoon}</span>
+                  </a>
+                );
+              })}
+            </nav>
           </motion.div>
         </section>
 
         {/* Learning Areas */}
-        <section id="learning-areas" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#faf6ec', color: '#39251b', scrollMarginTop: '90px' }}>
+        <section id="learning-areas" style={{ padding: '64px clamp(1.25rem,5vw,4rem) 76px', background: '#faf6ec', color: '#39251b', scrollMarginTop: '90px' }}>
+          <div className="cat-inner">
           {c.courseAreas.map((area, ai) => (
-            <div key={area.id} id={area.id} style={{ marginBottom: ai < c.courseAreas.length - 1 ? '3.5rem' : 0, scrollMarginTop: '90px' }}>
+            <div key={area.id} id={area.id} style={{ marginBottom: ai < c.courseAreas.length - 1 ? '3.5rem' : 0, scrollMarginTop: '110px' }}>
               <div style={{ marginBottom: '2rem' }}>
                 <span className="font-body" style={eyebrowStyle('#b97827')}>{area.heritage ? c.heritageLabel : `${c.learningAreaLabel} ${area.number}`}</span>
-                <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#39251b' }}>{area.area}</h2>
+                <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#39251b' }}>{facts.area(area.id) || area.area}</h2>
               </div>
               {area.heritage && (
                 <p className="font-body" style={{ fontSize: '15px', lineHeight: 1.7, color: '#806b58', marginBottom: '1.5rem', fontStyle: 'italic', maxWidth: '640px' }}>{c.heritageNote}</p>
               )}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-                {area.courses.map((course, ci) => (
-                  <CoursePreviewCard key={course.title} number={area.number} course={course} status={statusFor(course)} exploreLabel={c.exploreCourse} visual={course.visual} index={ci} />
+              <ul className="cat-grid">
+                {area.courses.map((course) => (
+                  <li key={course.title}>
+                    {course.slug ? (
+                      <CourseCard slug={course.slug} />
+                    ) : (
+                      <CourseCard upcoming={{
+                        title: course.title,
+                        description: course.description,
+                        areaId: area.id,
+                        icon: course.visual && course.visual.icon,
+                        accent: course.visual && course.visual.accent,
+                      }}
+                      />
+                    )}
+                  </li>
                 ))}
-              </div>
+              </ul>
               {area.id === 'economics-and-development' && (
                 <div style={{ marginTop: '2rem' }}>
                   <span className="font-body" style={{ color: '#b97827', fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '1rem' }}>{c.competencyTracks}</span>
@@ -343,87 +363,58 @@ export default function Courses() {
               )}
             </div>
           ))}
+          </div>
         </section>
 
-        {/* Course Design / Lessons */}
-        <section id="lessons" style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#302018', color: '#f3ead8' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: '35px', marginBottom: '37px', flexWrap: 'wrap' }}>
-            <div>
-              <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.courseDesignEyebrow}</span>
-              <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#f3ead8' }}>{c.courseDesignHeading}</h2>
-            </div>
-            <p className="font-body" style={{ maxWidth: '480px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{c.courseDesignIntro}</p>
-          </div>
-          <div className="tamu-lesson-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,300px) 1fr', gap: '42px', alignItems: 'start' }}>
-            <aside style={{ border: '1px solid rgba(232,184,91,0.3)', background: 'rgba(255,255,255,0.045)', padding: '22px', borderRadius: '4px' }}>
-              <h3 className="font-heading" style={{ fontWeight: 400, fontSize: '23px', margin: '0 0 21px', color: '#f3ead8' }}>Course Components</h3>
-              {c.courseComponents.map((comp, ci) => (
-                <div key={ci} className="font-body" style={{ display: 'flex', gap: '12px', padding: '15px 0', borderTop: ci === 0 ? '2px solid #d99b37' : '1px solid rgba(243,234,216,0.13)', fontSize: '13px', lineHeight: 1.45, color: '#f8f0df' }}>
-                  <span aria-hidden style={{ width: '18px', height: '18px', border: '1px solid #d99b37', borderRadius: '50%', flex: 'none', marginTop: '1px', position: 'relative', background: '#d99b37' }}>
-                    <span style={{ position: 'absolute', width: '7px', height: '3px', borderLeft: '2px solid #302018', borderBottom: '2px solid #302018', transform: 'rotate(-45deg)', left: '5px', top: '5px' }} />
-                  </span>
-                  <span>{comp}</span>
-                </div>
-              ))}
-            </aside>
-            <motion.article animate={{ y: [0, 8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} style={{ position: 'relative', padding: '36px 42px', minHeight: '405px', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '5px', overflow: 'hidden', background: '#3a261c' }}>
-              <div aria-hidden style={{ position: 'absolute', inset: 0, background: `linear-gradient(rgba(58,38,28,0.84),rgba(58,38,28,0.94)), url(${LESSON_IMG}) center/cover`, opacity: 0.7 }} />
-              <div style={{ position: 'relative' }}>
-                <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.courseComponents[0]}</span>
-                <h3 className="font-heading" style={{ fontSize: 'clamp(1.6rem,3vw,38px)', fontWeight: 400, lineHeight: 1.1, margin: '15px 0 18px', color: '#f8f0df' }}>{c.courseComponents[1]}</h3>
-                <p className="font-body" style={{ maxWidth: '650px', fontSize: '15px', lineHeight: 1.8, color: '#d9cbb8', margin: '0 0 25px' }}>{c.courseComponents.slice(2).join(', ')}.</p>
-                <div className="font-body" style={{ display: 'flex', gap: '28px', color: '#e8b85b', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', flexWrap: 'wrap' }}>
-                  <span>{c.courseComponents.length} components</span>
-                  <span>Included in each course</span>
-                </div>
-                <div className="font-body" style={{ marginTop: '30px', borderTop: '1px solid rgba(243,234,216,0.18)', paddingTop: '22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#e3d5c2', fontSize: '13px', flexWrap: 'wrap', gap: '8px' }}>
-                  <span>What a complete course includes</span>
-                  <strong style={{ color: '#e8b85b', fontWeight: 400 }}>{c.courseComponents.length} components</strong>
-                </div>
+        {/* Course Design: what every course includes */}
+        <section id="lessons" style={{ padding: '72px clamp(1.25rem,5vw,4rem)', background: '#302018', color: '#f3ead8' }}>
+          <div className="cat-inner">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: '1.5rem 35px', marginBottom: '2rem', flexWrap: 'wrap' }}>
+              <div>
+                <span className="font-body" style={eyebrowStyle('#e8b85b')}>{c.courseDesignEyebrow}</span>
+                <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#f3ead8' }}>{c.courseDesignHeading}</h2>
               </div>
-            </motion.article>
+              <p className="font-body" style={{ maxWidth: '480px', color: '#cdbda7', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{c.courseDesignIntro}</p>
+            </div>
+            <ul className="cat-components">
+              {c.courseComponents.map((comp) => (
+                <li key={comp} className="font-body">
+                  <Check size={17} strokeWidth={2.2} aria-hidden="true" />
+                  <span>{comp}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
         {/* Open Learning / Progress */}
-        <section id="progress" style={{ position: 'relative', padding: '76px clamp(1.5rem,6vw,88px)', background: '#e9dcc5', overflow: 'hidden' }}>
+        <section id="progress" style={{ position: 'relative', padding: '72px clamp(1.25rem,5vw,4rem)', background: '#e9dcc5', overflow: 'hidden' }}>
           <div aria-hidden style={{ position: 'absolute', right: 0, top: 0, width: '47%', height: '100%', background: `linear-gradient(90deg, #e9dcc5 0%, rgba(233,220,197,0.7) 28%, rgba(233,220,197,0.15)), url(${PROGRESS_IMG}) center/cover`, opacity: 0.75 }} />
-          <div style={{ position: 'relative', maxWidth: '520px' }}>
+          <div className="cat-inner" style={{ position: 'relative' }}>
+          <div style={{ maxWidth: '520px' }}>
             <span className="font-body" style={eyebrowStyle('#b97827')}>{c.openLearningEyebrow}</span>
             <h2 className="font-heading" style={{ fontWeight: 400, fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, margin: '12px 0 19px', color: '#39251b' }}>{c.openLearningHeading}</h2>
             <p className="font-body" style={{ fontSize: '15px', lineHeight: 1.75, color: '#806b58', margin: '0 0 1.75rem' }}>{c.openLearningBody}</p>
             <div style={{ display: 'flex', gap: '48px', margin: '33px 0', flexWrap: 'wrap' }}>
               <div>
                 <strong className="font-heading" style={{ display: 'block', fontSize: '38px', fontWeight: 400, color: '#a8671e' }}>{String(c.courseAreas.length).padStart(2, '0')}</strong>
-                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Learning Areas</span>
+                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{c.statAreas}</span>
               </div>
               <div>
                 <strong className="font-heading" style={{ display: 'block', fontSize: '38px', fontWeight: 400, color: '#a8671e' }}>{String(c.courseComponents.length).padStart(2, '0')}</strong>
-                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Course Components</span>
+                <span className="font-body" style={{ display: 'block', marginTop: '6px', color: '#806b58', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{c.statComponents}</span>
               </div>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
               <Link to="/resources" className="tamu-journey-primary font-body" style={{ padding: '14px 21px', borderRadius: '3px', textDecoration: 'none', fontSize: '12px', letterSpacing: '0.13em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center' }}>{c.viewResources} →</Link>
             </div>
           </div>
-        </section>
-
-        {/* Course Components grid */}
-        <section style={{ padding: '76px clamp(1.5rem,6vw,88px)', background: '#faf6ec', color: '#39251b' }}>
-          <div style={{ marginBottom: '37px' }}>
-            <span className="font-body" style={eyebrowStyle('#b97827')}>{c.courseDesignEyebrow}</span>
-            <h2 className="font-heading" style={{ fontSize: 'clamp(1.8rem,3.5vw,43px)', lineHeight: 1.08, fontWeight: 400, margin: '10px 0 0', color: '#39251b' }}>Course Components</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
-            {c.courseComponents.map((comp, ci) => (
-              <div key={ci} className="font-body" style={{ border: '1px solid #dcc8a8', padding: '18px 20px', color: '#725a46', fontSize: '14px', background: '#fffaf1' }}>{comp}</div>
-            ))}
           </div>
         </section>
 
         {/* Educators and Institutions — the partnership pathway */}
-        <section id="partnerships" style={{ padding: '80px clamp(1.5rem,6vw,88px)', background: '#24150f', scrollMarginTop: '90px' }}>
-          <PartnershipPathway />
+        <section id="partnerships" style={{ padding: '72px clamp(1.25rem,5vw,4rem)', background: '#24150f', scrollMarginTop: '90px' }}>
+          <div className="cat-inner"><PartnershipPathway /></div>
         </section>
 
       </main>
@@ -432,3 +423,28 @@ export default function Courses() {
     </div>
   );
 }
+const CATALOG_CSS = `
+.cat-inner { max-width: 1240px; margin: 0 auto; }
+.cat-hero { position: relative; overflow: hidden; padding: 130px clamp(1.25rem,5vw,4rem) 56px; }
+.cat-hero-bg { position: absolute; inset: 0; opacity: 0.92; }
+.cat-hero-inner { position: relative; z-index: 1; }
+.cat-title { font-weight: 400; font-size: clamp(2.2rem, 4.6vw, 56px); line-height: 1.05; letter-spacing: -0.03em; margin: 16px 0 18px; color: #f8f0df; max-width: 820px; }
+.cat-sub { font-size: clamp(1rem, 1.4vw, 17px); line-height: 1.7; color: #ddcfbb; max-width: 700px; margin: 0; }
+.cat-stats { color: #e8b85b; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin: 1.5rem 0 0; }
+.cat-jump { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.25rem; }
+.cat-jump-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.95rem; border-radius: 999px; border: 1px solid rgba(232,184,91,0.4); background: rgba(36,21,15,0.55); color: #f8f0df; font-size: 0.82rem; text-decoration: none; }
+.cat-jump-link:hover { border-color: #e8b85b; }
+.cat-jump-link:focus-visible { outline: 2px solid #e8b85b; outline-offset: 2px; }
+.cat-jump-count { color: #e8b85b; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.cat-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.cat-grid > li { display: flex; }
+.cat-grid > li > * { width: 100%; }
+.cat-components { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 1.5rem; }
+.cat-components li { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.9rem 1rem; border: 1px solid rgba(232,184,91,0.2); border-radius: 8px; background: rgba(243,234,216,0.03); color: #f3ead8; font-size: 0.92rem; line-height: 1.5; }
+.cat-components svg { color: #e8b85b; flex-shrink: 0; margin-top: 0.15rem; }
+@media (max-width: 1023px) { .cat-grid, .cat-components { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) {
+  .cat-grid, .cat-components { grid-template-columns: minmax(0, 1fr); }
+  .cat-hero { padding-top: 96px; }
+}
+`;
