@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageMeta from '@/components/seo/PageMeta';
-import ModuleLessonLayout from '@/components/courses/module/ModuleLessonLayout';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
-import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import ModuleNav from '@/components/courses/module/ModuleNav';
 import ModuleTextSection from '@/components/courses/module/ModuleTextSection';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import TemplateCourseQuiz from '@/components/courses/template/TemplateCourseQuiz';
 import TemplateCourseProgress from '@/components/courses/template/TemplateCourseProgress';
+import TemplateCoursePlayer from '@/components/courses/template/TemplateCoursePlayer';
+import TemplateCourseFooterBar from '@/components/courses/template/TemplateCourseFooterBar';
+import { stepAnchorId } from '@/components/courses/template/template-player-steps';
 import ModuleSources from '@/components/courses/module/ModuleSources';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { fillTemplate } from '@/lib/i18n/fill-template';
@@ -61,6 +62,10 @@ const CONTENT = {
  * The module arrives from getTemplateCourseModule, which has already stripped
  * the quiz answer keys and translated the content. Only this layout's own
  * labels are translated here; the module's content arrives already translated.
+ *
+ * It renders inside TemplateCoursePlayer — the course outline on the left, the
+ * course progress bar above and the "Mark Complete & Continue" bar below.
+ * Each section carries a tpl-step-* anchor so the outline can link to it.
  */
 export default function TemplateCourseLesson({ course, module, onRefresh }) {
   const { content: c } = useTranslatedContent('template-course-lesson', CONTENT);
@@ -71,11 +76,19 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
   const nextLabel = nextModule
     ? fillTemplate(c.nextModule, { number: nextModule.number, title: nextModule.title })
     : c.modulesComplete;
-  const completedCount = course.modules.filter((item) => item.completed).length;
   const isLastModule = !nextModule;
 
+  // Moving to another module starts at its top, not at the old scroll position.
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.location.hash) window.scrollTo(0, 0);
+  }, [module.route]);
+
   return (
-    <ModuleLessonLayout>
+    <TemplateCoursePlayer
+      course={course}
+      module={module}
+      footer={<TemplateCourseFooterBar course={course} module={module} onRefresh={onRefresh} />}
+    >
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={`${module.number} of ${course.title}.`}
@@ -90,8 +103,6 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
         coursePath="/courses"
         moduleLabel={module.number}
       />
-      <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} completed={completedCount} />
-
       <ModuleHero
         courseSlug={course.slug}
         eyebrow={`${module.number} \u00b7 ${course.title}`}
@@ -102,7 +113,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       />
 
       {module.video && (
-        <ModuleLessonSection eyebrow={c.recordedMaterial} heading={module.video.title || c.watch}>
+        <ModuleLessonSection id={stepAnchorId('media')} eyebrow={c.recordedMaterial} heading={module.video.title || c.watch}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>
             <a href={module.video.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>
               {module.video.title}
@@ -116,9 +127,11 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection eyebrow={c.whatYouWillLearn} heading={c.whatYoullLearn} items={module.goals} />
+      <div id={stepAnchorId('goals')}>
+        <ModuleTextSection eyebrow={c.whatYouWillLearn} heading={c.whatYoullLearn} items={module.goals} />
+      </div>
 
-      <ModuleLessonSection eyebrow={c.theLesson} heading={c.theLessonHeading}>
+      <ModuleLessonSection id={stepAnchorId('lesson')} eyebrow={c.theLesson} heading={c.theLessonHeading}>
         {(module.lessonSections || []).map((section, sectionIndex) => (
           <div key={sectionIndex} className="workbook-block" style={{ marginBottom: '2.25rem' }}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 1rem' }}>
@@ -148,7 +161,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       </ModuleLessonSection>
 
       {module.activity && (
-        <ModuleLessonSection eyebrow={c.tryIt} heading={c.tryItHeading}>
+        <ModuleLessonSection id={stepAnchorId('activity')} eyebrow={c.tryIt} heading={c.tryItHeading}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{module.activity.intro}</p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
             {(module.activity.steps || []).map((step, stepIndex) => (
@@ -159,7 +172,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {Array.isArray(module.keyTerms) && module.keyTerms.length > 0 && (
-        <ModuleLessonSection eyebrow={c.keyTerms} heading={c.keyTermsHeading}>
+        <ModuleLessonSection id={stepAnchorId('key-terms')} eyebrow={c.keyTerms} heading={c.keyTermsHeading}>
           <dl style={{ margin: 0 }}>
             {module.keyTerms.map((entry, termIndex) => (
               <div key={termIndex} style={{ marginBottom: '1rem' }}>
@@ -174,7 +187,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {module.quiz && (
-        <ModuleLessonSection eyebrow={c.knowledgeCheck} heading={c.knowledgeCheckHeading}>
+        <ModuleLessonSection id={stepAnchorId('knowledge-check')} eyebrow={c.knowledgeCheck} heading={c.knowledgeCheckHeading}>
           <TemplateCourseQuiz
             courseSlug={course.slug}
             moduleRoute={module.route}
@@ -185,7 +198,7 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
       )}
 
       {module.reflection && (
-        <ModuleLessonSection eyebrow={c.reflection} heading={c.reflection}>
+        <ModuleLessonSection id={stepAnchorId('reflection')} eyebrow={c.reflection} heading={c.reflection}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>{module.reflection}</p>
         </ModuleLessonSection>
       )}
@@ -201,13 +214,14 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleLessonSection eyebrow={c.requirements} heading={c.requirementsHeading}>
+      <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow={c.requirements} heading={c.requirementsHeading}>
         <TemplateCourseProgress
           courseSlug={course.slug}
           moduleRoute={module.route}
           requirements={module.requirements || []}
           progress={module.progress}
           onRefresh={onRefresh}
+          showCompleteButton={false}
         />
       </ModuleLessonSection>
 
@@ -223,6 +237,6 @@ export default function TemplateCourseLesson({ course, module, onRefresh }) {
             : null
         }
       />
-    </ModuleLessonLayout>
+    </TemplateCoursePlayer>
   );
 }

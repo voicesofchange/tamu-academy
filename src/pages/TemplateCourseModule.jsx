@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import TemplateCourseLesson from '@/components/courses/template/TemplateCourseLesson';
 import TemplateCourseGate from '@/components/courses/template/TemplateCourseGate';
+import { TemplatePlayerLabelsProvider } from '@/components/courses/template/TemplatePlayerLabelsProvider';
 import PageNotFound from '@/lib/PageNotFound';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
@@ -34,6 +35,10 @@ const CONTENT = {
  * curriculum find the course, and getTemplateCourseModule enforces
  * publication, enrollment and the prerequisite chain, returning the module,
  * the course outline and this learner's progress in one request.
+ *
+ * The lesson renders in the split-screen course player (outline, progress bar,
+ * "Mark Complete & Continue" footer), whose labels come from
+ * TemplatePlayerLabelsProvider in the learner's language.
  *
  * A 403 "Not enrolled" shows the start gate; a 403 "Prerequisite incomplete"
  * names the module to finish first; an unknown course or module is a 404.
@@ -154,5 +159,9 @@ export default function TemplateCourseModule() {
     );
   }
 
-  return <TemplateCourseLesson course={state.data.course} module={state.data.module} onRefresh={refresh} />;
+  return (
+    <TemplatePlayerLabelsProvider>
+      <TemplateCourseLesson course={state.data.course} module={state.data.module} onRefresh={refresh} />
+    </TemplatePlayerLabelsProvider>
+  );
 }

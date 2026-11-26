@@ -62,8 +62,11 @@ const completeStyle = {
  * updateTemplateCourseProgress) or the knowledge check, which only the grader
  * can satisfy. "Mark this module complete" is decided server-side: an
  * outstanding step comes back in `missing` and the module is not completed.
+ *
+ * In the course player the footer's "Mark Complete & Continue" does the
+ * completing, so the player passes showCompleteButton={false}.
  */
-export default function TemplateCourseProgress({ courseSlug, moduleRoute, requirements, progress, onRefresh }) {
+export default function TemplateCourseProgress({ courseSlug, moduleRoute, requirements, progress, onRefresh, showCompleteButton = true }) {
   const { content: c } = useTranslatedContent('template-course-progress', CONTENT);
   const [busy, setBusy] = useState(null);
   const [note, setNote] = useState(null);
@@ -170,7 +173,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
         </p>
       )}
 
-      <div style={{ marginTop: '1.5rem' }}>
+      {showCompleteButton && <div style={{ marginTop: '1.5rem' }}>
         {progress && progress.completed ? (
           <p className="font-body" style={{ ...bodyText, color: '#e8b85b', margin: 0 }}>
             {c.moduleComplete}
@@ -189,7 +192,7 @@ export default function TemplateCourseProgress({ courseSlug, moduleRoute, requir
             {busy === 'complete' ? c.checking : c.markComplete}
           </button>
         )}
-      </div>
+      </div>}
     </div>
   );
 }
