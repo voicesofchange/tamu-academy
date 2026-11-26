@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
 import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
+import VerifyCertificate from '@/pages/VerifyCertificate';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import {
   SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -35,8 +36,28 @@ const actionButtonStyle = {
  * SokoCertificate — certificate page for either Sauti za Soko course. The
  * core course and the Peer Facilitator track are certified separately, so
  * this page takes the course slug as a prop.
+ *
+ * Public verification: /soko-certificate?id=TAMU-… (and this page's own
+ * routes with ?id=) show the public check for that code instead of the
+ * signed-in learner's certificate, so it works for anyone, signed in or not.
+ * The public /soko-certificate entry without an id sends a learner on to
+ * their own certificate, which requires signing in.
  */
-export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG }) {
+export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG, publicEntry = false }) {
+  const [searchParams] = useSearchParams();
+  const verificationId = (searchParams.get('id') || '').trim();
+  if (verificationId) return <VerifyCertificate code={verificationId} />;
+  if (publicEntry) {
+    const target = courseSlug === SAUTI_ZA_SOKO_PEER_COURSE_SLUG
+      ? '/courses/sauti-za-soko/peer-facilitator/certificate'
+      : '/courses/sauti-za-soko/certificate';
+    return <Navigate to={target} replace />;
+  }
+  return <SokoLearnerCertificate courseSlug={courseSlug} />;
+}
+
+/** The signed-in learner's own Sauti za Soko certificate. */
+function SokoLearnerCertificate({ courseSlug }) {
   const labels = useSokoLabels();
   const isPeer = courseSlug === SAUTI_ZA_SOKO_PEER_COURSE_SLUG;
   const coursePath = '/courses/sauti-za-soko';
@@ -91,6 +112,7 @@ export default function SokoCertificate({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG
       courseTitle: state.data.courseTitle,
       completedAt: state.data.completedAt,
       certificateId: state.data.certificateId,
+      verificationCode: state.data.verificationCode || null,
       isPreview: state.data.preview === true,
     });
   };

@@ -31,6 +31,8 @@ export const WealthCapstone = lazyPage(() => import('@/pages/WealthCapstone'));
 export const SautiZaSoko = lazyPage(() => import('@/pages/SautiZaSoko'));
 export const SokoModule = lazyPage(() => import('@/pages/SokoModule'));
 export const SokoCourseCompletion = lazyPage(() => import('@/pages/SokoCourseCompletion'));
+// Public certificate verification (/verify?code=…), opened by each certificate's QR code.
+export const VerifyCertificate = lazyPage(() => import('@/pages/VerifyCertificate'));
 export const SokoCertificate = lazyPage(() => import('@/pages/SokoCertificate'));
 export const SokoPeerFacilitator = lazyPage(() => import('@/pages/SokoPeerFacilitator'));
 export const Module1Economics = lazyPage(() => import('@/pages/Module1Economics'));

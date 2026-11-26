@@ -102,7 +102,8 @@ export const COURSE_REGISTRY = {
       SOKO_CORE_MODULE_ROUTES.some((route) => isSokoModulePublished(slug, route)),
     certificate: {
       includeEnrollmentId: true,
-      verificationCode: false,
+      // Public verification at /verify?code=… (and the QR code on the PDF).
+      verificationCode: true,
       requiresCompletedEnrollment: true,
       extraRequirements: 'none',
       finalizesEnrollment: false,
@@ -119,7 +120,8 @@ export const COURSE_REGISTRY = {
       SOKO_PEER_MODULE_ROUTES.some((route) => isSokoModulePublished(slug, route)),
     certificate: {
       includeEnrollmentId: true,
-      verificationCode: false,
+      // Public verification at /verify?code=… (and the QR code on the PDF).
+      verificationCode: true,
       requiresCompletedEnrollment: true,
       extraRequirements: 'none',
       finalizesEnrollment: false,

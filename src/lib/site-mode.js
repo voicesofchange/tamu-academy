@@ -25,4 +25,6 @@ export const LAUNCH_PUBLIC_PATHS = new Set([
   '/',
   '/partnership-inquiry',
   '/privacy',
+  '/verify',
+  '/soko-certificate',
 ]);

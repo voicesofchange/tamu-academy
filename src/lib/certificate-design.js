@@ -53,6 +53,15 @@ export function resolveCertificateId(certificateId, isPreview) {
   return isPreview ? CERT_PREVIEW_ID : (certificateId || '');
 }
 
+// ── Public verification ────────────────────────────────────────────────────
+// The address printed as a QR code on every certificate that carries a
+// verification code. It opens the public /verify page.
+export const CERT_VERIFY_BASE_URL = 'https://tamuacademy.org/verify';
+
+export function certificateVerifyUrl(verificationCode) {
+  return `${CERT_VERIFY_BASE_URL}?code=${encodeURIComponent(verificationCode)}`;
+}
+
 // ── Design-sample data ─────────────────────────────────────────────────────
 // Demonstration values used only on the administrator design-sample page. The
 // certificate ID is deliberately recognisable as not a real credential, and

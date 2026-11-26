@@ -76,6 +76,7 @@ import {
   SokoPeerFacilitator,
   UbuntuMentalHealth,
   UnderstandingAfricanEconomies,
+  VerifyCertificate,
   TranslationReview,
   TemplateCourseModule,
   DiasporaRemittanceEconomy,
@@ -141,6 +142,11 @@ const AuthenticatedApp = () => {
           template module route inside the protected block below. */}
       <Route path="/courses/diaspora-remittance-economy" element={<DiasporaRemittanceEconomy />} />
       <Route path="/courses/sauti-za-soko/peer-facilitator" element={<SokoLabelsProvider><SokoPeerFacilitator /></SokoLabelsProvider>} />
+      {/* Public certificate verification — no login. /verify?code=TAMU-… is what
+          each certificate's QR code opens; /soko-certificate?id=TAMU-… shows the
+          same check, and without an id sends a learner to their own certificate. */}
+      <Route path="/verify" element={<VerifyCertificate />} />
+      <Route path="/soko-certificate" element={<SokoLabelsProvider><SokoCertificate publicEntry /></SokoLabelsProvider>} />
       {/* Protected Routes — login required for module content, progress, and certificates */}
       <Route element={<ProtectedRoute />}>
         <Route path="/welcome" element={<Welcome />} />
