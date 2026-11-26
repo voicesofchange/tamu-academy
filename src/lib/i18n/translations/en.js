@@ -72,7 +72,9 @@ export default {
     pathIntro: 'The course follows a clear linear sequence, building from foundational concepts toward an applied milestone.',
     modules: 'Modules',
     modulesIntro:
-      'Six connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, and knowledge checks.',
+      '{count} connected modules build the framework. Each module includes recorded lessons, written companions, reflection prompts, and knowledge checks.',
+    // Spelled-out module counts that fill {count} in modulesIntro.
+    moduleCountWords: { 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten' },
     milestone: 'Applied Milestone',
     progress: 'Learner Progress',
     certificate: 'Certificate',

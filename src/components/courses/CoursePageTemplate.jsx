@@ -10,6 +10,7 @@ import CourseOverviewSection from '@/components/courses/CourseOverviewSection';
 import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
 import { useTranslation } from '@/lib/i18n';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
 const lightBody = { color: '#725a46', fontSize: '15px', lineHeight: 1.75, fontWeight: 300 };
@@ -35,6 +36,15 @@ export default function CoursePageTemplate({ course, progressSlot, children, mod
     [t('course.certificate'), course.certificate],
     [t('course.access'), course.access],
   ];
+
+  // "{count} connected modules…": the count is this course's own, spelled out
+  // in the reader's language where the dictionary has the word.
+  const moduleCount = Number(course.modulesCount) || course.modules.length;
+  const countWordKey = `course.moduleCountWords.${moduleCount}`;
+  const countWord = t(countWordKey);
+  const modulesIntro = fillTemplate(t('course.modulesIntro'), {
+    count: countWord === countWordKey ? String(moduleCount) : countWord,
+  });
 
   return (
     <CourseOverviewLayout
@@ -106,7 +116,7 @@ export default function CoursePageTemplate({ course, progressSlot, children, mod
 
       {/* Modules */}
       <CourseOverviewSection surface="darker" eyebrow={t('course.modules')} heading={t('course.modulesHeading')}>
-        <p className="font-body" style={{ ...darkBody, marginBottom: '1.75rem' }}>{t('course.modulesIntro')}</p>
+        <p className="font-body" style={{ ...darkBody, marginBottom: '1.75rem' }}>{modulesIntro}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
           {course.modules.map((module) => (
             <ModuleCard

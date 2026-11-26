@@ -72,7 +72,9 @@ export default {
     pathIntro: 'El curso sigue una secuencia lineal clara, avanzando desde conceptos fundamentales hacia un hito aplicado.',
     modules: 'Módulos',
     modulesIntro:
-      'Seis módulos conectados construyen el marco. Cada módulo incluye lecciones grabadas, compañeros escritos, preguntas de reflexión y verificaciones de conocimiento.',
+      '{count} módulos conectados construyen el marco. Cada módulo incluye lecciones grabadas, compañeros escritos, preguntas de reflexión y verificaciones de conocimiento.',
+    // Spelled-out module counts that fill {count} in modulesIntro.
+    moduleCountWords: { 2: 'Dos', 3: 'Tres', 4: 'Cuatro', 5: 'Cinco', 6: 'Seis', 7: 'Siete', 8: 'Ocho', 9: 'Nueve', 10: 'Diez' },
     milestone: 'Hito Aplicado',
     progress: 'Progreso del Estudiante',
     certificate: 'Certificado',

@@ -74,7 +74,9 @@ export default {
       'Le cours suit une séquence linéaire claire, allant des concepts fondamentaux vers une réalisation appliquée.',
     modules: 'Modules',
     modulesIntro:
-      'Six modules liés construisent le cadre. Chaque module comprend des leçons enregistrées, des compléments écrits, des questions de réflexion et des vérifications des connaissances.',
+      '{count} modules liés construisent le cadre. Chaque module comprend des leçons enregistrées, des compléments écrits, des questions de réflexion et des vérifications des connaissances.',
+    // Spelled-out module counts that fill {count} in modulesIntro.
+    moduleCountWords: { 2: 'Deux', 3: 'Trois', 4: 'Quatre', 5: 'Cinq', 6: 'Six', 7: 'Sept', 8: 'Huit', 9: 'Neuf', 10: 'Dix' },
     milestone: 'Réalisation appliquée',
     progress: "Progression de l'apprenant",
     certificate: 'Certificat',
