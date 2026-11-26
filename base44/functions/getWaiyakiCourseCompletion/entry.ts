@@ -2,6 +2,8 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.52';
 import {
   waiyakiCourseExists,
   getWaiyakiModuleConfig,
+  getWaiyakiModulePrerequisite,
+  isWaiyakiModulePublished,
   WAIYAKI_MODULE_ROUTES,
   WAIYAKI_ASSESSMENT_MODULE_SLUG,
   getWaiyakiAssessmentPassRequired,
@@ -27,6 +29,12 @@ import {
  *   - Unknown course -> 404.
  *   - Completion is determined exclusively from server-side records; no
  *     browser-supplied value influences it.
+ *
+ * For the course player's outline, each module also reports its progress
+ * status, publication, prerequisite and whether it is locked for this
+ * learner (unpublished, or its prerequisite not complete), and the course
+ * reports progressPercentage — completed modules over required modules, the
+ * same figure the enrollment record carries. Existing fields are unchanged.
  */
 export default async function(req: Request): Promise<Response> {
   try {
@@ -81,17 +89,28 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
+    const isRouteCompleted = (route: string | null) => {
+      const row = route ? progressMap[route] : null;
+      return !!(row && row.status === 'completed' && row.completed_at);
+    };
+
     const modules = WAIYAKI_MODULE_ROUTES.map((route) => {
       const config = getWaiyakiModuleConfig(courseSlug, route);
       const row = progressMap[route] || null;
       const completedKeys = deriveWaiyakiCompletedKeys(row);
+      const published = isWaiyakiModulePublished(courseSlug, route);
+      const prerequisite = getWaiyakiModulePrerequisite(courseSlug, route) || null;
       return {
         route,
         number: config ? config.number : route,
         title: config ? config.title : route,
-        completed: !!(row && row.status === 'completed' && row.completed_at),
+        completed: isRouteCompleted(route),
         completedAt: row ? row.completed_at || null : null,
         completedKeys,
+        status: row ? row.status : 'not_started',
+        published,
+        prerequisite,
+        locked: !published || (!!prerequisite && !isRouteCompleted(prerequisite)),
       };
     });
 
@@ -159,6 +178,7 @@ export default async function(req: Request): Promise<Response> {
       modules,
       completedCount,
       totalModules,
+      progressPercentage: totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0,
       modulesComplete,
       incompleteModules,
       requirements,

@@ -12,6 +12,13 @@ import {
   getWaiyakiModulePreview,
 } from '@/lib/waiyaki-tracks';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
+import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import { ModuleFrameContext } from '@/components/courses/player/ModuleFrameContext';
+import { waiyakiModuleSteps, WAIYAKI_COMPLETION_KEYS, WAIYAKI_KEY_LABEL_KEYS } from '@/components/courses/waiyaki/waiyaki-player-steps';
 
 /**
  * WaiyakiModule — the lesson page for one module of the course, resolved from
@@ -23,8 +30,22 @@ import { useTranslation } from '@/lib/i18n/LanguageContext';
  * from getWaiyakiCourseCompletion, so the requirements always reflect server
  * state. A 403 means the viewer is not entitled to the module yet, and the
  * page renders the public "module in development" state.
+ *
+ * The module opens in the shared course player through ModuleFrameContext:
+ * the outline and progress bar come from the same getWaiyakiCourseCompletion
+ * report, and "Mark Complete & Continue" calls completeWaiyakiModule, so the
+ * course's rules stay on the server. After the last module the footer leads
+ * to the completion room (final assessment and written project).
  */
 export default function WaiyakiModule() {
+  return (
+    <CoursePlayerLabelsProvider>
+      <WaiyakiModuleRoute />
+    </CoursePlayerLabelsProvider>
+  );
+}
+
+function WaiyakiModuleRoute() {
   const { moduleRoute } = useParams();
   const { language } = useTranslation();
   const preview = getWaiyakiModulePreview(moduleRoute);
@@ -38,6 +59,9 @@ export default function WaiyakiModule() {
   const [savingKey, setSavingKey] = useState(null);
   const [completing, setCompleting] = useState(false);
   const [message, setMessage] = useState(null);
+  const L = useCoursePlayerLabels();
+  // Same page key as the course overview, so its translation is reused.
+  const { content: translatedCourse } = useTranslatedContent('waiyaki-course-overview', WAIYAKI_COURSE);
 
   const fetchProgress = useCallback(async () => {
     try {
@@ -186,7 +210,81 @@ export default function WaiyakiModule() {
     ? `Next: ${nextModule.number} \u2014 ${nextModule.title}`
     : 'Course complete';
 
+  // The course player around the lesson: the server's module states, with
+  // titles in the learner's language from the translated course.
+  const displayCourse = restoreCourse(translatedCourse || WAIYAKI_COURSE, WAIYAKI_COURSE);
+  const shownByRoute = new Map(displayCourse.modules.map((m) => [m.route, m]));
+  const serverModules = progress && Array.isArray(progress.modules) ? progress.modules : null;
+  const playerModules = (serverModules || modules).map((m) => {
+    const shown = shownByRoute.get(m.route) || m;
+    return {
+      route: m.route,
+      number: shown.number || m.number,
+      title: shown.title || m.title,
+      completed: !!m.completed,
+      status: m.status || 'not_started',
+      published: m.published !== false,
+      prerequisite: m.prerequisite || null,
+      locked: !!m.locked,
+    };
+  });
+  const totalModules = (progress && progress.totalModules) || playerModules.length;
+  const completedModules = progress ? progress.completedCount || 0 : 0;
+  const playerCourse = {
+    slug: WAIYAKI_COURSE_SLUG,
+    title: displayCourse.title,
+    progressPercentage: progress && typeof progress.progressPercentage === 'number'
+      ? progress.progressPercentage
+      : Math.round((completedModules / Math.max(totalModules, 1)) * 100),
+    completedModules,
+    totalModules,
+    modules: playerModules,
+  };
+  const nextShown = nextModule ? shownByRoute.get(nextModule.route) || nextModule : null;
+  const nextPath = nextModule
+    ? `/courses/${WAIYAKI_COURSE_SLUG}/${nextModule.route}`
+    : `/courses/${WAIYAKI_COURSE_SLUG}/completion`;
+
+  const completeFromFooter = async () => {
+    const res = await base44.functions.invoke('completeWaiyakiModule', { courseSlug: WAIYAKI_COURSE_SLUG, moduleRoute });
+    const data = res && res.data ? res.data : {};
+    await fetchProgress();
+    if (data.completed) return { completed: true };
+    const done = new Set(Array.isArray(data.completedKeys) ? data.completedKeys : []);
+    const missing = WAIYAKI_COMPLETION_KEYS.filter((key) => !done.has(key));
+    if (missing.length > 0) {
+      return { completed: false, missing: missing.map((key) => L[WAIYAKI_KEY_LABEL_KEYS[key]] || key.replace(/_/g, ' ')) };
+    }
+    return { completed: false };
+  };
+
+  const steps = waiyakiModuleSteps(module, completedKeys, moduleCompleted);
+  const footer = (
+    <CourseCompleteFooter
+      moduleKey={moduleRoute}
+      number={module.number}
+      title={module.title}
+      completed={moduleCompleted}
+      canSave={canSave}
+      onComplete={completeFromFooter}
+      onCompleted={fetchProgress}
+      next={{
+        path: nextPath,
+        title: nextShown ? `${nextShown.number} — ${nextShown.title}` : L.assessmentAndProject,
+      }}
+    />
+  );
+  const frame = {
+    inPlayer: true,
+    renderFrame: (children) => (
+      <CoursePlayer course={playerCourse} currentRoute={moduleRoute} steps={steps} footer={footer}>
+        {children}
+      </CoursePlayer>
+    ),
+  };
+
   return (
+    <ModuleFrameContext.Provider value={frame}>
     <WaiyakiModuleTemplate
       module={module}
       moduleRoute={moduleRoute}
@@ -214,5 +312,6 @@ export default function WaiyakiModule() {
       onComplete={handleComplete}
       message={message}
     />
+    </ModuleFrameContext.Provider>
   );
 }

@@ -3,7 +3,7 @@
  * sidebar, the course progress bar and the "Mark Complete & Continue" footer
  * that frame a module in every course that uses the player (the template
  * courses, Sauti za Soko, Understanding African Economies, Building Wealth
- * Together and Mental Health, Community and Culture).
+ * Together, Mental Health, Community and Culture and Waiyaki wa Hinga).
  *
  * The module's own content is translated server-side by each course's module
  * function; these are the words around it. They are passed to
@@ -79,6 +79,9 @@ export const COURSE_PLAYER_LABELS = {
   stepAmplifyLab: 'Amplify lab',
   stepStoryLab: 'Story lab',
   stepOptionalAssignment: 'Optional extended assignment',
+  // Lesson steps — Waiyaki wa Hinga
+  stepSourceAnalysis: 'Source analysis',
+  stepNarrativeAndTerms: 'Module narrative and key terms',
   // Progress bar
   courseProgress: 'Course progress',
   percentComplete: '{percent}% complete',
@@ -96,4 +99,5 @@ export const COURSE_PLAYER_LABELS = {
   nextUp: 'Next: {title}',
   courseCompletion: 'Course completion',
   capstoneProject: 'Capstone project',
+  assessmentAndProject: 'Final assessment and project',
 };

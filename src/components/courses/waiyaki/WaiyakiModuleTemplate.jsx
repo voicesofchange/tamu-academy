@@ -13,6 +13,13 @@ import WaiyakiSourceAnalysis from '@/components/courses/waiyaki/WaiyakiSourceAna
 import WaiyakiReflection from '@/components/courses/waiyaki/WaiyakiReflection';
 import WaiyakiModuleProgress from '@/components/courses/waiyaki/WaiyakiModuleProgress';
 import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
+import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
+
+/** An anchor the course player's outline can jump to. */
+function Step({ id, children }) {
+  return <div id={stepAnchorId(id)}>{children}</div>;
+}
 
 const CONTENT = {
   moduleFocus: 'Module Focus',
@@ -74,6 +81,10 @@ export default function WaiyakiModuleTemplate({
   const sections = module.sections || [];
   const isLastModule = moduleIndex === moduleCount - 1;
 
+  // Inside the course player its own progress bar replaces this one.
+  const frame = useModuleFrame();
+  const inPlayer = !!(frame && frame.inPlayer);
+
   return (
     <ModuleLessonLayout>
       <div className="tamu-waiyaki-centered">
@@ -92,7 +103,7 @@ export default function WaiyakiModuleTemplate({
         moduleLabel={module.number}
       />
 
-      <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} completed={completedCount} />
+      {!inPlayer && <ModuleProgressBar current={moduleIndex + 1} total={moduleCount} completed={completedCount} />}
 
       <ModuleHero
         courseSlug={WAIYAKI_COURSE.slug}
@@ -103,21 +114,26 @@ export default function WaiyakiModuleTemplate({
         metaItems={[{ icon: 'Clock', label: `${CONTENT.estimatedTime}: ${module.estimatedTime}` }]}
       />
 
-      <ModuleTextSection
-        eyebrow={CONTENT.objectivesEyebrow}
-        heading={CONTENT.objectivesHeading}
-        items={module.learningObjectives}
-      />
+      <Step id="objectives">
+        <ModuleTextSection
+          eyebrow={CONTENT.objectivesEyebrow}
+          heading={CONTENT.objectivesHeading}
+          items={module.learningObjectives}
+        />
+      </Step>
 
-      <ModuleTextSection
-        eyebrow={CONTENT.introEyebrow}
-        heading={CONTENT.introHeading}
-        paragraphs={module.lead ? [module.lead] : undefined}
-      />
+      <Step id="introduction">
+        <ModuleTextSection
+          eyebrow={CONTENT.introEyebrow}
+          heading={CONTENT.introHeading}
+          paragraphs={module.lead ? [module.lead] : undefined}
+        />
+      </Step>
 
       {sections.map((section, i) => (
         <ModuleLessonSection
           key={section.heading}
+          id={i === 0 ? stepAnchorId('lesson') : undefined}
           eyebrow={i === 0 ? CONTENT.lessonEyebrow : undefined}
           heading={section.heading}
         >
@@ -126,13 +142,14 @@ export default function WaiyakiModuleTemplate({
       ))}
 
       {Array.isArray(module.keyTerms) && module.keyTerms.length > 0 && (
-        <ModuleLessonSection eyebrow={CONTENT.conceptsEyebrow} heading={CONTENT.conceptsHeading}>
+        <ModuleLessonSection id={stepAnchorId('key-terms')} eyebrow={CONTENT.conceptsEyebrow} heading={CONTENT.conceptsHeading}>
           <WaiyakiKeyTerms terms={module.keyTerms} />
         </ModuleLessonSection>
       )}
 
       {module.sourceAnalysis && (
         <ModuleLessonSection
+          id={stepAnchorId('source-analysis')}
           eyebrow={CONTENT.sourcesEyebrow}
           heading={module.sourceAnalysis.heading || CONTENT.sourcesHeading}
         >
@@ -145,7 +162,7 @@ export default function WaiyakiModuleTemplate({
       )}
 
       {module.reflection && module.reflection.groups && module.reflection.groups.length > 0 && (
-        <ModuleLessonSection eyebrow={CONTENT.reflectEyebrow} heading={CONTENT.reflectHeading}>
+        <ModuleLessonSection id={stepAnchorId('reflection')} eyebrow={CONTENT.reflectEyebrow} heading={CONTENT.reflectHeading}>
           <WaiyakiReflection
             reflection={module.reflection}
             acknowledged={keys.includes('reflection_acknowledged')}
@@ -154,7 +171,7 @@ export default function WaiyakiModuleTemplate({
         </ModuleLessonSection>
       )}
 
-      <ModuleLessonSection eyebrow={CONTENT.requirementsEyebrow} heading={CONTENT.requirementsHeading}>
+      <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow={CONTENT.requirementsEyebrow} heading={CONTENT.requirementsHeading}>
         <WaiyakiModuleProgress
           completedKeys={keys}
           moduleCompleted={moduleCompleted}
@@ -168,11 +185,13 @@ export default function WaiyakiModuleTemplate({
         />
       </ModuleLessonSection>
 
-      <ModuleTextSection
-        eyebrow={CONTENT.closingEyebrow}
-        heading={CONTENT.closingHeading}
-        paragraphs={[CONTENT.closingText]}
-      />
+      <Step id="closing">
+        <ModuleTextSection
+          eyebrow={CONTENT.closingEyebrow}
+          heading={CONTENT.closingHeading}
+          paragraphs={[CONTENT.closingText]}
+        />
+      </Step>
 
       <ModuleNav
         coursePath={coursePath}
