@@ -2,18 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check, Lock, Circle, CircleDot, X } from 'lucide-react';
 import { fillTemplate } from '@/lib/i18n/fill-template';
-import { useTemplatePlayerLabels } from '@/components/courses/template/TemplatePlayerLabelsProvider';
-import { moduleSteps, stepAnchorId } from '@/components/courses/template/template-player-steps';
+import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 
 /**
- * TemplateCourseSidebar — the player's course outline: every module of the
+ * CourseOutlineSidebar — the course player's outline: every module of the
  * course with its state (completed, current, in progress, not started or
  * locked behind its prerequisite), and under the current module, its lesson
  * steps with a tick for each completion requirement already met.
  *
- * Module states come from the server's course outline, never from the
- * browser. A locked module is shown, not linked, with the module it waits for.
- * On narrow screens the same outline opens as a drawer (`onClose` set).
+ * `course.modules` comes from the course's own server-side progress report,
+ * never from the browser: { route, number, title, completed, status, locked,
+ * published, prerequisite }. `steps` is the current module's step list:
+ * { id, labelKey | label, tracked, completed }. A locked module is shown, not
+ * linked, with the module it waits for. On narrow screens the same outline
+ * opens as a drawer (`onClose` set).
  */
 
 const GOLD = '#e8b85b';
@@ -27,14 +30,13 @@ function ModuleIcon({ state }) {
   return <Circle {...common} color={muted} strokeWidth={1.7} />;
 }
 
-export default function TemplateCourseSidebar({ course, module, onClose, onNavigate }) {
-  const L = useTemplatePlayerLabels();
-  const steps = moduleSteps(module);
+export default function CourseOutlineSidebar({ course, currentRoute, steps = [], onClose, onNavigate }) {
+  const L = useCoursePlayerLabels();
   const byRoute = new Map(course.modules.map((item) => [item.route, item]));
 
   const stateOf = (item) => {
     if (item.completed) return 'completed';
-    if (item.route === module.route) return 'current';
+    if (item.route === currentRoute) return 'current';
     if (item.locked) return 'locked';
     if (item.status === 'in_progress') return 'in_progress';
     return 'not_started';
@@ -63,7 +65,7 @@ export default function TemplateCourseSidebar({ course, module, onClose, onNavig
       <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
         {course.modules.map((item) => {
           const state = stateOf(item);
-          const isCurrent = item.route === module.route;
+          const isCurrent = item.route === currentRoute;
           const prerequisite = item.prerequisite ? byRoute.get(item.prerequisite) : null;
           const lockedNote = state === 'locked'
             ? (item.published && prerequisite
@@ -135,7 +137,7 @@ export default function TemplateCourseSidebar({ course, module, onClose, onNavig
                           ) : (
                             <span aria-hidden="true" style={{ width: 13, flexShrink: 0, textAlign: 'center', color: muted }}>·</span>
                           )}
-                          <span>{L[step.labelKey]}</span>
+                          <span>{(step.labelKey && L[step.labelKey]) || step.label}</span>
                           {step.tracked && (
                             <span className="sr-only"> — {step.completed ? L.stepDone : L.stepToDo}</span>
                           )}

@@ -3,11 +3,12 @@ import { PanelLeftClose, PanelLeftOpen, ListTree } from 'lucide-react';
 import SiteShell from '@/components/page/SiteShell';
 import { useDisplayMode } from '@/lib/display-mode';
 import { fillTemplate } from '@/lib/i18n/fill-template';
-import { useTemplatePlayerLabels } from '@/components/courses/template/TemplatePlayerLabelsProvider';
-import TemplateCourseSidebar from '@/components/courses/template/TemplateCourseSidebar';
+import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import CourseOutlineSidebar from '@/components/courses/player/CourseOutlineSidebar';
 
 /**
- * TemplateCoursePlayer — the split-screen frame of a template course module:
+ * CoursePlayer — the split-screen frame of a course module, shared by every
+ * course that uses the player (the template courses and Sauti za Soko):
  *
  *   - a course progress bar under the site navigation, showing the course's
  *     completion percentage (the same figure as the learner's enrollment);
@@ -16,6 +17,11 @@ import TemplateCourseSidebar from '@/components/courses/template/TemplateCourseS
  *   - the lesson itself on the right, at a comfortable reading measure;
  *   - a footer slot that stays at the bottom of the screen while the lesson
  *     scrolls (the "Mark Complete & Continue" bar).
+ *
+ * Props: `course` (title, progressPercentage, completedModules, totalModules
+ * and the outline's `modules`), `currentRoute`, the current module's `steps`
+ * for the outline, a `footer` element and the lesson as children. Each course
+ * builds these from its own server-side progress report.
  *
  * The site frame clips horizontal overflow with `clip` rather than `hidden`
  * here, because `hidden` would stop the bar, the outline and the footer from
@@ -51,8 +57,8 @@ function useNavHeightVar() {
   }, []);
 }
 
-export default function TemplateCoursePlayer({ course, module, footer, children }) {
-  const L = useTemplatePlayerLabels();
+export default function CoursePlayer({ course, currentRoute, steps = [], footer, children }) {
+  const L = useCoursePlayerLabels();
   const { isDataSaver } = useDisplayMode();
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -84,7 +90,7 @@ export default function TemplateCoursePlayer({ course, module, footer, children 
     if (first) first.focus();
     return () => document.removeEventListener('keydown', onKey);
   }, [drawerOpen]);
-  useEffect(() => { setDrawerOpen(false); }, [module.route]);
+  useEffect(() => { setDrawerOpen(false); }, [currentRoute]);
 
   return (
     <SiteShell overflowX="clip" mainStyle={{ paddingTop: 'var(--tpl-nav-h, 96px)' }}>
@@ -139,7 +145,7 @@ export default function TemplateCoursePlayer({ course, module, footer, children 
 
       <div className={`tpl-layout${collapsed ? ' is-collapsed' : ''}`}>
         <aside id="tpl-outline" className="tpl-sidebar" hidden={collapsed}>
-          <TemplateCourseSidebar course={course} module={module} />
+          <CourseOutlineSidebar course={course} currentRoute={currentRoute} steps={steps} />
         </aside>
 
         <div className="tpl-content" style={{ maxWidth: isDataSaver ? '700px' : '800px' }}>
@@ -160,9 +166,10 @@ export default function TemplateCoursePlayer({ course, module, footer, children 
             className="tpl-drawer"
             onClick={(event) => event.stopPropagation()}
           >
-            <TemplateCourseSidebar
+            <CourseOutlineSidebar
               course={course}
-              module={module}
+              currentRoute={currentRoute}
+              steps={steps}
               onClose={() => setDrawerOpen(false)}
               onNavigate={() => setDrawerOpen(false)}
             />

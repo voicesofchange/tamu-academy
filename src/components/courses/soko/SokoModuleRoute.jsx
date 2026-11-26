@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
@@ -8,6 +8,11 @@ import ModuleStartGate from '@/components/courses/ModuleStartGate';
 import useCourseEnrollment from '@/hooks/useCourseEnrollment';
 import SokoExpandedTemplate from '@/components/courses/soko/SokoExpandedTemplate';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
+import { sokoModuleSteps, SOKO_KEY_LABEL_KEYS } from '@/components/courses/soko/soko-player-steps';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
 import {
   SAUTI_ZA_SOKO_COURSE,
   SAUTI_ZA_SOKO_COURSE_SLUG,
@@ -23,8 +28,23 @@ import {
  * The full module content is fetched from the access-gated getSokoModule
  * backend function. A 403 means the viewer is not entitled to the module
  * yet, and the page renders the public "module in development" state.
+ *
+ * The module opens in the shared course player: the outline and progress bar
+ * come from getSokoCourseCompletion, the ticks and the footer's state from
+ * getSokoProgress, and "Mark Complete & Continue" calls completeSokoModule —
+ * so every Sauti za Soko rule (the action plan, the four-of-five knowledge
+ * check, the prerequisite chain) is still decided on the server. Both reports
+ * are fetched again whenever the learner saves a step.
  */
 export default function SokoModuleRoute({ moduleRoute }) {
+  return (
+    <CoursePlayerLabelsProvider>
+      <SokoModuleRouteInner moduleRoute={moduleRoute} />
+    </CoursePlayerLabelsProvider>
+  );
+}
+
+function SokoModuleRouteInner({ moduleRoute }) {
   const { language } = useTranslation();
   const labels = useSokoLabels();
   const { user } = useAuth();
@@ -34,6 +54,29 @@ export default function SokoModuleRoute({ moduleRoute }) {
   const [reloadToken, setReloadToken] = useState(0);
   const { status: enrollmentStatus, isAuthenticated } = useCourseEnrollment(SAUTI_ZA_SOKO_COURSE_SLUG);
   const autoStart = new URLSearchParams(window.location.search).get('enroll') === '1';
+  const L = useCoursePlayerLabels();
+  // Same page key as the course overview, so its translation is reused.
+  const { content: translatedCourse } = useTranslatedContent('soko-course-overview', SAUTI_ZA_SOKO_COURSE);
+  const [outline, setOutline] = useState(null);
+  const [moduleProgress, setModuleProgress] = useState(null);
+  const [progressToken, setProgressToken] = useState(0);
+  const refreshProgress = useCallback(() => setProgressToken((token) => token + 1), []);
+
+  // The player's server-side state: the course outline and this module's keys.
+  useEffect(() => {
+    if (status !== 'ready') return undefined;
+    let cancelled = false;
+    (async () => {
+      const [course, progress] = await Promise.all([
+        base44.functions.invoke('getSokoCourseCompletion', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG }).catch(() => null),
+        base44.functions.invoke('getSokoProgress', { courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG, moduleRoute }).catch(() => null),
+      ]);
+      if (cancelled) return;
+      setOutline(course && course.data ? course.data : null);
+      setModuleProgress(progress && progress.data ? progress.data : null);
+    })();
+    return () => { cancelled = true; };
+  }, [status, moduleRoute, progressToken]);
 
   useEffect(() => {
     let cancelled = false;
@@ -128,8 +171,79 @@ export default function SokoModuleRoute({ moduleRoute }) {
   const isAdmin = user?.role === 'admin';
   const canSave = isAdmin || !!user;
 
+  // The outline: the server's module states, with titles in the learner's
+  // language from the translated course.
+  const displayCourse = restoreCourse(translatedCourse, SAUTI_ZA_SOKO_COURSE);
+  const titleByRoute = new Map(displayCourse.modules.map((m) => [m.route, m]));
+  const serverModules = outline && Array.isArray(outline.modules) ? outline.modules : null;
+  const playerModules = (serverModules || modules).map((m) => {
+    const shown = titleByRoute.get(m.route) || m;
+    return {
+      route: m.route,
+      number: shown.number || m.number,
+      title: shown.title || m.title,
+      completed: !!m.completed,
+      status: m.status || 'not_started',
+      published: m.published !== false,
+      prerequisite: m.prerequisite || null,
+      locked: !!m.locked,
+    };
+  });
+  const totalModules = (outline && outline.totalModules) || playerModules.length;
+  const completedModules = outline ? outline.completedCount || 0 : 0;
+  const playerCourse = {
+    slug: SAUTI_ZA_SOKO_COURSE_SLUG,
+    title: displayCourse.title,
+    progressPercentage: outline && typeof outline.progressPercentage === 'number'
+      ? outline.progressPercentage
+      : Math.round((completedModules / Math.max(totalModules, 1)) * 100),
+    completedModules,
+    totalModules,
+    modules: playerModules,
+  };
+
+  const completeModule = async () => {
+    const res = await base44.functions.invoke('completeSokoModule', {
+      courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG,
+      moduleRoute,
+    });
+    const data = res && res.data ? res.data : {};
+    if (data.completed) return { completed: true };
+    if (data.missingRequirement) return { completed: false, message: data.missingRequirement };
+    if (Array.isArray(data.missing) && data.missing.length > 0) {
+      return {
+        completed: false,
+        missing: data.missing.map((key) => L[SOKO_KEY_LABEL_KEYS[key]] || String(key).replace(/_/g, ' ')),
+      };
+    }
+    return { completed: false };
+  };
+
+  const nextShown = nextModule ? titleByRoute.get(nextModule.route) || nextModule : null;
+  const player = {
+    course: playerCourse,
+    steps: sokoModuleSteps(module, moduleProgress),
+    footer: (
+      <CourseCompleteFooter
+        moduleKey={moduleRoute}
+        number={module.number}
+        title={module.title}
+        completed={!!(moduleProgress && moduleProgress.moduleCompleted)}
+        canSave={!!(moduleProgress && moduleProgress.eligibleToSave)}
+        onComplete={completeModule}
+        onCompleted={refreshProgress}
+        next={{
+          path: nextPath,
+          title: nextShown ? `${nextShown.number} — ${nextShown.title}` : L.courseCompletion,
+        }}
+      />
+    ),
+  };
+
   return (
     <SokoExpandedTemplate
+      player={player}
+      onProgressChange={refreshProgress}
       course={SAUTI_ZA_SOKO_COURSE}
       module={module}
       courseSlug={SAUTI_ZA_SOKO_COURSE_SLUG}
