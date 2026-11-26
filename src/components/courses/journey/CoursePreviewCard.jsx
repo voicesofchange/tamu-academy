@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -15,8 +15,19 @@ import {
   Users,
   Banknote,
   ArrowRight,
+  ChevronDown,
 } from 'lucide-react';
 import StartCourseButton from '@/components/courses/StartCourseButton';
+import CourseMetrics from '@/components/courses/CourseMetrics';
+import CourseSyllabusAccordion from '@/components/courses/CourseSyllabusAccordion';
+import { courseModuleCount } from '@/lib/course-directory';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+const CARD_TEXT = {
+  comingSoon: 'Coming soon',
+  showSyllabus: 'View the modules',
+  hideSyllabus: 'Hide the modules',
+};
 
 const ICON_MAP = {
   Heart,
@@ -37,6 +48,12 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
   const coursePath = course.slug ? `/courses/${course.slug}` : null;
   const HeroIcon = ICON_MAP[visual?.icon] || GraduationCap;
   const accent = visual?.accent || 'rgba(217,155,55,0.22)';
+  const { content: t } = useTranslatedContent('course-preview-card', CARD_TEXT);
+  // A live course reads its numbers from its own data; the syllabus opens
+  // inside the card.
+  const liveModuleCount = course.slug ? courseModuleCount(course.slug) : null;
+  const [syllabusOpen, setSyllabusOpen] = useState(false);
+  const syllabusId = course.slug ? `card-syllabus-${course.slug}` : undefined;
 
   return (
     <motion.article
@@ -156,7 +173,11 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
         </p>
 
         {/* Metadata strip */}
-        {visual?.meta && visual.meta.length > 0 && (
+        {liveModuleCount ? (
+          <div style={{ paddingTop: '15px', borderTop: '1px solid #e8d9bf', marginBottom: '16px' }}>
+            <CourseMetrics moduleCount={liveModuleCount} surface="light" />
+          </div>
+        ) : visual?.meta && visual.meta.length > 0 && (
           <div
             className="font-body"
             style={{
@@ -185,6 +206,28 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
             {/* The enrollment action lives on the card itself, so starting or
                 registering for a course never depends on spotting a text link. */}
             <StartCourseButton courseSlug={course.slug} compact surface="light" />
+          </div>
+        ) : null}
+
+        {liveModuleCount ? (
+          <div style={{ marginBottom: '14px' }}>
+            <button
+              type="button"
+              className="font-body"
+              aria-expanded={syllabusOpen}
+              aria-controls={syllabusId}
+              onClick={() => setSyllabusOpen((v) => !v)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none',
+                padding: 0, cursor: 'pointer', color: '#5f4531', fontSize: '12.5px', fontWeight: 500,
+              }}
+            >
+              <ChevronDown size={15} aria-hidden="true" style={{ transform: syllabusOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} />
+              {syllabusOpen ? t.hideSyllabus : t.showSyllabus}
+            </button>
+            <div id={syllabusId} hidden={!syllabusOpen} style={{ marginTop: '10px' }}>
+              {syllabusOpen && <CourseSyllabusAccordion courseSlug={course.slug} surface="light" compact />}
+            </div>
           </div>
         ) : null}
 
@@ -226,7 +269,7 @@ export default function CoursePreviewCard({ number, course, status, exploreLabel
             }}
           >
             <Clock size={13} strokeWidth={1.6} />
-            Coming soon
+            {t.comingSoon}
           </span>
         )}
       </div>

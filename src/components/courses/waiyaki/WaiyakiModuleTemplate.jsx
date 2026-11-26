@@ -15,10 +15,15 @@ import WaiyakiModuleProgress from '@/components/courses/waiyaki/WaiyakiModulePro
 import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
 import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
+import PreviewSectionGate from '@/components/courses/preview/PreviewSectionGate';
 
 /** An anchor the course player's outline can jump to. */
 function Step({ id, children }) {
-  return <div id={stepAnchorId(id)}>{children}</div>;
+  return (
+    <div id={stepAnchorId(id)}>
+      <PreviewSectionGate id={id}>{children}</PreviewSectionGate>
+    </div>
+  );
 }
 
 const CONTENT = {

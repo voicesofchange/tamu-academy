@@ -6,6 +6,7 @@ import {
 } from '../../shared/mental-health-curriculum.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { isModulePreviewRequest } from '../../shared/module-preview.js';
 
 /**
  * The learner-facing sections of a mental health module that are translated:
@@ -69,10 +70,9 @@ export default async function(req: Request): Promise<Response> {
     } catch (err) {
       user = null;
     }
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const isAdmin = user.role === 'admin';
+    // A signed-out visitor may read Module 1 as a free preview (checked
+    // below, once the request is read); anything else still answers 401.
+    const isAdmin = !!user && user.role === 'admin';
 
     let body = {};
     try {
@@ -86,7 +86,7 @@ export default async function(req: Request): Promise<Response> {
     // as correctAnswerIndex, score, learnerId, or any attempt to inject
     // unexpected data. The response never includes protected material
     // in a rejected response.
-    const allowedTopKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
+    const allowedTopKeys = new Set(['courseSlug', 'moduleRoute', 'language', 'preview']);
     for (const k of Object.keys(body)) {
       if (!allowedTopKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
@@ -96,6 +96,11 @@ export default async function(req: Request): Promise<Response> {
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
     const language = typeof body.language === 'string' ? body.language : 'en';
+
+    const preview = !user;
+    if (preview && !isModulePreviewRequest(user, body, moduleRoute)) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     if (!courseSlug || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -109,7 +114,12 @@ export default async function(req: Request): Promise<Response> {
     // and any prerequisite module must be completed before content is
     // released. Admins bypass these checks to preview in-development
     // modules.
-    if (!isAdmin) {
+    if (preview) {
+      // The preview needs only a published module: no enrollment exists.
+      if (!isModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } else if (!isAdmin) {
       const isPublished = isModulePublished(courseSlug, moduleRoute);
       if (!isPublished) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
@@ -152,7 +162,7 @@ export default async function(req: Request): Promise<Response> {
     // Record the learner's first open of this module, apart from completion.
     // Administrators previewing content are not learners, so their opens are
     // not recorded.
-    if (!isAdmin) {
+    if (!isAdmin && !preview) {
       await recordModuleOpened(base44, {
         learnerId: user.id,
         courseSlug,

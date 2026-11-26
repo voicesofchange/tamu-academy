@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import StatusBadge from '@/components/page/StatusBadge';
-import ModuleCard from '@/components/courses/ModuleCard';
+import CourseMetrics from '@/components/courses/CourseMetrics';
+import CourseSyllabusAccordion from '@/components/courses/CourseSyllabusAccordion';
 import MhCourseProgress from '@/components/courses/MhCourseProgress';
 import StartCourseButton from '@/components/courses/StartCourseButton';
 import CourseOverviewLayout from '@/components/courses/CourseOverviewLayout';
@@ -78,7 +79,12 @@ export default function UbuntuMentalHealth() {
           <StatusBadge label={course.access} />
         </>
       }
-      heroCta={<StartCourseButton courseSlug={course.slug} />}
+      heroCta={
+        <>
+          <div style={{ marginBottom: '22px' }}><CourseMetrics moduleCount={Number(course.modulesCount) || course.modules.length} /></div>
+          <StartCourseButton courseSlug={course.slug} />
+        </>
+      }
     >
       <PageMeta title={`${course.title} | Tamu Academy`} description={course.description} path={`/courses/${course.slug}`} />
 
@@ -136,11 +142,7 @@ export default function UbuntuMentalHealth() {
       {/* Modules */}
       <CourseOverviewSection surface="darker" eyebrow={c.modulesEyebrow} heading={c.modulesHeading}>
         <p className="font-body" style={{ ...darkBody, marginBottom: '1.75rem' }}>{c.modulesBody}</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {course.modules.map((mod) => (
-            <ModuleCard key={mod.number} module={mod} to={`/courses/${course.slug}/${mod.route}`} />
-          ))}
-        </div>
+        <CourseSyllabusAccordion courseSlug={course.slug} />
       </CourseOverviewSection>
 
       {/* Milestone */}

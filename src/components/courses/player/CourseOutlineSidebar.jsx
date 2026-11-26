@@ -4,6 +4,7 @@ import { Check, Lock, Circle, CircleDot, X } from 'lucide-react';
 import { fillTemplate } from '@/lib/i18n/fill-template';
 import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
+import { usePreviewLabels } from '@/components/courses/preview/ModulePreviewContext';
 
 /**
  * CourseOutlineSidebar — the course player's outline: every module of the
@@ -33,6 +34,7 @@ function ModuleIcon({ state }) {
 
 export default function CourseOutlineSidebar({ course, currentRoute, steps = [], onClose, onNavigate }) {
   const L = useCoursePlayerLabels();
+  const P = usePreviewLabels();
   const byRoute = new Map(course.modules.map((item) => [item.route, item]));
 
   const stateOf = (item) => {
@@ -69,7 +71,7 @@ export default function CourseOutlineSidebar({ course, currentRoute, steps = [],
           const isCurrent = item.route === currentRoute;
           const prerequisite = item.prerequisite ? byRoute.get(item.prerequisite) : null;
           const lockedNote = state === 'locked'
-            ? (item.published && prerequisite
+            ? item.previewLocked ? P.lockedNote : (item.published && prerequisite
               ? fillTemplate(L.lockedPrerequisite, { module: prerequisite.number })
               : L.lockedUnpublished)
             : null;

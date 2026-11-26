@@ -6,6 +6,7 @@ import {
 } from '../../shared/economics-course-config.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { isModulePreviewRequest } from '../../shared/module-preview.js';
 
 /**
  * The learner-facing sections of an economics module that are translated:
@@ -68,10 +69,9 @@ Deno.serve(async (req) => {
     } catch (err) {
       user = null;
     }
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const isAdmin = user.role === 'admin';
+    // A signed-out visitor may read Module 1 as a free preview (checked
+    // below, once the request is read); anything else still answers 401.
+    const isAdmin = !!user && user.role === 'admin';
 
     // Parse the inline JSON payload (Base44 `functions.invoke` posts the
     // payload as the request body).
@@ -84,6 +84,11 @@ Deno.serve(async (req) => {
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
     const language = typeof body.language === 'string' ? body.language : 'en';
+
+    const preview = !user;
+    if (preview && !isModulePreviewRequest(user, body, moduleRoute)) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     if (!courseSlug || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -97,7 +102,12 @@ Deno.serve(async (req) => {
     // and any prerequisite module must be completed before content is
     // released. Admins bypass these checks to preview in-development
     // modules.
-    if (!isAdmin) {
+    if (preview) {
+      // The preview needs only a published module: no enrollment exists.
+      if (!isEconomicsModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } else if (!isAdmin) {
       const isPublished = isEconomicsModulePublished(courseSlug, moduleRoute);
       if (!isPublished) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
@@ -159,7 +169,7 @@ Deno.serve(async (req) => {
     // Record the learner's first open of this module, apart from completion.
     // Administrators previewing content are not learners, so their opens are
     // not recorded.
-    if (!isAdmin) {
+    if (!isAdmin && !preview) {
       await recordModuleOpened(base44, {
         learnerId: user.id,
         courseSlug,

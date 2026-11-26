@@ -12,6 +12,8 @@ import {
   withoutAnswerKey,
 } from '../../shared/course-template-service.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { isModulePreviewRequest } from '../../shared/module-preview.js';
+import { getTemplateModuleMeta, isTemplateModulePublished } from '../../shared/course-template-config.js';
 import { getModuleSources } from '../../shared/diaspora-remittance-sources.js';
 
 /**
@@ -37,7 +39,8 @@ export default async function (req: Request): Promise<Response> {
     const base44 = createClientFromRequest(req);
 
     const user = await base44.auth.me().catch(() => null);
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    // A signed-out visitor may read Module 1 as a free preview (checked
+    // below, once the request is read); anything else still answers 401.
 
     let body: Record<string, unknown> = {};
     try {
@@ -46,7 +49,7 @@ export default async function (req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
+    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language', 'preview']);
     for (const key of Object.keys(body || {})) {
       if (!allowedKeys.has(key)) {
         return Response.json({ error: 'Unsupported field: ' + key }, { status: 400 });
@@ -57,12 +60,29 @@ export default async function (req: Request): Promise<Response> {
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute.trim() : '';
     const language = typeof body.language === 'string' ? body.language : 'en';
 
-    const access = await checkTemplateModuleAccess(base44, user, {
-      courseSlug,
-      moduleRoute,
-      adminPreview: true,
-    });
-    if (!access.ok) return Response.json(access.body, { status: access.status });
+    const preview = !user;
+    if (preview && !isModulePreviewRequest(user, body, moduleRoute)) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // The preview needs only a published module (no enrollment, nothing is
+    // recorded); a signed-in learner goes through the full access check.
+    let access;
+    if (preview) {
+      const moduleMeta = getTemplateModuleMeta(courseSlug, moduleRoute);
+      if (!moduleMeta) return Response.json({ error: 'Not found' }, { status: 404 });
+      if (!isTemplateModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      access = { ok: true, moduleMeta, canRecordProgress: false };
+    } else {
+      access = await checkTemplateModuleAccess(base44, user, {
+        courseSlug,
+        moduleRoute,
+        adminPreview: true,
+      });
+      if (!access.ok) return Response.json(access.body, { status: access.status });
+    }
 
     const rawContent = templateModuleContent(courseSlug, moduleRoute);
     if (!rawContent) return Response.json({ error: 'Not found' }, { status: 404 });
@@ -76,7 +96,7 @@ export default async function (req: Request): Promise<Response> {
       { courseSlug, moduleSlug: moduleRoute, moduleTitle: rawContent.title },
     );
 
-    const row = await findProgressRow(base44, user.id, courseSlug, moduleRoute);
+    const row = preview ? null : await findProgressRow(base44, user.id, courseSlug, moduleRoute);
     const done = completedSteps(row, requirements);
 
     // The module's source list is quoted material — titles and URLs as
@@ -86,7 +106,7 @@ export default async function (req: Request): Promise<Response> {
     // Record the learner's first open of this module, apart from completion.
     // Administrators previewing content are not learners, so their opens are
     // not recorded.
-    if (user.role !== 'admin') {
+    if (!preview && user.role !== 'admin') {
       await recordModuleOpened(base44, {
         learnerId: user.id,
         courseSlug,
@@ -95,7 +115,7 @@ export default async function (req: Request): Promise<Response> {
     }
 
     return Response.json({
-      course: await courseOutlineFor(base44, user.id, courseSlug),
+      course: await courseOutlineFor(base44, preview ? null : user.id, courseSlug),
       module: {
         ...translated,
         ...(sources ? { sources: sources.sources, unsourced: sources.unsourced } : {}),

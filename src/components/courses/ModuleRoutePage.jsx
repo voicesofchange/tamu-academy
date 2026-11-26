@@ -12,6 +12,7 @@ import { restoreCourse } from '@/lib/i18n/restore-course';
 import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
 import { economicsModuleSteps, ECONOMICS_KEY_LABEL_KEYS } from '@/components/courses/module/economics-player-steps';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
@@ -52,6 +53,8 @@ export default function ModuleRoutePage({ moduleRoute }) {
 }
 
 function EconomicsModuleRoute({ moduleRoute }) {
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview } = useModulePreview();
   const { language } = useTranslation();
   const found = getEconomicsModule(COURSE_SLUG, moduleRoute);
   const [module, setModule] = useState(null);
@@ -69,7 +72,7 @@ function EconomicsModuleRoute({ moduleRoute }) {
 
   // The player's server-side state: the course outline and this module's keys.
   useEffect(() => {
-    if (status !== 'ready') return undefined;
+    if (status !== 'ready' || preview) return undefined;
     let cancelled = false;
     (async () => {
       const [course, progress] = await Promise.all([
@@ -81,13 +84,14 @@ function EconomicsModuleRoute({ moduleRoute }) {
       setModuleProgress(progress && progress.data ? progress.data : null);
     })();
     return () => { cancelled = true; };
-  }, [status, moduleRoute, progressToken]);
+  }, [status, moduleRoute, progressToken, preview]);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const res = await base44.functions.invoke('getModuleContent', {
+          ...(preview ? { preview: true } : {}),
           courseSlug: COURSE_SLUG,
           moduleRoute,
           language,
@@ -107,7 +111,7 @@ function EconomicsModuleRoute({ moduleRoute }) {
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute, language, reloadToken]);
+  }, [moduleRoute, language, reloadToken, preview]);
 
   if (!found) return <PageNotFound />;
 

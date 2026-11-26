@@ -14,6 +14,7 @@ import WealthModuleProgress from '@/components/courses/wealth/WealthModuleProgre
 import ModuleSources from '@/components/courses/module/ModuleSources';
 import CoursePlayer from '@/components/courses/player/CoursePlayer';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
+import PreviewSectionGate from '@/components/courses/preview/PreviewSectionGate';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -40,7 +41,11 @@ function WealthModuleFrame({ player, moduleRoute, children }) {
 
 /** An anchor the course player's outline can jump to. */
 function Step({ id, children }) {
-  return <div id={stepAnchorId(id)}>{children}</div>;
+  return (
+    <div id={stepAnchorId(id)}>
+      <PreviewSectionGate id={id}>{children}</PreviewSectionGate>
+    </div>
+  );
 }
 
 /**

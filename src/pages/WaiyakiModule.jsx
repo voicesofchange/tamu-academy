@@ -19,6 +19,7 @@ import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFoot
 import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import { ModuleFrameContext } from '@/components/courses/player/ModuleFrameContext';
 import { waiyakiModuleSteps, WAIYAKI_COMPLETION_KEYS, WAIYAKI_KEY_LABEL_KEYS } from '@/components/courses/waiyaki/waiyaki-player-steps';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 /**
  * WaiyakiModule — the lesson page for one module of the course, resolved from
@@ -46,6 +47,8 @@ export default function WaiyakiModule() {
 }
 
 function WaiyakiModuleRoute() {
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview: isPreview } = useModulePreview();
   const { moduleRoute } = useParams();
   const { language } = useTranslation();
   const preview = getWaiyakiModulePreview(moduleRoute);
@@ -79,6 +82,7 @@ function WaiyakiModuleRoute() {
     (async () => {
       try {
         const res = await base44.functions.invoke('getWaiyakiModule', {
+          ...(isPreview ? { preview: true } : {}),
           courseSlug: WAIYAKI_COURSE_SLUG,
           moduleRoute,
           language,
@@ -96,11 +100,11 @@ function WaiyakiModuleRoute() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, language, reloadToken]);
+  }, [moduleRoute, language, reloadToken, isPreview]);
 
   useEffect(() => {
-    fetchProgress();
-  }, [fetchProgress, reloadToken]);
+    if (!isPreview) fetchProgress();
+  }, [fetchProgress, reloadToken, isPreview]);
 
   const currentModuleProgress = (progress?.modules || []).find(
     (m) => m.route === moduleRoute,

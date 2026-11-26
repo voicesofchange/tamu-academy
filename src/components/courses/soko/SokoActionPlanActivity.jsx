@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 };
 
@@ -37,11 +38,14 @@ const buttonStyle = {
 export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activity, canSave, onSaved }) {
   const labels = useSokoLabels();
   const [responses, setResponses] = useState({});
+  // In the free preview there is no saved work to read.
+  const { preview } = useModulePreview();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
+    if (preview) { setLoading(false); return undefined; }
     let cancelled = false;
     (async () => {
       try {
@@ -55,7 +59,7 @@ export default function SokoActionPlanActivity({ courseSlug, moduleRoute, activi
       }
     })();
     return () => { cancelled = true; };
-  }, [courseSlug, moduleRoute]);
+  }, [courseSlug, moduleRoute, preview]);
 
   const fields = activity?.fields || [];
   const filledCount = fields.filter((f) => (responses[f.id] || '').trim().length > 0).length;

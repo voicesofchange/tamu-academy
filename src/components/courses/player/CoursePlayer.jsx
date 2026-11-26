@@ -5,6 +5,8 @@ import { useDisplayMode } from '@/lib/display-mode';
 import { fillTemplate } from '@/lib/i18n/fill-template';
 import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import CourseOutlineSidebar from '@/components/courses/player/CourseOutlineSidebar';
+import { useModulePreview, usePreviewLabels } from '@/components/courses/preview/ModulePreviewContext';
+import PreviewSignupCard from '@/components/courses/preview/PreviewSignupCard';
 
 /**
  * CoursePlayer — the split-screen frame of a course module, shared by every
@@ -57,8 +59,14 @@ function useNavHeightVar() {
   }, []);
 }
 
-export default function CoursePlayer({ course, currentRoute, steps = [], footer, children }) {
+export default function CoursePlayer({ course: courseIn, currentRoute, steps = [], footer, children }) {
   const L = useCoursePlayerLabels();
+  const { preview } = useModulePreview();
+  const P = usePreviewLabels();
+  // In the free preview every module but the one being read needs an account.
+  const course = preview
+    ? { ...courseIn, modules: courseIn.modules.map((m) => (m.route === currentRoute ? m : { ...m, locked: true, previewLocked: true })) }
+    : courseIn;
   const { isDataSaver } = useDisplayMode();
   const [collapsed, setCollapsed] = useState(readCollapsed);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -149,6 +157,11 @@ export default function CoursePlayer({ course, currentRoute, steps = [], footer,
         </aside>
 
         <div className="tpl-content" style={{ maxWidth: isDataSaver ? '700px' : '800px' }}>
+          {preview && (
+            <div style={{ marginBottom: '2rem' }}>
+              <PreviewSignupCard title={P.bannerTitle} body={P.bannerBody} />
+            </div>
+          )}
           {children}
         </div>
       </div>

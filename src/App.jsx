@@ -15,6 +15,7 @@ import SoftLaunchGate from '@/components/SoftLaunchGate';
 import AppLoadingSpinner from '@/components/AppLoadingSpinner';
 import AppErrorBoundary from '@/components/errors/AppErrorBoundary';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import ModulePreviewGate from '@/components/courses/preview/ModulePreviewGate';
 // Add page imports here
 import { Navigate } from 'react-router-dom';
 // The homepage and the sign-in / sign-up screens ship in the main bundle.
@@ -147,33 +148,21 @@ const AuthenticatedApp = () => {
           same check, and without an id sends a learner to their own certificate. */}
       <Route path="/verify" element={<VerifyCertificate />} />
       <Route path="/soko-certificate" element={<SokoLabelsProvider><SokoCertificate publicEntry /></SokoLabelsProvider>} />
-      {/* Protected Routes — login required for module content, progress, and certificates */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/my-courses" element={<MyCourses />} />
-        <Route path="/my-progress" element={<ProgressDashboard />} />
-        <Route path="/learning-hub" element={<LearningHub />} />
-        <Route path="/motivation-coach" element={<MotivationCoach />} />
-        <Route path="/insights" element={<CommunityInsights />} />
+      {/* Course module pages — guarded by ModulePreviewGate: signed-in learners
+          get the usual protected page; signed-out visitors can open Module 1 of
+          any course as a free, read-only preview, and are asked to create a free
+          account for every other module. Completion, certificate and capstone
+          pages stay in the protected block below; static routes always outrank
+          the :moduleRoute patterns here. The template course route serves every
+          course registered in base44/shared/course-template-config.js. */}
+      <Route element={<ModulePreviewGate />}>
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-1" element={<Module1Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-2" element={<Module2Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-3" element={<Module3Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-4" element={<Module4Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-5" element={<Module5Economics />} />
         <Route path="/courses/understanding-african-economies-and-the-global-system/module-6" element={<Module6Economics />} />
-        <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
-        <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
-        {/* Building Wealth Together — four static routes declared before the module
-            route so they always win. */}
-        <Route path="/courses/building-wealth-together/completion" element={<WealthCourseCompletion />} />
-        <Route path="/courses/building-wealth-together/certificate" element={<WealthCertificate />} />
-        <Route path="/courses/building-wealth-together/capstone" element={<WealthCapstone />} />
         <Route path="/courses/building-wealth-together/:moduleRoute" element={<BuildingWealthModule />} />
-        {/* Course template — the single module page for every course registered in
-            base44/shared/course-template-config.js. The page 404s any slug the
-            registry does not hold, and the course's own static routes above always
-            win over this one. */}
         <Route path="/courses/:courseSlug/:moduleRoute" element={<TemplateCourseModule />} />
         <Route path="/courses/mental-health-community-and-culture/module-1" element={<MhModule1 />} />
         <Route path="/courses/mental-health-community-and-culture/module-2" element={<MhModule2 />} />
@@ -182,6 +171,25 @@ const AuthenticatedApp = () => {
         <Route path="/courses/mental-health-community-and-culture/module-5" element={<MhModule5 />} />
         <Route path="/courses/mental-health-community-and-culture/module-6" element={<MhModule6 />} />
         <Route path="/courses/mental-health-community-and-culture/module-7" element={<MhModule7 />} />
+        <Route path="/courses/sauti-za-soko/:moduleRoute" element={<SokoLabelsProvider><SokoModule /></SokoLabelsProvider>} />
+        <Route path="/courses/waiyaki-wa-hinga/:moduleRoute" element={<WaiyakiModule />} />
+      </Route>
+      {/* Protected Routes — login required for progress, completion and certificates */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/my-progress" element={<ProgressDashboard />} />
+        <Route path="/learning-hub" element={<LearningHub />} />
+        <Route path="/motivation-coach" element={<MotivationCoach />} />
+        <Route path="/insights" element={<CommunityInsights />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/completion" element={<EconomicsCourseCompletion />} />
+        <Route path="/courses/understanding-african-economies-and-the-global-system/certificate" element={<EconomicsCertificate />} />
+        {/* Building Wealth Together — four static routes declared before the module
+            route so they always win. */}
+        <Route path="/courses/building-wealth-together/completion" element={<WealthCourseCompletion />} />
+        <Route path="/courses/building-wealth-together/certificate" element={<WealthCertificate />} />
+        <Route path="/courses/building-wealth-together/capstone" element={<WealthCapstone />} />
         <Route path="/courses/mental-health-community-and-culture/completion" element={<MhCourseCompletion />} />
         <Route path="/courses/mental-health-community-and-culture/certificate" element={<MhCertificate />} />
         <Route path="/courses/mental-health-community-and-culture/insights" element={<MhInsights />} />
@@ -190,12 +198,10 @@ const AuthenticatedApp = () => {
         <Route path="/courses/sauti-za-soko/completion" element={<SokoLabelsProvider><SokoCourseCompletion /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/certificate" element={<SokoLabelsProvider><SokoCertificate /></SokoLabelsProvider>} />
         <Route path="/courses/sauti-za-soko/peer-facilitator/certificate" element={<SokoLabelsProvider><SokoCertificate courseSlug="sauti-za-soko-peer-facilitator" /></SokoLabelsProvider>} />
-        <Route path="/courses/sauti-za-soko/:moduleRoute" element={<SokoLabelsProvider><SokoModule /></SokoLabelsProvider>} />
         {/* Waiyaki wa Hinga — the five modules, the completion room and the certificate.
             The static routes are declared before the module route so they always win. */}
         <Route path="/courses/waiyaki-wa-hinga/completion" element={<WaiyakiCourseCompletion />} />
         <Route path="/courses/waiyaki-wa-hinga/certificate" element={<WaiyakiCertificate />} />
-        <Route path="/courses/waiyaki-wa-hinga/:moduleRoute" element={<WaiyakiModule />} />
         {/* Safari ya Utu Learner's Guide — private to the signed-in learner */}
         <Route path="/learners-guide" element={<LearnersGuide />} />
         <Route path="/learners-guide/insights" element={<GuideInsights />} />

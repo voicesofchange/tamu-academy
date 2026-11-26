@@ -221,10 +221,14 @@ export async function courseOutlineFor(base44, learnerId, courseSlug) {
   const course = getTemplateCourse(courseSlug);
   if (!course) return null;
 
-  const rows = await base44.asServiceRole.entities.ModuleProgress.filter({
-    learner_id: learnerId,
-    course_slug: courseSlug,
-  });
+  // No learner (the signed-out Module 1 preview): the outline with no
+  // progress, never another learner's rows.
+  const rows = learnerId
+    ? await base44.asServiceRole.entities.ModuleProgress.filter({
+      learner_id: learnerId,
+      course_slug: courseSlug,
+    })
+    : [];
   const byRoute = new Map();
   for (const row of Array.isArray(rows) ? rows : []) {
     if (row && row.module_slug) byRoute.set(row.module_slug, row);

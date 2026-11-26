@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
 import { fillTemplate } from '@/lib/i18n/fill-template';
 import { useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
+import { useModulePreview, usePreviewLabels, previewAuthLinks } from '@/components/courses/preview/ModulePreviewContext';
 
 /**
  * CourseCompleteFooter — the bar that stays at the bottom of the screen while
@@ -39,6 +40,9 @@ export default function CourseCompleteFooter({
 }) {
   const L = useCoursePlayerLabels();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { preview } = useModulePreview();
+  const P = usePreviewLabels();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -70,7 +74,15 @@ export default function CourseCompleteFooter({
   }
 
   let action;
-  if (completed) {
+  if (preview) {
+    // The free preview saves nothing: the footer offers the free account.
+    action = (
+      <Link to={previewAuthLinks(`${location.pathname}?enroll=1`).register} className="tpl-footer-primary font-body">
+        {P.ctaShort}
+        <ArrowRight size={16} aria-hidden="true" />
+      </Link>
+    );
+  } else if (completed) {
     action = nextPath ? (
       <button type="button" className="tpl-footer-primary font-body" onClick={() => navigate(nextPath)}>
         {L.continueNext}
@@ -109,7 +121,9 @@ export default function CourseCompleteFooter({
           <p className="font-body tpl-footer-sub" aria-live="polite">
             {message
               ? <span style={{ color: '#e8955c' }}>{message}</span>
-              : !canSave && !completed
+              : preview
+                ? P.footerNote
+                : !canSave && !completed
                 ? <span id="tpl-footer-preview">{L.previewOnly}</span>
                 : next && next.title ? fillTemplate(L.nextUp, { title: next.title }) : null}
           </p>
