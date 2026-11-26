@@ -16,7 +16,6 @@ export default {
     myProgress: 'My Progress',
     learningHub: 'Learner Hub',
     myProfile: 'My Profile',
-    ourFoundation: 'Our Foundation',
     myLearning: 'My Learning',
     privacy: 'Privacy',
     stories: 'Stories',

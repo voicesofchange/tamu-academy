@@ -16,7 +16,6 @@ export default {
     myProgress: 'Maendeleo Yangu',
     learningHub: 'Kituo cha Mwanafunzi',
     myProfile: 'Wasifu Wangu',
-    ourFoundation: 'Msingi Wetu',
     myLearning: 'Mafunzo Yangu',
     privacy: 'Faragha',
     stories: 'Hadithi',

@@ -7,7 +7,6 @@ import {
   User,
   TrendingUp,
   Library,
-  Landmark,
   FolderOpen,
   Wifi,
   Quote,
@@ -28,7 +27,6 @@ import {
 export const PUBLIC_LINKS = [
   { key: 'nav.home', to: '/', icon: Home },
   { key: 'nav.courses', to: '/courses', icon: GraduationCap },
-  { key: 'nav.ourFoundation', to: '/academy', icon: Landmark },
   { key: 'nav.about', to: '/about', icon: Info },
   { key: 'nav.contact', to: '/contact', icon: Mail },
 ];

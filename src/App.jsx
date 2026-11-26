@@ -27,7 +27,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import {
   About,
-  Academy,
   BuildingWealthModule,
   BuildingWealthTogether,
   CertificateDesignSample,
@@ -214,7 +213,6 @@ const AuthenticatedApp = () => {
       <Route path="/stories" element={<LearnerStories />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<Privacy />} />
-      <Route path="/academy" element={<Academy />} />
       <Route path="/partnership-inquiry" element={<PartnershipInquiry />} />
       {/* Retired routes — redirects */}
       <Route path="/programmes" element={<Navigate to="/courses" replace />} />

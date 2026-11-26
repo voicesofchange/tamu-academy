@@ -5,7 +5,6 @@ import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const CONTENT = {
-  backToAcademy: '← Back to Academy',
   eyebrow: 'Tamu Academy',
   attribution: 'A Waiyaki House learning venture',
   heading: 'Discuss a Partnership',
@@ -26,7 +25,7 @@ export default function PartnershipInquiry() {
         path="/partnership-inquiry"
       />
 
-      {/* Minimal header — wordmark + optional Back to Academy */}
+      {/* Minimal header — wordmark */}
       <header className="pi-topnav">
         <Link
           to="/"
@@ -37,9 +36,6 @@ export default function PartnershipInquiry() {
           <span className="pi-topnav-attr font-body">
             {c.attribution}
           </span>
-        </Link>
-        <Link to="/academy" className="pi-back font-body">
-          {c.backToAcademy}
         </Link>
       </header>
 
@@ -115,17 +111,6 @@ export default function PartnershipInquiry() {
   font-weight: 400;
   margin-left: 0.6rem;
 }
-.pi-back {
-  color: rgba(243,234,216,0.85);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.25s ease;
-  white-space: nowrap;
-}
-.pi-back:hover { color: #e8b85b; }
 /* ---------- Main ---------- */
 .pi-main {
   flex: 1 1 auto;
@@ -221,7 +206,6 @@ export default function PartnershipInquiry() {
 }
 /* ---------- Focus + responsive ---------- */
 .pi-brand:focus-visible,
-.pi-back:focus-visible,
 .pi-footer-links a:focus-visible {
   outline: 2px solid rgba(232,184,91,0.7);
   outline-offset: 3px;
@@ -231,9 +215,6 @@ export default function PartnershipInquiry() {
   .pi-main { padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 5vw, 1.75rem); }
   .pi-support { margin-bottom: 2rem; }
   .pi-topnav { justify-content: space-between; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pi-back { transition: none !important; }
 }
       `}</style>
     </div>
