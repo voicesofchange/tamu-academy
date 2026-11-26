@@ -1,6 +1,7 @@
 import React from 'react';
 import SiteShell from '@/components/page/SiteShell';
 import { useDisplayMode } from '@/lib/display-mode';
+import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
 
 /**
  * ModuleLessonLayout — the learner-journey shell for module lesson and
@@ -10,9 +11,14 @@ import { useDisplayMode } from '@/lib/display-mode';
  * In Data-Saver mode the measure tightens and the decorative top and bottom
  * padding shrinks, so a lesson begins closer to the top of the screen and
  * reads as one continuous column of text.
+ *
+ * When a course route provides a ModuleFrameContext, the lesson renders in
+ * that frame (the course player) instead; otherwise nothing changes.
  */
 export default function ModuleLessonLayout({ children }) {
   const { isDataSaver } = useDisplayMode();
+  const frame = useModuleFrame();
+  if (frame && frame.renderFrame) return frame.renderFrame(children);
 
   return (
     <SiteShell

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -208,6 +209,15 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
   const [completedAt, setCompletedAt] = useState(null);
   const [alreadyCompleted, setAlreadyCompleted] = useState(false);
   const [error, setError] = useState(null);
+  // In the course player: report what the server says about this module's
+  // requirements, and leave completing the module to the player's footer.
+  const frame = useModuleFrame();
+  const inPlayer = !!(frame && frame.inPlayer);
+  useEffect(() => {
+    if (frame && frame.onProgressLoaded && (requirements || completedAt)) {
+      frame.onProgressLoaded({ requirements, moduleCompleted: !!completedAt });
+    }
+  }, [requirements, completedAt, frame]);
 
   const allMet =
     requirements &&
@@ -367,7 +377,7 @@ export default function MhModuleCompletion({ courseSlug, moduleRoute }) {
               {loadingCheck ? c.checking : c.checkReq}
             </button>
 
-            {requirements && (
+            {requirements && !inPlayer && (
               <button
                 type="button"
                 onClick={handleComplete}

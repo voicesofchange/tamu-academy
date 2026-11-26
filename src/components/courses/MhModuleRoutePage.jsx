@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import MhModuleShell from '@/components/courses/MhModuleShell';
 import MhModuleLesson from '@/components/courses/MhModuleLesson';
@@ -10,7 +10,14 @@ import MhModule6Lesson from '@/components/courses/MhModule6Lesson';
 import MhModule7Lesson from '@/components/courses/MhModule7Lesson';
 import ModuleStartGate from '@/components/courses/ModuleStartGate';
 import useCourseEnrollment from '@/hooks/useCourseEnrollment';
-import { getMentalHealthModule } from '@/lib/mental-health-tracks';
+import { getMentalHealthModule, MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { restoreCourse } from '@/lib/i18n/restore-course';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
+import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
+import { ModuleFrameContext } from '@/components/courses/player/ModuleFrameContext';
+import { MH_SECTIONS, mhModuleSteps, mhMissingNames } from '@/components/courses/mh-player-steps';
 import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
 
@@ -50,6 +57,14 @@ const COURSE_SLUG = 'mental-health-community-and-culture';
  *     reads lesson content only through the backend function response.
  */
 export default function MhModuleRoutePage({ moduleRoute }) {
+  return (
+    <CoursePlayerLabelsProvider>
+      <MhModuleRoute moduleRoute={moduleRoute} />
+    </CoursePlayerLabelsProvider>
+  );
+}
+
+function MhModuleRoute({ moduleRoute }) {
   const { language } = useTranslation();
   const found = getMentalHealthModule(COURSE_SLUG, moduleRoute);
   const [state, setState] = useState({ status: 'loading', module: null });
@@ -91,68 +106,10 @@ export default function MhModuleRoutePage({ moduleRoute }) {
   if (!found) return <PageNotFound />;
 
   if (state.status === 'lesson' && state.module && state.module.lesson) {
-    // Select the per-module lesson renderer. Module 1 keeps its
-    // existing MhModuleLesson path unchanged; Module 2 uses its own
-    // Stage 1 renderer (MhModule2Lesson). Other modules remain on the
-    // MhModuleShell fallback until their content stages land.
-    if (moduleRoute === 'module-2') {
-      return (
-        <MhModule2Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
-    if (moduleRoute === 'module-3') {
-      return (
-        <MhModule3Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
-    if (moduleRoute === 'module-4') {
-      return (
-        <MhModule4Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
-    if (moduleRoute === 'module-5') {
-      return (
-        <MhModule5Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
-    if (moduleRoute === 'module-6') {
-      return (
-        <MhModule6Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
-    if (moduleRoute === 'module-7') {
-      return (
-        <MhModule7Lesson
-          course={found.course}
-          module={found.module}
-          lesson={state.module.lesson}
-        />
-      );
-    }
     return (
-      <MhModuleLesson
-        course={found.course}
-        module={found.module}
+      <MhPlayerFrame
+        moduleRoute={moduleRoute}
+        found={found}
         lesson={state.module.lesson}
       />
     );
@@ -181,4 +138,178 @@ export default function MhModuleRoutePage({ moduleRoute }) {
   }
 
   return <MhModuleShell course={found.course} module={found.module} />;
+}
+
+/**
+ * The per-module lesson renderer. Module 1 keeps its MhModuleLesson path;
+ * Modules 2–7 each have their own lesson component.
+ */
+const LESSONS = {
+  'module-2': MhModule2Lesson,
+  'module-3': MhModule3Lesson,
+  'module-4': MhModule4Lesson,
+  'module-5': MhModule5Lesson,
+  'module-6': MhModule6Lesson,
+  'module-7': MhModule7Lesson,
+};
+
+function MhLesson({ moduleRoute, found, lesson }) {
+  const Lesson = LESSONS[moduleRoute] || MhModuleLesson;
+  return <Lesson course={found.course} module={found.module} lesson={lesson} />;
+}
+
+/** Same JSON shape twice in a row is the same report. */
+function sameReport(a, b) {
+  try {
+    return JSON.stringify(a) === JSON.stringify(b);
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * The lesson inside the shared course player.
+ *
+ * The lesson keeps its own layout component; ModuleFrameContext hands that
+ * layout the player instead of the single reading column, hides each
+ * module's own "complete module" button, and collects the progress the
+ * module's progress component reports. The outline and progress bar come
+ * from getMentalHealthCourseCompletion, and "Mark Complete & Continue" calls
+ * completeMentalHealthModule, so every module's rules stay on the server.
+ */
+function MhPlayerFrame({ moduleRoute, found, lesson }) {
+  const L = useCoursePlayerLabels();
+  // Same page key as the course overview, so its translation is reused.
+  const { content: translatedCourse } = useTranslatedContent('mh-course-data', MENTAL_HEALTH_COURSE);
+  const [outline, setOutline] = useState(null);
+  const [moduleProgress, setModuleProgress] = useState(null);
+  const [presentIds, setPresentIds] = useState([]);
+  const [outlineToken, setOutlineToken] = useState(0);
+  const refreshOutline = useCallback(() => setOutlineToken((token) => token + 1), []);
+
+  useEffect(() => { setModuleProgress(null); }, [moduleRoute]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const res = await base44.functions
+        .invoke('getMentalHealthCourseCompletion', { courseSlug: COURSE_SLUG })
+        .catch(() => null);
+      if (!cancelled) setOutline(res && res.data ? res.data : null);
+    })();
+    return () => { cancelled = true; };
+  }, [moduleRoute, outlineToken]);
+
+  // The outline lists the sections this lesson actually rendered.
+  useEffect(() => {
+    let frameId = null;
+    const scan = () => setPresentIds(MH_SECTIONS.map((s) => s.id).filter((id) => document.getElementById(id)));
+    frameId = window.requestAnimationFrame(() => { frameId = window.requestAnimationFrame(scan); });
+    return () => window.cancelAnimationFrame(frameId);
+  }, [moduleRoute, lesson]);
+
+  // Reports identical to the last one are ignored, so a component that
+  // reports on every render can never cause a render loop.
+  const onProgressLoaded = useCallback((report) => {
+    setModuleProgress((prev) => (sameReport(prev, report) ? prev : report));
+  }, []);
+
+  // A module that has just been completed updates the outline too.
+  const reportedComplete = !!(moduleProgress && moduleProgress.moduleCompleted);
+  useEffect(() => {
+    if (reportedComplete) refreshOutline();
+  }, [reportedComplete, refreshOutline]);
+
+  const displayCourse = restoreCourse(translatedCourse || MENTAL_HEALTH_COURSE, MENTAL_HEALTH_COURSE);
+  const shownByRoute = new Map(displayCourse.modules.map((m) => [m.route, m]));
+  const serverModules = outline && Array.isArray(outline.modules) ? outline.modules : null;
+  const playerModules = (serverModules || MENTAL_HEALTH_COURSE.modules).map((m) => {
+    const shown = shownByRoute.get(m.route) || m;
+    return {
+      route: m.route,
+      number: shown.number || m.number,
+      title: shown.title || m.title,
+      completed: !!m.completed,
+      status: m.status || 'not_started',
+      published: m.published !== false,
+      prerequisite: m.prerequisite || null,
+      locked: !!m.locked,
+    };
+  });
+  const totalModules = (outline && outline.totalModules) || playerModules.length;
+  const completedModules = outline ? outline.completedCount || 0 : 0;
+  const playerCourse = {
+    slug: COURSE_SLUG,
+    title: displayCourse.title,
+    progressPercentage: outline && typeof outline.progressPercentage === 'number'
+      ? outline.progressPercentage
+      : Math.round((completedModules / Math.max(totalModules, 1)) * 100),
+    completedModules,
+    totalModules,
+    modules: playerModules,
+  };
+
+  const outlineModule = playerModules.find((m) => m.route === moduleRoute);
+  const completed = !!((outlineModule && outlineModule.completed) || (moduleProgress && moduleProgress.moduleCompleted));
+  const canSave = moduleProgress && typeof moduleProgress.eligibleToSave === 'boolean'
+    ? moduleProgress.eligibleToSave
+    : !!(outline && outline.eligibleToSave);
+
+  const routes = MENTAL_HEALTH_COURSE.modules.map((m) => m.route);
+  const index = routes.indexOf(moduleRoute);
+  const nextRoute = index >= 0 && index < routes.length - 1 ? routes[index + 1] : null;
+  const nextShown = nextRoute ? shownByRoute.get(nextRoute) : null;
+  const nextPath = nextRoute ? `/courses/${COURSE_SLUG}/${nextRoute}` : `/courses/${COURSE_SLUG}/completion`;
+
+  const completeModule = async () => {
+    const res = await base44.functions.invoke('completeMentalHealthModule', { courseSlug: COURSE_SLUG, moduleRoute });
+    const data = res && res.data ? res.data : {};
+    if (data.completed) {
+      refreshOutline();
+      return { completed: true };
+    }
+    // Modules 2–7 name the missing keys; Module 1 returns its requirement map.
+    const missingKeys = Array.isArray(data.missing)
+      ? data.missing
+      : data.requirements && typeof data.requirements === 'object'
+        ? Object.keys(data.requirements).filter((k) => data.requirements[k] !== true)
+        : [];
+    if (data.requirements) onProgressLoaded({ requirements: data.requirements, moduleCompleted: false });
+    if (missingKeys.length > 0) return { completed: false, missing: mhMissingNames(missingKeys, L) };
+    return { completed: false };
+  };
+
+  const steps = mhModuleSteps(presentIds, moduleProgress, outlineModule ? outlineModule.completed : false);
+  const footer = (
+    <CourseCompleteFooter
+      moduleKey={moduleRoute}
+      number={(shownByRoute.get(moduleRoute) || found.module).number}
+      title={(shownByRoute.get(moduleRoute) || found.module).title}
+      completed={completed}
+      canSave={canSave}
+      onComplete={completeModule}
+      onCompleted={refreshOutline}
+      requirementsAnchor="completion-requirements"
+      next={{
+        path: nextPath,
+        title: nextShown ? `${nextShown.number} — ${nextShown.title}` : L.courseCompletion,
+      }}
+    />
+  );
+
+  const frame = {
+    inPlayer: true,
+    onProgressLoaded,
+    renderFrame: (children) => (
+      <CoursePlayer course={playerCourse} currentRoute={moduleRoute} steps={steps} footer={footer}>
+        {children}
+      </CoursePlayer>
+    ),
+  };
+
+  return (
+    <ModuleFrameContext.Provider value={frame}>
+      <MhLesson moduleRoute={moduleRoute} found={found} lesson={lesson} />
+    </ModuleFrameContext.Provider>
+  );
 }

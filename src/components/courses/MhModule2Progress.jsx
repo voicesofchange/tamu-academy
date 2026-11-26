@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -86,6 +87,13 @@ export default function MhModule2Progress({
   refreshTrigger = 0,
 }) {
   const [progress, setProgress] = useState(null);
+  // In the course player: report progress so the outline and footer stay
+  // current, and leave completing the module to the player's footer.
+  const frame = useModuleFrame();
+  const inPlayer = !!(frame && frame.inPlayer);
+  useEffect(() => {
+    if (progress && frame && frame.onProgressLoaded) frame.onProgressLoaded(progress);
+  }, [progress, frame]);
   const [loading, setLoading] = useState(true);
   const [savingKey, setSavingKey] = useState(null);
   const [completionPending, setCompletionPending] = useState(false);
@@ -259,33 +267,35 @@ export default function MhModule2Progress({
             })}
           </div>
 
-          <div style={{ marginTop: '1.5rem' }}>
-            <button
-              type="button"
-              disabled={!allSixComplete || completionPending || progress.moduleCompleted}
-              onClick={handleCompleteModule}
-              className="font-body"
-              style={{
-                ...completeButtonBase,
-                color:
-                  allSixComplete && !completionPending && !progress.moduleCompleted
-                    ? '#24150f'
-                    : 'rgba(243,234,216,0.4)',
-                backgroundColor:
-                  allSixComplete && !completionPending && !progress.moduleCompleted
-                    ? '#e8b85b'
-                    : 'rgba(232,184,91,0.15)',
-                cursor:
-                  allSixComplete && !completionPending && !progress.moduleCompleted
-                    ? 'pointer'
-                    : 'not-allowed',
-              }}
-            >
-              {completionPending
-                ? progressTracking.savingLabel
-                : progressTracking.completeModuleLabel}
-            </button>
-          </div>
+          {!inPlayer && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <button
+                type="button"
+                disabled={!allSixComplete || completionPending || progress.moduleCompleted}
+                onClick={handleCompleteModule}
+                className="font-body"
+                style={{
+                  ...completeButtonBase,
+                  color:
+                    allSixComplete && !completionPending && !progress.moduleCompleted
+                      ? '#24150f'
+                      : 'rgba(243,234,216,0.4)',
+                  backgroundColor:
+                    allSixComplete && !completionPending && !progress.moduleCompleted
+                      ? '#e8b85b'
+                      : 'rgba(232,184,91,0.15)',
+                  cursor:
+                    allSixComplete && !completionPending && !progress.moduleCompleted
+                      ? 'pointer'
+                      : 'not-allowed',
+                }}
+              >
+                {completionPending
+                  ? progressTracking.savingLabel
+                  : progressTracking.completeModuleLabel}
+              </button>
+            </div>
+          )}
 
           {statusMessage && (
             <p

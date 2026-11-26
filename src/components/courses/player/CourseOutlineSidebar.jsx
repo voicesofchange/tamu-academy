@@ -14,7 +14,8 @@ import { stepAnchorId } from '@/components/courses/player/step-anchors';
  * `course.modules` comes from the course's own server-side progress report,
  * never from the browser: { route, number, title, completed, status, locked,
  * published, prerequisite }. `steps` is the current module's step list:
- * { id, labelKey | label, tracked, completed }. A locked module is shown, not
+ * { id, labelKey | label, tracked, completed, anchor? } — `anchor` is the
+ * section's own element id where it is not the usual tpl-step-<id>. A locked module is shown, not
  * linked, with the module it waits for. On narrow screens the same outline
  * opens as a drawer (`onClose` set).
  */
@@ -125,7 +126,7 @@ export default function CourseOutlineSidebar({ course, currentRoute, steps = [],
                     {steps.map((step) => (
                       <li key={step.id}>
                         <a
-                          href={`#${stepAnchorId(step.id)}`}
+                          href={`#${step.anchor || stepAnchorId(step.id)}`}
                           onClick={onNavigate}
                           className="font-body tpl-outline-link"
                           style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.3rem 0.4rem', borderRadius: '3px', color: 'rgba(243,234,216,0.78)', fontSize: '0.8rem', textDecoration: 'none' }}
