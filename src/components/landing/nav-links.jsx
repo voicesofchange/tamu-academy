@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Home,
   GraduationCap,
   LayoutDashboard,
   BookOpen,
@@ -23,11 +22,11 @@ import {
  * collections — grouped, not blended, so each audience reads one clear menu.
  */
 
-// The Academy's public pages — shown to everyone, in this order.
+// The Academy's public pages — shown to everyone, in this order. There is no
+// Home tab: the Tamu Academy wordmark links home.
 export const PUBLIC_LINKS = [
-  { key: 'nav.home', to: '/', icon: Home },
-  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
   { key: 'nav.about', to: '/about', icon: Info },
+  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
   { key: 'nav.contact', to: '/contact', icon: Mail },
 ];
 
@@ -41,10 +40,10 @@ export const LEARNER_LINKS = [
 ];
 
 // The learner's core destinations — the only tabs a signed-in learner who is
-// not an administrator sees. Everything in the menus above stays with admins.
+// not an administrator sees: the same public pages, in the same order, then
+// their own learning. Everything in the menus above stays with admins.
 export const LEARNER_CORE_LINKS = [
-  { key: 'nav.home', to: '/', icon: Home },
-  { key: 'nav.courses', to: '/courses', icon: GraduationCap },
+  ...PUBLIC_LINKS,
   { key: 'nav.myCourses', to: '/my-courses', icon: LayoutDashboard },
   { key: 'nav.learnersGuide', to: '/learners-guide', icon: BookOpen },
   { key: 'nav.myProgress', to: '/my-progress', icon: TrendingUp },

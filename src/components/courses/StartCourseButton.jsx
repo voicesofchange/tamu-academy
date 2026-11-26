@@ -62,7 +62,8 @@ const CONTENT = {
  * StartCourseButton — the enrollment action for a course.
  *
  * `compact` drops the explanatory line and tightens the buttons, for use
- * inside cards. `surface="light"` switches the sign-in link and error text
+ * inside cards; `showSignIn={false}` leaves out the "Already have an account?"
+ * line where the header already offers sign-in. `surface="light"` switches the sign-in link and error text
  * to the espresso-on-parchment palette. Both default to the full-size
  * dark-surface treatment used in the course heroes.
  */
@@ -71,6 +72,7 @@ export default function StartCourseButton({
   firstModuleRoute = 'module-1',
   compact = false,
   surface = 'dark',
+  showSignIn = true,
 }) {
   const { content: c } = useTranslatedContent('start-course-btn', CONTENT);
   const { isAuthenticated } = useAuth();
@@ -134,10 +136,12 @@ export default function StartCourseButton({
         <Link to={modulePath} className="font-body" style={primaryStyle}>
           {c.startLearning} &rarr;
         </Link>
-        <span className="font-body" style={{ ...infoStyle, margin: 0, fontSize: '0.8rem' }}>
-          {c.haveAccount}{' '}
-          <Link to={`/login?returnTo=${encodedReturnTo}`} style={smallLinkStyle}>{c.signIn}</Link>
-        </span>
+        {showSignIn && (
+          <span className="font-body" style={{ ...infoStyle, margin: 0, fontSize: '0.8rem' }}>
+            {c.haveAccount}{' '}
+            <Link to={`/login?returnTo=${encodedReturnTo}`} style={smallLinkStyle}>{c.signIn}</Link>
+          </span>
+        )}
       </div>
     </div>
   );
