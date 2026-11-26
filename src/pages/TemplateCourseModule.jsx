@@ -7,6 +7,7 @@ import { CoursePlayerLabelsProvider } from '@/components/courses/player/CoursePl
 import PageNotFound from '@/lib/PageNotFound';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const CENTERED = {
   minHeight: '60vh',
@@ -45,6 +46,8 @@ const CONTENT = {
  */
 export default function TemplateCourseModule() {
   const { courseSlug, moduleRoute } = useParams();
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview } = useModulePreview();
   const { language } = useTranslation();
   const { content: c } = useTranslatedContent('template-course-module', CONTENT);
   const [state, setState] = useState({ status: 'loading' });
@@ -58,6 +61,7 @@ export default function TemplateCourseModule() {
     (async () => {
       try {
         const res = await base44.functions.invoke('getTemplateCourseModule', {
+          ...(preview ? { preview: true } : {}),
           courseSlug,
           moduleRoute,
           language,
@@ -82,7 +86,7 @@ export default function TemplateCourseModule() {
     return () => {
       cancelled = true;
     };
-  }, [courseSlug, moduleRoute, language, reloadToken]);
+  }, [courseSlug, moduleRoute, language, reloadToken, preview]);
 
   if (state.status === 'notfound') return <PageNotFound />;
 

@@ -10,6 +10,7 @@ import {
 import { WAIYAKI_COURSE_TITLE } from '../../shared/waiyaki-curriculum.js';
 import { translateCourseSections } from '../../shared/course-translation.js';
 import { recordModuleOpened } from '../../shared/module-open-tracking.js';
+import { isModulePreviewRequest } from '../../shared/module-preview.js';
 
 /**
  * The learner-facing sections of a Waiyaki wa Hinga module that are
@@ -60,10 +61,9 @@ export default async function(req: Request): Promise<Response> {
     } catch (_) {
       user = null;
     }
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const isAdmin = user.role === 'admin';
+    // A signed-out visitor may read Module 1 as a free preview (checked
+    // below, once the request is read); anything else still answers 401.
+    const isAdmin = !!user && user.role === 'admin';
 
     let body: Record<string, unknown> = {};
     try {
@@ -72,7 +72,7 @@ export default async function(req: Request): Promise<Response> {
       body = {};
     }
 
-    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language']);
+    const allowedKeys = new Set(['courseSlug', 'moduleRoute', 'language', 'preview']);
     for (const k of Object.keys(body)) {
       if (!allowedKeys.has(k)) {
         return Response.json({ error: 'Unsupported field: ' + k }, { status: 400 });
@@ -82,6 +82,11 @@ export default async function(req: Request): Promise<Response> {
     const courseSlug = typeof body.courseSlug === 'string' ? body.courseSlug : '';
     const moduleRoute = typeof body.moduleRoute === 'string' ? body.moduleRoute : '';
     const language = typeof body.language === 'string' ? body.language : 'en';
+
+    const preview = !user;
+    if (preview && !isModulePreviewRequest(user, body, moduleRoute)) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     if (!courseSlug || !waiyakiCourseExists(courseSlug) || !moduleRoute) {
       return Response.json({ error: 'Not found' }, { status: 404 });
@@ -97,7 +102,12 @@ export default async function(req: Request): Promise<Response> {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
 
-    if (!isAdmin) {
+    if (preview) {
+      // The preview needs only a published module: no enrollment exists.
+      if (!isWaiyakiModulePublished(courseSlug, moduleRoute)) {
+        return Response.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } else if (!isAdmin) {
       if (!isWaiyakiModulePublished(courseSlug, moduleRoute)) {
         return Response.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -146,7 +156,7 @@ export default async function(req: Request): Promise<Response> {
     // Record the learner's first open of this module, apart from completion.
     // Administrators previewing content are not learners, so their opens are
     // not recorded.
-    if (!isAdmin) {
+    if (!isAdmin && !preview) {
       await recordModuleOpened(base44, {
         learnerId: user.id,
         courseSlug,

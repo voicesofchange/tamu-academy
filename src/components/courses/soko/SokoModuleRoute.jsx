@@ -18,6 +18,7 @@ import {
   SAUTI_ZA_SOKO_COURSE_SLUG,
   getSokoModulePreview,
 } from '@/lib/sauti-za-soko-tracks';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 /**
  * SokoModuleRoute — the core-course module page for one Sauti za Soko
@@ -45,6 +46,8 @@ export default function SokoModuleRoute({ moduleRoute }) {
 }
 
 function SokoModuleRouteInner({ moduleRoute }) {
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview: isPreview } = useModulePreview();
   const { language } = useTranslation();
   const labels = useSokoLabels();
   const { user } = useAuth();
@@ -64,7 +67,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
 
   // The player's server-side state: the course outline and this module's keys.
   useEffect(() => {
-    if (status !== 'ready') return undefined;
+    if (status !== 'ready' || isPreview) return undefined;
     let cancelled = false;
     (async () => {
       const [course, progress] = await Promise.all([
@@ -76,7 +79,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
       setModuleProgress(progress && progress.data ? progress.data : null);
     })();
     return () => { cancelled = true; };
-  }, [status, moduleRoute, progressToken]);
+  }, [status, moduleRoute, progressToken, isPreview]);
 
   useEffect(() => {
     let cancelled = false;
@@ -98,6 +101,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
 
       try {
         const res = await base44.functions.invoke('getSokoModule', {
+          ...(isPreview ? { preview: true } : {}),
           courseSlug: SAUTI_ZA_SOKO_COURSE_SLUG,
           moduleRoute,
           language,
@@ -120,7 +124,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, language, reloadToken]);
+  }, [moduleRoute, language, reloadToken, isPreview]);
 
   if (!preview) return <PageNotFound />;
 

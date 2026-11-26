@@ -16,6 +16,7 @@ import { restoreCourse } from '@/lib/i18n/restore-course';
 import { CoursePlayerLabelsProvider, useCoursePlayerLabels } from '@/components/courses/player/CoursePlayerLabelsProvider';
 import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFooter';
 import { wealthModuleSteps, WEALTH_KEY_LABEL_KEYS } from '@/components/courses/wealth/wealth-player-steps';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
 
@@ -46,6 +47,8 @@ export default function BuildingWealthModule() {
 }
 
 function WealthModuleRoute() {
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview } = useModulePreview();
   const { moduleRoute } = useParams();
   const { language } = useTranslation();
   const found = getWealthModulePreview(COURSE.slug, moduleRoute);
@@ -64,7 +67,7 @@ function WealthModuleRoute() {
 
   // The player's server-side state: the course outline and this module's keys.
   useEffect(() => {
-    if (status !== 'ready') return undefined;
+    if (status !== 'ready' || preview) return undefined;
     let cancelled = false;
     (async () => {
       const [course, progress] = await Promise.all([
@@ -76,7 +79,7 @@ function WealthModuleRoute() {
       setModuleProgress(progress && progress.data ? progress.data : null);
     })();
     return () => { cancelled = true; };
-  }, [status, moduleRoute, progressToken]);
+  }, [status, moduleRoute, progressToken, preview]);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,6 +88,7 @@ function WealthModuleRoute() {
     (async () => {
       try {
         const res = await base44.functions.invoke('getWealthModule', {
+          ...(preview ? { preview: true } : {}),
           courseSlug: COURSE.slug,
           moduleRoute,
           language,
@@ -102,7 +106,7 @@ function WealthModuleRoute() {
       }
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, language, reloadToken]);
+  }, [moduleRoute, language, reloadToken, preview]);
 
   if (!found) return <PageNotFound />;
 

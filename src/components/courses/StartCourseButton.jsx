@@ -23,23 +23,6 @@ const primaryButtonStyle = {
   whiteSpace: 'nowrap',
 };
 
-const secondaryButtonStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.4rem',
-  color: '#e8b85b',
-  fontSize: '0.78rem',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  fontWeight: 500,
-  textDecoration: 'none',
-  border: '1px solid rgba(232,184,91,0.5)',
-  borderRadius: '2px',
-  padding: '0.65rem 1.4rem',
-  fontFamily: "'DM Sans', sans-serif",
-  whiteSpace: 'nowrap',
-};
-
 const infoTextStyle = {
   color: 'rgba(243,234,216,0.62)',
   fontSize: '0.85rem',
@@ -55,14 +38,7 @@ const errorTextStyle = {
   margin: '0.75rem 0 0',
 };
 
-/* Parchment-surface variants. Cards sit on a light background, where the
-   gold-on-cream outline of the dark treatment would read too faintly. */
-const secondaryButtonStyleLight = {
-  ...secondaryButtonStyle,
-  color: '#5f4531',
-  border: '1px solid rgba(95,69,49,0.45)',
-};
-
+/* Parchment-surface variants for cards on a light background. */
 const infoTextStyleLight = {
   ...infoTextStyle,
   color: '#806b58',
@@ -75,18 +51,18 @@ const errorTextStyleLight = {
 
 const CONTENT = {
   starting: 'Starting...',
-  startCourse: 'Start Course',
+  startLearning: 'Start Learning',
   enrollError: 'Unable to start this course right now. Please try again.',
-  infoText: 'Create an account or sign in to begin this course, save your progress, and return whenever you are ready.',
-  signInToStart: 'Sign In to Start',
-  createAccount: 'Create Account',
+  infoText: 'Module 1 is free to read without an account. Create a free account to save your progress and earn the certificate.',
+  haveAccount: 'Already have an account?',
+  signIn: 'Sign in',
 };
 
 /**
  * StartCourseButton — the enrollment action for a course.
  *
  * `compact` drops the explanatory line and tightens the buttons, for use
- * inside cards. `surface="light"` switches the outline button and error text
+ * inside cards. `surface="light"` switches the sign-in link and error text
  * to the espresso-on-parchment palette. Both default to the full-size
  * dark-surface treatment used in the course heroes.
  */
@@ -106,8 +82,6 @@ export default function StartCourseButton({
   const infoStyle = onLight ? infoTextStyleLight : infoTextStyle;
   const errorStyle = onLight ? errorTextStyleLight : errorTextStyle;
   const primaryStyle = compact ? { ...primaryButtonStyle, padding: '0.62rem 1.15rem' } : primaryButtonStyle;
-  const outlineBase = onLight ? secondaryButtonStyleLight : secondaryButtonStyle;
-  const outlineStyle = compact ? { ...outlineBase, padding: '0.62rem 1.15rem' } : outlineBase;
 
   const modulePath = `/courses/${courseSlug}/${firstModuleRoute}`;
 
@@ -136,16 +110,18 @@ export default function StartCourseButton({
           className="font-body"
           style={{ ...primaryStyle, opacity: enrolling ? 0.7 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
         >
-          {enrolling ? c.starting : `${c.startCourse} \u2192`}
+          {enrolling ? c.starting : `${c.startLearning} \u2192`}
         </button>
         {enrollError && <p className="font-body" role="alert" style={errorStyle}>{enrollError}</p>}
       </div>
     );
   }
 
-  // `enroll=1` is the sign-in intent: the module page finishes the job by
-  // enrolling the learner automatically once they are signed in.
+  // Signed out, Start Learning opens Module 1 as a free preview. `enroll=1`
+  // is the sign-in intent: the module page enrolls the learner automatically
+  // once they are signed in.
   const encodedReturnTo = encodeURIComponent(`${modulePath}?enroll=1`);
+  const smallLinkStyle = { color: onLight ? '#5f4531' : '#e8b85b', textDecoration: 'underline', textUnderlineOffset: '3px' };
 
   return (
     <div>
@@ -154,13 +130,14 @@ export default function StartCourseButton({
           {c.infoText}
         </p>
       )}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: compact ? '0.5rem' : '0.75rem' }}>
-        <Link to={`/login?returnTo=${encodedReturnTo}`} style={primaryStyle}>
-          {c.signInToStart} &rarr;
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: compact ? '0.5rem 0.9rem' : '0.75rem 1.1rem' }}>
+        <Link to={modulePath} className="font-body" style={primaryStyle}>
+          {c.startLearning} &rarr;
         </Link>
-        <Link to={`/register?returnTo=${encodedReturnTo}`} style={outlineStyle}>
-          {c.createAccount} &rarr;
-        </Link>
+        <span className="font-body" style={{ ...infoStyle, margin: 0, fontSize: '0.8rem' }}>
+          {c.haveAccount}{' '}
+          <Link to={`/login?returnTo=${encodedReturnTo}`} style={smallLinkStyle}>{c.signIn}</Link>
+        </span>
       </div>
     </div>
   );

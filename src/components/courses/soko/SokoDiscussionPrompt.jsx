@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 };
 
@@ -48,11 +49,14 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
   const [response, setResponse] = useState('');
   const [language, setLanguage] = useState('sw');
   const [shareConsent, setShareConsent] = useState(false);
+  // In the free preview there is no saved work to read.
+  const { preview } = useModulePreview();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
+    if (preview) { setLoading(false); return undefined; }
     let cancelled = false;
     (async () => {
       try {
@@ -70,7 +74,7 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
       }
     })();
     return () => { cancelled = true; };
-  }, [courseSlug, moduleRoute]);
+  }, [courseSlug, moduleRoute, preview]);
 
   async function handleSave() {
     if (saving || !canSave || !response.trim()) return;

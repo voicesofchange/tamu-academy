@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useDisplayMode } from '@/lib/display-mode';
+import PreviewSectionGate from '@/components/courses/preview/PreviewSectionGate';
 
 const eyebrowStyle = {
   color: '#e8b85b',
@@ -18,6 +19,9 @@ const eyebrowStyle = {
  * In Data-Saver mode the section renders as a plain block: no scroll-reveal
  * work per section and no decorative accent rule, which keeps a long lesson
  * cheap to paint on a low-end device.
+ *
+ * In the free Module 1 preview, a section that saves work (by its id) is
+ * gated by PreviewSectionGate; outside the preview it renders unchanged.
  */
 export default function ModuleLessonSection({ id, eyebrow, heading, children }) {
   const { isDataSaver } = useDisplayMode();
@@ -37,7 +41,7 @@ export default function ModuleLessonSection({ id, eyebrow, heading, children }) 
           <div data-tamu-decorative="true" aria-hidden style={{ width: '48px', height: '2px', background: '#d99b37', marginBottom: '1.5rem', opacity: 0.7 }} />
         </>
       )}
-      {children}
+      <PreviewSectionGate id={id}>{children}</PreviewSectionGate>
     </>
   );
 

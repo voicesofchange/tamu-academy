@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import StatusBadge from '@/components/page/StatusBadge';
-import ModuleCard from '@/components/courses/ModuleCard';
+import CourseMetrics from '@/components/courses/CourseMetrics';
+import CourseSyllabusAccordion from '@/components/courses/CourseSyllabusAccordion';
 import EconomicsCourseProgress from '@/components/courses/EconomicsCourseProgress';
 import StartCourseButton from '@/components/courses/StartCourseButton';
 import CourseOverviewLayout from '@/components/courses/CourseOverviewLayout';
@@ -57,7 +58,12 @@ export default function CoursePageTemplate({ course, progressSlot, children, mod
           <StatusBadge label={course.access} />
         </>
       }
-      heroCta={<StartCourseButton courseSlug={course.slug} />}
+      heroCta={
+        <>
+          <div style={{ marginBottom: '22px' }}><CourseMetrics moduleCount={moduleCount} /></div>
+          <StartCourseButton courseSlug={course.slug} />
+        </>
+      }
     >
       <PageMeta title={`${course.title} | Tamu Academy`} description={course.description} path={`/courses/${course.slug}`} />
 
@@ -117,16 +123,8 @@ export default function CoursePageTemplate({ course, progressSlot, children, mod
       {/* Modules */}
       <CourseOverviewSection surface="darker" eyebrow={t('course.modules')} heading={t('course.modulesHeading')}>
         <p className="font-body" style={{ ...darkBody, marginBottom: '1.75rem' }}>{modulesIntro}</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-          {course.modules.map((module) => (
-            <ModuleCard
-              key={module.number}
-              module={module}
-              to={module.route ? `/courses/${course.slug}/${module.route}` : null}
-              footer={moduleFooter}
-            />
-          ))}
-        </div>
+        <CourseSyllabusAccordion courseSlug={course.slug} />
+        {moduleFooter && <div style={{ marginTop: '1.25rem' }}>{moduleFooter}</div>}
       </CourseOverviewSection>
 
       {/* Milestone */}

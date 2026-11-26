@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import StatusBadge from '@/components/page/StatusBadge';
-import ModuleCard from '@/components/courses/ModuleCard';
+import CourseMetrics from '@/components/courses/CourseMetrics';
+import CourseSyllabusAccordion from '@/components/courses/CourseSyllabusAccordion';
 import StartCourseButton from '@/components/courses/StartCourseButton';
 import CourseOverviewLayout from '@/components/courses/CourseOverviewLayout';
 import CourseOverviewSection from '@/components/courses/CourseOverviewSection';
@@ -60,7 +61,12 @@ export default function BuildingWealthTogether() {
           <StatusBadge label={course.access} />
         </>
       }
-      heroCta={<StartCourseButton courseSlug={course.slug} />}
+      heroCta={
+        <>
+          <div style={{ marginBottom: '22px' }}><CourseMetrics moduleCount={Number(BASE_COURSE.modulesCount) || BASE_COURSE.modules.length} /></div>
+          <StartCourseButton courseSlug={course.slug} />
+        </>
+      }
     >
       <PageMeta title={`${course.title} | Tamu Academy`} description={course.description} path={COURSE_PATH} />
 
@@ -109,15 +115,7 @@ export default function BuildingWealthTogether() {
             <p className="font-body" style={{ color: '#d9cbb8', fontSize: '14px', lineHeight: 1.7, fontWeight: 300, margin: '0 0 1.25rem', maxWidth: '680px' }}>
               {track.summary}
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-              {track.modules.map((module) => (
-                <ModuleCard
-                  key={module.route}
-                  module={module}
-                  to={`${COURSE_PATH}/${module.route}`}
-                />
-              ))}
-            </div>
+            <CourseSyllabusAccordion courseSlug={course.slug} routes={track.modules.map((m) => m.route)} />
           </div>
         ))}
       </CourseOverviewSection>

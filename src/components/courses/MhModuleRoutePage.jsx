@@ -20,6 +20,7 @@ import { ModuleFrameContext } from '@/components/courses/player/ModuleFrameConte
 import { MH_SECTIONS, mhModuleSteps, mhMissingNames } from '@/components/courses/mh-player-steps';
 import { useTranslation } from '@/lib/i18n';
 import PageNotFound from '@/lib/PageNotFound';
+import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
 const COURSE_SLUG = 'mental-health-community-and-culture';
 
@@ -65,6 +66,8 @@ export default function MhModuleRoutePage({ moduleRoute }) {
 }
 
 function MhModuleRoute({ moduleRoute }) {
+  // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
+  const { preview } = useModulePreview();
   const { language } = useTranslation();
   const found = getMentalHealthModule(COURSE_SLUG, moduleRoute);
   const [state, setState] = useState({ status: 'loading', module: null });
@@ -77,6 +80,7 @@ function MhModuleRoute({ moduleRoute }) {
     (async () => {
       try {
         const res = await base44.functions.invoke('getMentalHealthModule', {
+          ...(preview ? { preview: true } : {}),
           courseSlug: COURSE_SLUG,
           moduleRoute,
           language,
@@ -101,7 +105,7 @@ function MhModuleRoute({ moduleRoute }) {
     return () => {
       cancelled = true;
     };
-  }, [moduleRoute, language, reloadToken]);
+  }, [moduleRoute, language, reloadToken, preview]);
 
   if (!found) return <PageNotFound />;
 
@@ -179,6 +183,7 @@ function sameReport(a, b) {
  */
 function MhPlayerFrame({ moduleRoute, found, lesson }) {
   const L = useCoursePlayerLabels();
+  const { preview } = useModulePreview();
   // Same page key as the course overview, so its translation is reused.
   const { content: translatedCourse } = useTranslatedContent('mh-course-data', MENTAL_HEALTH_COURSE);
   const [outline, setOutline] = useState(null);
@@ -190,6 +195,7 @@ function MhPlayerFrame({ moduleRoute, found, lesson }) {
   useEffect(() => { setModuleProgress(null); }, [moduleRoute]);
 
   useEffect(() => {
+    if (preview) return undefined;
     let cancelled = false;
     (async () => {
       const res = await base44.functions
@@ -198,7 +204,7 @@ function MhPlayerFrame({ moduleRoute, found, lesson }) {
       if (!cancelled) setOutline(res && res.data ? res.data : null);
     })();
     return () => { cancelled = true; };
-  }, [moduleRoute, outlineToken]);
+  }, [moduleRoute, outlineToken, preview]);
 
   // The outline lists the sections this lesson actually rendered.
   useEffect(() => {
