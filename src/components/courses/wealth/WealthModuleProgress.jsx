@@ -74,7 +74,13 @@ const STEPS = [
   },
 ];
 
-export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshTrigger }) {
+/**
+ * Inside the course player the footer's "Mark Complete & Continue" completes
+ * the module, so the player passes showCompleteButton={false}; `onChange`
+ * tells the player when a step was saved so its outline and footer refresh.
+ * Both default to the standalone behaviour.
+ */
+export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshTrigger, showCompleteButton = true, onChange }) {
   const [state, setState] = useState({ status: 'loading', data: null });
   const [busyKey, setBusyKey] = useState(null);
   const [missing, setMissing] = useState([]);
@@ -109,6 +115,7 @@ export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshT
         ? 'This module is not open for saved progress yet.'
         : 'Step recorded.');
       await load();
+      if (onChange) onChange();
     } catch (err) {
       setNote('We could not save that step just now. Please try again.');
     } finally {
@@ -131,6 +138,7 @@ export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshT
         setNote('We could not complete the module just now. Please try again.');
       }
       await load();
+      if (onChange) onChange();
     } catch (err) {
       setNote('We could not complete the module just now. Please try again.');
     } finally {
@@ -216,7 +224,7 @@ export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshT
         </p>
       )}
 
-      <div style={{ marginTop: '1.5rem' }}>
+      {showCompleteButton && <div style={{ marginTop: '1.5rem' }}>
         {data.moduleCompleted ? (
           <p className="font-body" style={{ ...bodyText, color: '#e8b85b', margin: 0 }}>
             This module is complete.
@@ -231,7 +239,7 @@ export default function WealthModuleProgress({ courseSlug, moduleRoute, refreshT
             {busyKey === 'complete' ? 'Checking...' : 'Mark this module complete'}
           </button>
         )}
-      </div>
+      </div>}
     </div>
   );
 }
