@@ -12,6 +12,8 @@ import WealthWorkedExample from '@/components/courses/wealth/WealthWorkedExample
 import WealthConceptCheck from '@/components/courses/wealth/WealthConceptCheck';
 import WealthModuleProgress from '@/components/courses/wealth/WealthModuleProgress';
 import ModuleSources from '@/components/courses/module/ModuleSources';
+import CoursePlayer from '@/components/courses/player/CoursePlayer';
+import { stepAnchorId } from '@/components/courses/player/step-anchors';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -20,6 +22,26 @@ const linkStyle = {
   textDecoration: 'underline',
   textUnderlineOffset: '3px',
 };
+
+/**
+ * The module's frame: the shared course player when a `player` is given,
+ * otherwise the single reading column. Defined once, outside the template,
+ * so the lesson is never remounted on a re-render (a half-answered concept
+ * check keeps its answers).
+ */
+function WealthModuleFrame({ player, moduleRoute, children }) {
+  if (!player) return <ModuleLessonLayout>{children}</ModuleLessonLayout>;
+  return (
+    <CoursePlayer course={player.course} currentRoute={moduleRoute} steps={player.steps} footer={player.footer}>
+      {children}
+    </CoursePlayer>
+  );
+}
+
+/** An anchor the course player's outline can jump to. */
+function Step({ id, children }) {
+  return <div id={stepAnchorId(id)}>{children}</div>;
+}
 
 /**
  * BuildingWealthLessonTemplate — the single lesson structure for every module
@@ -34,8 +56,15 @@ const linkStyle = {
  *
  * Module content is fetched from the access-checked `getWealthModule`
  * backend function, so the concept-check answer key never reaches the browser.
+ *
+ * With a `player` prop ({ course, steps, footer }) the module renders inside
+ * the shared course player — outline, progress bar and "Mark Complete &
+ * Continue" footer — and the footer completes the module.
+ * `onProgressChange` is called whenever a step is saved or the concept check
+ * is passed, so the player can refresh. Without `player` the layout is
+ * unchanged.
  */
-export default function BuildingWealthLessonTemplate({ course, module }) {
+export default function BuildingWealthLessonTemplate({ course, module, player = null, onProgressChange }) {
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${module.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === module.route);
@@ -50,7 +79,7 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
   const trackLabel = (course.modules.find((m) => m.route === module.route) || {}).trackLabel || course.track;
 
   return (
-    <ModuleLessonLayout>
+    <WealthModuleFrame player={player} moduleRoute={module.route}>
       <PageMeta
         title={`${module.number}: ${module.title} | Tamu Academy`}
         description={`${module.number} of ${course.title}.`}
@@ -65,7 +94,7 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         coursePath={coursePath}
         moduleLabel={module.number}
       />
-      <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} />
+      {!player && <ModuleProgressBar current={moduleIndex + 1} total={course.modules.length} />}
 
       <ModuleHero
         courseSlug={course.slug}
@@ -78,7 +107,7 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
 
       {/* Welcome to Tamu Academy — the same film opens every module. */}
       {module.welcomeFilm && (
-        <ModuleLessonSection eyebrow="Welcome" heading="Welcome to Tamu Academy">
+        <ModuleLessonSection id={stepAnchorId('welcome')} eyebrow="Welcome" heading="Welcome to Tamu Academy">
           <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>
             <a href={module.welcomeFilm.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>
               {module.welcomeFilm.title}
@@ -90,13 +119,17 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection eyebrow="What you will learn" heading="What You'll Learn" items={module.goals} />
+      <Step id="goals">
+        <ModuleTextSection eyebrow="What you will learn" heading="What You'll Learn" items={module.goals} />
+      </Step>
 
       {module.watch && (
-        <WealthWatchStep watch={module.watch} eyebrow="Watch" heading="Watch" />
+        <Step id="watch">
+          <WealthWatchStep watch={module.watch} eyebrow="Watch" heading="Watch" />
+        </Step>
       )}
 
-      <ModuleLessonSection eyebrow="The lesson" heading="The Lesson">
+      <ModuleLessonSection id={stepAnchorId('lesson')} eyebrow="The lesson" heading="The Lesson">
         {module.lessonSections.map((section, si) => (
           <div key={si} className="workbook-block" style={{ marginBottom: '2.25rem' }}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 1rem' }}>
@@ -125,14 +158,16 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         ))}
       </ModuleLessonSection>
 
-      <WealthWorkedExample
-        workedExample={module.workedExample}
-        eyebrow="Worked example"
-        heading="Worked Example"
-      />
+      <Step id="worked-example">
+        <WealthWorkedExample
+          workedExample={module.workedExample}
+          eyebrow="Worked example"
+          heading="Worked Example"
+        />
+      </Step>
 
       {module.tryIt && (
-        <ModuleLessonSection eyebrow="Try it" heading="Try It">
+        <ModuleLessonSection id={stepAnchorId('try-it')} eyebrow="Try it" heading="Try It">
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{module.tryIt.intro}</p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
             {module.tryIt.steps.map((step, i) => (
@@ -142,14 +177,16 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection
-        eyebrow="Where you live"
-        heading="Where You Live"
-        items={module.whereYouLive}
-      />
+      <Step id="where-you-live">
+        <ModuleTextSection
+          eyebrow="Where you live"
+          heading="Where You Live"
+          items={module.whereYouLive}
+        />
+      </Step>
 
       {module.dilemma && (
-        <ModuleLessonSection eyebrow="The dilemma" heading="The Dilemma">
+        <ModuleLessonSection id={stepAnchorId('dilemma')} eyebrow="The dilemma" heading="The Dilemma">
           <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 0.4rem' }}>
             {module.dilemma.title}
           </h3>
@@ -177,25 +214,30 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
       )}
 
       {module.quiz && (
-        <ModuleLessonSection eyebrow="Concept check" heading="Concept Check">
+        <ModuleLessonSection id={stepAnchorId('concept-check')} eyebrow="Concept check" heading="Concept Check">
           <WealthConceptCheck
             quiz={module.quiz}
             courseSlug={course.slug}
             moduleRoute={module.route}
-            onPassed={() => setQuizPassedTrigger((t) => t + 1)}
+            onPassed={() => {
+              setQuizPassedTrigger((t) => t + 1);
+              if (onProgressChange) onProgressChange();
+            }}
           />
         </ModuleLessonSection>
       )}
 
-      <ModuleTextSection
-        eyebrow="Reflection"
-        heading="Reflection"
-        items={module.reflection ? [module.reflection] : []}
-      />
+      <Step id="reflection">
+        <ModuleTextSection
+          eyebrow="Reflection"
+          heading="Reflection"
+          items={module.reflection ? [module.reflection] : []}
+        />
+      </Step>
 
       {((module.sources && module.sources.length > 0) ||
         (module.unsourced && module.unsourced.length > 0)) && (
-        <ModuleLessonSection eyebrow="Sources" heading="Sources">
+        <ModuleLessonSection id={stepAnchorId('sources')} eyebrow="Sources" heading="Sources">
           <ModuleSources
             sources={module.sources}
             unsourced={module.unsourced}
@@ -208,11 +250,13 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         </ModuleLessonSection>
       )}
 
-      <ModuleLessonSection eyebrow="Requirements" heading="Completion Requirements">
+      <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow="Requirements" heading="Completion Requirements">
         <WealthModuleProgress
           courseSlug={course.slug}
           moduleRoute={module.route}
           refreshTrigger={quizPassedTrigger}
+          showCompleteButton={!player}
+          onChange={onProgressChange}
         />
       </ModuleLessonSection>
 
@@ -223,6 +267,6 @@ export default function BuildingWealthLessonTemplate({ course, module }) {
         nextModule={nextModule}
         nextLabel={nextLabel}
       />
-    </ModuleLessonLayout>
+    </WealthModuleFrame>
   );
 }

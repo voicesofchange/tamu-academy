@@ -3,6 +3,7 @@ import {
   WEALTH_COURSE_SLUG,
   WEALTH_MODULE_ROUTES,
   getWealthModuleConfig,
+  getWealthModulePrerequisite,
   isWealthModulePublished,
 } from '../../shared/building-wealth-together-config.js';
 
@@ -22,6 +23,11 @@ import {
  * TRUST BOUNDARY:
  *   - Unauthenticated -> 401.
  *   - Unknown course -> 404.
+ *   - For the course player's outline, each module also reports its
+ *     progress status, publication, prerequisite and whether it is locked
+ *     for this learner (unpublished, or its prerequisite not complete), and
+ *     the course reports progressPercentage — completed modules over
+ *     required modules, the same figure the enrollment record carries.
  *   - Course completion is determined exclusively from server-side
  *     ModuleProgress rows with status='completed' plus a capstone row whose
  *     submitted_at is set.
@@ -93,10 +99,17 @@ export default async function(req: Request): Promise<Response> {
       }
     }
 
+    const isRouteCompleted = (route: string | null) => {
+      const progress = route ? progressMap[route] : null;
+      return !!(progress && progress.status === 'completed' && progress.completed_at);
+    };
+
     const moduleStatuses = WEALTH_MODULE_ROUTES.map((route) => {
       const config = getWealthModuleConfig(courseSlug, route);
       const progress = progressMap[route];
-      const completed = !!(progress && progress.status === 'completed' && progress.completed_at);
+      const completed = isRouteCompleted(route);
+      const published = isWealthModulePublished(courseSlug, route);
+      const prerequisite = getWealthModulePrerequisite(courseSlug, route) || null;
       return {
         route,
         number: config ? config.number : route,
@@ -104,6 +117,10 @@ export default async function(req: Request): Promise<Response> {
         trackLabel: config ? config.trackLabel : '',
         completed,
         completedAt: progress ? progress.completed_at : null,
+        status: progress ? progress.status : 'not_started',
+        published,
+        prerequisite,
+        locked: !published || (!!prerequisite && !isRouteCompleted(prerequisite)),
       };
     });
 
@@ -133,6 +150,7 @@ export default async function(req: Request): Promise<Response> {
       modules: moduleStatuses,
       completedCount,
       totalModules,
+      progressPercentage: totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0,
       allModulesCompleted,
       courseCompleted,
       incompleteModules,

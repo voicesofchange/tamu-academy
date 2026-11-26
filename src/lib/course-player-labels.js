@@ -2,7 +2,8 @@
  * Learner-facing interface labels for the course player — the course outline
  * sidebar, the course progress bar and the "Mark Complete & Continue" footer
  * that frame a module in every course that uses the player (the template
- * courses, Sauti za Soko and Understanding African Economies).
+ * courses, Sauti za Soko, Understanding African Economies and Building
+ * Wealth Together).
  *
  * The module's own content is translated server-side by each course's module
  * function; these are the words around it. They are passed to
@@ -57,6 +58,13 @@ export const COURSE_PLAYER_LABELS = {
   stepCaseStudy: 'African case study',
   stepAppliedActivity: 'Applied activity',
   stepLessonAndCaseStudy: 'Lesson and case study',
+  // Lesson steps — Building Wealth Together
+  stepWelcome: 'Welcome film',
+  stepWorkedExample: 'Worked example',
+  stepWhereYouLive: 'Where you live',
+  stepDilemma: 'The dilemma',
+  stepConceptCheck: 'Concept check',
+  stepLessonAndWorkedExample: 'Lesson and worked example',
   // Progress bar
   courseProgress: 'Course progress',
   percentComplete: '{percent}% complete',
@@ -73,4 +81,5 @@ export const COURSE_PLAYER_LABELS = {
   previewOnly: 'Preview: progress is not saved for this module.',
   nextUp: 'Next: {title}',
   courseCompletion: 'Course completion',
+  capstoneProject: 'Capstone project',
 };
