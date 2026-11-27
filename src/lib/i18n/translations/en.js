@@ -250,4 +250,11 @@ export default {
     strongestFeature: 'Strongest Design Feature',
     mostImportantRevision: 'Most Important Revision',
   },
+  // How translation works, for learners (language switcher, course pages).
+  i18n: {
+    noticeTitle: "About translations",
+    notice: "Interface and course materials are available in English, Kiswahili, Español, and Français. Translated course content is machine-assisted and continuously reviewed.",
+    noticeShort: "Translated course content is machine-assisted and continuously reviewed.",
+    selectLanguage: "Select language",
+  },
 };
