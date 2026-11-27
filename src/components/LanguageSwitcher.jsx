@@ -3,11 +3,13 @@ import { useTranslation, LANGUAGES } from '@/lib/i18n';
 
 /**
  * Compact language switcher for the navigation bar.
- * Shows the current language code; opens a dropdown with all options.
+ * Shows the current language code; opens a dropdown with all options and a
+ * short note on how translation works (interface and courses in four
+ * languages; translated course content is machine-assisted and reviewed).
  * Persists choice via the LanguageContext (localStorage).
  */
 export default function LanguageSwitcher({ variant = 'desktop' }) {
-  const { language, setLanguage } = useTranslation();
+  const { language, setLanguage, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -56,7 +58,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Select language"
+        aria-label={t('i18n.selectLanguage')}
         style={baseStyle}
       >
         <span style={{ fontSize: '0.9em' }} aria-hidden="true">🌐</span>
@@ -66,13 +68,12 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
 
       {open && (
         <div
-          role="listbox"
           style={{
             position: variant === 'mobile' ? 'static' : 'absolute',
             top: variant === 'mobile' ? 'auto' : '100%',
             right: variant === 'mobile' ? 'auto' : 0,
             marginTop: variant === 'mobile' ? 0 : '0.4rem',
-            minWidth: '140px',
+            width: variant === 'mobile' ? '100%' : '270px',
             backgroundColor: 'rgba(20,14,10,0.96)',
             border: '1px solid rgba(232,184,91,0.2)',
             borderRadius: '4px',
@@ -81,6 +82,7 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
             boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
           }}
         >
+          <div role="listbox" aria-label={t('i18n.selectLanguage')}>
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
@@ -111,6 +113,15 @@ export default function LanguageSwitcher({ variant = 'desktop' }) {
               )}
             </button>
           ))}
+          </div>
+          <div role="note" aria-label={t('i18n.noticeTitle')} style={{ padding: '0.7rem 1rem 0.8rem', fontFamily: "'DM Sans', sans-serif" }}>
+            <p style={{ margin: '0 0 0.3rem', color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 600 }}>
+              {t('i18n.noticeTitle')}
+            </p>
+            <p style={{ margin: 0, color: 'rgba(243,234,216,0.68)', fontSize: '0.74rem', lineHeight: 1.55, whiteSpace: 'normal', letterSpacing: 0, textTransform: 'none' }}>
+              {t('i18n.notice')}
+            </p>
+          </div>
         </div>
       )}
     </div>

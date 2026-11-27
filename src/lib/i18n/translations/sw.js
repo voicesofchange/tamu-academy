@@ -250,4 +250,11 @@ export default {
     strongestFeature: 'Kipengele chenye Nguvu Zaidi',
     mostImportantRevision: 'Marekebisho Muhimu Zaidi',
   },
+  // How translation works, for learners (language switcher, course pages).
+  i18n: {
+    noticeTitle: "Kuhusu tafsiri",
+    notice: "Kiolesura na masomo ya kozi vinapatikana kwa English, Kiswahili, Español na Français. Maudhui ya kozi yaliyotafsiriwa yametafsiriwa kwa msaada wa mashine na yanakaguliwa mara kwa mara.",
+    noticeShort: "Maudhui ya kozi yaliyotafsiriwa yametafsiriwa kwa msaada wa mashine na yanakaguliwa mara kwa mara.",
+    selectLanguage: "Chagua lugha",
+  },
 };

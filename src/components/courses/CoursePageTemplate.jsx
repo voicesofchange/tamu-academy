@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, Languages } from 'lucide-react';
 import PageMeta from '@/components/seo/PageMeta';
 import SiteShell from '@/components/page/SiteShell';
 import CourseSyllabusAccordion from '@/components/courses/CourseSyllabusAccordion';
@@ -56,7 +56,7 @@ export default function CoursePageTemplate({
   pathIntro,
   children,
 }) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const { isAuthenticated } = useAuth();
   const { hash } = useLocation();
   const facts = getCourseFacts(course.slug);
@@ -105,6 +105,13 @@ export default function CoursePageTemplate({
             <h1 className="font-heading cpt-title">{course.title}</h1>
             {course.subtitle && <p className="font-body cpt-subtitle">{course.subtitle}</p>}
             <div className="cpt-action"><CourseActionButton courseSlug={course.slug} /></div>
+            {/* Read in Kiswahili, Español or Français: say how the course text is translated. */}
+            {language && language !== 'en' && (
+              <p className="font-body cpt-translation-note" role="note">
+                <Languages size={14} aria-hidden="true" />
+                <span>{t('i18n.noticeShort')}</span>
+              </p>
+            )}
           </div>
         </motion.div>
       </section>
@@ -223,6 +230,8 @@ const TEMPLATE_CSS = `
 .cpt-title { font-weight: 400; font-size: clamp(2.1rem, 4.4vw, 52px); line-height: 1.06; letter-spacing: -0.02em; margin: 16px 0 18px; color: var(--tamu-ink, #f8f0df); }
 .cpt-subtitle { font-size: clamp(1rem, 1.4vw, 17px); line-height: 1.7; color: #ddcfbb; margin: 0; max-width: 660px; }
 .cpt-action { margin-top: 28px; }
+.cpt-translation-note { display: flex; align-items: flex-start; gap: 0.45rem; margin: 18px 0 0; max-width: 560px; color: rgba(243,234,216,0.62); font-size: 0.8rem; line-height: 1.55; }
+.cpt-translation-note svg { color: #e8b85b; flex-shrink: 0; margin-top: 0.2rem; }
 
 .cpt-body { background: #faf6ec; color: #39251b; padding: 0 clamp(1.25rem, 5vw, 3.5rem) 72px; }
 .cpt-body-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "main aside"; gap: 0 56px; }

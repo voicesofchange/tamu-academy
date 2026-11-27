@@ -259,4 +259,11 @@ export default {
     strongestFeature: 'Point fort du dispositif',
     mostImportantRevision: 'Révision la plus importante',
   },
+  // How translation works, for learners (language switcher, course pages).
+  i18n: {
+    noticeTitle: "À propos des traductions",
+    notice: "L'interface et les supports de cours sont disponibles en English, Kiswahili, Español et Français. Le contenu de cours traduit est produit avec l'aide de la traduction automatique et révisé en continu.",
+    noticeShort: "Le contenu de cours traduit est produit avec l'aide de la traduction automatique et révisé en continu.",
+    selectLanguage: "Choisir la langue",
+  },
 };
