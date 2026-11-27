@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loading: 'Loading…',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -86,6 +92,7 @@ export default function MhModule2Progress({
   progressTracking,
   refreshTrigger = 0,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule2progress', UI_TEXT);
   const [progress, setProgress] = useState(null);
   // In the course player: report progress so the outline and footer stay
   // current, and leave completing the module to the player's footer.
@@ -196,7 +203,7 @@ export default function MhModule2Progress({
 
       {loading ? (
         <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>
-          Loading...
+          {uiText.loading}
         </p>
       ) : progress && progress.eligibleToSave ? (
         <>

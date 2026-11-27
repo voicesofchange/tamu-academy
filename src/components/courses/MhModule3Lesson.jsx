@@ -14,6 +14,18 @@ import { GoldDivider } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  requiredEducationalDisclaimer: 'Required educational disclaimer',
+  opensInANewTab: '{v0} (opens in a new tab)',
+  optionalMediaNote: 'Optional media note',
+  fictionalOrCompositeSituationReminder: 'Fictional or composite situation reminder',
+  rolePlaySafetyWarning: 'Role play safety warning',
+  privacyNotice: 'Privacy notice',
+  personalDisclosureNotice: 'Personal disclosure notice',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -136,6 +148,7 @@ function renderExplanation(section, c) {
 }
 
 export default function MhModule3Lesson({ course, module: mod, lesson }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule3lesson', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
@@ -202,7 +215,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.disclaimerLabel}
           </span>
@@ -237,7 +250,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
               href={lesson.coreMedia.primary.officialPageUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${lesson.coreMedia.primary.officialPageLabel} (opens in a new tab)`}
+              aria-label={fillTemplate(uiText.opensInANewTab, { v0: lesson.coreMedia.primary.officialPageLabel })}
               style={externalLinkStyle}
             >
               {lesson.coreMedia.primary.officialPageLabel}
@@ -268,7 +281,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
               href={lesson.coreMedia.secondary.officialPageUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${lesson.coreMedia.secondary.officialPageLabel} (opens in a new tab)`}
+              aria-label={fillTemplate(uiText.opensInANewTab, { v0: lesson.coreMedia.secondary.officialPageLabel })}
               style={externalLinkStyle}
             >
               {lesson.coreMedia.secondary.officialPageLabel}
@@ -308,13 +321,13 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
               href={lesson.optionalFamilyDiaries.watchUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${lesson.optionalFamilyDiaries.linkLabel} (opens in a new tab)`}
+              aria-label={fillTemplate(uiText.opensInANewTab, { v0: lesson.optionalFamilyDiaries.linkLabel })}
               style={externalLinkStyle}
             >
               {lesson.optionalFamilyDiaries.linkLabel}
             </a>
           </p>
-          <div style={disclaimerBoxStyle} aria-label="Optional media note">
+          <div style={disclaimerBoxStyle} aria-label={uiText.optionalMediaNote}>
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
               {c.optionalMediaNote}
             </span>
@@ -337,7 +350,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="case-study" eyebrow={c.caseStudyEyebrow} heading={lesson.caseStudy.title}>
         <div
-          aria-label="Fictional or composite situation reminder"
+          aria-label={uiText.fictionalOrCompositeSituationReminder}
           style={{
             marginTop: '0.25rem',
             marginBottom: '1.6rem',
@@ -368,7 +381,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={lesson.interactiveScenario.title}>
         <div
-          aria-label="Fictional or composite situation reminder"
+          aria-label={uiText.fictionalOrCompositeSituationReminder}
           style={{
             marginBottom: '1.6rem',
             padding: '1.4rem 1.6rem',
@@ -393,7 +406,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="bridge-conversation-lab" eyebrow={lesson.bridgeConversationLab.eyebrow} heading={lesson.bridgeConversationLab.title}>
         <div
-          aria-label="Fictional or composite situation reminder"
+          aria-label={uiText.fictionalOrCompositeSituationReminder}
           style={{
             marginBottom: '1.6rem',
             padding: '1.4rem 1.6rem',
@@ -410,7 +423,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
           </p>
         </div>
         <div
-          aria-label="Role play safety warning"
+          aria-label={uiText.rolePlaySafetyWarning}
           style={{
             marginBottom: '1.6rem',
             padding: '1.4rem 1.6rem',
@@ -431,7 +444,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
         <div
-          aria-label="Fictional or composite situation reminder"
+          aria-label={uiText.fictionalOrCompositeSituationReminder}
           style={{
             marginBottom: '1.6rem',
             padding: '1.4rem 1.6rem',
@@ -486,7 +499,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
           onChange={(e) => setReflectionNeed(e.target.value)}
           rows={2}
         />
-        <div aria-label="Privacy notice" style={{ ...disclaimerBoxStyle, marginTop: '1.6rem' }}>
+        <div aria-label={uiText.privacyNotice} style={{ ...disclaimerBoxStyle, marginTop: '1.6rem' }}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.privacy}
           </span>
@@ -532,7 +545,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
             <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>
           ))}
         </ol>
-        <div style={disclaimerBoxStyle} aria-label="Personal disclosure notice">
+        <div style={disclaimerBoxStyle} aria-label={uiText.personalDisclosureNotice}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.personalDisclosure}
           </span>
@@ -547,7 +560,7 @@ export default function MhModule3Lesson({ course, module: mod, lesson }) {
         <p className="font-body" style={{ ...bodyText, marginTop: '1.25rem', marginBottom: '1.25rem' }}>
           {lesson.closing.transition}
         </p>
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.disclaimerLabel}
           </span>

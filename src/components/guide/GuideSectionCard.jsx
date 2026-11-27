@@ -20,6 +20,14 @@ import {
 } from 'lucide-react';
 import { progressLabels } from '@/lib/guide/styles';
 import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  entry: 'Entry',
+  kiswahili: '{v0} · Kiswahili',
+};
 
 /** Each section's header glyph, in the guide's warm palette. */
 const SECTION_VISUALS = {
@@ -59,6 +67,7 @@ function buildMeta(section, ui) {
 
 /** One section card on the guide pathway, shaped like the course cards. */
 export default function GuideSectionCard({ section, status = 'not_started', index = 0 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-guidesectioncard', UI_TEXT);
   const visual = SECTION_VISUALS[section.id] || FALLBACK_VISUAL;
   const HeroIcon = visual.icon;
   const tone = section.available ? BADGE_TONES[status] || BADGE_TONES.not_started : BADGE_TONES.preparing;
@@ -100,7 +109,7 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
           className="font-guide-heading"
           style={{ position: 'absolute', top: '14px', left: '16px', color: 'rgba(232,184,91,0.85)', fontSize: '13px', letterSpacing: '0.14em', fontWeight: 600 }}
         >
-          {section.number || visual.tag || '—'}
+          {section.number || (visual.tag ? uiText.entry : null) || '—'}
         </span>
         <span
           className="font-guide-body"
@@ -128,9 +137,7 @@ export default function GuideSectionCard({ section, status = 'not_started', inde
         <h3 className="font-guide-heading" style={{ fontWeight: 600, fontSize: '22px', lineHeight: 1.2, margin: '0 0 4px', color: '#33241A' }}>
           {section.english}
         </h3>
-        <p className="font-guide-body" style={{ fontSize: '12.5px', letterSpacing: '0.03em', color: '#8a7860', margin: '0 0 12px' }}>
-          {section.swahili} · Kiswahili
-        </p>
+        <p className="font-guide-body" style={{ fontSize: '12.5px', letterSpacing: '0.03em', color: '#8a7860', margin: '0 0 12px' }}>{fillTemplate(uiText.kiswahili, { v0: section.swahili })}</p>
         {section.proverb?.en && (
           <p className="font-guide-heading" style={{ fontSize: '0.95rem', fontStyle: 'italic', color: '#8A650B', lineHeight: 1.5, margin: '0 0 18px', flex: 1 }}>
             {section.proverb.en}

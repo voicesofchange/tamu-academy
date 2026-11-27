@@ -9,6 +9,15 @@ import { averageRating, formatAttemptDate, loadKiooAttempts, ratingsOf, saveKioo
 import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  whenYouAreReadyReturn: 'When you are ready, return to the mirror in Kurudi and see how you have moved.',
+  openKurudi: 'Open Kurudi',
+  youHaveReturnedToThe: 'You have returned to the mirror {v0} {v1}.',
+};
 
 function labelFor(value, scale) {
   const option = scale.find((entry) => entry.value === Number(value));
@@ -21,6 +30,7 @@ function labelFor(value, scale) {
  * attempt is a Return, taken from Kurudi.
  */
 export default function KiooSectionView({ section }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-kioosectionview', UI_TEXT);
   const { user } = useAuth();
   const learnerId = user?.id || null;
   const { kiooStatements, frequencyScale, ui } = useGuideStrings();
@@ -153,9 +163,9 @@ export default function KiooSectionView({ section }) {
 
           <p className="font-guide-body" style={{ ...creamText.body, margin: '1.75rem 0 0', fontSize: '0.86rem', color: '#6b5744' }}>
             {returns.length > 0
-              ? `You have returned to the mirror ${returns.length} ${returns.length === 1 ? 'time' : 'times'}.`
-              : 'When you are ready, return to the mirror in Kurudi and see how you have moved.'}{' '}
-            <Link to="/learners-guide/kurudi" className="guide-link">Open Kurudi</Link>
+              ? fillTemplate(uiText.youHaveReturnedToThe, { v0: returns.length, v1: returns.length === 1 ? 'time' : 'times' })
+              : uiText.whenYouAreReadyReturn}{' '}
+            <Link to="/learners-guide/kurudi" className="guide-link">{uiText.openKurudi}</Link>
           </p>
         </section>
       )}

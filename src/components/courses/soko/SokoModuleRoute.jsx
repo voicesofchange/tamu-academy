@@ -20,6 +20,12 @@ import {
 } from '@/lib/sauti-za-soko-tracks';
 import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingModule: 'Loading module',
+  checkingYourEnrollment: 'Checking your enrollment',
+};
+
 /**
  * SokoModuleRoute — the core-course module page for one Sauti za Soko
  * module, resolved from the route parameter.
@@ -46,6 +52,7 @@ export default function SokoModuleRoute({ moduleRoute }) {
 }
 
 function SokoModuleRouteInner({ moduleRoute }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-soko-sokomoduleroute', UI_TEXT);
   // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
   const { preview: isPreview } = useModulePreview();
   const { language } = useTranslation();
@@ -131,7 +138,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
   if (status === 'loading') {
     return (
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Loading module" />
+        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.loadingModule} />
       </div>
     );
   }
@@ -142,7 +149,7 @@ function SokoModuleRouteInner({ moduleRoute }) {
     if (isAuthenticated && enrollmentStatus === 'checking') {
       return (
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.checkingYourEnrollment} />
         </div>
       );
     }

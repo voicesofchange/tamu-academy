@@ -7,6 +7,54 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  courseCompletion: 'Course Completion',
+  yourProgressThroughTheCourse: 'Your Progress Through the Course',
+  thisPageReviewsYourProgress: 'This page reviews your progress across all nine modules of {v0}. When every module is complete and your capstone is submitted, your certificate of completion follows.',
+  loadingYourProgress: 'Loading your progress…',
+  status: 'Status',
+  progressUnavailable: 'Progress Unavailable',
+  weCouldNotLoadYour: 'We could not load your course progress at this time. Please try again later.',
+  returnToCourse: '← Return to the course',
+  overview: 'Overview',
+  courseProgressSummary: 'Course Progress Summary',
+  modulesCompleted: 'Modules completed',
+  of: '{v0} of {v1}',
+  courseCompletionProgress: 'Course completion progress',
+  youHaveCompletedAllNine: 'You have completed all nine modules and submitted your capstone. You are eligible to receive your certificate of completion.',
+  whatCompletionRequires: 'What completion requires',
+  modules: 'Modules',
+  moduleStatus: 'Module Status',
+  completed: 'Completed',
+  notYetCompleted: 'Not yet completed',
+  review: 'Review',
+  continue: 'Continue',
+  capstone: 'Capstone',
+  yourCapstoneProject: 'Your Capstone Project',
+  reviewYourCapstone: 'Review your capstone',
+  openTheCapstone: 'Open the capstone',
+  privacy: 'Privacy',
+  aboutYourCertificate: 'About Your Certificate',
+  yourCertificateOfCompletionWill: 'Your certificate of completion will display your verified profile name, the course title, and the completion date. It will include a unique certificate identifier.',
+  privateReflectionsActivityResponsesConcept: 'Private reflections, activity responses, concept-check answers, and your capstone plan are not included in the certificate. The certificate confirms course completion only.',
+  certificate: 'Certificate',
+  certificateOfCompletion: 'Certificate of Completion',
+  youHaveCompletedAllNine2: 'You have completed all nine modules and submitted your capstone. You are eligible to receive your certificate of completion for {v0}.',
+  viewYourCertificate: 'View Your Certificate →',
+  yourCertificateWillBeAvailable: 'Your certificate will be available once you have completed all nine modules and submitted your capstone project.',
+  courseNavigation: 'Course navigation',
+  backToModule9: '← Back to Module 9',
+  completeAllNineModules: 'Complete all nine modules.',
+  submitTheCapstoneProject: 'Submit the capstone project.',
+  theCapstoneIsOpenChoose: 'The capstone is open. Choose one option and submit your plan to complete the course.',
+  theCapstoneOpensOnceAll: 'The capstone opens once all nine modules are complete.',
+  youHaveCompletedOfModules: 'You have completed {v0} of {v1} modules. Finish the remaining steps to earn your certificate.',
+  submittedYouCanStillOpen: 'Submitted{v0}. You can still open it and revise your answers.',
+};
 
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
 const COURSE_PATH = `/courses/${COURSE.slug}`;
@@ -44,6 +92,7 @@ const completionButtonStyle = {
  * when it is available.
  */
 export default function WealthCourseCompletion() {
+  const { content: uiText } = useTranslatedContent('ui-pages-wealthcoursecompletion', UI_TEXT);
   const [state, setState] = useState({ status: 'loading', data: null });
 
   useEffect(() => {
@@ -79,31 +128,28 @@ export default function WealthCourseCompletion() {
 
       <header style={{ marginBottom: '3rem' }}>
         <div style={{ marginBottom: '1rem' }}>
-          <StatusBadge label="Course Completion" />
+          <StatusBadge label={uiText.courseCompletion} />
         </div>
         <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
-          Your Progress Through the Course
+          {uiText.yourProgressThroughTheCourse}
         </h1>
-        <p className="font-body" style={{ ...bodyText, maxWidth: '660px', margin: 0 }}>
-          This page reviews your progress across all nine modules of {COURSE.title}. When every
-          module is complete and your capstone is submitted, your certificate of completion follows.
-        </p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '660px', margin: 0 }}>{fillTemplate(uiText.thisPageReviewsYourProgress, { v0: COURSE.title })}</p>
       </header>
 
       {state.status === 'loading' && (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
           <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>Loading your progress...</p>
+          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{uiText.loadingYourProgress}</p>
         </div>
       )}
 
       {state.status === 'error' && (
-        <PageSection eyebrow="Status" heading="Progress Unavailable">
+        <PageSection eyebrow={uiText.status} heading={uiText.progressUnavailable}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            We could not load your course progress at this time. Please try again later.
+            {uiText.weCouldNotLoadYour}
           </p>
           <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={linkStyle}>
-            &larr; Return to Course
+            {uiText.returnToCourse}
           </Link>
         </PageSection>
       )}
@@ -113,31 +159,29 @@ export default function WealthCourseCompletion() {
         const percent = data.totalModules > 0 ? Math.round((data.completedCount / data.totalModules) * 100) : 0;
 
         const requirements = [
-          { kind: 'modules', label: 'Complete all nine modules.', met: data.allModulesCompleted },
-          { kind: 'capstone', label: 'Submit the capstone project.', met: data.capstone.submitted },
+          { kind: 'modules', label: uiText.completeAllNineModules, met: data.allModulesCompleted },
+          { kind: 'capstone', label: uiText.submitTheCapstoneProject, met: data.capstone.submitted },
         ];
 
         return (
           <>
-            <PageSection eyebrow="Overview" heading="Course Progress Summary">
+            <PageSection eyebrow={uiText.overview} heading={uiText.courseProgressSummary}>
               <div style={{ marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                  <span className="font-body" style={eyebrowStyle}>Modules completed</span>
-                  <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 500 }}>
-                    {data.completedCount} of {data.totalModules}
-                  </span>
+                  <span className="font-body" style={eyebrowStyle}>{uiText.modulesCompleted}</span>
+                  <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 500 }}>{fillTemplate(uiText.of, { v0: data.completedCount, v1: data.totalModules })}</span>
                 </div>
-                <div role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Course completion progress" style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label={uiText.courseCompletionProgress} style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
                   <div style={{ width: `${percent}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
                 </div>
               </div>
               <p className="font-body" style={{ ...bodyText, margin: '0 0 1.75rem' }}>
                 {data.courseCompleted
-                  ? 'You have completed all nine modules and submitted your capstone. You are eligible to receive your certificate of completion.'
-                  : `You have completed ${data.completedCount} of ${data.totalModules} modules. Finish the remaining steps to earn your certificate.`}
+                  ? uiText.youHaveCompletedAllNine
+                  : fillTemplate(uiText.youHaveCompletedOfModules, { v0: data.completedCount, v1: data.totalModules })}
               </p>
 
-              <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>What completion requires</p>
+              <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{uiText.whatCompletionRequires}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                 {requirements.map((r) => (
                   <div key={r.kind} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.8rem 1rem', border: `1px solid ${r.met ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.12)'}`, borderRadius: '4px' }}>
@@ -148,7 +192,7 @@ export default function WealthCourseCompletion() {
               </div>
             </PageSection>
 
-            <PageSection eyebrow="Modules" heading="Module Status">
+            <PageSection eyebrow={uiText.modules} heading={uiText.moduleStatus}>
               <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 {data.modules.map((m) => (
                   <li key={m.route} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', padding: '1rem 1.25rem', border: `1px solid ${m.completed ? 'rgba(232,184,91,0.3)' : 'rgba(243,234,216,0.08)'}`, borderRadius: '4px', backgroundColor: m.completed ? 'rgba(232,184,91,0.04)' : 'rgba(243,234,216,0.015)' }}>
@@ -161,74 +205,68 @@ export default function WealthCourseCompletion() {
                           {m.number}: {m.title}
                         </p>
                         <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.78rem', margin: '0.3rem 0 0' }}>
-                          {m.trackLabel} — {m.completed ? 'Completed' : 'Not yet completed'}
+                          {m.trackLabel} — {m.completed ? uiText.completed : uiText.notYetCompleted}
                         </p>
                       </div>
                     </div>
                     <Link to={`${COURSE_PATH}/${m.route}`} className="font-body tamu-nav-link" style={m.completed ? { ...linkStyle, borderColor: 'rgba(232,184,91,0.2)', color: 'rgba(232,184,91,0.6)' } : linkStyle}>
-                      {m.completed ? 'Review' : 'Continue'} &rarr;
+                      {m.completed ? uiText.review : uiText.continue} &rarr;
                     </Link>
                   </li>
                 ))}
               </ol>
             </PageSection>
 
-            <PageSection eyebrow="Capstone" heading="Your Capstone Project">
+            <PageSection eyebrow={uiText.capstone} heading={uiText.yourCapstoneProject}>
               <div style={{ padding: '1.5rem 1.75rem', border: `1px solid ${data.capstone.submitted ? 'rgba(232,184,91,0.3)' : 'rgba(243,234,216,0.12)'}`, borderRadius: '4px', background: data.capstone.submitted ? 'rgba(232,184,91,0.04)' : 'rgba(243,234,216,0.015)' }}>
                 <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
                   {data.capstone.submitted
-                    ? `Submitted${data.capstone.submittedAt ? ` on ${new Date(data.capstone.submittedAt).toLocaleDateString()}` : ''}. You can still open it and revise your answers.`
+                    ? fillTemplate(uiText.submittedYouCanStillOpen, { v0: data.capstone.submittedAt ? ` on ${new Date(data.capstone.submittedAt).toLocaleDateString()}` : '' })
                     : data.allModulesCompleted
-                      ? 'The capstone is open. Choose one option and submit your plan to complete the course.'
-                      : 'The capstone opens once all nine modules are complete.'}
+                      ? uiText.theCapstoneIsOpenChoose
+                      : uiText.theCapstoneOpensOnceAll}
                 </p>
                 <Link to={`${COURSE_PATH}/capstone`} className="font-body tamu-nav-link" style={linkStyle}>
-                  {data.capstone.submitted ? 'Review your capstone' : 'Open the capstone'} &rarr;
+                  {data.capstone.submitted ? uiText.reviewYourCapstone : uiText.openTheCapstone} &rarr;
                 </Link>
               </div>
             </PageSection>
 
-            <PageSection eyebrow="Privacy" heading="About Your Certificate">
+            <PageSection eyebrow={uiText.privacy} heading={uiText.aboutYourCertificate}>
               <div style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
                 <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem' }}>
-                  Your certificate of completion will display your verified profile name, the course
-                  title, and the completion date. It will include a unique certificate identifier.
+                  {uiText.yourCertificateOfCompletionWill}
                 </p>
                 <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.62)' }}>
-                  Private reflections, activity responses, concept-check answers, and your capstone plan
-                  are not included in the certificate. The certificate confirms course completion only.
+                  {uiText.privateReflectionsActivityResponsesConcept}
                 </p>
               </div>
             </PageSection>
 
-            <PageSection eyebrow="Certificate" heading="Certificate of Completion">
+            <PageSection eyebrow={uiText.certificate} heading={uiText.certificateOfCompletion}>
               {data.certificateEligible ? (
                 <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', textAlign: 'center' }}>
-                  <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-                    You have completed all nine modules and submitted your capstone. You are eligible to
-                    receive your certificate of completion for {COURSE.title}.
-                  </p>
+                  <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>{fillTemplate(uiText.youHaveCompletedAllNine2, { v0: COURSE.title })}</p>
                   <Link to={`${COURSE_PATH}/certificate`} style={completionButtonStyle}>
-                    View Your Certificate &rarr;
+                    {uiText.viewYourCertificate}
                   </Link>
                 </div>
               ) : (
                 <div style={{ padding: '2rem 2.25rem', border: '1px dashed rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
                   <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-                    Your certificate will be available once you have completed all nine modules and
-                    submitted your capstone project.
+                    {uiText.yourCertificateWillBeAvailable}
                   </p>
                 </div>
               )}
             </PageSection>
 
-            <nav aria-label="Course navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
+            <nav aria-label={uiText.courseNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link to={`${COURSE_PATH}/module-9`} className="font-body tamu-nav-link" style={linkStyle}>
-                  &larr; Back to Module 9
+                  {uiText.backToModule9}
                 </Link>
                 <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={linkStyle}>
-                  &larr; Return to Course
+                  {uiText.returnToCourse}
                 </Link>
               </div>
             </nav>

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  responseModeFor: 'Response mode for: {v0}',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300 };
 
@@ -79,6 +86,7 @@ export default function SokoModuleProgress({
   showCompleteButton = true,
   onChange,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-soko-sokomoduleprogress', UI_TEXT);
   const labels = useSokoLabels();
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -203,7 +211,7 @@ export default function SokoModuleProgress({
                     onChange={(e) => setReflectionMode(e.target.value)}
                     disabled={savingKey === key}
                     style={SELECT_STYLE}
-                    aria-label={`Response mode for: ${label}`}
+                    aria-label={fillTemplate(uiText.responseModeFor, { v0: label })}
                   >
                     {MODE_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>

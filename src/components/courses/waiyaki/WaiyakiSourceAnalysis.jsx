@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
 import WaiyakiEvidenceLabel from '@/components/courses/waiyaki/WaiyakiEvidenceLabel';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  strength: 'Strength',
+  weakness: 'Weakness',
+  askOfEverySource: 'Ask of every source',
+  youHaveWorkedThroughThis: 'You have worked through this source analysis.',
+  myReadingOfTheEvidence: 'My reading of the evidence',
+  whichSourceDidYouFind: 'Which source did you find more useful here, and what is it unable to tell you?',
+  whatYouWriteHereStays: 'What you write here stays on this page and is not stored on the platform. Mark this exercise complete in the completion requirements below when you have worked through it.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.82)',
@@ -19,6 +31,7 @@ const bodyText = {
  * requirements, exactly as every other Tamu Academy course does it.
  */
 export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakisourceanalysis', UI_TEXT);
   const [notes, setNotes] = useState('');
   if (!analysis) return null;
 
@@ -76,7 +89,7 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
                     marginBottom: '0.2rem',
                   }}
                 >
-                  Strength
+                  {uiText.strength}
                 </dt>
                 <dd className="font-body" style={{ ...bodyText, fontSize: '0.92rem', margin: 0 }}>
                   {lens.strength}
@@ -94,7 +107,7 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
                     marginBottom: '0.2rem',
                   }}
                 >
-                  Weakness
+                  {uiText.weakness}
                 </dt>
                 <dd className="font-body" style={{ ...bodyText, fontSize: '0.92rem', margin: 0 }}>
                   {lens.weakness}
@@ -118,7 +131,7 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
               margin: '0 0 0.9rem',
             }}
           >
-            Ask of every source
+            {uiText.askOfEverySource}
           </h3>
           <ol style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             {analysis.questions.map((item, i) => (
@@ -173,7 +186,7 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
           }}
         >
           <p className="font-body" style={{ ...bodyText, fontSize: '0.92rem', margin: 0, color: '#e8b85b' }}>
-            You have worked through this source analysis.
+            {uiText.youHaveWorkedThroughThis}
           </p>
         </div>
       ) : (
@@ -199,14 +212,14 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
                 marginBottom: '0.6rem',
               }}
             >
-              My reading of the evidence
+              {uiText.myReadingOfTheEvidence}
             </label>
             <textarea
               id="waiyaki-source-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={5}
-              placeholder="Which source did you find more useful here, and what is it unable to tell you?"
+              placeholder={uiText.whichSourceDidYouFind}
               className="font-body"
               style={{
                 width: '100%',
@@ -232,8 +245,7 @@ export default function WaiyakiSourceAnalysis({ analysis, acknowledged, canSave 
                 margin: 0,
               }}
             >
-              What you write here stays on this page and is not stored on the platform. Mark this
-              exercise complete in the completion requirements below when you have worked through it.
+              {uiText.whatYouWriteHereStays}
             </p>
           </div>
         )

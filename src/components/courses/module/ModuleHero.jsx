@@ -1,6 +1,13 @@
 import React from 'react';
 import { Clock, Layers, BarChart, BookOpen, GraduationCap, Scroll, Store, TrendingUp, Heart } from 'lucide-react';
 import StatusBadge from '@/components/page/StatusBadge';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleOf: 'Module {v0} of {v1}',
+};
 
 /**
  * ModuleHero — the Courses page's opening treatment, adapted to a single
@@ -23,6 +30,7 @@ const COURSE_IMAGES = {
 const DEFAULT_IMAGE = 'https://media.base44.com/images/public/6a3c91b4c28c3d06e2889307/43088212a_generated_88d7dc5c.jpg';
 
 export default function ModuleHero({ courseSlug, eyebrow, title, subheading, status, metaItems = [], progress }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-modulehero', UI_TEXT);
   const image = COURSE_IMAGES[courseSlug] || DEFAULT_IMAGE;
   const pct = progress && progress.total ? Math.round((progress.current / progress.total) * 100) : 0;
 
@@ -137,9 +145,7 @@ export default function ModuleHero({ courseSlug, eyebrow, title, subheading, sta
                 boxShadow: '0 0 10px rgba(217,155,55,0.28)',
               }}
             />
-            <span>
-              Module {progress.current} of {progress.total}
-            </span>
+            <span>{fillTemplate(uiText.moduleOf, { v0: progress.current, v1: progress.total })}</span>
           </div>
         )}
       </div>

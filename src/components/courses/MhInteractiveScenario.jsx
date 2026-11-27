@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  scenarioResponseOptions: 'Scenario response options',
+  selectTheSingleResponseYou: 'Select the single response you believe is best, then submit to see the approved educational feedback.',
+  responseOptions: 'Response options',
+  option: 'Option {v0}: {v1}',
+  option2: 'Option {v0}.',
+  submitting: 'Submitting…',
+  submitResponse: 'Submit response',
+  tryADifferentResponse: 'Try a different response',
+  youSelectedTheBestResponse: 'You selected the best response.',
+  aDifferentResponseIsBest: 'A different response is best.',
+  weCouldNotEvaluateYour: 'We could not evaluate your submission right now. Please try again.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -91,6 +108,7 @@ const submitButtonStyle = {
  * different choice.
  */
 export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhinteractivescenario', UI_TEXT);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState(null);
@@ -120,7 +138,7 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
       if (!data) throw new Error('No payload returned');
       setResult(data);
     } catch (err) {
-      setErrorText('We could not evaluate your submission right now. Please try again.');
+      setErrorText(uiText.weCouldNotEvaluateYour);
     } finally {
       setPending(false);
     }
@@ -161,15 +179,15 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
       </p>
 
       <fieldset
-        aria-label="Scenario response options"
+        aria-label={uiText.scenarioResponseOptions}
         style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
       >
         <legend className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
-          Select the single response you believe is best, then submit to see the approved educational feedback.
+          {uiText.selectTheSingleResponseYou}
         </legend>
         <ul
           role="radiogroup"
-          aria-label="Response options"
+          aria-label={uiText.responseOptions}
           style={{ listStyle: 'none', padding: 0, margin: 0 }}
         >
           {scenario.options.map((opt, i) => {
@@ -195,12 +213,10 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
                     disabled={locked}
                     onChange={() => handleSelect(i)}
                     style={{ marginTop: '0.18rem' }}
-                    aria-label={`Option ${i + 1}: ${opt}`}
+                    aria-label={fillTemplate(uiText.option, { v0: i + 1, v1: opt })}
                   />
                   <span style={{ flex: 1 }}>
-                    <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
-                      Option {i + 1}.
-                    </strong>{' '}
+                    <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{fillTemplate(uiText.option2, { v0: i + 1 })}</strong>{' '}
                     {opt}
                   </span>
                 </label>
@@ -221,12 +237,12 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
                 opacity: selectedIndex === null || pending ? 0.55 : 1,
               }}
             >
-              {pending ? 'Submitting…' : 'Submit response'}
+              {pending ? uiText.submitting : uiText.submitResponse}
             </button>
           )}
           {result && (
             <button type="button" onClick={handleTryAgain} style={actionButtonStyle}>
-              Try a different response
+              {uiText.tryADifferentResponse}
             </button>
           )}
           {errorText && (
@@ -264,8 +280,8 @@ export default function MhInteractiveScenario({ courseSlug, moduleSlug, scenario
             }}
           >
             {result.isCorrect
-              ? 'You selected the best response.'
-              : 'A different response is best.'}
+              ? uiText.youSelectedTheBestResponse
+              : uiText.aDifferentResponseIsBest}
           </p>
           <p
             className="font-body"

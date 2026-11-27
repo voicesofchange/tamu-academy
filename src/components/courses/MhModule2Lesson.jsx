@@ -14,6 +14,17 @@ import { GoldDivider } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  requiredEducationalDisclaimer: 'Required educational disclaimer',
+  opensInANewTab: '{v0} (opens in a new tab)',
+  privacyAndSafetyNotice: 'Privacy and safety notice',
+  privacyNotice: 'Privacy notice',
+  keepItPrivate: 'Keep it private',
+  personalDisclosureNotice: 'Personal disclosure notice',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -220,6 +231,7 @@ function renderExplanation(section, c) {
  *   key concepts carry no submission, tracking, or completion behavior.
  */
 export default function MhModule2Lesson({ course, module: mod, lesson }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule2lesson', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
@@ -283,7 +295,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.disclaimerLabel}
           </span>
@@ -317,7 +329,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
             href={lesson.coreMedia.primary.officialPageUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${lesson.coreMedia.primary.officialPageLabel} (opens in a new tab)`}
+            aria-label={fillTemplate(uiText.opensInANewTab, { v0: lesson.coreMedia.primary.officialPageLabel })}
             style={externalLinkStyle}
           >
             {lesson.coreMedia.primary.officialPageLabel}
@@ -348,7 +360,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
 
       <ModuleLessonSection id="case-study" eyebrow={c.caseStudyEyebrow} heading={lesson.caseStudy.title}>
         <div
-          aria-label="Privacy and safety notice"
+          aria-label={uiText.privacyAndSafetyNotice}
           style={{
             marginTop: '0.25rem',
             marginBottom: '1.6rem',
@@ -390,12 +402,12 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
       </ModuleLessonSection>
 
       <ModuleLessonSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
-        <div role="note" aria-label="Privacy notice" style={reflectionPrivacyBox}>
+        <div role="note" aria-label={uiText.privacyNotice} style={reflectionPrivacyBox}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {lesson.privateReflection.privacyNotice}
           </p>
         </div>
-        <div role="note" aria-label="Keep it private" style={{ ...reflectionPrivacyBox, marginTop: '1.25rem' }}>
+        <div role="note" aria-label={uiText.keepItPrivate} style={{ ...reflectionPrivacyBox, marginTop: '1.25rem' }}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {lesson.privateReflection.privateNotice}
           </p>
@@ -446,7 +458,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
         <p className="font-body" style={{ ...bodyText, marginTop: '1.25rem', marginBottom: '1.25rem' }}>
           {lesson.closing.transition}
         </p>
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.disclaimerLabel}
           </span>
@@ -511,7 +523,7 @@ export default function MhModule2Lesson({ course, module: mod, lesson }) {
             <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>
           ))}
         </ol>
-        <div style={disclaimerBoxStyle} aria-label="Personal disclosure notice">
+        <div style={disclaimerBoxStyle} aria-label={uiText.personalDisclosureNotice}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
             {c.personalDisclosure}
           </span>

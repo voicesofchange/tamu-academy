@@ -11,6 +11,12 @@ import {
 } from '@/lib/learner-profile';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  learnerProfileForm: 'Learner profile form',
+  required: '(required)',
+};
+
 const CONTENT = {
   learnerCategory: 'Learner group',
   learnerCategoryHint:
@@ -70,6 +76,7 @@ const fieldWrap = { marginBottom: '1.4rem' };
 const twoCol = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' };
 
 export default function ProfileForm({ onSaved }) {
+  const { content: uiText } = useTranslatedContent('ui-components-profile-profileform', UI_TEXT);
   const { user, checkUserAuth } = useAuth();
   const { content: c } = useTranslatedContent('profile-form', CONTENT);
   const existing = getProfile(user);
@@ -134,7 +141,7 @@ export default function ProfileForm({ onSaved }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-label="Learner profile form">
+    <form onSubmit={handleSubmit} noValidate aria-label={uiText.learnerProfileForm}>
       {status === 'saved' && (
         <div
           role="status"
@@ -158,7 +165,7 @@ export default function ProfileForm({ onSaved }) {
       <div style={fieldWrap}>
         <label htmlFor="field-learner_category" style={labelStyle}>
           {c.learnerCategory} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
-          <span className="sr-only"> (required)</span>
+          <span className="sr-only">{' '}{uiText.required}</span>
         </label>
         <select
           id="field-learner_category"
@@ -178,7 +185,7 @@ export default function ProfileForm({ onSaved }) {
       <div style={fieldWrap}>
         <label htmlFor="field-preferred_full_name" style={labelStyle}>
           {c.nameLabel} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
-          <span className="sr-only"> (required)</span>
+          <span className="sr-only">{' '}{uiText.required}</span>
         </label>
         <input
           id="field-preferred_full_name"

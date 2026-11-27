@@ -1,5 +1,11 @@
 import React from 'react';
 import { creamText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  yourAnswer: 'Your answer',
+};
 
 /**
  * FillTableField — a table with fixed row labels and fill-in cells.
@@ -7,8 +13,9 @@ import { creamText } from '@/lib/guide/styles';
  * never has to be scrolled sideways on a phone.
  */
 export default function FillTableField({ field, inputId, value, onChange }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-fields-filltablefield', UI_TEXT);
   const rows = field.rows || [];
-  const columns = field.columns && field.columns.length ? field.columns : [{ id: 'answer', label: 'Your answer' }];
+  const columns = field.columns && field.columns.length ? field.columns : [{ id: 'answer', label: uiText.yourAnswer }];
   const current = value && typeof value === 'object' ? value : {};
 
   const cellValue = (rowLabel, columnId) => {

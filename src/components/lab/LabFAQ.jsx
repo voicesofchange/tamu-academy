@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const FAQS = [
   {
@@ -36,13 +37,17 @@ const FAQS = [
   },
 ];
 
+const FAQS_TEXT = { items: FAQS };
+
 export default function LabFAQ() {
+  const { content: faqsText } = useTranslatedContent('lab-faqs', FAQS_TEXT);
+  const faqs = faqsText.items || FAQS;
   const [open, setOpen] = useState(null);
   const reduceMotion = useReducedMotion();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-      {FAQS.map((faq, i) => {
+      {faqs.map((faq, i) => {
         const isOpen = open === i;
         return (
           <div key={i} style={{ border: '1px solid rgba(232,184,91,0.13)', borderRadius: '4px', overflow: 'hidden', backgroundColor: 'rgba(243,234,216,0.015)' }}>

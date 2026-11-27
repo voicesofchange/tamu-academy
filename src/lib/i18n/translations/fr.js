@@ -122,7 +122,7 @@ export default {
       'Écoutez les apprenants qui ont suivi nos cours et partagez votre propre expérience.',
     submitHeading: 'Partagez votre expérience',
     submitIntro:
-      "Votre témoignage aide d'autres personnes à découvrir la valeur de notre communauté d'apprentissage. Les contributions sont examinées avant d'être publiées sur le site.",
+      "Votre témoignage aide d'autres personnes à découvrir la valeur de notre communauté d'apprentissage. Il apparaît sur cette page dès que vous l'envoyez.",
     signInPrompt: 'Connectez-vous pour partager votre témoignage.',
     featuredHeading: 'Témoignages à la une',
     featuredEmpty: 'Aucun témoignage pour le moment. Soyez parmi les premiers à partager votre expérience !',

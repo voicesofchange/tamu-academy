@@ -2,6 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { darkText } from '@/lib/guide/styles';
 import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  safariYaUtu: '← Safari ya Utu',
+  kiswahili: '{v0} · Kiswahili',
+};
 
 /**
  * SectionBanner — the gold-to-amber block that opens every section, with the
@@ -9,6 +17,7 @@ import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
  * section proverb, and the short introduction.
  */
 export default function SectionBanner({ section }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-sectionbanner', UI_TEXT);
   const { ui } = useGuideStrings();
   return (
     <header style={{ marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
@@ -17,7 +26,7 @@ export default function SectionBanner({ section }) {
         className="font-guide-body"
         style={{ ...darkText.eyebrow, textDecoration: 'none', display: 'inline-block', marginBottom: '1rem' }}
       >
-        &larr; Safari ya Utu
+        {uiText.safariYaUtu}
       </Link>
 
       <div
@@ -36,9 +45,7 @@ export default function SectionBanner({ section }) {
             <h1 className="font-guide-heading" style={{ fontSize: 'clamp(1.9rem, 5vw, 2.9rem)', fontWeight: 600, lineHeight: 1.05, margin: '0.45rem 0 0.35rem', color: '#24150f' }}>
               {section.english}
             </h1>
-            <p className="font-guide-body" style={{ fontSize: '0.95rem', fontWeight: 400, margin: 0, color: 'rgba(36,21,15,0.82)' }}>
-              {section.swahili} · Kiswahili
-            </p>
+            <p className="font-guide-body" style={{ fontSize: '0.95rem', fontWeight: 400, margin: 0, color: 'rgba(36,21,15,0.82)' }}>{fillTemplate(uiText.kiswahili, { v0: section.swahili })}</p>
           </div>
           {section.number && (
             <span

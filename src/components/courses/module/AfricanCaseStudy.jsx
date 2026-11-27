@@ -1,4 +1,14 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  dimension: 'Dimension',
+  whatTheEvidenceShows: 'What the evidence shows',
+  keyTakeaways: 'Key Takeaways',
+  sourcesForThisCaseStudy: 'Sources for this case study: {v0}.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -18,6 +28,7 @@ const bodyText = {
  *                      comparison: [{ dimension, narrative }], takeaways: [], sources: [] }
  */
 export default function AfricanCaseStudy({ caseStudy }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-africancasestudy', UI_TEXT);
   if (!caseStudy) return null;
   const {
     title,
@@ -106,7 +117,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
                     fontWeight: 500,
                   }}
                 >
-                  Dimension
+                  {uiText.dimension}
                 </th>
                 <th
                   style={{
@@ -117,7 +128,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
                     fontWeight: 400,
                   }}
                 >
-                  What the evidence shows
+                  {uiText.whatTheEvidenceShows}
                 </th>
               </tr>
             </thead>
@@ -174,7 +185,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
               marginBottom: '0.65rem',
             }}
           >
-            Key Takeaways
+            {uiText.keyTakeaways}
           </span>
           <ul style={{ listStyle: 'disc', margin: 0, paddingLeft: '1.2rem' }}>
             {takeaways.map((t, i) => (
@@ -201,9 +212,7 @@ export default function AfricanCaseStudy({ caseStudy }) {
             marginTop: '1rem',
             marginBottom: 0,
           }}
-        >
-          Sources for this case study: {sources.join('; ')}.
-        </p>
+        >{fillTemplate(uiText.sourcesForThisCaseStudy, { v0: sources.join('; ') })}</p>
       )}
     </div>
   );

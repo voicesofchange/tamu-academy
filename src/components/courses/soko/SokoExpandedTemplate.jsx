@@ -15,6 +15,12 @@ import ModuleHero from '@/components/courses/module/ModuleHero';
 import CoursePlayer from '@/components/courses/player/CoursePlayer';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  nextModule: 'Next module',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -68,13 +74,14 @@ export default function SokoExpandedTemplate({
   prevPath = null,
   nextModule = null,
   nextPath = null,
-  nextLabel = 'Next module',
+  nextLabel = uiText.nextModule,
   canSave = false,
   facilitatorSlot = null,
   onActivitySaved,
   player = null,
   onProgressChange,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-soko-sokoexpandedtemplate', UI_TEXT);
   const labels = useSokoLabels();
   const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
   const coursePath = `/courses/${courseSlug}`;

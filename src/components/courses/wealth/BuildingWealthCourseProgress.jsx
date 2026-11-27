@@ -3,6 +3,27 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import StartCourseButton from '@/components/courses/StartCourseButton';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingYourProgress: 'Loading your progress…',
+  startTheCourseToTrack: 'Start the course to track your progress here.',
+  nineModulesThreeTracksAnd: 'Nine modules, three tracks and one capstone. Begin with the shared core, then take the pathway that fits your goals — or both.',
+  modulesCompleted: 'Modules completed',
+  of: '{v0} of {v1}',
+  courseCompletionProgress: 'Course completion progress',
+  allNineModulesAreComplete: 'All nine modules are complete and your capstone is submitted.',
+  continue: 'Continue →',
+  reviewYourCapstone: 'Review your capstone',
+  yourCapstone: 'Your capstone',
+  courseProgress: 'Course progress →',
+  yourPathwayFocus: 'Your pathway focus',
+  chooseThePathwayYouAre: 'Choose the pathway you are focusing on, or take both. This frames your study order and never locks a module away.',
+  yourCapstoneProjectIsNext: 'Your capstone project is next.',
+  yourNextModuleIs: 'Your next module is {v0}: {v1}.',
+};
 
 const COURSE_SLUG = BUILDING_WEALTH_TOGETHER_COURSE.slug;
 
@@ -52,7 +73,12 @@ const FOCUS_OPTIONS = [
  * their guidance, and never locks a module away. All nine modules, and the
  * capstone, are what complete the course.
  */
+// Pathway labels, by id, in the reader's language; the saved ids stay as they are.
+const FOCUS_TEXT = Object.fromEntries(FOCUS_OPTIONS.map(({ id, label }) => [id, label]));
+
 export default function BuildingWealthCourseProgress() {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-buildingwealthcourseprogress', UI_TEXT);
+  const { content: focusText } = useTranslatedContent('wealth-focus-options', FOCUS_TEXT);
   const [state, setState] = useState({ status: 'loading', data: null });
   const [saving, setSaving] = useState(false);
 
@@ -89,7 +115,7 @@ export default function BuildingWealthCourseProgress() {
     return (
       <div style={{ padding: '1.5rem 0' }}>
         <div style={{ width: '1.5rem', height: '1.5rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-        <p className="font-body" style={{ ...bodyText, marginTop: '0.85rem' }}>Loading your progress...</p>
+        <p className="font-body" style={{ ...bodyText, marginTop: '0.85rem' }}>{uiText.loadingYourProgress}</p>
       </div>
     );
   }
@@ -97,7 +123,7 @@ export default function BuildingWealthCourseProgress() {
   if (state.status === 'error' || !state.data) {
     return (
       <p className="font-body" style={{ ...bodyText }}>
-        Start the course to track your progress here.
+        {uiText.startTheCourseToTrack}
       </p>
     );
   }
@@ -108,8 +134,7 @@ export default function BuildingWealthCourseProgress() {
     return (
       <div>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-          Nine modules, three tracks and one capstone. Begin with the shared core, then take the
-          pathway that fits your goals — or both.
+          {uiText.nineModulesThreeTracksAnd}
         </p>
         <StartCourseButton courseSlug={COURSE_SLUG} />
       </div>
@@ -124,45 +149,42 @@ export default function BuildingWealthCourseProgress() {
       <div style={{ marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Modules completed
+            {uiText.modulesCompleted}
           </span>
-          <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 500 }}>
-            {data.completedCount} of {data.totalModules}
-          </span>
+          <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 500 }}>{fillTemplate(uiText.of, { v0: data.completedCount, v1: data.totalModules })}</span>
         </div>
-        <div role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Course completion progress" style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
+        <div role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label={uiText.courseCompletionProgress} style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
           <div style={{ width: `${percent}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
         </div>
       </div>
 
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
         {data.courseCompleted
-          ? 'All nine modules are complete and your capstone is submitted.'
+          ? uiText.allNineModulesAreComplete
           : nextModule
-            ? `Your next module is ${nextModule.number}: ${nextModule.title}.`
-            : 'Your capstone project is next.'}
+            ? fillTemplate(uiText.yourNextModuleIs, { v0: nextModule.number, v1: nextModule.title })
+            : uiText.yourCapstoneProjectIsNext}
       </p>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2rem' }}>
         {nextModule && (
           <Link to={`/courses/${COURSE_SLUG}/${nextModule.route}`} style={linkStyle}>
-            Continue &rarr;
+            {uiText.continue}
           </Link>
         )}
         <Link to={`/courses/${COURSE_SLUG}/capstone`} style={linkStyle}>
-          {data.capstone && data.capstone.submitted ? 'Review your capstone' : 'Your capstone'} &rarr;
+          {data.capstone && data.capstone.submitted ? uiText.reviewYourCapstone : uiText.yourCapstone} &rarr;
         </Link>
         <Link to={`/courses/${COURSE_SLUG}/completion`} style={linkStyle}>
-          Course progress &rarr;
+          {uiText.courseProgress}
         </Link>
       </div>
 
       <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.6rem' }}>
-        Your pathway focus
+        {uiText.yourPathwayFocus}
       </span>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>
-        Choose the pathway you are focusing on, or take both. This frames your study order and never
-        locks a module away.
+        {uiText.chooseThePathwayYouAre}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
         {FOCUS_OPTIONS.map((option) => (
@@ -174,7 +196,7 @@ export default function BuildingWealthCourseProgress() {
             aria-pressed={data.pathway === option.id}
             style={{ ...focusButtonStyle(data.pathway === option.id), opacity: saving ? 0.6 : 1 }}
           >
-            {option.label}
+            {focusText[option.id] || option.label}
           </button>
         ))}
       </div>

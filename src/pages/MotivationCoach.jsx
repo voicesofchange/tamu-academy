@@ -2,8 +2,17 @@ import React from 'react';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import MotivationChat from '@/components/agent/MotivationChat';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  learnerSupport: 'Learner Support',
+  motivationCoach: 'Motivation Coach',
+  everyLearnerStallsSometimesYour: 'Every learner stalls sometimes. Your coach looks at where you are in your course, celebrates how far you have come, and helps you take the next step — without guilt, just encouragement.',
+};
 
 export default function MotivationCoach() {
+  const { content: uiText } = useTranslatedContent('ui-pages-motivationcoach', UI_TEXT);
   return (
     <>
       <PageMeta
@@ -13,13 +22,13 @@ export default function MotivationCoach() {
       />
       <PageLayout>
         <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.75rem' }}>
-          Learner Support
+          {uiText.learnerSupport}
         </span>
         <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}>
-          Motivation Coach
+          {uiText.motivationCoach}
         </h1>
         <p className="font-body" style={{ color: 'rgba(243,234,216,0.7)', fontSize: '1rem', lineHeight: 1.6, maxWidth: '620px', marginBottom: '2rem' }}>
-          Every learner stalls sometimes. Your coach looks at where you are in your course, celebrates how far you have come, and helps you take the next step — without guilt, just encouragement.
+          {uiText.everyLearnerStallsSometimesYour}
         </p>
         <MotivationChat />
       </PageLayout>

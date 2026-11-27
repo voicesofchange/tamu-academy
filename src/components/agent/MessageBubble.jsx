@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { ChevronDown, ChevronUp, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  parameters: 'Parameters:',
+  result: 'Result:',
+};
 
 const USER_BUBBLE = {
   background: 'rgba(232,184,91,0.15)',
@@ -39,6 +46,7 @@ function statusInfo(status, results) {
 }
 
 function ToolCallDisplay({ toolCall }) {
+  const { content: uiText } = useTranslatedContent('ui-components-agent-messagebubble', UI_TEXT);
   const [expanded, setExpanded] = useState(false);
   const status = statusInfo(toolCall.status, toolCall.results);
   const hide = toolCall.display_projection?.hide_details && toolCall.display_projection?.details_redacted;
@@ -69,13 +77,13 @@ function ToolCallDisplay({ toolCall }) {
         <div className="mt-1.5 space-y-1.5">
           {args && (
             <div>
-              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>Parameters:</div>
+              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>{uiText.parameters}</div>
               <pre className="whitespace-pre-wrap break-words" style={{ background: 'rgba(0,0,0,0.25)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.7rem' }}>{String(args)}</pre>
             </div>
           )}
           {results && (
             <div>
-              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>Result:</div>
+              <div style={{ color: 'rgba(243,234,216,0.4)', marginBottom: '0.2rem' }}>{uiText.result}</div>
               <pre className="whitespace-pre-wrap break-words" style={{ background: 'rgba(0,0,0,0.25)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.7rem' }}>{String(results)}</pre>
             </div>
           )}

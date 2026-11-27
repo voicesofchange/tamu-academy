@@ -14,6 +14,12 @@ import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFoot
 import { economicsModuleSteps, ECONOMICS_KEY_LABEL_KEYS } from '@/components/courses/module/economics-player-steps';
 import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingModule: 'Loading module',
+  checkingYourEnrollment: 'Checking your enrollment',
+};
+
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
 /**
@@ -53,6 +59,7 @@ export default function ModuleRoutePage({ moduleRoute }) {
 }
 
 function EconomicsModuleRoute({ moduleRoute }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-moduleroutepage', UI_TEXT);
   // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
   const { preview } = useModulePreview();
   const { language } = useTranslation();
@@ -128,7 +135,7 @@ function EconomicsModuleRoute({ moduleRoute }) {
       >
         <div
           className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin"
-          aria-label="Loading module"
+          aria-label={uiText.loadingModule}
         />
       </div>
     );
@@ -140,7 +147,7 @@ function EconomicsModuleRoute({ moduleRoute }) {
     if (isAuthenticated && enrollmentStatus === 'checking') {
       return (
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.checkingYourEnrollment} />
         </div>
       );
     }

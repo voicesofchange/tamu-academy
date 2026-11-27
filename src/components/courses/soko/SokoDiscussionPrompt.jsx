@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300 };
 
@@ -44,7 +45,11 @@ const LANGUAGES = [
  * unless the learner explicitly consents to sharing it with other
  * learners.
  */
+// Option labels only; the stored values stay as they are.
+const LANGUAGE_TEXT = { labels: LANGUAGES.map((l) => l.label) };
+
 export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, canSave }) {
+  const { content: languageText } = useTranslatedContent('soko-discussion-languages', LANGUAGE_TEXT);
   const labels = useSokoLabels();
   const [response, setResponse] = useState('');
   const [language, setLanguage] = useState('sw');
@@ -156,8 +161,8 @@ export default function SokoDiscussionPrompt({ courseSlug, moduleRoute, prompt, 
                 disabled={!canSave || saving}
                 style={{ padding: '0.35rem 0.6rem', background: 'rgba(243,234,216,0.02)', color: 'rgba(243,234,216,0.85)', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '2px', fontSize: '0.8rem', fontFamily: 'inherit' }}
               >
-                {LANGUAGES.map((l) => (
-                  <option key={l.value} value={l.value}>{l.label}</option>
+                {LANGUAGES.map((l, i) => (
+                  <option key={l.value} value={l.value}>{(languageText.labels && languageText.labels[i]) || l.label}</option>
                 ))}
               </select>
             </label>

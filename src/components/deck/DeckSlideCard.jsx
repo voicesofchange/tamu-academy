@@ -1,5 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  speakerNotes: 'Speaker notes',
+  suggestedVisual: 'Suggested visual',
+  verifyFirst: 'Verify first',
+};
 
 const goldTick = {
   flex: 'none',
@@ -26,6 +34,7 @@ const metaLabel = {
  * and anything to confirm against the live platform first.
  */
 export default function DeckSlideCard({ slide, showNotes }) {
+  const { content: uiText } = useTranslatedContent('ui-components-deck-deckslidecard', UI_TEXT);
   return (
     <motion.article
       initial={{ opacity: 0, y: 22 }}
@@ -103,7 +112,7 @@ export default function DeckSlideCard({ slide, showNotes }) {
           className="deck-presenter-grid"
         >
           <div>
-            <span className="font-body" style={metaLabel}>Speaker notes</span>
+            <span className="font-body" style={metaLabel}>{uiText.speakerNotes}</span>
             {slide.notes.map((note) => (
               <p key={note} className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 0.9rem' }}>
                 {note}
@@ -112,14 +121,14 @@ export default function DeckSlideCard({ slide, showNotes }) {
           </div>
 
           <div>
-            <span className="font-body" style={metaLabel}>Suggested visual</span>
+            <span className="font-body" style={metaLabel}>{uiText.suggestedVisual}</span>
             <p className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.9rem', lineHeight: 1.8, fontWeight: 300, margin: '0 0 1.2rem' }}>
               {slide.visual}
             </p>
 
             {slide.verify && (
               <div style={{ borderLeft: '2px solid #d99b37', paddingLeft: '0.9rem' }}>
-                <span className="font-body" style={{ ...metaLabel, color: '#e8b85b', marginBottom: '0.35rem' }}>Verify first</span>
+                <span className="font-body" style={{ ...metaLabel, color: '#e8b85b', marginBottom: '0.35rem' }}>{uiText.verifyFirst}</span>
                 <p className="font-body" style={{ color: 'rgba(232,184,91,0.9)', fontSize: '0.84rem', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
                   {slide.verify}
                 </p>

@@ -2,6 +2,29 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingYourProgress: 'Loading your progress…',
+  enrollToBeginTheFive: 'Enroll to begin the five modules, take the final assessment and submit your written project.',
+  enrolling: 'Enrolling…',
+  enrollInThisCourse: 'Enroll in this course',
+  yourReflectionsStayPrivateNo: 'Your reflections stay private. No personal reflections or activity responses are stored on the platform.',
+  signInOrCreateAn: 'Sign in or create an account to track your progress through the five modules, the assessment and your written project.',
+  overallProgress: 'Overall progress',
+  ofModules: '{v0} of {v1} modules',
+  courseCompletionProgress: 'Course completion progress',
+  reviewCourseCompletion: 'Review course completion',
+  viewCertificate: 'View Certificate →',
+  youHaveCompletedAllFive: 'You have completed all five modules, passed the final assessment and submitted your written project. Your certificate of completion is available.',
+  allFiveModulesAreComplete: 'All five modules are complete. Two steps remain in the completion room:',
+  openTheCompletionRoom: 'Open the completion room →',
+  completeAllFiveModulesTo: 'Complete all five modules to reach the final assessment and your written project.',
+  enrollmentIsNotOpenFor: 'Enrollment is not open for this course right now.',
+  resumeAt: 'Resume at {v0}',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -54,6 +77,7 @@ const dashedBox = {
  * five modules, the assessment and the written project are all done.
  */
 export default function WaiyakiCourseProgress() {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakicourseprogress', UI_TEXT);
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -91,7 +115,7 @@ export default function WaiyakiCourseProgress() {
       });
       await fetchProgress();
     } catch (err) {
-      setEnrollError('Enrollment is not open for this course right now.');
+      setEnrollError(uiText.enrollmentIsNotOpenFor);
     } finally {
       setEnrolling(false);
     }
@@ -101,7 +125,7 @@ export default function WaiyakiCourseProgress() {
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
-          Loading your progress...
+          {uiText.loadingYourProgress}
         </p>
       </div>
     );
@@ -112,7 +136,7 @@ export default function WaiyakiCourseProgress() {
       <div aria-live="polite" role="status">
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-            Enroll to begin the five modules, take the final assessment and submit your written project.
+            {uiText.enrollToBeginTheFive}
           </p>
           <button
             type="button"
@@ -121,7 +145,7 @@ export default function WaiyakiCourseProgress() {
             className="font-body"
             style={{ ...primaryButtonStyle, opacity: enrolling ? 0.6 : 1, cursor: enrolling ? 'wait' : 'pointer' }}
           >
-            {enrolling ? 'Enrolling...' : 'Enroll in this course'}
+            {enrolling ? uiText.enrolling : uiText.enrollInThisCourse}
           </button>
           {enrollError && (
             <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>
@@ -129,7 +153,7 @@ export default function WaiyakiCourseProgress() {
             </p>
           )}
           <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: '1rem 0 0' }}>
-            Your reflections stay private. No personal reflections or activity responses are stored on the platform.
+            {uiText.yourReflectionsStayPrivateNo}
           </p>
         </div>
       </div>
@@ -140,7 +164,7 @@ export default function WaiyakiCourseProgress() {
     return (
       <div style={dashedBox}>
         <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.55)' }}>
-          Sign in or create an account to track your progress through the five modules, the assessment and your written project.
+          {uiText.signInOrCreateAn}
         </p>
       </div>
     );
@@ -162,18 +186,16 @@ export default function WaiyakiCourseProgress() {
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600 }}>
-            Overall progress
+            {uiText.overallProgress}
           </span>
-          <span className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500 }}>
-            {completedCount} of {totalModules} modules
-          </span>
+          <span className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 500 }}>{fillTemplate(uiText.ofModules, { v0: completedCount, v1: totalModules })}</span>
         </div>
         <div
           role="progressbar"
           aria-valuenow={progressPct}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Course completion progress"
+          aria-label={uiText.courseCompletionProgress}
           style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
         >
           <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
@@ -182,11 +204,11 @@ export default function WaiyakiCourseProgress() {
 
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
         <Link to={resumeTarget} className="font-body" style={primaryButtonStyle}>
-          {firstIncomplete ? `Resume at ${firstIncomplete.number}` : 'Review course completion'} &rarr;
+          {firstIncomplete ? fillTemplate(uiText.resumeAt, { v0: firstIncomplete.number }) : uiText.reviewCourseCompletion} &rarr;
         </Link>
         {progress.certificateEligible && (
           <Link to={`/courses/${WAIYAKI_COURSE_SLUG}/certificate`} className="font-body" style={linkButtonStyle}>
-            View Certificate &rarr;
+            {uiText.viewCertificate}
           </Link>
         )}
       </div>
@@ -194,13 +216,13 @@ export default function WaiyakiCourseProgress() {
       {progress.certificateEligible ? (
         <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            You have completed all five modules, passed the final assessment and submitted your written project. Your certificate of completion is available.
+            {uiText.youHaveCompletedAllFive}
           </p>
         </div>
       ) : progress.modulesComplete ? (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 0.9rem', fontSize: '0.9rem' }}>
-            All five modules are complete. Two steps remain in the completion room:
+            {uiText.allFiveModulesAreComplete}
           </p>
           <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
             {progress.requirements.map((r) => (
@@ -212,14 +234,14 @@ export default function WaiyakiCourseProgress() {
           </ul>
           <div style={{ marginTop: '1.1rem' }}>
             <Link to={`/courses/${WAIYAKI_COURSE_SLUG}/completion`} className="font-body" style={linkButtonStyle}>
-              Open the completion room &rarr;
+              {uiText.openTheCompletionRoom}
             </Link>
           </div>
         </div>
       ) : (
         <div style={dashedBox}>
           <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem', fontSize: '0.88rem' }}>
-            Complete all five modules to reach the final assessment and your written project.
+            {uiText.completeAllFiveModulesTo}
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {progress.incompleteModules.map((m) => (
@@ -245,7 +267,7 @@ export default function WaiyakiCourseProgress() {
       )}
 
       <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)', margin: '0.75rem 0 0' }}>
-        Your reflections stay private. No personal reflections or activity responses are stored on the platform.
+        {uiText.yourReflectionsStayPrivateNo}
       </p>
     </div>
   );

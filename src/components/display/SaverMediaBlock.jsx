@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadRecording: 'Load recording',
+};
 
 /**
  * SaverMediaBlock — how a recording appears in Data-Saver mode.
@@ -14,11 +20,12 @@ export default function SaverMediaBlock({
   title,
   meta,
   note,
-  loadLabel = 'Load recording',
+  loadLabel = uiText.loadRecording,
   alternativeHref,
   alternativeLabel,
   children,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-display-savermediablock', UI_TEXT);
   const [loaded, setLoaded] = useState(false);
 
   if (loaded) return <>{children}</>;

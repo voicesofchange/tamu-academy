@@ -118,7 +118,7 @@ export default {
     heading: 'Hadithi na Mapitio ya Wanafunzi',
     intro: 'Sikia kutoka kwa wanafunzi walioshiriki katika kozi zetu, na shiriki uzoefu wako.',
     submitHeading: 'Shiriki Uzoefu Wako',
-    submitIntro: 'Hadithi yako inasaidia wengine kugundua thamani ya jamii yetu ya kujifunza. Uwasilishaji unakaguliwa kabla ya kuonekana kwenye tovuti.',
+    submitIntro: 'Hadithi yako inasaidia wengine kugundua thamani ya jamii yetu ya kujifunza. Inaonekana kwenye ukurasa huu mara tu unapoiwasilisha.',
     signInPrompt: 'Ingia kushiriki hadithi yako.',
     featuredHeading: 'Hadithi Zilizochaguliwa',
     featuredEmpty: 'Hakuna hadithi bado. Kuwa wa kwanza kushiriki uzoefu wako!',

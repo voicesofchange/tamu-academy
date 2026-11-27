@@ -2,6 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HubDownloadButton from '@/components/hub/HubDownloadButton';
 import { courseObjectives, downloadTextFile, objectivesText } from '@/lib/learning-hub';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  downloadObjectives: 'Download objectives',
+  plainTextFileReadyFor: 'Plain-text file, ready for offline study.',
+  whoItIsFor: 'Who it is for',
+  whatYouWillBeAble: 'What you will be able to do',
+  learningPath: 'Learning path',
+  openTheCourse: 'Open the course →',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.8, fontWeight: 300 };
 
@@ -26,6 +37,7 @@ const listItem = { ...bodyText, display: 'flex', gap: '0.6rem', marginBottom: '0
  * a plain-text file for offline use.
  */
 export default function HubObjectives({ courseSlugs }) {
+  const { content: uiText } = useTranslatedContent('ui-components-hub-hubobjectives', UI_TEXT);
   const courses = courseObjectives().filter((course) => courseSlugs.includes(course.slug));
 
   return (
@@ -33,10 +45,10 @@ export default function HubObjectives({ courseSlugs }) {
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
         <HubDownloadButton
           onClick={() => downloadTextFile('tamu-academy-course-objectives.txt', objectivesText())}
-          label="Download objectives"
+          label={uiText.downloadObjectives}
         />
         <span className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.78rem', fontWeight: 300, alignSelf: 'center' }}>
-          Plain-text file, ready for offline study.
+          {uiText.plainTextFileReadyFor}
         </span>
       </div>
 
@@ -53,14 +65,14 @@ export default function HubObjectives({ courseSlugs }) {
 
           {course.whoThisCourseIsFor && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <span className="font-body" style={groupLabel}>Who it is for</span>
+              <span className="font-body" style={groupLabel}>{uiText.whoItIsFor}</span>
               <p className="font-body" style={{ ...bodyText, margin: 0 }}>{course.whoThisCourseIsFor}</p>
             </div>
           )}
 
           {course.learningOutcomes.length > 0 && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <span className="font-body" style={groupLabel}>What you will be able to do</span>
+              <span className="font-body" style={groupLabel}>{uiText.whatYouWillBeAble}</span>
               <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
                 {course.learningOutcomes.map((outcome) => (
                   <li key={outcome} className="font-body" style={listItem}>
@@ -74,7 +86,7 @@ export default function HubObjectives({ courseSlugs }) {
 
           {course.learningPath.length > 0 && (
             <div>
-              <span className="font-body" style={groupLabel}>Learning path</span>
+              <span className="font-body" style={groupLabel}>{uiText.learningPath}</span>
               <p className="font-body" style={{ ...bodyText, margin: 0 }}>{course.learningPath.join('  ·  ')}</p>
             </div>
           )}
@@ -84,7 +96,7 @@ export default function HubObjectives({ courseSlugs }) {
             className="font-body"
             style={{ display: 'inline-block', marginTop: '1.25rem', color: '#e8b85b', fontSize: '0.78rem', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 500, textDecoration: 'none' }}
           >
-            Open the course &rarr;
+            {uiText.openTheCourse}
           </Link>
         </article>
       ))}

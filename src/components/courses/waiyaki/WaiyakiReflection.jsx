@@ -1,4 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  youHaveRespondedToThis: 'You have responded to this module’s reflection prompts.',
+  myReflection: 'My reflection',
+  writeYourThinkingHereIt: 'Write your thinking here. It stays on this page.',
+  yourReflectionIsPrivateWhat: 'Your reflection is private. What you write is not stored on the platform and is never shared or graded. Mark this exercise complete in the completion requirements below.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.82)',
@@ -16,6 +25,7 @@ const bodyText = {
  * completion requirements, exactly as every other Tamu Academy course does it.
  */
 export default function WaiyakiReflection({ reflection, acknowledged, canSave }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakireflection', UI_TEXT);
   const [notes, setNotes] = useState('');
   if (!reflection || !reflection.groups || reflection.groups.length === 0) return null;
 
@@ -56,7 +66,7 @@ export default function WaiyakiReflection({ reflection, acknowledged, canSave })
           }}
         >
           <p className="font-body" style={{ ...bodyText, fontSize: '0.92rem', margin: 0, color: '#e8b85b' }}>
-            You have responded to this module&rsquo;s reflection prompts.
+            {uiText.youHaveRespondedToThis}
           </p>
         </div>
       ) : (
@@ -82,14 +92,14 @@ export default function WaiyakiReflection({ reflection, acknowledged, canSave })
                 marginBottom: '0.6rem',
               }}
             >
-              My reflection
+              {uiText.myReflection}
             </label>
             <textarea
               id="waiyaki-reflection-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={6}
-              placeholder="Write your thinking here. It stays on this page."
+              placeholder={uiText.writeYourThinkingHereIt}
               className="font-body"
               style={{
                 width: '100%',
@@ -115,8 +125,7 @@ export default function WaiyakiReflection({ reflection, acknowledged, canSave })
                 margin: 0,
               }}
             >
-              Your reflection is private. What you write is not stored on the platform and is never
-              shared or graded. Mark this exercise complete in the completion requirements below.
+              {uiText.yourReflectionIsPrivateWhat}
             </p>
           </div>
         )

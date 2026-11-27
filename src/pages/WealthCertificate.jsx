@@ -6,6 +6,23 @@ import PageLayout from '@/components/page/PageLayout';
 import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
 import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingYourCertificate: 'Loading your certificate…',
+  backToCourseProgress: '← Back to course progress',
+  printCertificate: 'Print Certificate',
+  downloadPdf: 'Download PDF',
+  administratorPreviewNoCertificateRecord: 'Administrator Preview — No certificate record created',
+  returnToCourse: '← Return to the course',
+  certificateNotYetAvailable: 'Certificate Not Yet Available',
+  profileNameRequired: 'Profile Name Required',
+  certificateUnavailable: 'Certificate Unavailable',
+  yourCertificateOfCompletionWill: 'Your certificate of completion will be available once you have completed all nine modules and submitted your capstone project.',
+  yourCertificateUsesYourVerified: 'Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.',
+  weCouldNotLoadYour: 'We could not load your certificate at this time. Please try again later.',
+};
 
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
 const COURSE_PATH = `/courses/${COURSE.slug}`;
@@ -37,6 +54,7 @@ const actionButtonStyle = {
  * complete and the capstone is submitted, and it is idempotent thereafter.
  */
 export default function WealthCertificate() {
+  const { content: uiText } = useTranslatedContent('ui-pages-wealthcertificate', UI_TEXT);
   const [state, setState] = useState({ status: 'loading', data: null, notEligible: false, needsProfile: false });
 
   useEffect(() => {
@@ -71,11 +89,11 @@ export default function WealthCertificate() {
 
   if (state.notEligible || state.needsProfile || state.status === 'loading' || state.status === 'error') {
     const heading = state.notEligible
-      ? 'Certificate Not Yet Available'
+      ? uiText.certificateNotYetAvailable
       : state.needsProfile
-        ? 'Profile Name Required'
+        ? uiText.profileNameRequired
         : state.status === 'error'
-          ? 'Certificate Unavailable'
+          ? uiText.certificateUnavailable
           : null;
 
     if (!heading) {
@@ -84,17 +102,17 @@ export default function WealthCertificate() {
           <PageMeta title="Certificate | Tamu Academy" path={`${COURSE_PATH}/certificate`} noindex />
           <div style={{ padding: '3rem 0', textAlign: 'center' }}>
             <div style={{ display: 'inline-block', width: '2rem', height: '2rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-            <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>Loading your certificate...</p>
+            <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{uiText.loadingYourCertificate}</p>
           </div>
         </PageLayout>
       );
     }
 
     const message = state.notEligible
-      ? 'Your certificate of completion will be available once you have completed all nine modules and submitted your capstone project.'
+      ? uiText.yourCertificateOfCompletionWill
       : state.needsProfile
-        ? 'Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.'
-        : 'We could not load your certificate at this time. Please try again later.';
+        ? uiText.yourCertificateUsesYourVerified
+        : uiText.weCouldNotLoadYour;
 
     return (
       <PageLayout>
@@ -105,7 +123,7 @@ export default function WealthCertificate() {
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '520px', margin: '0 auto 2rem' }}>{message}</p>
           <Link to={COMPLETION_PATH} className="font-body tamu-nav-link" style={actionButtonStyle}>
-            &larr; Back to Course Progress
+            {uiText.backToCourseProgress}
           </Link>
         </div>
       </PageLayout>
@@ -121,10 +139,10 @@ export default function WealthCertificate() {
 
       <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
         <Link to={COMPLETION_PATH} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Back to Course Progress
+          {uiText.backToCourseProgress}
         </Link>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button onClick={() => window.print()} style={actionButtonStyle}>Print Certificate</button>
+          <button onClick={() => window.print()} style={actionButtonStyle}>{uiText.printCertificate}</button>
           <button
             onClick={() =>
               generateTamuCertificatePDF({
@@ -138,7 +156,7 @@ export default function WealthCertificate() {
             }
             style={actionButtonStyle}
           >
-            Download PDF
+            {uiText.downloadPdf}
           </button>
         </div>
       </div>
@@ -146,7 +164,7 @@ export default function WealthCertificate() {
       {isPreview && (
         <div className="no-print" style={{ padding: '0.75rem 1.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.06)', marginBottom: '1.5rem', textAlign: 'center' }}>
           <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
-            Administrator Preview — No certificate record created
+            {uiText.administratorPreviewNoCertificateRecord}
           </span>
         </div>
       )}
@@ -161,7 +179,7 @@ export default function WealthCertificate() {
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Return to Course
+          {uiText.returnToCourse}
         </Link>
       </div>
     </PageLayout>

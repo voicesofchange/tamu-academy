@@ -1,6 +1,20 @@
 import React from 'react';
 import { KIOO_STATEMENTS } from '@/lib/guide/sections';
 import { creamText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  overview: 'Overview',
+  theMirrorInAggregate: 'The mirror, in aggregate',
+  averageRatingPerStatement: 'Average rating per statement',
+  averagesOnlyOnThe1: 'Averages only, on the 1–5 frequency scale. Individual answers are never shown, and no learner is identified.',
+  statement: 'Statement',
+  first: 'First',
+  return: 'Return',
+  movement: 'Movement',
+  return2: ') · Return',
+};
 
 function formatAverage(value) {
   return value === null || value === undefined ? '—' : `${value}`;
@@ -12,16 +26,17 @@ function formatAverage(value) {
  * is ever identified here.
  */
 export default function GuideInsightsPanel({ data }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-guideinsightspanel', UI_TEXT);
   const statementText = Object.fromEntries(KIOO_STATEMENTS.map((statement) => [statement.id, statement.text]));
 
   return (
     <>
       <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem' }}>
         <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-          Overview
+          {uiText.overview}
         </span>
         <h2 className="font-guide-heading" style={{ ...creamText.heading, fontSize: 'clamp(1.2rem, 2.8vw, 1.5rem)', margin: '0 0 1.25rem' }}>
-          The mirror, in aggregate
+          {uiText.theMirrorInAggregate}
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
           {[
@@ -44,19 +59,19 @@ export default function GuideInsightsPanel({ data }) {
 
       <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
         <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.5rem' }}>
-          Average rating per statement
+          {uiText.averageRatingPerStatement}
         </span>
         <p className="font-guide-body" style={{ ...creamText.body, fontSize: '0.82rem', color: '#6b5744', margin: '0 0 1.25rem' }}>
-          Averages only, on the 1–5 frequency scale. Individual answers are never shown, and no learner is identified.
+          {uiText.averagesOnlyOnThe1}
         </p>
         <div className="guide-table-desktop">
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem 0' }}>Statement</th>
-                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '16%' }}>First</th>
-                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '16%' }}>Return</th>
-                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '14%' }}>Movement</th>
+                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem 0' }}>{uiText.statement}</th>
+                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '16%' }}>{uiText.first}</th>
+                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '16%' }}>{uiText.return}</th>
+                <th scope="col" className="font-guide-body" style={{ ...creamText.eyebrow, textAlign: 'left', padding: '0 0.6rem 0.6rem', width: '14%' }}>{uiText.movement}</th>
               </tr>
             </thead>
             <tbody>
@@ -93,7 +108,7 @@ export default function GuideInsightsPanel({ data }) {
                 {statementText[row.statement_id]}
               </span>
               <span className="font-guide-body" style={{ ...creamText.body, fontSize: '0.82rem', color: '#6b5744' }}>
-                First {formatAverage(row.first_average)} ({row.first_responses}) · Return {formatAverage(row.return_average)} ({row.return_responses})
+                {uiText.first}{' '}{formatAverage(row.first_average)} ({row.first_responses}{uiText.return2}{' '}{formatAverage(row.return_average)} ({row.return_responses})
                 {row.movement !== null ? ` · movement ${row.movement > 0 ? '+' : ''}${row.movement}` : ''}
               </span>
             </div>

@@ -118,7 +118,7 @@ export default {
     heading: 'Historias y Reseñas de Estudiantes',
     intro: 'Escucha a los estudiantes que han participado en nuestros cursos y comparte tu propia experiencia.',
     submitHeading: 'Comparte tu Experiencia',
-    submitIntro: 'Tu historia ayuda a otros a descubrir el valor de nuestra comunidad de aprendizaje. Las contribuciones son revisadas antes de aparecer en el sitio.',
+    submitIntro: 'Tu historia ayuda a otros a descubrir el valor de nuestra comunidad de aprendizaje. Aparece en esta página en cuanto la envías.',
     signInPrompt: 'Inicia sesión para compartir tu historia.',
     featuredHeading: 'Historias Destacadas',
     featuredEmpty: '¡Aún no hay historias. Sé el primero en compartir tu experiencia!',

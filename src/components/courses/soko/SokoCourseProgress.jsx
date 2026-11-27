@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { SAUTI_ZA_SOKO_COURSE_SLUG } from '@/lib/sauti-za-soko-tracks';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  courseCompletionProgress: 'Course completion progress',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -53,6 +59,7 @@ const dashedBox = {
  * completion. Used on the course overview page.
  */
 export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_SLUG }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-soko-sokocourseprogress', UI_TEXT);
   const labels = useSokoLabels();
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -163,7 +170,7 @@ export default function SokoCourseProgress({ courseSlug = SAUTI_ZA_SOKO_COURSE_S
           aria-valuenow={pct}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Course completion progress"
+          aria-label={uiText.courseCompletionProgress}
           style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
         >
           <div style={{ width: `${pct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />

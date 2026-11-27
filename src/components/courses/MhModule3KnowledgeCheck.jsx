@@ -1,5 +1,29 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  privacyNotice: 'Privacy notice',
+  passingRequiresOfCorrectAnswers: 'Passing requires {v0} of {v1} correct answers.',
+  module3KnowledgeCheck: 'Module 3 knowledge check',
+  question: 'Question {v0}',
+  questionResponseOptions: 'Question {v0} response options',
+  option: 'Option {v0}: {v1}',
+  correct: 'Correct',
+  reconsider: 'Reconsider',
+  grading: 'Grading…',
+  submitAnswers: 'Submit answers',
+  tryAgain: 'Try again',
+  scoreOf: 'Score: {v0} of {v1}',
+  passingScore: 'Passing score: {v0}',
+  youPassedThisKnowledgeCheck: 'You passed this knowledge check.',
+  youDidNotPassThis: 'You did not pass this knowledge check. Review the feedback above and try again.',
+  weCouldNotGradeYour: 'We could not grade your responses right now. Please try again.',
+  pleaseAnswerAllQuestionsBefore: 'Please answer all {v0} questions before submitting. {v1} question{v2} still unanswered.',
+  expectedAnswersGot: 'Expected {v0} answers, got {v1}.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -113,6 +137,7 @@ function findResultForQuestion(feedback, questionId) {
  * preview. The only difference is the aria-label.
  */
 export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, onGraded }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule3knowledgecheck', UI_TEXT);
   const [selections, setSelections] = useState({});
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState(null);
@@ -139,12 +164,12 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
     );
     if (missing.length > 0) {
       setValidationError(
-        `Please answer all ${total} questions before submitting. ${missing.length} question${missing.length > 1 ? 's are' : ' is'} still unanswered.`
+        fillTemplate(uiText.pleaseAnswerAllQuestionsBefore, { v0: total, v1: missing.length, v2: missing.length > 1 ? 's are' : ' is' })
       );
       return;
     }
     if (Object.keys(selections).length !== total) {
-      setValidationError(`Expected ${total} answers, got ${Object.keys(selections).length}.`);
+      setValidationError(fillTemplate(uiText.expectedAnswersGot, { v0: total, v1: Object.keys(selections).length }));
       return;
     }
 
@@ -165,7 +190,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
       setResult(data);
       if (onGraded) onGraded(data);
     } catch (err) {
-      setServerError('We could not grade your responses right now. Please try again.');
+      setServerError(uiText.weCouldNotGradeYour);
     } finally {
       setPending(false);
     }
@@ -188,7 +213,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
 
       <div style={privacyBoxStyle}>
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>
-          Privacy notice
+          {uiText.privacyNotice}
         </span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>
           {quiz.privacyNotice}
@@ -196,18 +221,16 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
       </div>
 
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>{quiz.learnerInstruction}</p>
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>
-        Passing requires {quiz.passingScore} of {quiz.questions.length} correct answers.
-      </p>
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>{fillTemplate(uiText.passingRequiresOfCorrectAnswers, { v0: quiz.passingScore, v1: quiz.questions.length })}</p>
 
-      <form onSubmit={handleSubmit} aria-label="Module 3 knowledge check">
+      <form onSubmit={handleSubmit} aria-label={uiText.module3KnowledgeCheck}>
         {quiz.questions.map((q, qIdx) => {
           const qResult = findResultForQuestion(result && result.feedback, q.id);
           return (
             <section
               key={q.id}
               style={questionCardStyle}
-              aria-label={`Question ${qIdx + 1}`}
+              aria-label={fillTemplate(uiText.question, { v0: qIdx + 1 })}
             >
               <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
                 <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span>{' '}
@@ -222,7 +245,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                 </legend>
                 <ul
                   role="radiogroup"
-                  aria-label={`Question ${qIdx + 1} response options`}
+                  aria-label={fillTemplate(uiText.questionResponseOptions, { v0: qIdx + 1 })}
                   style={{ listStyle: 'none', padding: 0, margin: 0 }}
                 >
                   {q.options.map((opt, i) => {
@@ -248,7 +271,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                             disabled={locked}
                             onChange={() => handleSelect(q.id, i)}
                             style={{ marginTop: '0.2rem' }}
-                            aria-label={`Option ${optionLabel(i)}: ${opt}`}
+                            aria-label={fillTemplate(uiText.option, { v0: optionLabel(i), v1: opt })}
                           />
                           <span style={{ flex: 1 }}>
                             <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
@@ -283,7 +306,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                       fontWeight: 500,
                     }}
                   >
-                    {qResult.isCorrect ? 'Correct' : 'Reconsider'}
+                    {qResult.isCorrect ? uiText.correct : uiText.reconsider}
                   </p>
                   <p
                     className="font-body"
@@ -313,12 +336,12 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               opacity: pending ? 0.7 : 1,
             }}
           >
-            {pending ? 'Grading…' : 'Submit answers'}
+            {pending ? uiText.grading : uiText.submitAnswers}
           </button>
         )}
         {result && (
           <button type="button" onClick={handleRetry} style={retryButtonStyle}>
-            Try again
+            {uiText.tryAgain}
           </button>
         )}
 
@@ -364,9 +387,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               fontWeight: 500,
               fontSize: '1.1rem',
             }}
-          >
-            Score: {result.score} of {result.totalQuestions}
-          </p>
+          >{fillTemplate(uiText.scoreOf, { v0: result.score, v1: result.totalQuestions })}</p>
           <p
             className="font-body"
             style={{
@@ -376,9 +397,7 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               color: 'rgba(243,234,216,0.7)',
               fontSize: '0.9rem',
             }}
-          >
-            Passing score: {result.passingScore}
-          </p>
+          >{fillTemplate(uiText.passingScore, { v0: result.passingScore })}</p>
           <p
             className="font-body"
             style={{
@@ -389,8 +408,8 @@ export default function MhModule3KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
             }}
           >
             {result.passed
-              ? 'You passed this knowledge check.'
-              : 'You did not pass this knowledge check. Review the feedback above and try again.'}
+              ? uiText.youPassedThisKnowledgeCheck
+              : uiText.youDidNotPassThis}
           </p>
         </div>
       )}

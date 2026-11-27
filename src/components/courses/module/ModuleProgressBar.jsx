@@ -1,20 +1,25 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleOf: 'Module {v0} of {v1}',
+  completed: '{v0} completed',
+};
 
 /**
  * Visual module position indicator: "Module X of N" with a segmented
  * progress strip showing completed/current/upcoming modules.
  */
 export default function ModuleProgressBar({ current, total, completed = 0 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-moduleprogressbar', UI_TEXT);
   if (!total || total <= 1) return null;
   return (
     <div style={{ marginBottom: '2.5rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-        <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>
-          Module {current} of {total}
-        </span>
-        <span className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.6rem', letterSpacing: '0.1em', fontWeight: 300 }}>
-          {completed} completed
-        </span>
+        <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 }}>{fillTemplate(uiText.moduleOf, { v0: current, v1: total })}</span>
+        <span className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.6rem', letterSpacing: '0.1em', fontWeight: 300 }}>{fillTemplate(uiText.completed, { v0: completed })}</span>
       </div>
       <div style={{ display: 'flex', gap: '4px' }}>
         {Array.from({ length: total }, (_, i) => {

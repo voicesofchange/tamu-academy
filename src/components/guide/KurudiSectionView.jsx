@@ -12,6 +12,13 @@ import { useGuideSection } from '@/lib/guide/useGuideSection';
 import { useGuideStrings } from '@/lib/guide/GuideStringsContext';
 import { getCachedStatus, loadProgressMap, setSectionStatus } from '@/lib/guide/guideProgress';
 import { creamText, darkText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  average: '· average {rating}',
+};
 
 /**
  * KurudiSectionView — where the learner takes the same ten statements again.
@@ -19,6 +26,7 @@ import { creamText, darkText } from '@/lib/guide/styles';
  * first reflection is shown beside the latest return.
  */
 export default function KurudiSectionView({ section }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-kurudisectionview', UI_TEXT);
   const { user } = useAuth();
   const learnerId = user?.id || null;
   const { getValue, setValue, saveState } = useGuideSection(section.id);
@@ -138,7 +146,7 @@ export default function KurudiSectionView({ section }) {
                     {ui.returnLabel} · {formatAttemptDate(attempt.attempt_date)}
                   </span>
                   {averageRating(ratingsOf(attempt)) !== null && (
-                    <span className="font-guide-body" style={{ ...creamText.body, color: '#6b5744' }}> · average {averageRating(ratingsOf(attempt))}</span>
+                    <span className="font-guide-body" style={{ ...creamText.body, color: '#6b5744' }}>{' '}{fillTemplate(uiText.average, { rating: averageRating(ratingsOf(attempt)) })}</span>
                   )}
                 </div>
               ))

@@ -15,6 +15,35 @@ import ModuleSources from '@/components/courses/module/ModuleSources';
 import CoursePlayer from '@/components/courses/player/CoursePlayer';
 import { stepAnchorId } from '@/components/courses/player/step-anchors';
 import PreviewSectionGate from '@/components/courses/preview/PreviewSectionGate';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  welcome: 'Welcome',
+  welcomeToTamuAcademy: 'Welcome to Tamu Academy',
+  whatYouWillLearn: 'What you will learn',
+  whatYouLlLearn: "What You'll Learn",
+  watch: 'Watch',
+  theLesson: 'The lesson',
+  theLesson2: 'The Lesson',
+  pauseAndThink: 'Pause and think',
+  workedExample: 'Worked example',
+  workedExample2: 'Worked Example',
+  tryIt: 'Try it',
+  tryIt2: 'Try It',
+  whereYouLive: 'Where you live',
+  whereYouLive2: 'Where You Live',
+  theDilemma: 'The dilemma',
+  theDilemma2: 'The Dilemma',
+  yourPost: 'Your post',
+  conceptCheck: 'Concept check',
+  conceptCheck2: 'Concept Check',
+  reflection: 'Reflection',
+  sources: 'Sources',
+  requirements: 'Requirements',
+  completionRequirements: 'Completion Requirements',
+  courseModulesComplete: 'Course modules complete',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -70,6 +99,7 @@ function Step({ id, children }) {
  * unchanged.
  */
 export default function BuildingWealthLessonTemplate({ course, module, player = null, onProgressChange }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-buildingwealthlessontemplate', UI_TEXT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${module.route}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === module.route);
@@ -78,7 +108,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
     moduleIndex >= 0 && moduleIndex < course.modules.length - 1 ? course.modules[moduleIndex + 1] : null;
   const nextLabel = nextModule
     ? `Next: ${nextModule.number} \u2014 ${nextModule.title}`
-    : 'Course modules complete';
+    : uiText.courseModulesComplete;
   const [quizPassedTrigger, setQuizPassedTrigger] = useState(0);
 
   const trackLabel = (course.modules.find((m) => m.route === module.route) || {}).trackLabel || course.track;
@@ -112,7 +142,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
 
       {/* Welcome to Tamu Academy — the same film opens every module. */}
       {module.welcomeFilm && (
-        <ModuleLessonSection id={stepAnchorId('welcome')} eyebrow="Welcome" heading="Welcome to Tamu Academy">
+        <ModuleLessonSection id={stepAnchorId('welcome')} eyebrow={uiText.welcome} heading={uiText.welcomeToTamuAcademy}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>
             <a href={module.welcomeFilm.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>
               {module.welcomeFilm.title}
@@ -125,16 +155,16 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
       )}
 
       <Step id="goals">
-        <ModuleTextSection eyebrow="What you will learn" heading="What You'll Learn" items={module.goals} />
+        <ModuleTextSection eyebrow={uiText.whatYouWillLearn} heading={uiText.whatYouLlLearn} items={module.goals} />
       </Step>
 
       {module.watch && (
         <Step id="watch">
-          <WealthWatchStep watch={module.watch} eyebrow="Watch" heading="Watch" />
+          <WealthWatchStep watch={module.watch} eyebrow={uiText.watch} heading={uiText.watch} />
         </Step>
       )}
 
-      <ModuleLessonSection id={stepAnchorId('lesson')} eyebrow="The lesson" heading="The Lesson">
+      <ModuleLessonSection id={stepAnchorId('lesson')} eyebrow={uiText.theLesson} heading={uiText.theLesson2}>
         {module.lessonSections.map((section, si) => (
           <div key={si} className="workbook-block" style={{ marginBottom: '2.25rem' }}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 1rem' }}>
@@ -154,7 +184,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
                 }}
               >
                 <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.5rem' }}>
-                  Pause and think
+                  {uiText.pauseAndThink}
                 </span>
                 <p className="font-body" style={{ ...bodyText, margin: 0 }}>{section.pauseAndThink}</p>
               </aside>
@@ -166,13 +196,13 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
       <Step id="worked-example">
         <WealthWorkedExample
           workedExample={module.workedExample}
-          eyebrow="Worked example"
-          heading="Worked Example"
+          eyebrow={uiText.workedExample}
+          heading={uiText.workedExample2}
         />
       </Step>
 
       {module.tryIt && (
-        <ModuleLessonSection id={stepAnchorId('try-it')} eyebrow="Try it" heading="Try It">
+        <ModuleLessonSection id={stepAnchorId('try-it')} eyebrow={uiText.tryIt} heading={uiText.tryIt2}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{module.tryIt.intro}</p>
           <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
             {module.tryIt.steps.map((step, i) => (
@@ -184,14 +214,14 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
 
       <Step id="where-you-live">
         <ModuleTextSection
-          eyebrow="Where you live"
-          heading="Where You Live"
+          eyebrow={uiText.whereYouLive}
+          heading={uiText.whereYouLive2}
           items={module.whereYouLive}
         />
       </Step>
 
       {module.dilemma && (
-        <ModuleLessonSection id={stepAnchorId('dilemma')} eyebrow="The dilemma" heading="The Dilemma">
+        <ModuleLessonSection id={stepAnchorId('dilemma')} eyebrow={uiText.theDilemma} heading={uiText.theDilemma2}>
           <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.15rem, 2.4vw, 1.5rem)', fontWeight: 400, margin: '0 0 0.4rem' }}>
             {module.dilemma.title}
           </h3>
@@ -211,7 +241,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
             }}
           >
             <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.6rem' }}>
-              Your post
+              {uiText.yourPost}
             </span>
             <p className="font-body" style={{ ...bodyText, margin: 0 }}>{module.dilemma.prompt}</p>
           </div>
@@ -219,7 +249,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
       )}
 
       {module.quiz && (
-        <ModuleLessonSection id={stepAnchorId('concept-check')} eyebrow="Concept check" heading="Concept Check">
+        <ModuleLessonSection id={stepAnchorId('concept-check')} eyebrow={uiText.conceptCheck} heading={uiText.conceptCheck2}>
           <WealthConceptCheck
             quiz={module.quiz}
             courseSlug={course.slug}
@@ -234,15 +264,15 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
 
       <Step id="reflection">
         <ModuleTextSection
-          eyebrow="Reflection"
-          heading="Reflection"
+          eyebrow={uiText.reflection}
+          heading={uiText.reflection}
           items={module.reflection ? [module.reflection] : []}
         />
       </Step>
 
       {((module.sources && module.sources.length > 0) ||
         (module.unsourced && module.unsourced.length > 0)) && (
-        <ModuleLessonSection id={stepAnchorId('sources')} eyebrow="Sources" heading="Sources">
+        <ModuleLessonSection id={stepAnchorId('sources')} eyebrow={uiText.sources} heading={uiText.sources}>
           <ModuleSources
             sources={module.sources}
             unsourced={module.unsourced}
@@ -255,7 +285,7 @@ export default function BuildingWealthLessonTemplate({ course, module, player = 
         </ModuleLessonSection>
       )}
 
-      <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow="Requirements" heading="Completion Requirements">
+      <ModuleLessonSection id={stepAnchorId('requirements')} eyebrow={uiText.requirements} heading={uiText.completionRequirements}>
         <WealthModuleProgress
           courseSlug={course.slug}
           moduleRoute={module.route}

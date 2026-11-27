@@ -1,6 +1,26 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  passed: 'Passed',
+  notPassedYet: 'Not passed yet',
+  youAnsweredOfCorrectlyCorrect: 'You answered {v0} of {v1} correctly. {v2} correct answers are needed to pass.',
+  yourAnswer: 'Your answer: {v0}',
+  correctAnswer: 'Correct answer: {v0}',
+  retakeTheAssessment: 'Retake the assessment',
+  assessmentPassed: 'Assessment passed',
+  passedResult: 'You answered {score} of {total} correctly, meeting the requirement of {required}. This requirement is complete.',
+  retakeItAnyway: 'Retake it anyway',
+  enrollInTheCourseTo: 'Enroll in the course to take the final assessment.',
+  grading: 'Grading…',
+  submitAssessment: 'Submit assessment',
+  ofAnswered: '{v0} of {v1} answered',
+  weCouldNotGradeYour: 'We could not grade your assessment just now. Please try again.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -18,6 +38,7 @@ const bodyText = {
  * reasoning behind each answer. They may retake it.
  */
 export default function WaiyakiAssessment({ assessment, attempt, passRequired, canSave, onGraded }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakiassessment', UI_TEXT);
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
@@ -44,14 +65,14 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
       });
       const data = res && res.data ? res.data : null;
       if (!data) {
-        setError('We could not grade your assessment just now. Please try again.');
+        setError(uiText.weCouldNotGradeYour);
       } else {
         setResult(data);
         setShowForm(false);
         if (onGraded) onGraded(data);
       }
     } catch (err) {
-      setError('We could not grade your assessment just now. Please try again.');
+      setError(uiText.weCouldNotGradeYour);
     } finally {
       setSubmitting(false);
     }
@@ -73,12 +94,9 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
           role="status"
         >
           <p className="font-heading" style={{ color: result.passed ? '#e8b85b' : '#e8955c', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 0.4rem' }}>
-            {result.passed ? 'Passed' : 'Not passed yet'}
+            {result.passed ? uiText.passed : uiText.notPassedYet}
           </p>
-          <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-            You answered {result.score} of {result.totalQuestions} correctly. {result.passRequired} correct
-            answers are needed to pass.
-          </p>
+          <p className="font-body" style={{ ...bodyText, margin: 0 }}>{fillTemplate(uiText.youAnsweredOfCorrectlyCorrect, { v0: result.score, v1: result.totalQuestions, v2: result.passRequired })}</p>
         </div>
 
         <ol style={{ listStyle: 'none', margin: '0 0 1.75rem', padding: 0 }}>
@@ -99,13 +117,9 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
                   </span>
                   {i + 1}. {question.prompt}
                 </p>
-                <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: '0 0 0.35rem' }}>
-                  Your answer: {question.options[chosen]}
-                </p>
+                <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: '0 0 0.35rem' }}>{fillTemplate(uiText.yourAnswer, { v0: question.options[chosen] })}</p>
                 {detail && !detail.correct && (
-                  <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: '0 0 0.35rem', color: '#e8b85b' }}>
-                    Correct answer: {question.options[detail.correctIndex]}
-                  </p>
+                  <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: '0 0 0.35rem', color: '#e8b85b' }}>{fillTemplate(uiText.correctAnswer, { v0: question.options[detail.correctIndex] })}</p>
                 )}
                 {detail && detail.explanation && (
                   <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', color: 'rgba(243,234,216,0.68)', margin: '0.5rem 0 0' }}>
@@ -140,7 +154,7 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
             cursor: 'pointer',
           }}
         >
-          Retake the assessment
+          {uiText.retakeTheAssessment}
         </button>
       </div>
     );
@@ -157,11 +171,10 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
         }}
       >
         <p className="font-heading" style={{ color: '#e8b85b', fontSize: '1.25rem', fontWeight: 400, margin: '0 0 0.4rem' }}>
-          Assessment passed
+          {uiText.assessmentPassed}
         </p>
         <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-          You answered {attempt.bestScore} of {questions.length} correctly, meeting the requirement
-          of {passRequired || 4}. This requirement is complete.
+          {fillTemplate(uiText.passedResult, { score: attempt.bestScore, total: questions.length, required: passRequired || 4 })}
         </p>
         <button
           type="button"
@@ -181,7 +194,7 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
             cursor: 'pointer',
           }}
         >
-          Retake it anyway
+          {uiText.retakeItAnyway}
         </button>
       </div>
     );
@@ -190,7 +203,7 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
   if (!canSave) {
     return (
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)' }}>
-        Enroll in the course to take the final assessment.
+        {uiText.enrollInTheCourseTo}
       </p>
     );
   }
@@ -286,11 +299,9 @@ export default function WaiyakiAssessment({ assessment, attempt, passRequired, c
             opacity: submitting ? 0.6 : 1,
           }}
         >
-          {submitting ? 'Grading...' : 'Submit assessment'}
+          {submitting ? uiText.grading : uiText.submitAssessment}
         </button>
-        <span className="font-body" style={{ ...bodyText, fontSize: '0.84rem', color: 'rgba(243,234,216,0.55)', margin: 0 }}>
-          {answeredCount} of {questions.length} answered
-        </span>
+        <span className="font-body" style={{ ...bodyText, fontSize: '0.84rem', color: 'rgba(243,234,216,0.55)', margin: 0 }}>{fillTemplate(uiText.ofAnswered, { v0: answeredCount, v1: questions.length })}</span>
       </div>
 
       {error && (

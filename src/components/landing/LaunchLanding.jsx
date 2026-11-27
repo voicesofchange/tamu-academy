@@ -5,6 +5,16 @@ import { Link } from 'react-router-dom';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  tamuAcademyHome: 'Tamu Academy — home',
+  primary: 'Primary',
+  followTamuAcademyOnSubstack: 'Follow Tamu Academy on Substack (opens in a new tab — external service)',
+  earlyAccessSignupForm: 'Early access signup form',
+  leaveThisFieldEmpty: 'Leave this field empty',
+  required: '(required)',
+};
+
 const CONTENT = {
   navAttr: 'A Waiyaki House learning venture',
   joinEarlyAccess: 'Join Early Access',
@@ -35,6 +45,7 @@ const CONTENT = {
 };
 
 export default function LaunchLanding() {
+  const { content: uiText } = useTranslatedContent('ui-components-landing-launchlanding', UI_TEXT);
   const { content: c } = useTranslatedContent('launch', CONTENT);
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
@@ -140,7 +151,7 @@ export default function LaunchLanding() {
       >
         <Link
           to="/"
-          aria-label="Tamu Academy — home"
+          aria-label={uiText.tamuAcademyHome}
           className="font-heading"
           style={{
             color: '#f8f0df',
@@ -169,7 +180,7 @@ export default function LaunchLanding() {
           </span>
         </Link>
         <nav
-          aria-label="Primary"
+          aria-label={uiText.primary}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -405,7 +416,7 @@ export default function LaunchLanding() {
                     href="https://substack.com/@tamuacademy?r=3jsnyk&utm_campaign=profile&utm_medium=profile-page"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Follow Tamu Academy on Substack (opens in a new tab — external service)"
+                    aria-label={uiText.followTamuAcademyOnSubstack}
                     className="font-body launch-success-substack"
                     style={{
                       display: 'inline-block',
@@ -444,7 +455,7 @@ export default function LaunchLanding() {
               <form
                 onSubmit={handleSubmit}
                 noValidate
-                aria-label="Early access signup form"
+                aria-label={uiText.earlyAccessSignupForm}
                 style={{ textAlign: 'left' }}
               >
                 {/* Honeypot */}
@@ -452,7 +463,7 @@ export default function LaunchLanding() {
                   style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}
                   aria-hidden="true"
                 >
-                  <label htmlFor="launch-hp">Leave this field empty</label>
+                  <label htmlFor="launch-hp">{uiText.leaveThisFieldEmpty}</label>
                   <input
                     id="launch-hp"
                     name="launch-hp"
@@ -501,7 +512,7 @@ export default function LaunchLanding() {
                     }}
                   >
                     {c.emailLabel} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
-                    <span className="launch-sr-only"> (required)</span>
+                    <span className="launch-sr-only">{' '}{uiText.required}</span>
                   </label>
                   <div className="launch-email-row" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <input
@@ -620,7 +631,7 @@ export default function LaunchLanding() {
                     >
                       {c.consentText}
                       <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span>
-                      <span className="launch-sr-only"> (required)</span>
+                      <span className="launch-sr-only">{' '}{uiText.required}</span>
                     </span>
                   </label>
                   {errors.consent && (

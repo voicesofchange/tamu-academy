@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleNavigation: 'Module navigation',
+};
+
 const navLinkStyle = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -37,13 +42,14 @@ const CONTENT = {
 };
 
 export default function ModuleNav({ coursePath, courseSlug, prevModule, nextModule, nextLabel, endOfCourse }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-modulenav', UI_TEXT);
   const { content: c } = useTranslatedContent('module-nav', CONTENT);
   const prevPath = prevModule && prevModule.route ? `/courses/${courseSlug}/${prevModule.route}` : null;
   const nextPath = nextModule && nextModule.route ? `/courses/${courseSlug}/${nextModule.route}` : null;
   const nextTitle = nextModule ? `${nextModule.number} ${c.nextUnavailable}` : c.nextModuleUnavailable;
 
   return (
-    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
+    <nav aria-label={uiText.moduleNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevPath ? (
           <Link to={prevPath} className="font-body" style={navLinkStyle}>

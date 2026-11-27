@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 /**
  * WaiyakiEvidenceLabel — the course's evidence vocabulary.
@@ -32,7 +33,11 @@ const TONES = {
   },
 };
 
+// The badge words, by evidence label, in the reader's language.
+const TONE_TEXT = Object.fromEntries(Object.entries(TONES).map(([label, tone]) => [label, tone.word]));
+
 export default function WaiyakiEvidenceLabel({ label }) {
+  const { content: toneText } = useTranslatedContent('waiyaki-evidence-labels', TONE_TEXT);
   const tone = TONES[label];
   if (!tone) return null;
 
@@ -55,7 +60,7 @@ export default function WaiyakiEvidenceLabel({ label }) {
         verticalAlign: '0.08em',
       }}
     >
-      {tone.word}
+      {toneText[label] || tone.word}
     </span>
   );
 }

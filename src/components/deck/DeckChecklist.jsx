@@ -1,14 +1,21 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  checklist: 'Checklist',
+};
 
 /**
  * DeckChecklist — what to confirm on the live platform before presenting.
  * A static list: it is read once at the moment of presenting, not tracked.
  */
 export default function DeckChecklist({ checklist }) {
+  const { content: uiText } = useTranslatedContent('ui-components-deck-deckchecklist', UI_TEXT);
   return (
     <section style={{ marginTop: 'clamp(3rem, 6vw, 5rem)' }}>
       <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500 }}>
-        Checklist
+        {uiText.checklist}
       </span>
       <h2
         className="font-heading"

@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import ModuleLessonSection from '@/components/courses/module/ModuleLessonSection';
 import { useCaptionedEmbedUrl } from '@/lib/youtube-captions';
 import CaptionsNote from '@/components/videos/CaptionsNote';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  playItHere: 'Play it here',
+  asYouWatchNotice: 'As you watch, notice',
+  alternateSource: 'Alternate source',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const linkStyle = {
@@ -42,6 +50,7 @@ function youTubeEmbedUrl(url) {
  * loads on a slow connection or in Data-Saver mode until it is wanted.
  */
 export default function WealthWatchStep({ watch, eyebrow, heading }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-wealthwatchstep', UI_TEXT);
   const [playerOpen, setPlayerOpen] = useState(false);
   const embedUrl = youTubeEmbedUrl(watch.url);
   const captionedUrl = useCaptionedEmbedUrl(embedUrl);
@@ -59,12 +68,12 @@ export default function WealthWatchStep({ watch, eyebrow, heading }) {
         </a>
         {watch.alternativeUrl && (
           <a href={watch.alternativeUrl} target="_blank" rel="noopener noreferrer" style={{ ...linkStyle, borderColor: 'rgba(232,184,91,0.22)', color: 'rgba(232,184,91,0.75)' }}>
-            {watch.alternativeLabel || 'Alternate source'} &#8599;
+            {watch.alternativeLabel || uiText.alternateSource} &#8599;
           </a>
         )}
         {embedUrl && !playerOpen && (
           <button type="button" onClick={() => setPlayerOpen(true)} style={linkStyle}>
-            Play it here
+            {uiText.playItHere}
           </button>
         )}
       </div>
@@ -85,7 +94,7 @@ export default function WealthWatchStep({ watch, eyebrow, heading }) {
       {playerOpen && embedUrl && <CaptionsNote style={{ margin: '0 0 1.25rem' }} />}
 
       <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.85rem' }}>
-        As you watch, notice
+        {uiText.asYouWatchNotice}
       </span>
       <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.25rem' }}>
         {watch.notice.map((item, i) => (

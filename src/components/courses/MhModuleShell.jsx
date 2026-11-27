@@ -6,6 +6,14 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import ModuleHero from '@/components/courses/module/ModuleHero';
 import ModuleProgressBar from '@/components/courses/module/ModuleProgressBar';
 import { useTranslation } from '@/lib/i18n';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleNavigation: 'Module navigation',
+  thisIsTheFirstModule: 'This is the first module',
+  thisIsTheLastModule: 'This is the last module',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -28,6 +36,7 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
 // Message resolved inside the component via useTranslation (see below).
 
 export default function MhModuleShell({ course, module: mod }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmoduleshell', UI_TEXT);
   const { t } = useTranslation();
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
@@ -113,14 +122,14 @@ export default function MhModuleShell({ course, module: mod }) {
       </div>
 
       {/* Navigation position within the seven-module course */}
-      <nav aria-label="Module navigation" style={{ paddingTop: '2rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
+      <nav aria-label={uiText.moduleNavigation} style={{ paddingTop: '2rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {prevModule ? (
             <Link to={`${coursePath}/${prevModule.route}`} className="font-body" style={navLinkStyle}>
               &larr; {prevModule.number}
             </Link>
           ) : (
-            <span aria-disabled="true" title="This is the first module" style={navDisabledStyle}>
+            <span aria-disabled="true" title={uiText.thisIsTheFirstModule} style={navDisabledStyle}>
               &larr; {t('common.startOfCourse')}
             </span>
           )}
@@ -129,7 +138,7 @@ export default function MhModuleShell({ course, module: mod }) {
               {nextModule.number} &rarr;
             </Link>
           ) : (
-            <span aria-disabled="true" title="This is the last module" style={navDisabledStyle}>
+            <span aria-disabled="true" title={uiText.thisIsTheLastModule} style={navDisabledStyle}>
               {t('common.endOfCourse')} &rarr;
             </span>
           )}

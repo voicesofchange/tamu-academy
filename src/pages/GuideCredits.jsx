@@ -4,6 +4,18 @@ import PageLayout from '@/components/page/PageLayout';
 import PageMeta from '@/components/seo/PageMeta';
 import { GUIDE_PROVERB, GUIDE_SECTIONS } from '@/lib/guide/sections';
 import { creamText, darkText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  furtherReadingAndCredits: 'Further reading and credits',
+  thisGuideIsATamu: 'This guide is a Tamu Academy resource. It draws on published work, and it names its sources so learners can read further and check for themselves.',
+  sources: 'Sources',
+  claimsToVerify: 'Claims to verify',
+  whereASectionUsesA: 'Where a section uses a figure, a projection, a neurobiological explanation or a cultural attribution that is not settled, it is marked beside the exercise rather than presented as established fact. Those items are collected here with the source they came from, so a reviewer can confirm, correct or remove them before the section is published to learners.',
+  proverbsAndTheirTranslations: 'Proverbs and their translations',
+  backToTheGuide: '← Back to the guide',
+};
 
 const SOURCE_PLACEHOLDERS = [
   'Ubuntu and well-being source material — full reference to be added.',
@@ -15,7 +27,11 @@ const SOURCE_PLACEHOLDERS = [
  * GuideCredits — where the guide's sources, translations and the claims that
  * still need verification are recorded.
  */
+const SOURCE_TEXT = { entries: SOURCE_PLACEHOLDERS };
+
 export default function GuideCredits() {
+  const { content: uiText } = useTranslatedContent('ui-pages-guidecredits', UI_TEXT);
+  const { content: sourceText } = useTranslatedContent('guide-credits-sources', SOURCE_TEXT);
   const proverbs = GUIDE_SECTIONS.filter((section) => section.proverb);
 
   return (
@@ -31,19 +47,19 @@ export default function GuideCredits() {
             Safari ya Utu
           </span>
           <h1 className="font-guide-heading" style={{ ...darkText.heading, fontSize: 'clamp(2rem, 5vw, 2.8rem)', lineHeight: 1.1, margin: '0 0 0.85rem' }}>
-            Further reading and credits
+            {uiText.furtherReadingAndCredits}
           </h1>
           <p className="font-guide-body" style={{ ...darkText.body, maxWidth: '42rem', margin: 0 }}>
-            This guide is a Tamu Academy resource. It draws on published work, and it names its sources so learners can read further and check for themselves.
+            {uiText.thisGuideIsATamu}
           </p>
         </header>
 
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem' }}>
           <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-            Sources
+            {uiText.sources}
           </span>
           <ul style={{ margin: 0, paddingLeft: '1.15rem' }}>
-            {SOURCE_PLACEHOLDERS.map((entry) => (
+            {(sourceText.entries || SOURCE_PLACEHOLDERS).map((entry) => (
               <li key={entry} className="font-guide-body" style={{ ...creamText.body, marginBottom: '0.6rem' }}>
                 {entry}
               </li>
@@ -53,16 +69,16 @@ export default function GuideCredits() {
 
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', marginBottom: '1.5rem', borderLeft: '4px solid #D9822B' }}>
           <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-            Claims to verify
+            {uiText.claimsToVerify}
           </span>
           <p className="font-guide-body" style={{ ...creamText.body, margin: 0 }}>
-            Where a section uses a figure, a projection, a neurobiological explanation or a cultural attribution that is not settled, it is marked beside the exercise rather than presented as established fact. Those items are collected here with the source they came from, so a reviewer can confirm, correct or remove them before the section is published to learners.
+            {uiText.whereASectionUsesA}
           </p>
         </section>
 
         <section className="guide-card" style={{ padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
           <span className="font-guide-body" style={{ ...creamText.eyebrow, display: 'block', marginBottom: '0.6rem' }}>
-            Proverbs and their translations
+            {uiText.proverbsAndTheirTranslations}
           </span>
           <p className="font-guide-body" style={{ ...creamText.body, fontSize: '0.85rem', color: '#6b5744', margin: '0 0 1.25rem' }}>
             {GUIDE_PROVERB.sw} — {GUIDE_PROVERB.en} ({GUIDE_PROVERB.language})
@@ -86,7 +102,7 @@ export default function GuideCredits() {
 
         <div style={{ marginTop: '2rem' }}>
           <Link to="/learners-guide" className="font-guide-body" style={{ ...darkText.eyebrow, textDecoration: 'none' }}>
-            &larr; Back to the guide
+            {uiText.backToTheGuide}
           </Link>
         </div>
       </div>

@@ -1,5 +1,11 @@
 import React from 'react';
 import { FREQUENCY_SCALE, RATING_SCALE } from '@/lib/guide/sections';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  yourAnswer: 'Your answer',
+};
 
 /**
  * WorkbookField — the blank, printed form of one guide answer field.
@@ -42,7 +48,8 @@ function BlankText({ field }) {
 }
 
 function BlankTable({ field }) {
-  const columns = field.columns?.length ? field.columns : [{ id: 'answer', label: 'Your answer' }];
+  const { content: uiText } = useTranslatedContent('ui-components-guide-print-workbookfield', UI_TEXT);
+  const columns = field.columns?.length ? field.columns : [{ id: 'answer', label: uiText.yourAnswer }];
   const rows = field.rows || [];
 
   return (

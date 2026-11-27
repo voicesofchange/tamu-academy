@@ -8,6 +8,12 @@ import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf'
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  unexpectedResponse: 'Unexpected response',
+  errorLoadingCertificate: 'Error loading certificate',
+};
+
 const COURSE_SLUG = 'mental-health-community-and-culture';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -38,7 +44,7 @@ const CONTENT = {
   profileNameRequired: 'Profile Name Required',
   profileNameMsg: 'Your certificate uses your verified profile name. Please update your profile with your full name before generating your certificate.',
   backToProgress: 'Back to Course Progress',
-  loading: 'Loading your certificate...',
+  loading: 'Loading your certificate…',
   unavailable: 'Certificate Unavailable',
   unavailableMsg: 'We could not load your certificate at this time. Please try again later.',
   print: 'Print Certificate',
@@ -48,6 +54,7 @@ const CONTENT = {
 };
 
 export default function MhCertificate() {
+  const { content: uiText } = useTranslatedContent('ui-pages-mhcertificate', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-certificate', CONTENT);
   const course = MENTAL_HEALTH_COURSE;
   const [state, setState] = useState({ status: 'loading', data: null, error: null, notEligible: false, needsProfile: false });
@@ -67,7 +74,7 @@ export default function MhCertificate() {
           } else if (res.data.certificateId) {
             setState({ status: 'ready', data: res.data, error: null, notEligible: false, needsProfile: false });
           } else {
-            setState({ status: 'error', data: null, error: 'Unexpected response', notEligible: false, needsProfile: false });
+            setState({ status: 'error', data: null, error: uiText.unexpectedResponse, notEligible: false, needsProfile: false });
           }
         }
       } catch (err) {
@@ -81,7 +88,7 @@ export default function MhCertificate() {
             setState({ status: 'loading', data: null, error: null, notEligible: true, needsProfile: false });
           }
         } else {
-          setState({ status: 'error', data: null, error: err && err.message ? err.message : 'Error loading certificate', notEligible: false, needsProfile: false });
+          setState({ status: 'error', data: null, error: err && err.message ? err.message : uiText.errorLoadingCertificate, notEligible: false, needsProfile: false });
         }
       }
     })();

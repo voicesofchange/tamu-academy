@@ -15,6 +15,13 @@ import {
   mobileTabStyle,
   linkBaseStyle,
 } from '@/components/landing/nav-links';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  primary: 'Primary',
+  mobileNavigation: 'Mobile navigation',
+};
 
 // Mobile menu section label — names the group a set of rows belongs to.
 const sectionLabelStyle = {
@@ -28,6 +35,7 @@ const sectionLabelStyle = {
 };
 
 export default function TopNav() {
+  const { content: uiText } = useTranslatedContent('ui-components-landing-topnav', UI_TEXT);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -237,7 +245,7 @@ export default function TopNav() {
 
       {/* Tab bar — every destination, side by side */}
       <nav
-        aria-label="Primary"
+        aria-label={uiText.primary}
         className="tamu-tab-row"
         style={{
           display: 'flex',
@@ -270,7 +278,7 @@ export default function TopNav() {
       {/* Mobile dropdown menu */}
       <nav
         id="tamu-mobile-menu"
-        aria-label="Mobile navigation"
+        aria-label={uiText.mobileNavigation}
         style={{
           display: menuOpen ? 'flex' : 'none',
           flexDirection: 'column',

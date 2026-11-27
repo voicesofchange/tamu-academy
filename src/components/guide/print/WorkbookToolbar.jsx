@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Printer } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  printableEdition: 'Printable edition',
+  safariYaUtuThePrinted: 'Safari ya Utu — the printed workbook',
+  theWholeGuideAsA: 'The whole guide as a blank workbook: every section, exercise and reflection, with space to write. Nothing you have already saved appears here, so nothing is ever overwritten by printing.',
+  downloadThePrintablePdf: 'Download the printable PDF',
+  backToTheGuide: 'Back to the guide',
+  chooseSaveAsPdfAs: 'Choose “Save as PDF” as the destination in the print dialog. On a phone, open the browser menu and choose Print or Share, then Save as PDF.',
+};
 
 const ctaStyle = {
   padding: '13px 20px',
@@ -21,33 +32,34 @@ const ctaStyle = {
  * It never prints: the print stylesheet hides everything outside the workbook.
  */
 export default function WorkbookToolbar({ onPrint }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-print-workbooktoolbar', UI_TEXT);
   return (
     <div
       className="no-print"
       style={{ padding: 'clamp(6.5rem, 11vw, 8rem) clamp(1.25rem, 5vw, 4rem) 1.75rem', maxWidth: '900px', margin: '0 auto' }}
     >
       <span className="font-guide-body" style={{ display: 'block', color: '#C9961A', fontSize: '0.68rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600 }}>
-        Printable edition
+        {uiText.printableEdition}
       </span>
       <h1 className="font-guide-heading" style={{ color: '#FBF5E8', fontWeight: 600, fontSize: 'clamp(1.7rem, 3.6vw, 2.4rem)', lineHeight: 1.15, margin: '0.6rem 0 0.85rem' }}>
-        Safari ya Utu — the printed workbook
+        {uiText.safariYaUtuThePrinted}
       </h1>
       <p className="font-guide-body" style={{ color: 'rgba(251,245,232,0.78)', fontSize: '0.95rem', lineHeight: 1.75, maxWidth: '44rem', margin: '0 0 1.5rem' }}>
-        The whole guide as a blank workbook: every section, exercise and reflection, with space to write. Nothing you have already saved appears here, so nothing is ever overwritten by printing.
+        {uiText.theWholeGuideAsA}
       </p>
 
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <button type="button" onClick={onPrint} className="tamu-journey-primary font-guide-body" style={{ ...ctaStyle, border: '1px solid #d99b37' }}>
           <Printer size={14} strokeWidth={1.8} />
-          Download the printable PDF
+          {uiText.downloadThePrintablePdf}
         </button>
         <Link to="/learners-guide" className="tamu-journey-secondary font-guide-body" style={ctaStyle}>
-          Back to the guide
+          {uiText.backToTheGuide}
         </Link>
       </div>
 
       <p className="font-guide-body" style={{ color: 'rgba(251,245,232,0.6)', fontSize: '0.82rem', lineHeight: 1.7, marginTop: '1rem' }}>
-        Choose “Save as PDF” as the destination in the print dialog. On a phone, open the browser menu and choose Print or Share, then Save as PDF.
+        {uiText.chooseSaveAsPdfAs}
       </p>
     </div>
   );

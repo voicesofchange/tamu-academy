@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Printer } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  printSaveAsPdf: 'Print / Save as PDF',
+  clearResponses: 'Clear Responses',
+  yourResponsesAreSavedOnly: 'Your responses are saved only in this browser and are not submitted anywhere during this development phase.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -10,6 +18,7 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHei
  * via window.print(); the printable area is styled for print via index.css.
  */
 export default function DecisionMap({ activity, storageKey }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-decisionmap', UI_TEXT);
   const [values, setValues] = useState(() => {
     try {
       const saved = window.localStorage.getItem(storageKey);
@@ -79,19 +88,19 @@ export default function DecisionMap({ activity, storageKey }) {
           style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.65rem 1.3rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '2px', background: 'transparent', color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
           <Printer size={14} aria-hidden="true" />
-          Print / Save as PDF
+          {uiText.printSaveAsPdf}
         </button>
         <button
           type="button"
           onClick={handleClear}
           style={{ padding: '0.65rem 1.3rem', border: '1px solid rgba(243,234,216,0.2)', borderRadius: '2px', background: 'transparent', color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}
         >
-          Clear Responses
+          {uiText.clearResponses}
         </button>
       </div>
 
       <p className="font-body" style={{ ...bodyText, fontSize: '0.8rem', fontStyle: 'italic', marginTop: '1.25rem', marginBottom: 0 }}>
-        Your responses are saved only in this browser and are not submitted anywhere during this development phase.
+        {uiText.yourResponsesAreSavedOnly}
       </p>
     </div>
   );

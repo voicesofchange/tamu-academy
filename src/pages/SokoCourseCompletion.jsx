@@ -9,6 +9,12 @@ import { useAuth } from '@/lib/AuthContext';
 import SokoFinalReflection from '@/components/courses/soko/SokoFinalReflection';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
 import { SAUTI_ZA_SOKO_COURSE_SLUG, SAUTI_ZA_SOKO_COURSE } from '@/lib/sauti-za-soko-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  yourCourseIsCompleteYou: 'Your course is complete. You can view or download your certificate.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -61,6 +67,7 @@ const COURSE_PATH = `/courses/${SAUTI_ZA_SOKO_COURSE_SLUG}`;
  * and finalises the course once the server confirms everything is done.
  */
 export default function SokoCourseCompletion() {
+  const { content: uiText } = useTranslatedContent('ui-pages-sokocoursecompletion', UI_TEXT);
   const labels = useSokoLabels();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -221,7 +228,7 @@ export default function SokoCourseCompletion() {
           {progress.courseCompleted ? (
             <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)' }}>
               <p className="font-body" style={{ ...bodyText, margin: '0 0 1rem' }}>
-                Your course is complete. You can view or download your certificate.
+                {uiText.yourCourseIsCompleteYou}
               </p>
               <Link to={`${COURSE_PATH}/certificate`} className="font-body" style={primaryButtonStyle}>
                 {labels.completionViewCertificate} &rarr;

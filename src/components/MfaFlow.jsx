@@ -103,7 +103,7 @@ function Verify({ session, challenge, returnTo, onDone }) {
         <RememberDevice checked={remember} onChange={setRemember} />
         <Button className="w-full h-12 font-medium" disabled={busy || code.length < 6} onClick={() => verify()}>
           {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-          {busy ? "Verifying..." : "Verify"}
+          {busy ? "Verifying…" : "Verify"}
         </Button>
         {method === "sms" && <ResendLine cooldown={cooldown} disabled={sending} onResend={sendCode} />}
         {other && (

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loading: 'Loading…',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.7, fontWeight: 300 };
 
@@ -16,6 +22,7 @@ const markButtonBase = { color: '#e8b85b', backgroundColor: 'transparent', borde
 const completeButtonBase = { border: 'none', padding: '0.7rem 1.7rem', fontSize: '0.82rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px' };
 
 export default function MhModule7Progress({ courseSlug, moduleRoute, completionRequirements, progressTracking, refreshTrigger = 0 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule7progress', UI_TEXT);
   const [progress, setProgress] = useState(null);
   // In the course player: report progress so the outline and footer stay
   // current, and leave completing the module to the player's footer.
@@ -92,7 +99,7 @@ export default function MhModule7Progress({ courseSlug, moduleRoute, completionR
     <div style={{ marginTop: '2rem' }} aria-live="polite" role="status">
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>{progressTracking.privacyNote}</p>
       {loading ? (
-        <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>Loading...</p>
+        <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)' }}>{uiText.loading}</p>
       ) : progress && progress.eligibleToSave ? (
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>

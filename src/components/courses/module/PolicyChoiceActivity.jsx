@@ -1,4 +1,20 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  important: 'Important',
+  decision: 'Decision {v0}',
+  youSelected: 'You selected:',
+  likelyEffects: 'Likely effects:',
+  limitationsAndRisks: 'Limitations and risks:',
+  reviewPolicyFeedback: 'Review Policy Feedback',
+  noSelection: 'No selection',
+  noCombinationOfChoicesAbove: 'No combination of choices above is the perfect strategy. Each combination reflects priorities and accepts trade-offs about who benefits, who carries the risk, and what limits public resources impose. Compare your summary with the other possible combinations to identify what your strategy emphasizes and what it sacrifices.',
+  startOver: 'Start Over',
+  strategySummary: 'Strategy summary',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -23,6 +39,7 @@ const bodyText = {
  *   decisions: [{ id, categoryLabel, prompt, options: [{ id, label, effects, limitations }] }]
  */
 export default function PolicyChoiceActivity({ policyActivity }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-module-policychoiceactivity', UI_TEXT);
   const [selections, setSelections] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -80,7 +97,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               marginBottom: '0.4rem',
             }}
           >
-            Important
+            {uiText.important}
           </span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>
             {summaryStatement}
@@ -114,9 +131,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                     textTransform: 'uppercase',
                     fontWeight: 500,
                   }}
-                >
-                  Decision {di + 1}
-                </span>
+                >{fillTemplate(uiText.decision, { v0: di + 1 })}</span>
                 {d.categoryLabel && (
                   <span
                     className="font-body"
@@ -203,9 +218,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                     className="font-body"
                     style={{ ...bodyText, fontSize: '0.88rem', margin: '0 0 0.5rem' }}
                   >
-                    <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
-                      You selected:{' '}
-                    </strong>
+                    <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{fillTemplate(uiText.youSelected, {  })}</strong>
                     {selOption.label}
                   </p>
                   {selOption.effects && (
@@ -213,9 +226,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                       className="font-body"
                       style={{ ...bodyText, fontSize: '0.88rem', margin: '0 0 0.5rem' }}
                     >
-                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
-                        Likely effects:{' '}
-                      </strong>
+                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{fillTemplate(uiText.likelyEffects, {  })}</strong>
                       {selOption.effects}
                     </p>
                   )}
@@ -224,9 +235,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                       className="font-body"
                       style={{ ...bodyText, fontSize: '0.88rem', margin: 0 }}
                     >
-                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
-                        Limitations and risks:{' '}
-                      </strong>
+                      <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>{fillTemplate(uiText.limitationsAndRisks, {  })}</strong>
                       {selOption.limitations}
                     </p>
                   )}
@@ -256,7 +265,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
             fontFamily: 'inherit',
           }}
         >
-          Review Policy Feedback
+          {uiText.reviewPolicyFeedback}
         </button>
       ) : (
         <>
@@ -283,7 +292,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                   marginBottom: '0.4rem',
                 }}
               >
-                {strategySummaryLabel || 'Strategy summary'}
+                {strategySummaryLabel || uiText.strategySummary}
               </span>
               {fictionalCountry && (
                 <p
@@ -302,7 +311,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                         <strong style={{ fontWeight: 500, color: 'rgba(232,184,91,0.85)' }}>
                           {d.categoryLabel || d.prompt}:{' '}
                         </strong>
-                        {sel ? sel.label : 'No selection'}
+                        {sel ? sel.label : uiText.noSelection}
                       </span>
                     </li>
                   );
@@ -318,9 +327,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
                   marginBottom: 0,
                 }}
               >
-                No combination of choices above is the perfect strategy. Each combination reflects priorities and accepts
-                trade-offs about who benefits, who carries the risk, and what limits public resources impose. Compare your
-                summary with the other possible combinations to identify what your strategy emphasizes and what it sacrifices.
+                {uiText.noCombinationOfChoicesAbove}
               </p>
             </div>
           )}
@@ -342,7 +349,7 @@ export default function PolicyChoiceActivity({ policyActivity }) {
               fontFamily: 'inherit',
             }}
           >
-            Start Over
+            {uiText.startOver}
           </button>
         </>
       )}

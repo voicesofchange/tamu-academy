@@ -1,6 +1,17 @@
 import React from 'react';
 import HubDownloadButton from '@/components/hub/HubDownloadButton';
 import { courseSummaries, downloadTextFile, summariesText } from '@/lib/learning-hub';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  downloadAllSummaries: 'Download all summaries',
+  plainTextFileReadyFor: 'Plain-text file, ready for offline study.',
+  appliedMilestone: 'Applied milestone',
+  modules: '{count} modules ·',
+  coursePage: 'course page',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.8, fontWeight: 300 };
 
@@ -11,6 +22,7 @@ const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHei
  * drift from the courses themselves.
  */
 export default function HubSummaries() {
+  const { content: uiText } = useTranslatedContent('ui-components-hub-hubsummaries', UI_TEXT);
   const courses = courseSummaries();
 
   return (
@@ -18,10 +30,10 @@ export default function HubSummaries() {
       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
         <HubDownloadButton
           onClick={() => downloadTextFile('tamu-academy-course-summaries.txt', summariesText())}
-          label="Download all summaries"
+          label={uiText.downloadAllSummaries}
         />
         <span className="font-body" style={{ color: 'rgba(243,234,216,0.55)', fontSize: '0.78rem', fontWeight: 300, alignSelf: 'center' }}>
-          Plain-text file, ready for offline study.
+          {uiText.plainTextFileReadyFor}
         </span>
       </div>
 
@@ -56,7 +68,7 @@ export default function HubSummaries() {
           {course.milestone && (
             <div style={{ marginTop: '1.25rem' }}>
               <span className="font-body" style={{ color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, display: 'block', marginBottom: '0.5rem' }}>
-                Applied milestone
+                {uiText.appliedMilestone}
               </span>
               <span className="font-heading" style={{ color: '#f8f0df', fontSize: '1rem', fontWeight: 400, display: 'block', marginBottom: '0.35rem' }}>
                 {course.milestone.title}
@@ -66,7 +78,7 @@ export default function HubSummaries() {
           )}
 
           <p className="font-body" style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.78rem', margin: '1.25rem 0 0' }}>
-            {course.modulesCount} modules · <a href={course.courseUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#e8b85b' }}>course page</a>
+            {fillTemplate(uiText.modules, { count: course.modulesCount })}{' '}<a href={course.courseUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#e8b85b' }}>{uiText.coursePage}</a>
           </p>
         </article>
       ))}

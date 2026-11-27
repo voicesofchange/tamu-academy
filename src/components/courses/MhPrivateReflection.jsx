@@ -1,4 +1,13 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  privateReflectionOfflineReflectiveActivity: 'Private reflection — offline reflective activity',
+  preActivityReminder: 'Pre-activity reminder',
+  reminder: 'Reminder',
+  noOnlineField: 'No online field',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -53,11 +62,12 @@ const offlineBannerStyle = {
  * inherits the standard Tamu Academy dark-theme styling.
  */
 export default function MhPrivateReflection({ config }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhprivatereflection', UI_TEXT);
   return (
-    <section aria-label="Private reflection — offline reflective activity">
-      <div style={reminderBoxStyle} aria-label="Pre-activity reminder">
+    <section aria-label={uiText.privateReflectionOfflineReflectiveActivity}>
+      <div style={reminderBoxStyle} aria-label={uiText.preActivityReminder}>
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-          Reminder
+          {uiText.reminder}
         </span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>
           {config.preActivityReminder}
@@ -76,7 +86,7 @@ export default function MhPrivateReflection({ config }) {
 
       <div style={{ ...offlineBannerStyle, marginTop: '1.3rem' }}>
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>
-          No online field
+          {uiText.noOnlineField}
         </span>
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{config.offlineBanner}</p>
       </div>

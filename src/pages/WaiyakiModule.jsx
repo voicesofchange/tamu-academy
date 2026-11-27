@@ -21,6 +21,17 @@ import { ModuleFrameContext } from '@/components/courses/player/ModuleFrameConte
 import { waiyakiModuleSteps, WAIYAKI_COMPLETION_KEYS, WAIYAKI_KEY_LABEL_KEYS } from '@/components/courses/waiyaki/waiyaki-player-steps';
 import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingModule: 'Loading module',
+  checkingYourEnrollment: 'Checking your enrollment',
+  weCouldNotSaveYour: 'We could not save your progress right now. Please try again.',
+  moduleCompleteYourProgressHas: 'Module complete. Your progress has been saved.',
+  someRequirementsAreNotYet: 'Some requirements are not yet complete.',
+  weCouldNotCompleteThis: 'We could not complete this module right now. Please try again.',
+  courseComplete: 'Course complete',
+};
+
 /**
  * WaiyakiModule — the lesson page for one module of the course, resolved from
  * the route parameter.
@@ -47,6 +58,7 @@ export default function WaiyakiModule() {
 }
 
 function WaiyakiModuleRoute() {
+  const { content: uiText } = useTranslatedContent('ui-pages-waiyakimodule', UI_TEXT);
   // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
   const { preview: isPreview } = useModulePreview();
   const { moduleRoute } = useParams();
@@ -126,7 +138,7 @@ function WaiyakiModuleRoute() {
       });
       await fetchProgress();
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not save your progress right now. Please try again.' });
+      setMessage({ type: 'error', text: uiText.weCouldNotSaveYour });
     } finally {
       setSavingKey(null);
     }
@@ -143,13 +155,13 @@ function WaiyakiModuleRoute() {
       });
       const data = res && res.data ? res.data : null;
       if (data && data.completed) {
-        setMessage({ type: 'success', text: 'Module complete. Your progress has been saved.' });
+        setMessage({ type: 'success', text: uiText.moduleCompleteYourProgressHas });
       } else {
-        setMessage({ type: 'error', text: 'Some requirements are not yet complete.' });
+        setMessage({ type: 'error', text: uiText.someRequirementsAreNotYet });
       }
       await fetchProgress();
     } catch (err) {
-      setMessage({ type: 'error', text: 'We could not complete this module right now. Please try again.' });
+      setMessage({ type: 'error', text: uiText.weCouldNotCompleteThis });
     } finally {
       setCompleting(false);
     }
@@ -170,7 +182,7 @@ function WaiyakiModuleRoute() {
       >
         <div
           className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin"
-          aria-label="Loading module"
+          aria-label={uiText.loadingModule}
         />
       </div>
     );
@@ -182,7 +194,7 @@ function WaiyakiModuleRoute() {
     if (isAuthenticated && enrollmentStatus === 'checking') {
       return (
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.checkingYourEnrollment} />
         </div>
       );
     }
@@ -212,7 +224,7 @@ function WaiyakiModuleRoute() {
     moduleIndex >= 0 && moduleIndex < modules.length - 1 ? modules[moduleIndex + 1] : null;
   const nextLabel = nextModule
     ? `Next: ${nextModule.number} \u2014 ${nextModule.title}`
-    : 'Course complete';
+    : uiText.courseComplete;
 
   // The course player around the lesson: the server's module states, with
   // titles in the learner's language from the translated course.

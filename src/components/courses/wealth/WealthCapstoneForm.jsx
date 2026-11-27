@@ -1,6 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingYourCapstone: 'Loading your capstone…',
+  weCouldNotLoadYour: 'We could not load your capstone just now. Reload the page to try again.',
+  chooseOneOptionTheOne: 'Choose one option, the one that best fits your goals. Your answers save as a draft until every section carries an answer, at which point the capstone is recorded as submitted.',
+  capstoneTitle: 'Capstone title',
+  aShortTitleForYour: 'A short title for your plan',
+  sectionsAnswered: '{filled} of {total} sections answered.',
+  everySectionIsAnsweredSave: ' Every section is answered — save to submit.',
+  saving: 'Saving…',
+  yourCapstoneCouldNotBe: 'Your capstone could not be saved for this account yet.',
+  yourCapstoneIsSavedAnd: 'Your capstone is saved and submitted.',
+  weCouldNotSaveYour: 'We could not save your capstone just now. Please try again.',
+  submitMyCapstone: 'Submit my capstone',
+  saveDraft: 'Save draft',
+  savedOfSectionsAnswered: 'Saved. {v0} of {v1} sections answered.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.7, fontWeight: 300 };
 
@@ -57,6 +77,7 @@ const saveStyle = {
  * recorded the first time every section carries an answer.
  */
 export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-wealthcapstoneform', UI_TEXT);
   const { language } = useTranslation();
   const [state, setState] = useState({ status: 'loading', options: [], capstone: null });
   const [format, setFormat] = useState(null);
@@ -114,16 +135,16 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
       });
       const data = res && res.data ? res.data : null;
       if (data && data.progressSaved === false) {
-        setNote('Your capstone could not be saved for this account yet.');
+        setNote(uiText.yourCapstoneCouldNotBe);
       } else if (data) {
         setNote(data.submitted
-          ? 'Your capstone is saved and submitted.'
-          : `Saved. ${data.filledCount} of ${data.totalSections} sections answered.`);
+          ? uiText.yourCapstoneIsSavedAnd
+          : fillTemplate(uiText.savedOfSectionsAnswered, { v0: data.filledCount, v1: data.totalSections }));
       }
       await load();
       if (onSaved) onSaved();
     } catch (err) {
-      setError('We could not save your capstone just now. Please try again.');
+      setError(uiText.weCouldNotSaveYour);
     } finally {
       setSaving(false);
     }
@@ -133,20 +154,19 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
     return (
       <div style={{ padding: '1.5rem 0' }}>
         <div style={{ width: '1.5rem', height: '1.5rem', border: '2px solid rgba(232,184,91,0.2)', borderTopColor: '#e8b85b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-        <p className="font-body" style={{ ...bodyText, marginTop: '0.85rem' }}>Loading your capstone...</p>
+        <p className="font-body" style={{ ...bodyText, marginTop: '0.85rem' }}>{uiText.loadingYourCapstone}</p>
       </div>
     );
   }
 
   if (state.status === 'error') {
-    return <p className="font-body" style={{ ...bodyText }}>We could not load your capstone just now. Reload the page to try again.</p>;
+    return <p className="font-body" style={{ ...bodyText }}>{uiText.weCouldNotLoadYour}</p>;
   }
 
   return (
     <div>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-        Choose one option, the one that best fits your goals. Your answers save as a draft until
-        every section carries an answer, at which point the capstone is recorded as submitted.
+        {uiText.chooseOneOptionTheOne}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', marginBottom: '2rem' }}>
@@ -169,13 +189,13 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
       {format && (
         <div>
           <div style={{ marginBottom: '1.75rem' }}>
-            <p className="font-body" style={labelStyle}>Capstone title</p>
+            <p className="font-body" style={labelStyle}>{uiText.capstoneTitle}</p>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={200}
-              placeholder="A short title for your plan"
+              placeholder={uiText.aShortTitleForYour}
               style={{ ...inputStyle, resize: undefined }}
             />
           </div>
@@ -196,8 +216,8 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
           ))}
 
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-            {filledCount} of {sections.length} sections answered.
-            {complete ? ' Every section is answered — save to submit.' : ''}
+            {fillTemplate(uiText.sectionsAnswered, { filled: filledCount, total: sections.length })}
+            {complete ? uiText.everySectionIsAnsweredSave : ''}
           </p>
 
           <button
@@ -206,7 +226,7 @@ export default function WealthCapstoneForm({ courseSlug, canSave, onSaved }) {
             disabled={!canSave || saving || filledCount === 0}
             style={{ ...saveStyle, opacity: !canSave || saving || filledCount === 0 ? 0.6 : 1, cursor: !canSave || saving || filledCount === 0 ? 'not-allowed' : 'pointer' }}
           >
-            {saving ? 'Saving...' : complete ? 'Submit my capstone' : 'Save draft'}
+            {saving ? uiText.saving : complete ? uiText.submitMyCapstone : uiText.saveDraft}
           </button>
 
           {note && <p className="font-body" style={{ ...bodyText, marginTop: '1rem', color: 'rgba(232,184,91,0.85)' }}>{note}</p>}
