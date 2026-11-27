@@ -5,6 +5,17 @@ import { Download } from 'lucide-react';
 import { GUIDE_PRIVACY_NOTE, GUIDE_PROVERB, GUIDE_SUBTITLE, GUIDE_TITLE } from '@/lib/guide/sections';
 import { GUIDE_PRINT_PATH } from '@/lib/guide/guide-pdf';
 import { creamText, darkText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  wellBeingPathwayLearnerS: "Well-being pathway · Learner's Guide",
+  beginWithKaribu: 'Begin with Karibu →',
+  printablePdf: 'Printable PDF',
+  ofSectionsStarted: '{v0} of {v1} sections started',
+  guidePathwaySections: 'Guide pathway · {v0} sections',
+};
 
 const rise = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -30,6 +41,7 @@ const ctaStyle = {
  * and a clear way in.
  */
 export default function GuideHomeHero({ started = 0, total = 0 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-guidehomehero', UI_TEXT);
   const progress = total > 0 ? Math.max(Math.round((started / total) * 100), 2) : 2;
 
   return (
@@ -46,7 +58,7 @@ export default function GuideHomeHero({ started = 0, total = 0 }) {
       />
       <motion.div {...rise(0.15)} style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
         <span className="font-guide-body" style={{ display: 'block', color: '#C9961A', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-          Well-being pathway · Learner's Guide
+          {uiText.wellBeingPathwayLearnerS}
         </span>
         <h1 className="font-guide-heading" style={{ color: '#FBF5E8', fontWeight: 600, fontSize: 'clamp(2.4rem,5.2vw,68px)', lineHeight: 1.04, letterSpacing: '-0.02em', margin: '18px 0 22px' }}>
           {GUIDE_TITLE}
@@ -66,11 +78,11 @@ export default function GuideHomeHero({ started = 0, total = 0 }) {
 
         <div style={{ display: 'flex', gap: '14px', marginTop: '32px', flexWrap: 'wrap' }}>
           <Link to="/learners-guide/karibu" className="tamu-journey-primary font-guide-body" style={ctaStyle}>
-            Begin with Karibu →
+            {uiText.beginWithKaribu}
           </Link>
           <Link to={GUIDE_PRINT_PATH} className="tamu-journey-secondary font-guide-body" style={ctaStyle}>
             <Download size={14} strokeWidth={1.8} />
-            Printable PDF
+            {uiText.printablePdf}
           </Link>
         </div>
 
@@ -95,7 +107,7 @@ export default function GuideHomeHero({ started = 0, total = 0 }) {
           }}
         />
         <span>
-          {started > 0 ? `${started} of ${total} sections started` : `Guide pathway · ${total} sections`}
+          {started > 0 ? fillTemplate(uiText.ofSectionsStarted, { v0: started, v1: total }) : fillTemplate(uiText.guidePathwaySections, { v0: total })}
         </span>
       </motion.div>
     </section>

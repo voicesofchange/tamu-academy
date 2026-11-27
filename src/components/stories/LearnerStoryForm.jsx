@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/AuthContext';
 import { useTranslation } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  stars: '{v0} stars',
+};
 
 const inputStyle = {
   width: '100%',
@@ -44,6 +51,7 @@ const buttonStyle = {
 };
 
 export default function LearnerStoryForm() {
+  const { content: uiText } = useTranslatedContent('ui-components-stories-learnerstoryform', UI_TEXT);
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [form, setForm] = useState({
@@ -224,7 +232,7 @@ export default function LearnerStoryForm() {
                   padding: '0.25rem',
                   lineHeight: 1,
                 }}
-                aria-label={`${n} stars`}
+                aria-label={fillTemplate(uiText.stars, { v0: n })}
               >
                 ★
               </button>

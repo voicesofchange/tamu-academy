@@ -14,7 +14,7 @@ const CONTENT = {
   subtitle: "Enter your new password below",
   password: "New Password",
   confirm: "Confirm Password",
-  resetting: "Resetting...",
+  resetting: "Resetting…",
   reset: "Reset password",
   passwordMismatch: "Passwords do not match",
   resetFailed: "Failed to reset password",

@@ -19,6 +19,30 @@ import { useTranslation } from '@/lib/i18n/LanguageContext';
 import { withCaptions } from '@/lib/youtube-captions';
 import CaptionsNote from '@/components/videos/CaptionsNote';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  hosts: 'Hosts:',
+  publisher: 'Publisher:',
+  length: 'Length:',
+  directLink: 'Direct link:',
+  openOnYoutube: 'Open on YouTube',
+  writtenAlternative: 'Written alternative',
+  iHaveReviewedThisSession: 'I have reviewed this session or its written alternative.',
+  organizationalAttribution: 'Organizational attribution',
+  organizationalAttribution2: 'Organizational Attribution',
+  anchorMedia: 'Anchor Media',
+  saving: 'Saving…',
+  markAllMediaReviewed: 'Mark all media reviewed',
+  weCouldNotSaveYour: 'We could not save your progress. Please try again.',
+  questionsToConsiderWhileListening: 'Questions to Consider While Listening',
+  explanation: 'Explanation',
+  beforeTheScenarioAndStory: 'Before the scenario and STORY Lab',
+  beforeTheScenarioAndStory2: 'Before the Scenario and STORY Lab',
+  interactiveScenario: 'Interactive Scenario: {v0}',
+  privacyNotice: 'Privacy notice',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -45,6 +69,7 @@ function renderParagraphs(paragraphs) {
 }
 
 export default function MhModule7Lesson({ course, module: mod, lesson }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule7lesson', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const { isDataSaver } = useDisplayMode();
   const { language } = useTranslation();
@@ -114,7 +139,7 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
       <div key={session.key} style={{ marginBottom: '1.75rem' }}>
         <h3 className="font-heading" style={{ ...termHeading, fontSize: '1.1rem' }}>{session.title}</h3>
         <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
-          <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Hosts:</strong> {session.hosts} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Publisher:</strong> {session.publisher} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>Length:</strong> {session.approximateLength}
+          <strong style={{ color: 'rgba(232,184,91,0.85)' }}>{uiText.hosts}</strong> {session.hosts} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>{uiText.publisher}</strong> {session.publisher} · <strong style={{ color: 'rgba(232,184,91,0.85)' }}>{uiText.length}</strong> {session.approximateLength}
         </p>
         {isDataSaver ? (
           /* Data-Saver: the session player stays closed until the learner asks
@@ -137,16 +162,16 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
         )}
         {!isDataSaver && <CaptionsNote style={{ margin: '0 0 0.7rem' }} />}
         <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', marginBottom: '0.4rem' }}>
-          Direct link: <a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>Open on YouTube</a>
+          {uiText.directLink}{' '}<a href={session.watchUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>{uiText.openOnYoutube}</a>
           {' · '}
           <a href={session.officialPageUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>{session.officialPageLabel}</a>
           {' · '}
-          <a href={`#${session.writtenAlternativeSectionId}`} style={linkStyle}>Written alternative</a>
+          <a href={`#${session.writtenAlternativeSectionId}`} style={linkStyle}>{uiText.writtenAlternative}</a>
         </p>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', fontSize: '0.82rem', marginBottom: '0.75rem' }}>{session.contentNote}</p>
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', cursor: 'pointer', padding: '0.6rem 0.9rem', border: `1px solid ${isReviewed ? 'rgba(232,184,91,0.4)' : 'rgba(232,184,91,0.18)'}`, borderRadius: '4px', backgroundColor: isReviewed ? 'rgba(232,184,91,0.04)' : 'transparent' }}>
           <input type="checkbox" checked={isReviewed} onChange={() => toggleMediaSession(session.key)} style={{ marginTop: '0.15rem' }} id={`media-ack-${session.key}`} />
-          <span className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>I have reviewed this session or its written alternative.</span>
+          <span className="font-body" style={{ ...bodyText, fontSize: '0.85rem', margin: 0 }}>{uiText.iHaveReviewedThisSession}</span>
         </label>
       </div>
     );
@@ -213,29 +238,29 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
       </ModuleLessonSection>
 
       {/* 4. Organizational Attribution */}
-      <ModuleLessonSection id="organizational-attribution" eyebrow="Organizational attribution" heading="Organizational Attribution">
+      <ModuleLessonSection id="organizational-attribution" eyebrow={uiText.organizationalAttribution} heading={uiText.organizationalAttribution2}>
         <div style={boxStyle}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.organizationalAttribution}</p>
         </div>
       </ModuleLessonSection>
 
       {/* 5. Core Media — Anchor Media with review checkboxes */}
-      <ModuleLessonSection id="core-media" eyebrow={c.coreMediaEyebrow} heading="Anchor Media">
+      <ModuleLessonSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={uiText.anchorMedia}>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)', marginBottom: '1rem', fontSize: '0.85rem' }}>{lesson.coreMedia.attributionStatement}</p>
         {lesson.coreMedia.sessions.map((session) => renderMediaSession(session))}
         {allMediaReviewed && (
           <div style={{ marginTop: '1rem' }}>
             <button type="button" disabled={mediaAckPending} onClick={handleMarkMediaReviewed} className="font-body"
               style={{ color: '#24150f', backgroundColor: '#e8b85b', border: 'none', padding: '0.6rem 1.5rem', fontSize: '0.78rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: '2px', cursor: mediaAckPending ? 'wait' : 'pointer', opacity: mediaAckPending ? 0.7 : 1 }}>
-              {mediaAckPending ? 'Saving...' : 'Mark all media reviewed'}
+              {mediaAckPending ? uiText.saving : uiText.markAllMediaReviewed}
             </button>
-            {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>We could not save your progress. Please try again.</p>}
+            {mediaAckError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '0.5rem', fontSize: '0.85rem' }}>{uiText.weCouldNotSaveYour}</p>}
           </div>
         )}
       </ModuleLessonSection>
 
       {/* 6. Questions to Consider */}
-      <ModuleLessonSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading="Questions to Consider While Listening">
+      <ModuleLessonSection id="questions-to-consider" eyebrow={c.watchEyebrow} heading={uiText.questionsToConsiderWhileListening}>
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.questionsToConsider.map((q, i) => <li key={i} style={{ marginBottom: '0.85rem' }}>{q}</li>)}
         </ol>
@@ -247,19 +272,19 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
       </ModuleLessonSection>
 
       {/* 8. Explanation */}
-      <ModuleLessonSection id="explanation" eyebrow={c.explanationEyebrow} heading="Explanation">
+      <ModuleLessonSection id="explanation" eyebrow={c.explanationEyebrow} heading={uiText.explanation}>
         {lesson.explanation.map(renderExplanationSection)}
       </ModuleLessonSection>
 
       {/* 9. Scenario Safety Note */}
-      <ModuleLessonSection id="scenario-safety-note" eyebrow="Before the scenario and STORY Lab" heading="Before the Scenario and STORY Lab">
+      <ModuleLessonSection id="scenario-safety-note" eyebrow={uiText.beforeTheScenarioAndStory} heading={uiText.beforeTheScenarioAndStory2}>
         <div style={boxStyle}>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.88rem' }}>{lesson.scenarioSafetyNote}</p>
         </div>
       </ModuleLessonSection>
 
       {/* 10. Interactive Scenario */}
-      <ModuleLessonSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={`Interactive Scenario: ${lesson.interactiveScenario.title}`}>
+      <ModuleLessonSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={fillTemplate(uiText.interactiveScenario, { v0: lesson.interactiveScenario.title })}>
         <MhMwangazaScenario courseSlug={course.slug} moduleSlug={moduleSlug} scenario={lesson.interactiveScenario} />
       </ModuleLessonSection>
 
@@ -272,7 +297,7 @@ export default function MhModule7Lesson({ course, module: mod, lesson }) {
       {/* 12. Private Reflection */}
       <ModuleLessonSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
         <p className="font-body" style={{ ...bodyText, marginBottom: '1rem' }}>{lesson.privateReflection.prompt}</p>
-        <div style={disclaimerBoxStyle} aria-label="Privacy notice">
+        <div style={disclaimerBoxStyle} aria-label={uiText.privacyNotice}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.privacy}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{lesson.privateReflection.privacyNotice}</p>
         </div>

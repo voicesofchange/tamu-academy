@@ -1,5 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  scenarioDecisionProgress: 'Scenario decision progress',
+  decision: 'Decision {v0}{v1}{v2}',
+  decisionOf: 'Decision {v0} of {v1}',
+  decision2: 'Decision {v0}: {v1}',
+  decisionResponseOptions: 'Decision {v0} response options',
+  option: 'Option {v0}: {v1}',
+  loadingFeedback: 'Loading feedback…',
+  feedback: 'Feedback',
+  previousDecision: '← Previous Decision',
+  nextDecision: 'Next Decision →',
+  completingScenario: 'Completing scenario…',
+  weCouldNotCompleteYour: 'We could not complete your scenario right now.',
+  retryCompletion: 'Retry completion',
+  yourDesignSummary: 'Your Design Summary',
+  finalDesignMessage: 'Final Design Message',
+  weCouldNotEvaluateYour: 'We could not evaluate your selection right now. Please try again.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -177,6 +199,7 @@ function optionLabel(i) {
  *      progressSaved: false.
  */
 export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhtumainiscenario', UI_TEXT);
   const [activeStep, setActiveStep] = useState(0);
   const [selections, setSelections] = useState({});
   const [feedbacks, setFeedbacks] = useState({});
@@ -303,7 +326,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       if (requestRefs.current[decisionId] !== requestId) return;
       setDecisionErrors((prev) => ({
         ...prev,
-        [decisionId]: 'We could not evaluate your selection right now. Please try again.',
+        [decisionId]: uiText.weCouldNotEvaluateYour,
       }));
     } finally {
       // Only clear pending if this is still the current request.
@@ -354,7 +377,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       {/* Step indicators — accessible method to return to and change
           any answered decision. Semantic <ol>/<li> list with native
           buttons; no role overrides on the button element. */}
-      <ol aria-label="Scenario decision progress" style={{ ...stepContainerStyle, listStyle: 'none', padding: 0, margin: '0 0 1.75rem' }}>
+      <ol aria-label={uiText.scenarioDecisionProgress} style={{ ...stepContainerStyle, listStyle: 'none', padding: 0, margin: '0 0 1.75rem' }}>
         {scenario.decisions.map((d, i) => {
           const isAnswered = !!feedbacks[d.decisionId];
           const isCurrent = i === activeStep;
@@ -371,7 +394,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
               <button
                 type="button"
                 aria-current={isCurrent ? 'step' : undefined}
-                aria-label={`Decision ${i + 1}${isAnswered ? ', answered' : ''}${isCurrent ? ', current' : ''}`}
+                aria-label={fillTemplate(uiText.decision, { v0: i + 1, v1: isAnswered ? ', answered' : '', v2: isCurrent ? ', current' : '' })}
                 disabled={!accessible}
                 onClick={() => accessible && setActiveStep(i)}
                 style={style}
@@ -385,9 +408,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
 
       {/* Active decision card — one at a time. */}
       <div style={decisionBoxStyle}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-          Decision {activeStep + 1} of {scenario.decisions.length}
-        </span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{fillTemplate(uiText.decisionOf, { v0: activeStep + 1, v1: scenario.decisions.length })}</span>
         <h3
           className="font-heading"
           style={{ color: '#f8f0df', fontSize: '1.15rem', fontWeight: 400, lineHeight: 1.3, margin: '0 0 0.6rem' }}
@@ -398,7 +419,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
           {activeDecision.prompt}
         </p>
         <fieldset
-          aria-label={`Decision ${activeStep + 1}: ${activeDecision.heading}`}
+          aria-label={fillTemplate(uiText.decision2, { v0: activeStep + 1, v1: activeDecision.heading })}
           style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
         >
           <legend className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
@@ -406,7 +427,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
           </legend>
           <ul
             role="radiogroup"
-            aria-label={`Decision ${activeStep + 1} response options`}
+            aria-label={fillTemplate(uiText.decisionResponseOptions, { v0: activeStep + 1 })}
             style={{ listStyle: 'none', padding: 0, margin: 0 }}
           >
             {activeDecision.options.map((opt, i) => {
@@ -422,7 +443,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
                       disabled={isPending}
                       onChange={() => handleSelect(activeDecisionId, i)}
                       style={{ marginTop: '0.18rem' }}
-                      aria-label={`Option ${optionLabel(i)}: ${opt}`}
+                      aria-label={fillTemplate(uiText.option, { v0: optionLabel(i), v1: opt })}
                     />
                     <span style={{ flex: 1 }}>
                       <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>
@@ -438,13 +459,13 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
         </fieldset>
         {isPending && (
           <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.85rem', margin: 0 }}>
-            Loading feedback…
+            {uiText.loadingFeedback}
           </p>
         )}
         {hasFeedback && !isPending && (
           <div role="status" aria-live="polite" style={feedbackBoxStyle}>
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>
-              Feedback
+              {uiText.feedback}
             </span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.7)' }}>
               {feedbacks[activeDecisionId]}
@@ -462,14 +483,14 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {activeStep > 0 ? (
           <button type="button" onClick={() => setActiveStep(activeStep - 1)} style={navButtonStyle}>
-            &larr; Previous Decision
+            {uiText.previousDecision}
           </button>
         ) : (
           <span />
         )}
         {!isLastStep && hasFeedback && !isPending && (
           <button type="button" onClick={() => setActiveStep(activeStep + 1)} style={navButtonStyle}>
-            Next Decision &rarr;
+            {uiText.nextDecision}
           </button>
         )}
       </div>
@@ -477,7 +498,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       {/* Completion status — visible regardless of active step. */}
       {completionPending && !completed && !completionError && (
         <p className="font-body" role="status" aria-live="polite" style={{ ...bodyText, color: 'rgba(243,234,216,0.5)', fontSize: '0.88rem', marginBottom: '1rem' }}>
-          Completing scenario…
+          {uiText.completingScenario}
         </p>
       )}
 
@@ -486,10 +507,10 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
       {completionError && (
         <div role="alert" style={{ padding: '1rem 1.25rem', border: '1px solid rgba(232,184,91,0.4)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', marginBottom: '1.5rem' }}>
           <p className="font-body" style={{ ...bodyText, color: '#e8955c', margin: 0 }}>
-            We could not complete your scenario right now.
+            {uiText.weCouldNotCompleteYour}
           </p>
           <button type="button" onClick={handleRetryCompletion} style={retryButtonStyle}>
-            Retry completion
+            {uiText.retryCompletion}
           </button>
         </div>
       )}
@@ -499,7 +520,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
         <div role="status" aria-live="polite">
           <div style={summaryBoxStyle}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.3rem', fontWeight: 400, margin: '0 0 1.25rem' }}>
-              Your Design Summary
+              {uiText.yourDesignSummary}
             </h3>
             {scenario.summaryHeadings.map((heading, i) => {
               const decision = scenario.decisions[i];
@@ -519,7 +540,7 @@ export default function MhTumainiScenario({ courseSlug, moduleSlug, scenario }) 
           </div>
           <div style={finalMessageBoxStyle}>
             <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>
-              Final Design Message
+              {uiText.finalDesignMessage}
             </span>
             <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.75)' }}>
               {scenario.finalDesignMessage}

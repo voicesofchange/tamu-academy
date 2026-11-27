@@ -1,5 +1,15 @@
 import React from 'react';
 import CourseOverviewSection from '@/components/courses/CourseOverviewSection';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  sources: 'Sources',
+  sourcesAndFurtherReading: 'Sources and further reading',
+  loadingTheCourseSources: 'Loading the course sources…',
+  theSourceListCouldNot: 'The source list could not be loaded. Please reload the page.',
+  entriesWithAnOnlineRecord: 'Entries with an online record open in a new tab.',
+};
 
 const GROUPS = [
   { key: 'primarySources', label: 'Primary sources' },
@@ -50,19 +60,24 @@ const hint = {
  * it; where an online copy or record exists, the citation links out to it, and
  * records with no online copy stay as plain citations.
  */
+// Group headings, by group, in the reader's language.
+const GROUP_TEXT = Object.fromEntries(GROUPS.map(({ key, label }) => [key, label]));
+
 export default function WaiyakiSources({ sources }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakisources', UI_TEXT);
+  const { content: groupText } = useTranslatedContent('waiyaki-source-groups', GROUP_TEXT);
   return (
-    <CourseOverviewSection id="course-sources" surface="light" eyebrow="Sources" heading="Sources and further reading">
+    <CourseOverviewSection id="course-sources" surface="light" eyebrow={uiText.sources} heading={uiText.sourcesAndFurtherReading}>
       {sources === undefined && (
-        <p className="font-body" style={record}>Loading the course sources&hellip;</p>
+        <p className="font-body" style={record}>{uiText.loadingTheCourseSources}</p>
       )}
 
       {sources === null && (
-        <p className="font-body" style={record}>The source list could not be loaded. Please reload the page.</p>
+        <p className="font-body" style={record}>{uiText.theSourceListCouldNot}</p>
       )}
 
       {sources && (
-        <p className="font-body" style={hint}>Entries with an online record open in a new tab.</p>
+        <p className="font-body" style={hint}>{uiText.entriesWithAnOnlineRecord}</p>
       )}
 
       {sources && GROUPS.map(({ key, label }) => {
@@ -70,7 +85,7 @@ export default function WaiyakiSources({ sources }) {
         if (!Array.isArray(records) || records.length === 0) return null;
         return (
           <div key={key} style={{ marginBottom: '1.9rem' }}>
-            <span className="font-body" style={groupLabel}>{label}</span>
+            <span className="font-body" style={groupLabel}>{groupText[key] || label}</span>
             <ul className="font-body" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
               {records.map((item) => (
                 <li key={item.text} style={record}>

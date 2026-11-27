@@ -1,4 +1,22 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  course: 'Course',
+  module: 'Module',
+  suggestedTime: 'Suggested time',
+  submission: 'Submission',
+  clearActivityResetsAllTemporary: 'Clear activity (resets all temporary responses and checkboxes)',
+  clearActivity: 'Clear activity',
+  layer: 'Layer {v0}',
+  possibleRole: 'Possible role: {v0}',
+  proposedActionFor: 'Proposed action for {v0}',
+  workedExampleTable: 'Worked example table',
+  labField: 'Lab field',
+  workedResponse: 'Worked response',
+};
 
 /**
  * MhStrengthWithoutSilenceLab — the browser local worksheet renderer
@@ -85,6 +103,7 @@ function Field({ id, label, value, onChange, rows = 3 }) {
 }
 
 export default function MhStrengthWithoutSilenceLab({ lab }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhstrengthwithoutsilencelab', UI_TEXT);
   const [selectedScenario, setSelectedScenario] = useState('');
   const [fields, setFields] = useState({
     bPressure: '',
@@ -125,14 +144,14 @@ export default function MhStrengthWithoutSilenceLab({ lab }) {
       </p>
 
       <dl className="font-body" style={{ ...boxStyle, marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.9rem 1.5rem' }}>
-        <div><dt style={eyebrowStyle}>Course</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
-        <div><dt style={eyebrowStyle}>Module</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
-        <div><dt style={eyebrowStyle}>Suggested time</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
-        <div><dt style={eyebrowStyle}>Submission</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.course}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.module}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.suggestedTime}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.submission}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
       </dl>
 
-      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label="Clear activity (resets all temporary responses and checkboxes)">
-        Clear activity
+      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label={uiText.clearActivityResetsAllTemporary}>
+        {uiText.clearActivity}
       </button>
 
       {/* Privacy + purpose — before every scenario, prompt, and response control */}
@@ -218,16 +237,14 @@ export default function MhStrengthWithoutSilenceLab({ lab }) {
         {lab.parts.widenSupportPathway.layers.map((layer, i) => (
           <div key={layer.name} style={{ ...boxStyle, padding: '1rem 1.25rem' }}>
             <div style={{ marginBottom: '0.35rem' }}>
-              <span className="font-body" style={{ ...eyebrowStyle }}>{`Layer ${i + 1}`}</span>
+              <span className="font-body" style={{ ...eyebrowStyle }}>{fillTemplate(uiText.layer, { v0: i + 1 })}</span>
             </div>
             <h4 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.02rem', fontWeight: 400, margin: '0 0 0.35rem' }}>{layer.name}</h4>
-            <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.85rem', fontStyle: 'italic' }}>
-              Possible role: {layer.possibleRole}
-            </p>
+            <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.85rem', fontStyle: 'italic' }}>{fillTemplate(uiText.possibleRole, { v0: layer.possibleRole })}</p>
             <div style={{ marginTop: '0.7rem' }}>
               <Field
                 id={`lab-g-layer-${i}`}
-                label={`Proposed action for ${layer.name.toLowerCase()}`}
+                label={fillTemplate(uiText.proposedActionFor, { v0: layer.name.toLowerCase() })}
                 value={fields[`gLayer${i}`]}
                 onChange={(v) => setField(`gLayer${i}`, v)}
                 rows={2}
@@ -252,15 +269,15 @@ export default function MhStrengthWithoutSilenceLab({ lab }) {
       <div style={{ overflowX: 'auto' }}>
         <table className="font-body" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
           <caption className="font-body" style={{ ...eyebrowStyle, textAlign: 'left', captionSide: 'top', marginBottom: '0.6rem' }}>
-            Worked example table
+            {uiText.workedExampleTable}
           </caption>
           <thead>
             <tr>
               <th scope="col" style={{ textAlign: 'left', padding: '0.6rem 0.8rem', borderBottom: '1px solid rgba(232,184,91,0.3)', color: '#e8b85b', fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Lab field
+                {uiText.labField}
               </th>
               <th scope="col" style={{ textAlign: 'left', padding: '0.6rem 0.8rem', borderBottom: '1px solid rgba(232,184,91,0.3)', color: '#e8b85b', fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Worked response
+                {uiText.workedResponse}
               </th>
             </tr>
           </thead>

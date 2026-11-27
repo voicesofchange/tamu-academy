@@ -177,6 +177,8 @@ const CONTENT = {
 
 export default function MyCourses() {
   const { content: c } = useTranslatedContent('my-courses', CONTENT);
+  // The course cards' labels ("7 modules", "Self-paced"…), translated.
+  const { content: courseVisuals } = useTranslatedContent('my-courses-visuals', COURSE_VISUALS);
   const { user } = useAuth();
   const { isDataSaver, toggleMode } = useDisplayMode();
   // The saved learner group decides the opening view. The filter below can
@@ -324,11 +326,11 @@ export default function MyCourses() {
               <JourneyCourseTile
                 key={course.slug}
                 index={index}
-                number={COURSE_VISUALS[course.slug]?.number}
+                number={courseVisuals[course.slug]?.number}
                 title={course.title}
                 description={course.subtitle}
                 status={statusFor(course.slug)}
-                visual={COURSE_VISUALS[course.slug]}
+                visual={courseVisuals[course.slug]}
                 actions={[{ label: c.courseOverview, to: `/courses/${course.slug}` }]}
               />
             ))}
@@ -343,11 +345,11 @@ export default function MyCourses() {
             <JourneyBand tone="tint" eyebrow={c.resumeEyebrow} heading={c.resumeHeading}>
               <div style={{ maxWidth: '520px' }}>
                 <JourneyCourseTile
-                  number={COURSE_VISUALS[resumeTarget.slug]?.number}
+                  number={courseVisuals[resumeTarget.slug]?.number}
                   title={`${resumeTarget.firstIncomplete.number}: ${resumeTarget.firstIncomplete.title}`}
                   description={resumeTarget.meta?.title}
                   status={statusFor(resumeTarget.slug)}
-                  visual={COURSE_VISUALS[resumeTarget.slug]}
+                  visual={courseVisuals[resumeTarget.slug]}
                   progress={{
                     completed: resumeTarget.completedCount,
                     total: resumeTarget.completion?.totalModules || 0,
@@ -391,11 +393,11 @@ export default function MyCourses() {
                   <JourneyCourseTile
                     key={enr.slug}
                     index={index}
-                    number={COURSE_VISUALS[enr.slug]?.number}
+                    number={courseVisuals[enr.slug]?.number}
                     title={meta?.title}
                     description={meta?.subtitle}
                     status={statusFor(enr.slug)}
-                    visual={COURSE_VISUALS[enr.slug]}
+                    visual={courseVisuals[enr.slug]}
                     progress={{ completed: completedCount, total: totalModules, label: c.progress }}
                     actions={actions}
                   />

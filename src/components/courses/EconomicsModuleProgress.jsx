@@ -82,7 +82,7 @@ const modeSelectStyle = {
 
 const CONTENT = {
   privacyNote: 'No personal reflections or activity responses are stored in the platform. Mark each requirement complete as you finish it; the knowledge check is verified by the server.',
-  loading: 'Loading...',
+  loading: 'Loading…',
   saving: 'Saving…',
   markComplete: 'Mark complete',
   completed: 'Completed',

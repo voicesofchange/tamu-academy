@@ -6,6 +6,12 @@ import PageMeta from '@/components/seo/PageMeta';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import PreviewSignupCard from '@/components/courses/preview/PreviewSignupCard';
 import { ModulePreviewContext, usePreviewLabels } from '@/components/courses/preview/ModulePreviewContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loading: 'Loading',
+};
 
 /**
  * ModulePreviewGate — the route guard for course module pages.
@@ -24,6 +30,7 @@ import { ModulePreviewContext, usePreviewLabels } from '@/components/courses/pre
 const PREVIEW_VALUE = { preview: true };
 
 export default function ModulePreviewGate() {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-preview-modulepreviewgate', UI_TEXT);
   const { isAuthenticated, isLoadingAuth, authChecked, checkUserAuth } = useAuth();
   const location = useLocation();
 
@@ -34,7 +41,7 @@ export default function ModulePreviewGate() {
   if (isLoadingAuth || !authChecked) {
     return (
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Loading" />
+        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.loading} />
       </div>
     );
   }

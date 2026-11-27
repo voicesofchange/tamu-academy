@@ -11,6 +11,14 @@ import {
   SAUTI_ZA_SOKO_COURSE,
   SAUTI_ZA_SOKO_PEER_COURSE_SLUG,
 } from '@/lib/sauti-za-soko-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingModule: 'Loading module',
+  checkingYourEnrollment: 'Checking your enrollment',
+  facilitatingAVendorCircle: 'Facilitating a Vendor Circle',
+};
 
 const COURSE_STUB = {
   slug: SAUTI_ZA_SOKO_PEER_COURSE_SLUG,
@@ -26,6 +34,9 @@ const COURSE_STUB = {
  * that a reviewer must approve before the module can be completed.
  */
 export default function SokoPeerFacilitator() {
+  const { content: uiText } = useTranslatedContent('ui-pages-sokopeerfacilitator', UI_TEXT);
+  // The track's title and learning area, translated; the slug is never translated.
+  const { content: courseStub } = useTranslatedContent('soko-peer-course-stub', COURSE_STUB);
   const { language } = useTranslation();
   const { user } = useAuth();
   const [module, setModule] = useState(null);
@@ -61,27 +72,27 @@ export default function SokoPeerFacilitator() {
   if (status === 'loading') {
     return (
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Loading module" />
+        <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.loadingModule} />
       </div>
     );
   }
 
   if (status === 'denied') {
-    const peerModule = { number: 'Module 8', route: 'module-8', title: 'Facilitating a Vendor Circle' };
+    const peerModule = { number: 'Module 8', route: 'module-8', title: uiText.facilitatingAVendorCircle };
 
     // Signed in but not enrolled: start the track here and load the module in
     // place. Unpublished modules and prerequisites keep their own state.
     if (isAuthenticated && enrollmentStatus === 'checking') {
       return (
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.checkingYourEnrollment} />
         </div>
       );
     }
     if (isAuthenticated && enrollmentStatus === 'not_enrolled') {
       return (
         <ModuleStartGate
-          course={COURSE_STUB}
+          course={{ ...courseStub, slug: COURSE_STUB.slug }}
           module={peerModule}
           autoStart={autoStart}
           onStarted={() => setReloadToken((token) => token + 1)}

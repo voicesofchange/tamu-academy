@@ -4,6 +4,7 @@
  * The pageId is shared so the LLM translation is cached once across all modules.
  */
 export const MH_MODULE_CONTENT = {
+  opensInNewTab: '{label} (opens in a new tab)',
   learningArea: 'Learning area',
   estimatedTime: 'Estimated time',
   overviewEyebrow: 'Overview',

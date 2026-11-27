@@ -10,12 +10,21 @@ import { GuideStringsProvider } from '@/lib/guide/GuideStringsContext';
 import { useTranslatedGuideSection } from '@/lib/guide/useGuideTranslation';
 import { getGuideSection } from '@/lib/guide/sections';
 import { creamText } from '@/lib/guide/styles';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  thatSectionIsNotPart: 'That section is not part of the guide',
+  theLinkMayBeOut: 'The link may be out of date. Every section of Safari ya Utu is listed on the guide home.',
+  backToTheGuideHome: 'Back to the guide home →',
+};
 
 /**
  * GuideSection — one Safari ya Utu section, using the same template for every
  * section. Kioo and Kurudi carry their own comparison behaviour.
  */
 export default function GuideSection() {
+  const { content: uiText } = useTranslatedContent('ui-pages-guidesection', UI_TEXT);
   const { sectionId } = useParams();
   const rawSection = getGuideSection(sectionId);
   // The section in the learner's own language. Identifiers, table row labels
@@ -29,13 +38,13 @@ export default function GuideSection() {
         <div style={{ padding: 'clamp(7rem, 12vw, 9rem) clamp(1.25rem, 5vw, 4rem) 4rem', maxWidth: '860px', margin: '0 auto' }}>
           <section className="guide-card" style={{ padding: '2rem' }}>
             <h1 className="font-guide-heading" style={{ ...creamText.heading, fontSize: '1.5rem', margin: '0 0 0.75rem' }}>
-              That section is not part of the guide
+              {uiText.thatSectionIsNotPart}
             </h1>
             <p className="font-guide-body" style={{ ...creamText.body, margin: '0 0 1.25rem' }}>
-              The link may be out of date. Every section of Safari ya Utu is listed on the guide home.
+              {uiText.theLinkMayBeOut}
             </p>
             <Link to="/learners-guide" className="font-guide-body guide-link" style={{ fontSize: '0.85rem' }}>
-              Back to the guide home &rarr;
+              {uiText.backToTheGuideHome}
             </Link>
           </section>
         </div>

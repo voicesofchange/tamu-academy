@@ -23,11 +23,21 @@ import SokoFacilitatorReviewPanel from '@/components/insights/SokoFacilitatorRev
 import QaReviewPanel from '@/components/insights/QaReviewPanel';
 import { useTranslation } from '@/lib/i18n';
 import { useAuth } from '@/lib/AuthContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  certificateCorrections: 'Certificate Corrections',
+  sautiZaSokoContentReview: 'Sauti za Soko Content Review',
+  sautiZaSokoPeerFacilitator: 'Sauti za Soko Peer Facilitator Review',
+  courseJourneyAndQualityAssurance: 'Course Journey and Quality Assurance',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.7)', fontSize: '0.92rem', lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, maxWidth: '640px' };
 const cardStyle = { padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' };
 
 export default function CommunityInsights() {
+  const { content: uiText } = useTranslatedContent('ui-pages-communityinsights', UI_TEXT);
   const { t } = useTranslation();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
@@ -134,19 +144,19 @@ export default function CommunityInsights() {
             <VoicesOpenTracking />
           </PageSection>
 
-          <PageSection heading="Certificate Corrections">
+          <PageSection heading={uiText.certificateCorrections}>
             <CertificateCorrection />
           </PageSection>
 
-          <PageSection heading="Sauti za Soko Content Review">
+          <PageSection heading={uiText.sautiZaSokoContentReview}>
             <SokoContentReviewPanel />
           </PageSection>
 
-          <PageSection heading="Sauti za Soko Peer Facilitator Review">
+          <PageSection heading={uiText.sautiZaSokoPeerFacilitator}>
             <SokoFacilitatorReviewPanel />
           </PageSection>
 
-          <PageSection heading="Course Journey and Quality Assurance">
+          <PageSection heading={uiText.courseJourneyAndQualityAssurance}>
             <QaReviewPanel />
           </PageSection>
         </>

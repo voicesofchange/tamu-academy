@@ -13,7 +13,21 @@ import MhModule5Progress from '@/components/courses/MhModule5Progress';
 import { GoldDivider } from '@/components/courses/MhLessonOrnaments';
 import MhModuleNav from '@/components/courses/MhModuleNav';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
 import { MH_MODULE_CONTENT } from '@/lib/i18n/mh-module-content';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  requiredEducationalDisclaimer: 'Required educational disclaimer',
+  pathwaysSafetyWarning: 'PATHWAYS safety warning',
+  fictionalOrCompositeSituationReminder: 'Fictional or composite situation reminder',
+  privacyNotice: 'Privacy notice',
+  personalDisclosureNotice: 'Personal disclosure notice',
+  contentAndSafetyNoteBefore: 'Content and safety note before media',
+  contentAndSafetyNoteBefore2: 'Content and safety note before explanation and cases',
+  contentAndSafetyNoteBefore3: 'Content and safety note before interactive scenario',
+  contentAndSafetyNoteBefore4: 'Content and safety note before applied activity',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -55,7 +69,7 @@ function renderMediaItem(item, attributionStatement, c) {
       }} />
       {item.officialPageUrl && (
         <p className="font-body" style={{ ...bodyText, marginTop: '0.5rem', marginBottom: 0 }}>
-          <a href={item.officialPageUrl} target="_blank" rel="noopener noreferrer" aria-label={`${item.officialPageLabel} (opens in a new tab)`} style={externalLinkStyle}>{item.officialPageLabel}</a>
+          <a href={item.officialPageUrl} target="_blank" rel="noopener noreferrer" aria-label={fillTemplate(c.opensInNewTab, { label: item.officialPageLabel })} style={externalLinkStyle}>{item.officialPageLabel}</a>
           <span style={{ color: 'rgba(243,234,216,0.45)', fontSize: '0.78rem', marginLeft: '0.45rem' }}>{c.opensInNewTab}</span>
         </p>
       )}
@@ -84,6 +98,7 @@ function renderOptionalMedia(item, attributionStatement, c) {
 }
 
 export default function MhModule5Lesson({ course, module: mod, lesson }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule5lesson', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-module-lesson-shared', MH_MODULE_CONTENT);
   const coursePath = `/courses/${course.slug}`;
   const modulePath = `${coursePath}/${mod.route}`;
@@ -131,7 +146,7 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
       {/* 2. Learning objectives */}
       <ModuleLessonSection id="learning-objectives" eyebrow={c.objectivesEyebrow} heading={c.objectivesHeading}>
         {renderObjectives(lesson.learningObjectives.objectives)}
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.learningObjectives.earlyDisclaimer}</p>
         </div>
@@ -139,7 +154,7 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
 
       {/* 3. Core media */}
       <ModuleLessonSection id="core-media" eyebrow={c.coreMediaEyebrow} heading={c.requiredVideosHeading}>
-        {safetyNoteBox('Content and safety note before media')}
+        {safetyNoteBox(uiText.contentAndSafetyNoteBefore)}
         <p className="font-body" style={{ ...bodyText, marginBottom: '1.4rem' }}>{c.twoRequiredVideosThemes}</p>
         {renderMediaItem(lesson.coreMedia.primary, lesson.coreMedia.attributionStatement, c)}
         {renderMediaItem(lesson.coreMedia.secondary, lesson.coreMedia.attributionStatement, c)}
@@ -167,21 +182,21 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
       {/* 6-9. Explanation sections including Ghana and rural Uganda cases */}
       {lesson.explanation.map((section, idx) => (
         <React.Fragment key={section.sectionId}>
-          {idx === 0 && safetyNoteBox('Content and safety note before explanation and cases')}
+          {idx === 0 && safetyNoteBox(uiText.contentAndSafetyNoteBefore2)}
           {renderExplanation(section, c)}
         </React.Fragment>
       ))}
 
       {/* 10. Interactive scenario */}
       <ModuleLessonSection id="interactive-scenario" eyebrow={c.interactiveScenarioEyebrow} heading={lesson.interactiveScenario.title}>
-        {safetyNoteBox('Content and safety note before interactive scenario')}
+        {safetyNoteBox(uiText.contentAndSafetyNoteBefore3)}
         <MhMwangazaScenario courseSlug={course.slug} moduleSlug={mod.route} scenario={lesson.interactiveScenario} />
       </ModuleLessonSection>
 
       {/* 11. PATHWAYS applied activity */}
       <ModuleLessonSection id="pathways-lab" eyebrow={lesson.pathwaysLab.eyebrow} heading={lesson.pathwaysLab.title}>
-        {safetyNoteBox('Content and safety note before applied activity')}
-        <div aria-label="PATHWAYS safety warning" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.07)' }}>
+        {safetyNoteBox(uiText.contentAndSafetyNoteBefore4)}
+        <div aria-label={uiText.pathwaysSafetyWarning} style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.35)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.07)' }}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.pathwaysSafetyWarning}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.pathwaysSafetyWarning}</p>
         </div>
@@ -190,13 +205,13 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
 
       {/* 12. Private reflection */}
       <ModuleLessonSection id="private-reflection" eyebrow={c.reflectionEyebrow} heading={lesson.privateReflection.heading}>
-        <div aria-label="Fictional or composite situation reminder" style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.28)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)' }}>
+        <div aria-label={uiText.fictionalOrCompositeSituationReminder} style={{ marginBottom: '1.6rem', padding: '1.4rem 1.6rem', border: '1px solid rgba(232,184,91,0.28)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.05)' }}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.fictionalSituation}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.fictionalSituationReminder}</p>
         </div>
         <p className="font-body" style={{ ...bodyText, marginBottom: '0.85rem' }}>{lesson.privateReflection.prompt}</p>
         <textarea id="m5-refl-input" aria-label={lesson.privateReflection.prompt} className="font-body" style={reflectionTextareaStyle} value={reflectionText} onChange={(e) => setReflectionText(e.target.value)} rows={4} />
-        <div aria-label="Privacy notice" style={{ ...disclaimerBoxStyle, marginTop: '1.6rem' }}>
+        <div aria-label={uiText.privacyNotice} style={{ ...disclaimerBoxStyle, marginTop: '1.6rem' }}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.privacy}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.privateReflection.privacyNotice}</p>
         </div>
@@ -222,7 +237,7 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
         <ol className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.4rem' }}>
           {lesson.optionalExtendedAssignment.requirements.map((item, i) => <li key={i} style={{ marginBottom: '0.7rem' }}>{item}</li>)}
         </ol>
-        <div style={disclaimerBoxStyle} aria-label="Personal disclosure notice">
+        <div style={disclaimerBoxStyle} aria-label={uiText.personalDisclosureNotice}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.personalDisclosure}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.optionalExtendedAssignment.personalDisclosure}</p>
         </div>
@@ -231,7 +246,7 @@ export default function MhModule5Lesson({ course, module: mod, lesson }) {
       {/* 16. Module closing and final disclaimer */}
       <ModuleLessonSection id="closing-section" eyebrow={c.closingEyebrow} heading={lesson.closing.heading}>
         {renderParagraphs(lesson.closing.paragraphs)}
-        <div style={disclaimerBoxStyle} aria-label="Required educational disclaimer">
+        <div style={disclaimerBoxStyle} aria-label={uiText.requiredEducationalDisclaimer}>
           <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{c.disclaimerLabel}</span>
           <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lesson.closing.finalDisclaimer}</p>
         </div>

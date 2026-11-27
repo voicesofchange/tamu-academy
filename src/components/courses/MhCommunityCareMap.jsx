@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  communityOfCareMapWorksheet: 'Community of Care Map worksheet',
+  privacyNotice: 'Privacy notice',
+  blankWorksheet: '{v0} — Blank Worksheet',
+  blank: '{v0} (blank)',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -101,6 +111,7 @@ function fieldIdToKey(id) {
  * only handles layout and state).
  */
 export default function MhCommunityCareMap({ config }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhcommunitycaremap', UI_TEXT);
   function initialRings() {
     const init = {};
     config.ringDefinitions.forEach((r) => {
@@ -180,12 +191,12 @@ export default function MhCommunityCareMap({ config }) {
   }
 
   return (
-    <section aria-label="Community of Care Map worksheet">
+    <section aria-label={uiText.communityOfCareMapWorksheet}>
       {/* Privacy notice + pre-activity reminder — visible on screen,
           hidden from the printout */}
       <div className="print:hidden" style={{ ...privacyBoxStyle, marginBottom: '1.25rem' }}>
         <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.55rem' }}>
-          Privacy notice
+          {uiText.privacyNotice}
         </span>
         <ul className="font-body" style={{ ...bodyText, margin: 0, paddingLeft: '1.05rem' }}>
           {config.privacyNotice.map((line, i) => (
@@ -294,9 +305,7 @@ export default function MhCommunityCareMap({ config }) {
         className={blankPrintActive ? 'tamu-print-area hidden print:block' : 'hidden'}
         aria-hidden="true"
       >
-        <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.35rem', fontWeight: 400, marginBottom: '0.7rem' }}>
-          {config.heading} — Blank Worksheet
-        </h3>
+        <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.35rem', fontWeight: 400, marginBottom: '0.7rem' }}>{fillTemplate(uiText.blankWorksheet, { v0: config.heading })}</h3>
         {config.ringDefinitions.map((ring) => (
           <section key={`blank-${ring.id}`} style={{ marginBottom: '1.4rem' }} aria-label={ring.label}>
             <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 500, marginBottom: '0.55rem' }}>
@@ -312,7 +321,7 @@ export default function MhCommunityCareMap({ config }) {
                   readOnly
                   tabIndex={-1}
                   style={textareaStyle}
-                  aria-label={`${field.label} (blank)`}
+                  aria-label={fillTemplate(uiText.blank, { v0: field.label })}
                 />
               </div>
             ))}

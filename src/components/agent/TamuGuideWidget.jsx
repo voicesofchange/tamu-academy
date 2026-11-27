@@ -4,6 +4,23 @@ import { useAuth } from '@/lib/AuthContext';
 import { canViewInDevelopment } from '@/lib/module-access';
 import MessageBubble from './MessageBubble';
 import { MessageCircle, X, Trash2, Send, Sparkles } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  askTheTamuGuide: 'Ask the Tamu Guide',
+  tamuLearningGuideChat: 'Tamu Learning Guide chat',
+  clearConversationAndStartA: 'Clear conversation and start a new one',
+  clearConversation: 'Clear conversation',
+  closeChat: 'Close chat',
+  close: 'Close',
+  askAQuestion: 'Ask a question…',
+  typeAMessageToThe: 'Type a message to the Tamu Learning Guide',
+  sendMessage: 'Send message',
+  courseNavigatorAndLearnerSupport: 'Course navigator and learner support',
+  tamuguidewidgetInitError: '[TamuGuideWidget] init error',
+  tamuguidewidgetSendError: '[TamuGuideWidget] send error',
+};
 
 const AGENT_NAME = 'tamu_learning_guide';
 
@@ -76,7 +93,12 @@ const HEADER = {
   flexShrink: 0,
 };
 
+// The suggested questions, in the reader's language.
+const SUGGESTED_TEXT = { questions: SUGGESTED_QUESTIONS };
+
 export default function TamuGuideWidget() {
+  const { content: suggestedText } = useTranslatedContent('tamu-guide-suggested-questions', SUGGESTED_TEXT);
+  const { content: uiText } = useTranslatedContent('ui-components-agent-tamuguidewidget', UI_TEXT);
   const { isAuthenticated, user } = useAuth();
   const allowed = canViewInDevelopment({ isAuthenticated, role: user?.role });
 
@@ -103,7 +125,7 @@ export default function TamuGuideWidget() {
       if (!conv) {
         conv = await base44.agents.createConversation({
           agent_name: AGENT_NAME,
-          metadata: { name: 'Tamu Learning Guide', description: 'Course navigator and learner support' },
+          metadata: { name: 'Tamu Learning Guide', description: uiText.courseNavigatorAndLearnerSupport },
         });
       }
       setConversation(conv);
@@ -113,7 +135,7 @@ export default function TamuGuideWidget() {
       });
       return conv;
     } catch (e) {
-      console.error('[TamuGuideWidget] init error', e);
+      console.error(uiText.tamuguidewidgetInitError, e);
       return null;
     } finally {
       setLoading(false);
@@ -148,7 +170,7 @@ export default function TamuGuideWidget() {
       const updated = await base44.agents.addMessage(conv, { role: 'user', content: text.trim() });
       setConversation(updated);
     } catch (e) {
-      console.error('[TamuGuideWidget] send error', e);
+      console.error(uiText.tamuguidewidgetSendError, e);
     } finally {
       setSending(false);
     }
@@ -207,13 +229,13 @@ export default function TamuGuideWidget() {
       <button
         ref={triggerRef}
         onClick={handleOpen}
-        aria-label="Ask the Tamu Guide"
+        aria-label={uiText.askTheTamuGuide}
         aria-expanded={open}
         className="font-body tamu-guide-trigger"
         style={BTN_STYLE}
       >
         <MessageCircle size={16} aria-hidden="true" />
-        Ask the Tamu Guide
+        {uiText.askTheTamuGuide}
       </button>
 
       {open && (
@@ -226,7 +248,7 @@ export default function TamuGuideWidget() {
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Tamu Learning Guide chat"
+            aria-label={uiText.tamuLearningGuideChat}
             style={PANEL}
             onClick={(e) => e.stopPropagation()}
           >
@@ -241,8 +263,8 @@ export default function TamuGuideWidget() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <button
                   onClick={handleClear}
-                  aria-label="Clear conversation and start a new one"
-                  title="Clear conversation"
+                  aria-label={uiText.clearConversationAndStartA}
+                  title={uiText.clearConversation}
                   style={{ background: 'none', border: 'none', color: 'rgba(243,234,216,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
                   className="tamu-guide-icon-btn"
                 >
@@ -250,8 +272,8 @@ export default function TamuGuideWidget() {
                 </button>
                 <button
                   onClick={handleClose}
-                  aria-label="Close chat"
-                  title="Close"
+                  aria-label={uiText.closeChat}
+                  title={uiText.close}
                   style={{ background: 'none', border: 'none', color: 'rgba(243,234,216,0.6)', cursor: 'pointer', padding: '0.3rem', borderRadius: '4px', display: 'inline-flex' }}
                   className="tamu-guide-icon-btn"
                 >
@@ -276,7 +298,7 @@ export default function TamuGuideWidget() {
                 {/* Suggested questions (only before any real messages) */}
                 {!hasMessages && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.25rem' }}>
-                    {SUGGESTED_QUESTIONS.map((q) => (
+                    {(suggestedText.questions || SUGGESTED_QUESTIONS).map((q) => (
                       <button
                         key={q}
                         onClick={() => sendMessage(q)}
@@ -322,8 +344,8 @@ export default function TamuGuideWidget() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question…"
-                aria-label="Type a message to the Tamu Learning Guide"
+                placeholder={uiText.askAQuestion}
+                aria-label={uiText.typeAMessageToThe}
                 className="font-body"
                 style={{
                   flex: 1,
@@ -340,7 +362,7 @@ export default function TamuGuideWidget() {
               <button
                 type="submit"
                 disabled={sending || !input.trim()}
-                aria-label="Send message"
+                aria-label={uiText.sendMessage}
                 style={{
                   background: '#e8b85b',
                   color: '#24150f',

@@ -12,10 +12,10 @@ import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 const CONTENT = {
   title: "Reset password",
   subtitle: "We'll send you a link to reset it",
-  backToLogin: "Back to log in",
+  backToLogin: "Back to sign in",
   email: "Email address",
   emailPlaceholder: "you@example.com",
-  sending: "Sending...",
+  sending: "Sending…",
   sendResetLink: "Send reset link",
   sentMessage: "If an account exists with that email, you'll receive a password reset link shortly.",
 };

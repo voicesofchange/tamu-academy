@@ -2,8 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  learnerVoices: 'Learner Voices',
+  learningThatStaysWithYou: 'Learning that stays with you.',
+  learnerStoriesWillAppearHere: 'Learner stories will appear here as our community grows. Be among the first to share your experience.',
+  shareYourStory: 'Share Your Story →',
+  outOf5Stars: '{v0} out of 5 stars',
+  readMoreStories: 'Read More Stories →',
+};
 
 export default function HomeLearnerVoices() {
+  const { content: uiText } = useTranslatedContent('ui-components-landing-homelearnervoices', UI_TEXT);
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,10 +55,10 @@ export default function HomeLearnerVoices() {
         style={{ marginBottom: '2.75rem' }}
       >
         <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, marginBottom: '0.85rem' }}>
-          Learner Voices
+          {uiText.learnerVoices}
         </p>
         <h2 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 400, lineHeight: 1.2, margin: 0, maxWidth: '640px' }}>
-          Learning that stays with you.
+          {uiText.learningThatStaysWithYou}
         </h2>
       </motion.div>
 
@@ -75,7 +88,7 @@ export default function HomeLearnerVoices() {
           }}
         >
           <p className="font-body" style={{ color: 'rgba(243,234,216,0.62)', fontSize: '0.95rem', lineHeight: 1.75, fontWeight: 300, margin: '0 0 1.25rem' }}>
-            Learner stories will appear here as our community grows. Be among the first to share your experience.
+            {uiText.learnerStoriesWillAppearHere}
           </p>
           <Link
             to="/stories"
@@ -94,7 +107,7 @@ export default function HomeLearnerVoices() {
               padding: '0.65rem 1.3rem',
             }}
           >
-            Share Your Story →
+            {uiText.shareYourStory}
           </Link>
         </div>
       ) : (
@@ -117,7 +130,7 @@ export default function HomeLearnerVoices() {
               }}
             >
               {story.rating && (
-                <div style={{ display: 'flex', gap: '0.2rem', marginBottom: '0.85rem' }} aria-label={`${story.rating} out of 5 stars`}>
+                <div style={{ display: 'flex', gap: '0.2rem', marginBottom: '0.85rem' }} aria-label={fillTemplate(uiText.outOf5Stars, { v0: story.rating })}>
                   {Array.from({ length: 5 }).map((_, idx) => (
                     <span key={idx} style={{ color: idx < story.rating ? '#e8b85b' : 'rgba(232,184,91,0.2)', fontSize: '0.85rem' }}>★</span>
                   ))}
@@ -164,7 +177,7 @@ export default function HomeLearnerVoices() {
               gap: '0.4rem',
             }}
           >
-            Read More Stories →
+            {uiText.readMoreStories}
           </Link>
         </motion.div>
       )}

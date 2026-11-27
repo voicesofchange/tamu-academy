@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSokoLabels } from '@/components/courses/soko/SokoLabelsProvider';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleNavigation: 'Module navigation',
+};
 
 const navLinkStyle = {
   display: 'inline-flex',
@@ -32,9 +38,10 @@ const disabledStyle = {
  * so paths are passed in explicitly rather than derived from a slug.
  */
 export default function SokoModuleNav({ coursePath, prevModule, prevPath, nextModule, nextPath, nextLabel, endOfCourse }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-soko-sokomodulenav', UI_TEXT);
   const labels = useSokoLabels();
   return (
-    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
+    <nav aria-label={uiText.moduleNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.14)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevPath ? (
           <Link to={prevPath} className="font-body" style={navLinkStyle}>

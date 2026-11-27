@@ -5,6 +5,18 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import StatusBadge from '@/components/page/StatusBadge';
 import PageMeta from '@/components/seo/PageMeta';
 import { enrollInCourse } from '@/lib/course-enrollment';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  notEnrolledYet: 'Not enrolled yet',
+  youAreSignedInStart: 'You are signed in. Start {v0} to open this module, and every module that follows it. Your progress is saved as you learn, so you can return whenever you are ready.',
+  startingYourCourse: 'Starting your course…',
+  startThisCourse: 'Start This Course →',
+  weCouldNotStartThis: 'We could not start this course right now. Please try again.',
+  backToTheCourse: '← Back to the course',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -53,6 +65,7 @@ const backLinkStyle = {
  * enrollment; unpublished modules and prerequisites stay the server's call.
  */
 export default function ModuleStartGate({ course, module, autoStart = false, onStarted }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-modulestartgate', UI_TEXT);
   const [state, setState] = useState('idle'); // idle | starting | error
   const autoStarted = useRef(false);
 
@@ -114,12 +127,9 @@ export default function ModuleStartGate({ course, module, autoStart = false, onS
 
       <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.22)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
         <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.6rem' }}>
-          Not enrolled yet
+          {uiText.notEnrolledYet}
         </span>
-        <p className="font-body" style={{ ...bodyText, margin: '0 0 1.5rem' }}>
-          You are signed in. Start {course.title} to open this module, and every module that follows it.
-          Your progress is saved as you learn, so you can return whenever you are ready.
-        </p>
+        <p className="font-body" style={{ ...bodyText, margin: '0 0 1.5rem' }}>{fillTemplate(uiText.youAreSignedInStart, { v0: course.title })}</p>
         <button
           type="button"
           onClick={start}
@@ -127,18 +137,18 @@ export default function ModuleStartGate({ course, module, autoStart = false, onS
           className="font-body"
           style={{ ...buttonStyle, opacity: starting ? 0.7 : 1, cursor: starting ? 'wait' : 'pointer' }}
         >
-          {starting ? 'Starting your course…' : 'Start This Course \u2192'}
+          {starting ? uiText.startingYourCourse : uiText.startThisCourse}
         </button>
         {state === 'error' && (
           <p className="font-body" role="alert" style={{ color: '#e8955c', fontSize: '0.85rem', margin: '0.9rem 0 0' }}>
-            We could not start this course right now. Please try again.
+            {uiText.weCouldNotStartThis}
           </p>
         )}
       </div>
 
       <div style={{ marginTop: '2rem' }}>
         <Link to={coursePath} className="font-body" style={backLinkStyle}>
-          &larr; Back to the course
+          {uiText.backToTheCourse}
         </Link>
       </div>
     </ModuleLessonLayout>

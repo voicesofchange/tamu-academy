@@ -9,6 +9,14 @@ import ModuleBreadcrumbs from '@/components/courses/module/ModuleBreadcrumbs';
 import { ECONOMICS_COURSE } from '@/lib/economics-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  courseCompletionProgress: 'Course completion progress',
+  courseNavigation: 'Course navigation',
+  noDataReturned: 'No data returned',
+  errorLoadingProgress: 'Error loading progress',
+};
+
 const COURSE_SLUG = 'understanding-african-economies-and-the-global-system';
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
@@ -36,7 +44,7 @@ const CONTENT = {
   courseCompletion: 'Course Completion',
   heading: 'Your Progress Through the Course',
   intro: 'This page reviews your progress across all six modules of {courseTitle}. When every module is complete, you will be able to generate your certificate of completion.',
-  loadingProgress: 'Loading your progress...',
+  loadingProgress: 'Loading your progress…',
   errorEyebrow: 'Status',
   errorHeading: 'Progress Unavailable',
   errorMsg: 'We could not load your course progress at this time. Please try again later.',
@@ -71,6 +79,7 @@ const CONTENT = {
 };
 
 export default function EconomicsCourseCompletion() {
+  const { content: uiText } = useTranslatedContent('ui-pages-economicscoursecompletion', UI_TEXT);
   const { content: c } = useTranslatedContent('econ-completion', CONTENT);
   const course = ECONOMICS_COURSE;
   const [state, setState] = useState({ status: 'loading', data: null, error: null });
@@ -84,11 +93,11 @@ export default function EconomicsCourseCompletion() {
         if (res && res.data) {
           setState({ status: 'ready', data: res.data, error: null });
         } else {
-          setState({ status: 'error', data: null, error: 'No data returned' });
+          setState({ status: 'error', data: null, error: uiText.noDataReturned });
         }
       } catch (err) {
         if (cancelled) return;
-        setState({ status: 'error', data: null, error: err && err.message ? err.message : 'Error loading progress' });
+        setState({ status: 'error', data: null, error: err && err.message ? err.message : uiText.errorLoadingProgress });
       }
     })();
     return () => { cancelled = true; };
@@ -157,7 +166,7 @@ export default function EconomicsCourseCompletion() {
                     {tpl(c.ofTotal, { count: completedCount, total: totalModules })}
                   </span>
                 </div>
-                <div role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100} aria-label="Course completion progress"
+                <div role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100} aria-label={uiText.courseCompletionProgress}
                   style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
                   <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
                 </div>
@@ -252,7 +261,7 @@ export default function EconomicsCourseCompletion() {
               )}
             </PageSection>
 
-            <nav aria-label="Course navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
+            <nav aria-label={uiText.courseNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link to={`${coursePath}/module-6`} className="font-body tamu-nav-link" style={moduleLinkStyle}>
                   &larr; {c.backToModule}

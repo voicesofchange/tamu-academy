@@ -1,5 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  myProgress: 'My Progress',
+  seeEveryCourseAndModule: 'See every course and module at a glance',
+  completedModulesCurrentStandingAnd: 'Completed modules, current standing and what comes next, for all of your courses in one view.',
+  openMyProgress: 'Open my progress →',
+  learnerHub: 'Learner Hub',
+  objectivesHandbookAndSummaries: 'Objectives, handbook and summaries',
+  whatEachCourseTeachesHow: 'What each course teaches, how to work through it, and summaries you can download for offline study.',
+  openTheLearnerHub: 'Open the Learner Hub →',
+};
 
 const cardStyle = {
   display: 'block',
@@ -44,24 +57,25 @@ const ctaStyle = { color: '#e8b85b', fontSize: '0.8rem', letterSpacing: '0.04em'
  * Learner Hub of objectives, handbook and downloadable summaries.
  */
 export default function DashboardLearnerTools() {
+  const { content: uiText } = useTranslatedContent('ui-components-dashboard-dashboardlearnertools', UI_TEXT);
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
       <Link to="/my-progress" style={cardStyle}>
-        <span className="font-body" style={eyebrowStyle}>My Progress</span>
-        <h3 className="font-heading" style={headingStyle}>See every course and module at a glance</h3>
+        <span className="font-body" style={eyebrowStyle}>{uiText.myProgress}</span>
+        <h3 className="font-heading" style={headingStyle}>{uiText.seeEveryCourseAndModule}</h3>
         <p className="font-body" style={bodyStyle}>
-          Completed modules, current standing and what comes next, for all of your courses in one view.
+          {uiText.completedModulesCurrentStandingAnd}
         </p>
-        <p className="font-body" style={ctaStyle}>Open my progress &rarr;</p>
+        <p className="font-body" style={ctaStyle}>{uiText.openMyProgress}</p>
       </Link>
 
       <Link to="/learning-hub" style={cardStyle}>
-        <span className="font-body" style={eyebrowStyle}>Learner Hub</span>
-        <h3 className="font-heading" style={headingStyle}>Objectives, handbook and summaries</h3>
+        <span className="font-body" style={eyebrowStyle}>{uiText.learnerHub}</span>
+        <h3 className="font-heading" style={headingStyle}>{uiText.objectivesHandbookAndSummaries}</h3>
         <p className="font-body" style={bodyStyle}>
-          What each course teaches, how to work through it, and summaries you can download for offline study.
+          {uiText.whatEachCourseTeachesHow}
         </p>
-        <p className="font-body" style={ctaStyle}>Open the Learner Hub &rarr;</p>
+        <p className="font-body" style={ctaStyle}>{uiText.openTheLearnerHub}</p>
       </Link>
     </div>
   );

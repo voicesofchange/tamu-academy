@@ -1,4 +1,19 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  course: 'Course',
+  module: 'Module',
+  suggestedTime: 'Suggested time',
+  submission: 'Submission',
+  clearActivityResetsAllTemporary: 'Clear activity (resets all temporary responses and checkboxes)',
+  clearActivity: 'Clear activity',
+  howToUseThisLab: 'How to Use This Lab',
+  evidenceNote: 'Evidence note:',
+  possibleTransfer: 'POSSIBLE TRANSFER',
+  finalReminder: 'Final reminder',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -35,6 +50,7 @@ function Field({ id, label, prompt, value, onChange, rows = 3 }) {
 }
 
 export default function MhCareDesignLab({ lab }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhcaredesignlab', UI_TEXT);
   const [fields, setFields] = useState({});
   const [checks, setChecks] = useState(
     Array.isArray(lab.completionCheck.items) ? new Array(lab.completionCheck.items.length).fill(false) : [],
@@ -54,14 +70,14 @@ export default function MhCareDesignLab({ lab }) {
       </p>
 
       <dl className="font-body" style={{ ...boxStyle, marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.9rem 1.5rem' }}>
-        <div><dt style={eyebrowStyle}>Course</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
-        <div><dt style={eyebrowStyle}>Module</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
-        <div><dt style={eyebrowStyle}>Suggested time</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
-        <div><dt style={eyebrowStyle}>Submission</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.course}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.module}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.suggestedTime}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.submission}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
       </dl>
 
-      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label="Clear activity (resets all temporary responses and checkboxes)">
-        Clear activity
+      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label={uiText.clearActivityResetsAllTemporary}>
+        {uiText.clearActivity}
       </button>
 
       <div style={{ ...privacyBoxStyle, marginTop: '1.75rem' }} role="note" aria-label={lab.privacy.heading}>
@@ -69,7 +85,7 @@ export default function MhCareDesignLab({ lab }) {
         <p className="font-body" style={{ ...bodyText, margin: 0 }}>{lab.privacy.notice}</p>
       </div>
 
-      <h3 className="font-heading" style={subHeading}>How to Use This Lab</h3>
+      <h3 className="font-heading" style={subHeading}>{uiText.howToUseThisLab}</h3>
       <ol className="font-body" style={{ ...bodyText, margin: '0 0 1rem 1.4rem' }}>
         {lab.howToUse.map((item, i) => <li key={i} style={{ marginBottom: '0.5rem' }}>{item}</li>)}
       </ol>
@@ -102,10 +118,10 @@ export default function MhCareDesignLab({ lab }) {
           <div key={card.name} style={boxStyle}>
             <h4 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, margin: '0 0 0.4rem' }}>{card.name}</h4>
             <p className="font-body" style={{ ...bodyText, fontSize: '0.85rem', color: 'rgba(243,234,216,0.6)', marginBottom: '0.7rem' }}>
-              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Evidence note:</strong> {card.evidenceNote}
+              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{uiText.evidenceNote}</strong> {card.evidenceNote}
             </p>
             <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.4rem' }}>{card.transferPrompt}</p>
-            <Field id={`care-s2-${card.name.replace(/\s+/g, '-')}`} label="POSSIBLE TRANSFER"
+            <Field id={`care-s2-${card.name.replace(/\s+/g, '-')}`} label={uiText.possibleTransfer}
               value={fields[`s2_${card.name}`] || ''} onChange={(v) => setField(`s2_${card.name}`, v)} rows={2} />
           </div>
         ))}
@@ -203,8 +219,8 @@ export default function MhCareDesignLab({ lab }) {
       </div>
 
       {/* Final Reminder */}
-      <div style={privacyBoxStyle} role="note" aria-label="Final reminder">
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>Final reminder</span>
+      <div style={privacyBoxStyle} role="note" aria-label={uiText.finalReminder}>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.5rem' }}>{uiText.finalReminder}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0 }}>{lab.finalReminder}</p>
       </div>
     </div>

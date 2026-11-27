@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useTranslation } from '@/lib/i18n';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  weCouldNotSaveYour: 'We could not save your progress. Please try again.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.92rem', lineHeight: 1.75, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -32,6 +38,7 @@ function SectionBox({ heading, children }) {
 }
 
 export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhstorylab', UI_TEXT);
   const { t } = useTranslation();
   const [fields, setFields] = useState({});
   const [checklist, setChecklist] = useState({});
@@ -64,7 +71,7 @@ export default function MhStoryLab({ courseSlug, moduleRoute, lab, onCompleted }
         setAckError(t('mhLab.saveError'));
       }
     } catch (err) {
-      setAckError('We could not save your progress. Please try again.');
+      setAckError(uiText.weCouldNotSaveYour);
     } finally {
       setAckPending(false);
     }

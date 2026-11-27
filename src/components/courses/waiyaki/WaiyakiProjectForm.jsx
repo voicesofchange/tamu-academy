@@ -1,6 +1,25 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  enrollInTheCourseTo: 'Enroll in the course to submit your written final project.',
+  chooseOneProject: 'Choose one project',
+  titleOptional: 'Title (optional)',
+  yourProject: 'Your project',
+  words: '{count} words',
+  minimumWords: '/ {count} minimum',
+  saving: 'Saving…',
+  yourProjectIsSavedPrivately: 'Your project is saved privately to your account. It is not shared with other learners, not published, and not printed on your certificate. You can come back and revise it at any time.',
+  yourProjectHasBeenUpdated: 'Your project has been updated. Your work is saved privately to your account.',
+  yourProjectHasBeenSubmitted: 'Your project has been submitted. Your work is saved privately to your account.',
+  weCouldNotSaveYour: 'We could not save your project just now. Please try again.',
+  updateMyProject: 'Update my project',
+  submitMyProject: 'Submit my project',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -35,6 +54,7 @@ const countWords = (value) => value.trim().split(/\s+/).filter(Boolean).length;
  * and it is not printed on the certificate.
  */
 export default function WaiyakiProjectForm({ options, project, canSave, onSaved }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakiprojectform', UI_TEXT);
   const [format, setFormat] = useState(project?.format || '');
   const [title, setTitle] = useState(project?.title || '');
   const [content, setContent] = useState(project?.content || '');
@@ -63,12 +83,12 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
         setMessage({
           type: 'success',
           text: data.updated
-            ? 'Your project has been updated. Your work is saved privately to your account.'
-            : 'Your project has been submitted. Your work is saved privately to your account.',
+            ? uiText.yourProjectHasBeenUpdated
+            : uiText.yourProjectHasBeenSubmitted,
         });
         if (onSaved) onSaved(data);
       } else {
-        setMessage({ type: 'error', text: 'We could not save your project just now. Please try again.' });
+        setMessage({ type: 'error', text: uiText.weCouldNotSaveYour });
       }
     } catch (err) {
       const detail = err?.response?.data;
@@ -77,7 +97,7 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
         text:
           detail && detail.message
             ? detail.message
-            : 'We could not save your project just now. Please try again.',
+            : uiText.weCouldNotSaveYour,
       });
     } finally {
       setSaving(false);
@@ -87,7 +107,7 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
   if (!canSave) {
     return (
       <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(243,234,216,0.6)' }}>
-        Enroll in the course to submit your written final project.
+        {uiText.enrollInTheCourseTo}
       </p>
     );
   }
@@ -107,7 +127,7 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
             padding: 0,
           }}
         >
-          Choose one project
+          {uiText.chooseOneProject}
         </legend>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0.85rem' }}>
           {options.map((option) => {
@@ -176,7 +196,7 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
             marginBottom: '0.5rem',
           }}
         >
-          Title (optional)
+          {uiText.titleOptional}
         </label>
         <input
           id="waiyaki-project-title"
@@ -203,7 +223,7 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
             marginBottom: '0.5rem',
           }}
         >
-          Your project
+          {uiText.yourProject}
         </label>
         <textarea
           id="waiyaki-project-content"
@@ -230,8 +250,8 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
             color: selected && meetsLength ? '#e8b85b' : 'rgba(243,234,216,0.6)',
           }}
         >
-          {wordCount} words
-          {selected ? ` / ${selected.minWords} minimum` : ''}
+          {fillTemplate(uiText.words, { count: wordCount })}
+          {selected ? ` ${fillTemplate(uiText.minimumWords, { count: selected.minWords })}` : ''}
         </span>
         <button
           type="button"
@@ -254,13 +274,12 @@ export default function WaiyakiProjectForm({ options, project, canSave, onSaved 
             opacity: saving ? 0.6 : 1,
           }}
         >
-          {saving ? 'Saving...' : project && project.submitted ? 'Update my project' : 'Submit my project'}
+          {saving ? uiText.saving : project && project.submitted ? uiText.updateMyProject : uiText.submitMyProject}
         </button>
       </div>
 
       <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', fontStyle: 'italic', color: 'rgba(243,234,216,0.5)' }}>
-        Your project is saved privately to your account. It is not shared with other learners, not
-        published, and not printed on your certificate. You can come back and revise it at any time.
+        {uiText.yourProjectIsSavedPrivately}
       </p>
 
       {message && (

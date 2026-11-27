@@ -2,12 +2,28 @@ import React, { useEffect, useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Send, Sparkles } from 'lucide-react';
 import MessageBubble from './MessageBubble';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  yourMotivationCoachIsHere: 'Your Motivation Coach is here.',
+  feelingStuckInYourCourse: 'Feeling stuck in your course? Share where you are and your coach will review your progress and help you find your next step.',
+  connecting: 'Connecting…',
+  checkMyProgressMotivateMe: 'Check my progress & motivate me',
+  replyToYourCoach: 'Reply to your coach…',
+  sendMessage: 'Send message',
+  motivationCoach: 'Motivation Coach',
+  personalizedMotivationForStalledLearners: 'Personalized motivation for stalled learners',
+  motivationchatInitError: '[MotivationChat] init error',
+  motivationchatSendError: '[MotivationChat] send error',
+};
 
 const AGENT_NAME = 'motivation_coach';
 
 const STARTER_PROMPT = "Hi! Can you review my course progress and motivate me to keep going?";
 
 export default function MotivationChat() {
+  const { content: uiText } = useTranslatedContent('ui-components-agent-motivationchat', UI_TEXT);
   const [conversation, setConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -25,7 +41,7 @@ export default function MotivationChat() {
         if (!conv) {
           conv = await base44.agents.createConversation({
             agent_name: AGENT_NAME,
-            metadata: { name: 'Motivation Coach', description: 'Personalized motivation for stalled learners' },
+            metadata: { name: uiText.motivationCoach, description: uiText.personalizedMotivationForStalledLearners },
           });
         }
         setConversation(conv);
@@ -34,7 +50,7 @@ export default function MotivationChat() {
           setMessages(data.messages || []);
         });
       } catch (e) {
-        console.error('[MotivationChat] init error', e);
+        console.error(uiText.motivationchatInitError, e);
       } finally {
         setLoading(false);
       }
@@ -57,7 +73,7 @@ export default function MotivationChat() {
       const updated = await base44.agents.addMessage(conversation, { role: 'user', content: text.trim() });
       setConversation(updated);
     } catch (e) {
-      console.error('[MotivationChat] send error', e);
+      console.error(uiText.motivationchatSendError, e);
     } finally {
       setSending(false);
     }
@@ -82,10 +98,10 @@ export default function MotivationChat() {
           <div className="flex flex-col items-center justify-center text-center" style={{ height: '100%', gap: '1rem', padding: '1.5rem' }}>
             <Sparkles size={32} style={{ color: '#e8b85b' }} />
             <p className="font-heading" style={{ color: '#f8f0df', fontSize: '1.25rem', margin: 0 }}>
-              Your Motivation Coach is here.
+              {uiText.yourMotivationCoachIsHere}
             </p>
             <p style={{ color: 'rgba(243,234,216,0.6)', fontSize: '0.9rem', maxWidth: '380px', margin: 0 }}>
-              Feeling stuck in your course? Share where you are and your coach will review your progress and help you find your next step.
+              {uiText.feelingStuckInYourCourse}
             </p>
             <button
               onClick={startConversation}
@@ -104,7 +120,7 @@ export default function MotivationChat() {
                 opacity: sending ? 0.6 : 1,
               }}
             >
-              {sending ? 'Connecting…' : 'Check my progress & motivate me'}
+              {sending ? uiText.connecting : uiText.checkMyProgressMotivateMe}
             </button>
           </div>
         ) : (
@@ -122,7 +138,7 @@ export default function MotivationChat() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Reply to your coach…"
+          placeholder={uiText.replyToYourCoach}
           className="font-body"
           style={{
             flex: 1,
@@ -150,7 +166,7 @@ export default function MotivationChat() {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          aria-label="Send message"
+          aria-label={uiText.sendMessage}
         >
           <Send size={16} />
         </button>

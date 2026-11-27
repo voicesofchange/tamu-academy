@@ -11,6 +11,11 @@ import { RESOURCE_AREAS, getResourcesByArea, getActiveResourceCount } from '@/li
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import TamuGuideWidget from '@/components/agent/TamuGuideWidget';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  jumpToResourceArea: 'Jump to resource area',
+};
+
 const CONTENT = {
   heroEyebrow: 'Resources',
   heroHeading: 'Learning Resources',
@@ -24,6 +29,7 @@ const CONTENT = {
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.85, fontWeight: 300 };
 
 export default function Resources() {
+  const { content: uiText } = useTranslatedContent('ui-pages-resources', UI_TEXT);
   const { t } = useTranslation();
   const activeCount = getActiveResourceCount();
   const { content: c } = useTranslatedContent('resources', CONTENT);
@@ -51,7 +57,7 @@ export default function Resources() {
 
       {/* Anchor navigation to resource areas */}
       <PageSection heading={c.areasHeading} tone="tinted">
-        <nav aria-label="Jump to resource area" style={{ marginBottom: '3.5rem' }}>
+        <nav aria-label={uiText.jumpToResourceArea} style={{ marginBottom: '3.5rem' }}>
           <ul
             style={{
               display: 'flex',

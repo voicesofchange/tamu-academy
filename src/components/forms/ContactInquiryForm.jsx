@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  contactInquiryForm: 'Contact inquiry form',
+  leaveThisFieldEmpty: 'Leave this field empty',
+  required: '(required)',
+};
+
 const INQUIRY_TYPES = [
   'Prospective Learner or Programme Interest',
   'Educator or Facilitator',
@@ -146,6 +153,7 @@ function FieldError({ id, message }) {
 }
 
 export default function ContactInquiryForm({ presetType, presetProgramme, sourcePage, successVariant }) {
+  const { content: uiText } = useTranslatedContent('ui-components-forms-contactinquiryform', UI_TEXT);
   const { content: c } = useTranslatedContent('contact-form', CONTENT);
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
@@ -307,11 +315,11 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-label="Contact inquiry form">
+    <form onSubmit={handleSubmit} noValidate aria-label={uiText.contactInquiryForm}>
 
       {/* Honeypot */}
       <div style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }} aria-hidden="true">
-        <label htmlFor="tamu-hp">Leave this field empty</label>
+        <label htmlFor="tamu-hp">{uiText.leaveThisFieldEmpty}</label>
         <input id="tamu-hp" name="tamu-hp" type="text" tabIndex={-1} autoComplete="off" value={form.honeypot} onChange={set('honeypot')} />
       </div>
 
@@ -327,7 +335,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Name + Email */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-full_name" style={labelStyle}>{c.fullName} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-full_name" style={labelStyle}>{c.fullName} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span></label>
           <input
             id="field-full_name"
             type="text"
@@ -343,7 +351,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
           <FieldError id="err-full_name" message={errors.full_name} />
         </div>
         <div>
-          <label htmlFor="field-email" style={labelStyle}>{c.emailAddress} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-email" style={labelStyle}>{c.emailAddress} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span></label>
           <input
             id="field-email"
             type="email"
@@ -363,7 +371,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Country + City */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.4rem' }} className="form-two-col">
         <div>
-          <label htmlFor="field-country" style={labelStyle}>{c.country} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
+          <label htmlFor="field-country" style={labelStyle}>{c.country} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span></label>
           <input
             id="field-country"
             type="text"
@@ -405,7 +413,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
 
       {/* Inquiry type */}
       <div style={fieldWrap}>
-        <label htmlFor="field-inquiry_type" style={labelStyle}>{c.inquiryType} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span></label>
+        <label htmlFor="field-inquiry_type" style={labelStyle}>{c.inquiryType} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span></label>
         <select
           id="field-inquiry_type"
           value={form.inquiry_type}
@@ -442,7 +450,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
       {/* Message */}
       <div style={fieldWrap}>
         <label htmlFor="field-message" style={labelStyle}>
-          {c.message} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span>
+          {c.message} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span>
           <span style={{ color: 'rgba(243,234,216,0.55)', fontWeight: 300, marginLeft: '0.5rem', fontSize: '0.72rem' }}>{c.messageHint}</span>
         </label>
         <textarea
@@ -506,7 +514,7 @@ export default function ContactInquiryForm({ presetType, presetProgramme, source
             style={{ marginTop: '0.2rem', accentColor: '#e8b85b', width: '16px', height: '16px', flexShrink: 0 }}
           />
           <span className="font-body" style={{ color: 'rgba(243,234,216,0.78)', fontSize: '0.88rem', lineHeight: 1.6, fontWeight: 300 }}>
-            {c.privacyAck} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only"> (required)</span>
+            {c.privacyAck} <span aria-hidden="true" style={{ color: '#e8b85b' }}>*</span><span className="sr-only">{' '}{uiText.required}</span>
           </span>
         </label>
         <FieldError id="err-privacy" message={errors.privacy_acknowledgment} />

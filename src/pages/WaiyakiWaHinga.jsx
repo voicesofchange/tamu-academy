@@ -7,6 +7,11 @@ import { WAIYAKI_COURSE } from '@/lib/waiyaki-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { restoreCourse } from '@/lib/i18n/restore-course';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  sourcesFurtherReading: 'Sources & further reading →',
+};
+
 const sourceLink = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -37,6 +42,7 @@ const sourceLink = {
  * translation endpoint. The slug and module routes are restored afterwards.
  */
 export default function WaiyakiWaHinga() {
+  const { content: uiText } = useTranslatedContent('ui-pages-waiyakiwahinga', UI_TEXT);
   const { content } = useTranslatedContent('waiyaki-course-overview', WAIYAKI_COURSE);
   const course = restoreCourse(content, WAIYAKI_COURSE);
 
@@ -65,7 +71,7 @@ export default function WaiyakiWaHinga() {
         progressSlot={<WaiyakiCourseProgress />}
         moduleFooter={
           <a href="#course-sources" className="font-body" style={sourceLink}>
-            Sources &amp; further reading &rarr;
+            {uiText.sourcesFurtherReading}
           </a>
         }
       >

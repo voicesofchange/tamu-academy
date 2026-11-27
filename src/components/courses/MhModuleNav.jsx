@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  moduleNavigation: 'Module navigation',
+};
+
 const navLinkStyle = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -35,6 +40,7 @@ const CONTENT = {
 };
 
 export default function MhModuleNav({ course, module: mod, courseSlug }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodulenav', UI_TEXT);
   const { content: c } = useTranslatedContent('mh-module-nav', CONTENT);
   const coursePath = `/courses/${courseSlug}`;
   const moduleIndex = course.modules.findIndex((m) => m.route === mod.route);
@@ -47,7 +53,7 @@ export default function MhModuleNav({ course, module: mod, courseSlug }) {
   const completionPath = `${coursePath}/completion`;
 
   return (
-    <nav aria-label="Module navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
+    <nav aria-label={uiText.moduleNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
         {prevModule ? (
           <Link to={`${coursePath}/${prevModule.route}`} className="font-body tamu-nav-link" style={navLinkStyle}>

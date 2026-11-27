@@ -6,6 +6,25 @@ import PageLayout from '@/components/page/PageLayout';
 import TamuCertificateDocument from '@/components/certificates/TamuCertificateDocument';
 import { generateTamuCertificatePDF } from '@/lib/generate-tamu-certificate-pdf';
 import { WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  profileNameRequired: 'Profile Name Required',
+  yourCertificateUsesYourVerified: 'Your certificate uses your verified profile name. Please set your full name in your profile before generating your certificate.',
+  goToMyProfile: 'Go to my profile →',
+  backToCourseProgress: '← Back to course progress',
+  weCouldNotLoadYour: 'We could not load your certificate at this time. Please try again later.',
+  printCertificate: 'Print Certificate',
+  downloadPdf: 'Download PDF',
+  administratorPreviewNoCertificateRecord: 'Administrator Preview — no certificate record created',
+  returnToTheCourse: '← Return to the course',
+  twoStepsStillOutstanding: 'Two Steps Still Outstanding',
+  certificateNotYetAvailable: 'Certificate Not Yet Available',
+  certificateUnavailable: 'Certificate Unavailable',
+  yourCertificateBecomesAvailableOnce: 'Your certificate becomes available once every module is complete, the final assessment is passed and your written project is submitted.',
+  yourCertificateOfCompletionWill: 'Your certificate of completion will be available once you have completed all five modules, passed the final assessment and submitted your written project.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -43,6 +62,7 @@ const COURSE_PATH = `/courses/${WAIYAKI_COURSE_SLUG}`;
  * one is missing.
  */
 export default function WaiyakiCertificate() {
+  const { content: uiText } = useTranslatedContent('ui-pages-waiyakicertificate', UI_TEXT);
   const [state, setState] = useState({
     status: 'loading',
     data: null,
@@ -99,18 +119,17 @@ export default function WaiyakiCertificate() {
         <PageMeta title="Certificate | Tamu Academy" path={`${COURSE_PATH}/certificate`} noindex />
         <div style={{ padding: '3rem 0', textAlign: 'center' }}>
           <h1 className="font-heading" style={{ color: '#f8f0df', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 400, marginBottom: '1.5rem' }}>
-            Profile Name Required
+            {uiText.profileNameRequired}
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '520px', margin: '0 auto 2rem' }}>
-            Your certificate uses your verified profile name. Please set your full name in your profile
-            before generating your certificate.
+            {uiText.yourCertificateUsesYourVerified}
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/profile" className="font-body" style={{ ...actionButtonStyle, color: '#24150f', backgroundColor: '#e8b85b', border: 'none', fontWeight: 600 }}>
-              Go to my profile &rarr;
+              {uiText.goToMyProfile}
             </Link>
             <Link to={`${COURSE_PATH}/completion`} className="font-body tamu-nav-link" style={actionButtonStyle}>
-              &larr; Back to course progress
+              {uiText.backToCourseProgress}
             </Link>
           </div>
         </div>
@@ -121,12 +140,12 @@ export default function WaiyakiCertificate() {
   if (state.outstanding || state.notEligible || state.status !== 'ready') {
     const isError = state.status === 'error';
     const heading = state.outstanding
-      ? 'Two Steps Still Outstanding'
+      ? uiText.twoStepsStillOutstanding
       : state.notEligible
-        ? 'Certificate Not Yet Available'
+        ? uiText.certificateNotYetAvailable
         : isError
-          ? 'Certificate Unavailable'
-          : 'Certificate Not Yet Available';
+          ? uiText.certificateUnavailable
+          : uiText.certificateNotYetAvailable;
 
     return (
       <PageLayout>
@@ -151,10 +170,10 @@ export default function WaiyakiCertificate() {
           </h1>
           <p className="font-body" style={{ ...bodyText, maxWidth: '560px', margin: '0 auto 1.5rem' }}>
             {isError
-              ? 'We could not load your certificate at this time. Please try again later.'
+              ? uiText.weCouldNotLoadYour
               : state.outstanding
-                ? 'Your certificate becomes available once every module is complete, the final assessment is passed and your written project is submitted.'
-                : 'Your certificate of completion will be available once you have completed all five modules, passed the final assessment and submitted your written project.'}
+                ? uiText.yourCertificateBecomesAvailableOnce
+                : uiText.yourCertificateOfCompletionWill}
           </p>
           {state.outstanding && (
             <ul style={{ listStyle: 'none', padding: 0, maxWidth: '520px', margin: '0 auto 2rem', textAlign: 'left' }}>
@@ -178,7 +197,7 @@ export default function WaiyakiCertificate() {
             </ul>
           )}
           <Link to={`${COURSE_PATH}/completion`} className="font-body tamu-nav-link" style={actionButtonStyle}>
-            &larr; Back to course progress
+            {uiText.backToCourseProgress}
           </Link>
         </div>
       </PageLayout>
@@ -204,14 +223,14 @@ export default function WaiyakiCertificate() {
         }}
       >
         <Link to={`${COURSE_PATH}/completion`} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Back to course progress
+          {uiText.backToCourseProgress}
         </Link>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button onClick={() => window.print()} style={actionButtonStyle}>
-            Print Certificate
+            {uiText.printCertificate}
           </button>
           <button onClick={handleDownloadPDF} style={actionButtonStyle}>
-            Download PDF
+            {uiText.downloadPdf}
           </button>
         </div>
       </div>
@@ -232,7 +251,7 @@ export default function WaiyakiCertificate() {
             className="font-body"
             style={{ color: '#e8b85b', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}
           >
-            Administrator Preview &mdash; no certificate record created
+            {uiText.administratorPreviewNoCertificateRecord}
           </span>
         </div>
       )}
@@ -249,7 +268,7 @@ export default function WaiyakiCertificate() {
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '2rem' }}>
         <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={actionButtonStyle}>
-          &larr; Return to the course
+          {uiText.returnToTheCourse}
         </Link>
       </div>
     </PageLayout>

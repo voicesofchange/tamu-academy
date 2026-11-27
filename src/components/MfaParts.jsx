@@ -141,7 +141,7 @@ function DialCodePicker({ value, onChange }) {
       </PopoverTrigger>
       <PopoverContent className="w-[140px] p-0" align="start" side="bottom" avoidCollisions={false}>
         <Command filter={(item, text) => (matchesSearch(item, text) ? 1 : 0)}>
-          <CommandInput placeholder="Search..." className="h-9" onValueChange={(text) => { search.current = text; }} />
+          <CommandInput placeholder="Search…" className="h-9" onValueChange={(text) => { search.current = text; }} />
           <CommandList>
             <CommandEmpty>No match</CommandEmpty>
             <CommandGroup>

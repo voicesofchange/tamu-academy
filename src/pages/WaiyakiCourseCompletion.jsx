@@ -10,6 +10,52 @@ import WaiyakiAssessment from '@/components/courses/waiyaki/WaiyakiAssessment';
 import WaiyakiProjectForm from '@/components/courses/waiyaki/WaiyakiProjectForm';
 import { WAIYAKI_COURSE, WAIYAKI_COURSE_SLUG } from '@/lib/waiyaki-tracks';
 import { useTranslation } from '@/lib/i18n/LanguageContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  courseCompletion: 'Course Completion',
+  yourProgressThroughTheCourse: 'Your Progress Through the Course',
+  thisPageReviewsYourProgress: 'This page reviews your progress across all five modules of {v0}. When the modules are complete, the final assessment and your written project open here, and your certificate of completion follows.',
+  loadingYourProgress: 'Loading your progress…',
+  status: 'Status',
+  progressUnavailable: 'Progress Unavailable',
+  weCouldNotLoadYour: 'We could not load your course progress at this time. Please try again later.',
+  returnToCourse: '← Return to the course',
+  overview: 'Overview',
+  courseProgressSummary: 'Course Progress Summary',
+  modulesCompleted: 'Modules completed',
+  of: '{v0} of {v1}',
+  courseCompletionProgress: 'Course completion progress',
+  youHaveCompletedAllFive: 'You have completed all five modules. The final assessment and your written project are open below.',
+  whatCompletionRequires: 'What completion requires',
+  modules: 'Modules',
+  moduleStatus: 'Module Status',
+  completed: 'Completed',
+  notYetCompleted: 'Not yet completed',
+  review: 'Review',
+  continue: 'Continue',
+  assessment: 'Assessment',
+  finalAssessment: 'Final Assessment',
+  project: 'Project',
+  yourWrittenProject: 'Your Written Project',
+  assessmentAndProject: 'Assessment and Project',
+  finishTheModulesFirst: 'Finish the Modules First',
+  theFinalAssessmentAndThe: 'The final assessment and the written project open once all five modules are complete. That order matters: the assessment covers the whole course, and the project asks you to use the evidence labels you have practised.',
+  privacy: 'Privacy',
+  aboutYourCertificate: 'About Your Certificate',
+  yourCertificateOfCompletionWill: 'Your certificate of completion will display your verified profile name, the course title, and the completion date. It will include a unique certificate identifier.',
+  privateReflectionsSourceAnalysisNotes: 'Private reflections, source-analysis notes, assessment answers, and your written project are not included in the certificate. The certificate confirms course completion only.',
+  certificate: 'Certificate',
+  certificateOfCompletion: 'Certificate of Completion',
+  youHaveCompletedAllFive2: 'You have completed all five modules, passed the final assessment and submitted your written project. You are eligible to receive your certificate of completion for {v0}.',
+  viewYourCertificate: 'View Your Certificate →',
+  yourCertificateWillBeAvailable: 'Your certificate will be available once you have completed all five modules, passed the final assessment and submitted your written project.',
+  courseNavigation: 'Course navigation',
+  backToModule5: '← Back to Module 5',
+  youHaveCompletedOfModules: 'You have completed {v0} of {v1} modules. Complete the remaining modules to open the final assessment and your written project.',
+};
 
 const COURSE_PATH = `/courses/${WAIYAKI_COURSE_SLUG}`;
 
@@ -58,6 +104,7 @@ const completionButtonStyle = {
  * certificate can be issued.
  */
 export default function WaiyakiCourseCompletion() {
+  const { content: uiText } = useTranslatedContent('ui-pages-waiyakicoursecompletion', UI_TEXT);
   const { language } = useTranslation();
   const [progress, setProgress] = useState(null);
   const [work, setWork] = useState(null);
@@ -113,19 +160,15 @@ export default function WaiyakiCourseCompletion() {
 
       <header style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', alignItems: 'center', marginBottom: '1rem' }}>
-          <StatusBadge label="Course Completion" />
+          <StatusBadge label={uiText.courseCompletion} />
         </div>
         <h1
           className="font-heading"
           style={{ color: '#f8f0df', fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', fontWeight: 400, lineHeight: 1.2, margin: '0 0 1rem' }}
         >
-          Your Progress Through the Course
+          {uiText.yourProgressThroughTheCourse}
         </h1>
-        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: 0 }}>
-          This page reviews your progress across all five modules of {WAIYAKI_COURSE.title}. When the
-          modules are complete, the final assessment and your written project open here, and your
-          certificate of completion follows.
-        </p>
+        <p className="font-body" style={{ ...bodyText, maxWidth: '640px', margin: 0 }}>{fillTemplate(uiText.thisPageReviewsYourProgress, { v0: WAIYAKI_COURSE.title })}</p>
       </header>
 
       {status === 'loading' && (
@@ -141,37 +184,35 @@ export default function WaiyakiCourseCompletion() {
               animation: 'spin 1s linear infinite',
             }}
           />
-          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>Loading your progress...</p>
+          <p className="font-body" style={{ ...bodyText, marginTop: '1rem' }}>{uiText.loadingYourProgress}</p>
         </div>
       )}
 
       {status === 'error' && (
-        <PageSection eyebrow="Status" heading="Progress Unavailable">
+        <PageSection eyebrow={uiText.status} heading={uiText.progressUnavailable}>
           <p className="font-body" style={{ ...bodyText, color: 'rgba(243,234,216,0.6)' }}>
-            We could not load your course progress at this time. Please try again later.
+            {uiText.weCouldNotLoadYour}
           </p>
           <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={{ ...moduleLinkStyle, marginTop: '1.5rem' }}>
-            &larr; Return to Course
+            {uiText.returnToCourse}
           </Link>
         </PageSection>
       )}
 
       {status === 'ready' && progress && (
         <>
-          <PageSection eyebrow="Overview" heading="Course Progress Summary">
+          <PageSection eyebrow={uiText.overview} heading={uiText.courseProgressSummary}>
             <div style={{ marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.6rem' }}>
-                <span className="font-body" style={eyebrowStyle}>Modules completed</span>
-                <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 500 }}>
-                  {completedCount} of {totalModules}
-                </span>
+                <span className="font-body" style={eyebrowStyle}>{uiText.modulesCompleted}</span>
+                <span className="font-body" style={{ color: '#f8f0df', fontSize: '1.1rem', fontWeight: 500 }}>{fillTemplate(uiText.of, { v0: completedCount, v1: totalModules })}</span>
               </div>
               <div
                 role="progressbar"
                 aria-valuenow={progressPct}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-label="Course completion progress"
+                aria-label={uiText.courseCompletionProgress}
                 style={{ width: '100%', height: '6px', backgroundColor: 'rgba(243,234,216,0.08)', borderRadius: '3px', overflow: 'hidden' }}
               >
                 <div style={{ width: `${progressPct}%`, height: '100%', backgroundColor: '#e8b85b', borderRadius: '3px', transition: 'width 0.6s ease' }} />
@@ -179,11 +220,11 @@ export default function WaiyakiCourseCompletion() {
             </div>
             <p className="font-body" style={{ ...bodyText, margin: '0 0 1.75rem' }}>
               {modulesComplete
-                ? 'You have completed all five modules. The final assessment and your written project are open below.'
-                : `You have completed ${completedCount} of ${totalModules} modules. Complete the remaining modules to open the final assessment and your written project.`}
+                ? uiText.youHaveCompletedAllFive
+                : fillTemplate(uiText.youHaveCompletedOfModules, { v0: completedCount, v1: totalModules })}
             </p>
 
-            <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>What completion requires</p>
+            <p className="font-body" style={{ ...eyebrowStyle, marginBottom: '0.75rem' }}>{uiText.whatCompletionRequires}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {progress.requirements.map((r) => (
                 <div
@@ -208,7 +249,7 @@ export default function WaiyakiCourseCompletion() {
             </div>
           </PageSection>
 
-          <PageSection eyebrow="Modules" heading="Module Status">
+          <PageSection eyebrow={uiText.modules} heading={uiText.moduleStatus}>
             <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {progress.modules.map((m) => (
                 <li
@@ -250,7 +291,7 @@ export default function WaiyakiCourseCompletion() {
                         {m.number}: {m.title}
                       </p>
                       <p className="font-body" style={{ color: 'rgba(243,234,216,0.5)', fontSize: '0.78rem', margin: '0.3rem 0 0' }}>
-                        {m.completed ? 'Completed' : 'Not yet completed'}
+                        {m.completed ? uiText.completed : uiText.notYetCompleted}
                       </p>
                     </div>
                   </div>
@@ -259,7 +300,7 @@ export default function WaiyakiCourseCompletion() {
                     className="font-body tamu-nav-link"
                     style={m.completed ? { ...moduleLinkStyle, borderColor: 'rgba(232,184,91,0.2)', color: 'rgba(232,184,91,0.6)' } : moduleLinkStyle}
                   >
-                    {m.completed ? 'Review' : 'Continue'} &rarr;
+                    {m.completed ? uiText.review : uiText.continue} &rarr;
                   </Link>
                 </li>
               ))}
@@ -268,7 +309,7 @@ export default function WaiyakiCourseCompletion() {
 
           {modulesComplete ? (
             <>
-              <PageSection eyebrow="Assessment" heading="Final Assessment">
+              <PageSection eyebrow={uiText.assessment} heading={uiText.finalAssessment}>
                 <WaiyakiAssessment
                   assessment={work?.assessment}
                   attempt={work?.attempt}
@@ -278,7 +319,7 @@ export default function WaiyakiCourseCompletion() {
                 />
               </PageSection>
 
-              <PageSection eyebrow="Project" heading="Your Written Project">
+              <PageSection eyebrow={uiText.project} heading={uiText.yourWrittenProject}>
                 <WaiyakiProjectForm
                   options={work?.projectOptions}
                   project={work?.project}
@@ -288,11 +329,9 @@ export default function WaiyakiCourseCompletion() {
               </PageSection>
             </>
           ) : (
-            <PageSection eyebrow="Assessment and Project" heading="Finish the Modules First">
+            <PageSection eyebrow={uiText.assessmentAndProject} heading={uiText.finishTheModulesFirst}>
               <p className="font-body" style={{ ...bodyText, marginBottom: '1.25rem' }}>
-                The final assessment and the written project open once all five modules are complete.
-                That order matters: the assessment covers the whole course, and the project asks you to
-                use the evidence labels you have practised.
+                {uiText.theFinalAssessmentAndThe}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
                 {(progress.incompleteModules || []).map((m) => (
@@ -304,49 +343,41 @@ export default function WaiyakiCourseCompletion() {
             </PageSection>
           )}
 
-          <PageSection eyebrow="Privacy" heading="About Your Certificate">
+          <PageSection eyebrow={uiText.privacy} heading={uiText.aboutYourCertificate}>
             <div style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.18)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
               <p className="font-body" style={{ ...bodyText, margin: '0 0 0.75rem' }}>
-                Your certificate of completion will display your verified profile name, the course
-                title, and the completion date. It will include a unique certificate identifier.
+                {uiText.yourCertificateOfCompletionWill}
               </p>
               <p className="font-body" style={{ ...bodyText, margin: 0, fontStyle: 'italic', color: 'rgba(243,234,216,0.62)' }}>
-                Private reflections, source-analysis notes, assessment answers, and your written
-                project are not included in the certificate. The certificate confirms course
-                completion only.
+                {uiText.privateReflectionsSourceAnalysisNotes}
               </p>
             </div>
           </PageSection>
 
-          <PageSection eyebrow="Certificate" heading="Certificate of Completion">
+          <PageSection eyebrow={uiText.certificate} heading={uiText.certificateOfCompletion}>
             {progress.certificateEligible ? (
               <div style={{ padding: '2rem 2.25rem', border: '1px solid rgba(232,184,91,0.3)', borderRadius: '4px', backgroundColor: 'rgba(232,184,91,0.04)', textAlign: 'center' }}>
-                <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-                  You have completed all five modules, passed the final assessment and submitted your
-                  written project. You are eligible to receive your certificate of completion for{' '}
-                  {WAIYAKI_COURSE.title}.
-                </p>
+                <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>{fillTemplate(uiText.youHaveCompletedAllFive2, { v0: WAIYAKI_COURSE.title })}</p>
                 <Link to={`${COURSE_PATH}/certificate`} style={completionButtonStyle}>
-                  View Your Certificate &rarr;
+                  {uiText.viewYourCertificate}
                 </Link>
               </div>
             ) : (
               <div style={{ padding: '2rem 2.25rem', border: '1px dashed rgba(232,184,91,0.2)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.015)' }}>
                 <p className="font-body" style={{ ...bodyText, margin: 0 }}>
-                  Your certificate will be available once you have completed all five modules, passed
-                  the final assessment and submitted your written project.
+                  {uiText.yourCertificateWillBeAvailable}
                 </p>
               </div>
             )}
           </PageSection>
 
-          <nav aria-label="Course navigation" style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
+          <nav aria-label={uiText.courseNavigation} style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(232,184,91,0.12)' }}>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link to={`${COURSE_PATH}/module-5`} className="font-body tamu-nav-link" style={moduleLinkStyle}>
-                &larr; Back to Module 5
+                {uiText.backToModule5}
               </Link>
               <Link to={COURSE_PATH} className="font-body tamu-nav-link" style={moduleLinkStyle}>
-                &larr; Return to Course
+                {uiText.returnToCourse}
               </Link>
             </div>
           </nav>

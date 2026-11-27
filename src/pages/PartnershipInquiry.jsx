@@ -4,6 +4,12 @@ import PageMeta from '@/components/seo/PageMeta';
 import ContactInquiryForm from '@/components/forms/ContactInquiryForm';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  tamuAcademyHome: 'Tamu Academy — home',
+  partnershipInquiryForm: 'Partnership inquiry form',
+};
+
 const CONTENT = {
   eyebrow: 'Tamu Academy',
   attribution: 'A Waiyaki House learning venture',
@@ -15,6 +21,7 @@ const CONTENT = {
 };
 
 export default function PartnershipInquiry() {
+  const { content: uiText } = useTranslatedContent('ui-pages-partnershipinquiry', UI_TEXT);
   const { content: c } = useTranslatedContent('partnership', CONTENT);
 
   return (
@@ -29,7 +36,7 @@ export default function PartnershipInquiry() {
       <header className="pi-topnav">
         <Link
           to="/"
-          aria-label="Tamu Academy — home"
+          aria-label={uiText.tamuAcademyHome}
           className="pi-brand font-heading"
         >
           Tamu <span className="pi-accent">Academy</span>
@@ -51,7 +58,7 @@ export default function PartnershipInquiry() {
 
           <section
             className="pi-form-wrap"
-            aria-label="Partnership inquiry form"
+            aria-label={uiText.partnershipInquiryForm}
           >
             <ContactInquiryForm sourcePage="/partnership-inquiry" successVariant="partnership" />
           </section>

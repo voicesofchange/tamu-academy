@@ -2,6 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  by: '{v0}: {v1} by {v2} {v3}',
+};
 
 const CONTENT = {
   exploreResource: 'Explore the resource',
@@ -9,6 +15,7 @@ const CONTENT = {
 };
 
 export default function ResourceCard({ resource, index = 0 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-resources-resourcecard', UI_TEXT);
   const { content: c } = useTranslatedContent('resource-card', CONTENT);
   const { title, organization, description, type, access, url } = resource;
 
@@ -108,7 +115,7 @@ export default function ResourceCard({ resource, index = 0 }) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`${c.exploreResource}: ${title} by ${organization} ${c.opensInNewTab}`}
+        aria-label={fillTemplate(uiText.by, { v0: c.exploreResource, v1: title, v2: organization, v3: c.opensInNewTab })}
         className="font-body tamu-resource-link"
         style={{
           display: 'inline-flex',

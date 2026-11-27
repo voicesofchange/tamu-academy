@@ -1,5 +1,11 @@
 import React from 'react';
 import { Download } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  savedToYourDeviceAs: 'Saved to your device as a plain-text file',
+};
 
 const base = {
   display: 'inline-flex',
@@ -35,13 +41,14 @@ const secondary = {
  * so what is downloaded always matches what is on screen.
  */
 export default function HubDownloadButton({ onClick, label, secondary: isSecondary = false }) {
+  const { content: uiText } = useTranslatedContent('ui-components-hub-hubdownloadbutton', UI_TEXT);
   return (
     <button
       type="button"
       onClick={onClick}
       className="font-body"
       style={isSecondary ? secondary : primary}
-      title="Saved to your device as a plain-text file"
+      title={uiText.savedToYourDeviceAs}
     >
       <Download size={14} aria-hidden="true" />
       {label}

@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  keyQuestions: 'Key Questions',
+  topics: 'Topics',
+  thisIsAProposedCurriculum: 'This is a proposed curriculum that may be refined with facilitators, participants, community partners, and subject matter experts.',
+};
 
 const MODULES = [
   {
@@ -55,13 +63,18 @@ const MODULES = [
   },
 ];
 
+const MODULES_TEXT = { items: MODULES };
+
 export default function LabCurriculum() {
+  const { content: modulesText } = useTranslatedContent('lab-curriculum-modules', MODULES_TEXT);
+  const modules = modulesText.items || MODULES;
+  const { content: uiText } = useTranslatedContent('ui-components-lab-labcurriculum', UI_TEXT);
   const [open, setOpen] = useState(null);
   const reduceMotion = useReducedMotion();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      {MODULES.map((mod, i) => {
+      {modules.map((mod, i) => {
         const isOpen = open === i;
         return (
           <div key={mod.n} style={{ border: '1px solid rgba(232,184,91,0.15)', borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)', overflow: 'hidden' }}>
@@ -89,7 +102,7 @@ export default function LabCurriculum() {
                 >
                   <div style={{ padding: '0 1.5rem 1.5rem', borderTop: '1px solid rgba(232,184,91,0.08)' }}>
                     <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, margin: '1rem 0 0.65rem' }}>
-                      {mod.type === 'questions' ? 'Key Questions' : 'Topics'}
+                      {mod.type === 'questions' ? uiText.keyQuestions : uiText.topics}
                     </p>
                     <ul style={{ margin: 0, paddingLeft: '1.1rem' }}>
                       {mod.items.map((item) => (
@@ -104,7 +117,7 @@ export default function LabCurriculum() {
         );
       })}
       <p className="font-body" style={{ color: 'rgba(243,234,216,0.4)', fontSize: '0.78rem', lineHeight: 1.7, fontWeight: 300, marginTop: '0.75rem', fontStyle: 'italic' }}>
-        This is a proposed curriculum that may be refined with facilitators, participants, community partners, and subject matter experts.
+        {uiText.thisIsAProposedCurriculum}
       </p>
     </div>
   );

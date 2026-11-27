@@ -13,7 +13,7 @@ import { useTranslatedContent } from "@/lib/i18n/useTranslatedContent";
 
 const CONTENT = {
   title: "Welcome back",
-  subtitle: "Log in to your account",
+  subtitle: "Sign in to your account",
   footerPre: "Don't have an account?",
   footerLink: "Create one",
   google: "Continue with Google",
@@ -22,8 +22,8 @@ const CONTENT = {
   emailPlaceholder: "you@example.com",
   password: "Password",
   forgotPassword: "Forgot password?",
-  loggingIn: "Logging in...",
-  login: "Log in",
+  loggingIn: "Signing in…",
+  login: "Sign in",
   invalidCredentials: "Invalid email or password",
 };
 
@@ -72,8 +72,8 @@ export default function Login() {
       }
     >
       <PageMeta
-        title="Log in to your account | Tamu Academy"
-        description="Log in to your Tamu Academy account to continue your courses, track your progress, and access your certificates."
+        title="Sign in to your account | Tamu Academy"
+        description="Sign in to your Tamu Academy account to continue your courses, track your progress, and access your certificates."
         path="/login"
       />
 

@@ -18,6 +18,13 @@ import CourseCompleteFooter from '@/components/courses/player/CourseCompleteFoot
 import { wealthModuleSteps, WEALTH_KEY_LABEL_KEYS } from '@/components/courses/wealth/wealth-player-steps';
 import { useModulePreview } from '@/components/courses/preview/ModulePreviewContext';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  loadingModule: 'Loading module',
+  checkingYourEnrollment: 'Checking your enrollment',
+  signInToContinue: 'Sign in to continue',
+};
+
 const COURSE = BUILDING_WEALTH_TOGETHER_COURSE;
 
 /**
@@ -47,6 +54,7 @@ export default function BuildingWealthModule() {
 }
 
 function WealthModuleRoute() {
+  const { content: uiText } = useTranslatedContent('ui-pages-buildingwealthmodule', UI_TEXT);
   // Signed-out visitors on Module 1 read the free preview (ModulePreviewGate).
   const { preview } = useModulePreview();
   const { moduleRoute } = useParams();
@@ -115,7 +123,7 @@ function WealthModuleRoute() {
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
         <div
           className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin"
-          aria-label="Loading module"
+          aria-label={uiText.loadingModule}
         />
       </div>
     );
@@ -127,7 +135,7 @@ function WealthModuleRoute() {
     if (isAuthenticated && enrollmentStatus === 'checking') {
       return (
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#24150f' }}>
-          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label="Checking your enrollment" />
+          <div className="w-8 h-8 border-4 border-[rgba(232,184,91,0.2)] border-t-[#e8b85b] rounded-full animate-spin" aria-label={uiText.checkingYourEnrollment} />
         </div>
       );
     }
@@ -151,7 +159,7 @@ function WealthModuleRoute() {
         previousModule={previous}
         signedOut={
           <Link to={`/login?returnTo=${encodeURIComponent(`/courses/${COURSE.slug}/${moduleRoute}`)}`} className="font-body tamu-nav-link" style={{ color: '#e8b85b' }}>
-            Sign in to continue
+            {uiText.signInToContinue}
           </Link>
         }
       />

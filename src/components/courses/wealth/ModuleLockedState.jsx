@@ -3,6 +3,15 @@ import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import PageLayout from '@/components/page/PageLayout';
 import { BUILDING_WEALTH_TOGETHER_COURSE } from '@/lib/building-wealth-together-tracks';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  thisModuleOpensNext: 'This module opens next',
+  startTheCourseFromThe: 'Start the course from the course page to open this module. If you are already enrolled, the module may not be released yet.',
+  finishToOpenThisModule: 'Finish {v0}: {v1} to open this module. If you are not enrolled yet, start the course from the course page.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -27,6 +36,7 @@ const linkStyle = {
  * module to finish rather than showing a bare error.
  */
 export default function ModuleLockedState({ coursePath, module, previousModule, signedOut }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-modulelockedstate', UI_TEXT);
   return (
     <PageLayout>
       <PageMeta
@@ -46,12 +56,12 @@ export default function ModuleLockedState({ coursePath, module, previousModule, 
 
         <div style={{ padding: '1.5rem 1.75rem', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '4px', background: 'rgba(243,234,216,0.02)', marginBottom: '2rem' }}>
           <span className="font-body" style={{ display: 'block', color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.6rem' }}>
-            This module opens next
+            {uiText.thisModuleOpensNext}
           </span>
           <p className="font-body" style={{ ...bodyText, margin: 0 }}>
             {previousModule
-              ? `Finish ${previousModule.number}: ${previousModule.title} to open this module. If you are not enrolled yet, start the course from the course page.`
-              : 'Start the course from the course page to open this module. If you are already enrolled, the module may not be released yet.'}
+              ? fillTemplate(uiText.finishToOpenThisModule, { v0: previousModule.number, v1: previousModule.title })
+              : uiText.startTheCourseFromThe}
           </p>
         </div>
 

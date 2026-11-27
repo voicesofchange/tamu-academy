@@ -1,5 +1,28 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  privacyNotice: 'Privacy notice',
+  passingRequiresOfCorrectAnswers: 'Passing requires {v0} of {v1} correct answers.',
+  module7KnowledgeCheck: 'Module 7 knowledge check',
+  question: 'Question {v0}',
+  questionResponseOptions: 'Question {v0} response options',
+  option: 'Option {v0}: {v1}',
+  correct: 'Correct',
+  reconsider: 'Reconsider',
+  yourAnswer: 'Your answer:',
+  correctAnswer: 'Correct answer:',
+  grading: 'Grading…',
+  submitAnswers: 'Submit answers',
+  tryAgain: 'Try again',
+  youPassedThisKnowledgeCheck: 'You passed this knowledge check.',
+  youDidNotPassThis: 'You did not pass this knowledge check. Review the feedback above and try again.',
+  weCouldNotGradeYour: 'We could not grade your responses right now. Please try again.',
+  pleaseAnswerAllQuestionsBefore: 'Please answer all {v0} questions before submitting. {v1} question{v2} still unanswered.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -20,6 +43,7 @@ function findResultForQuestion(feedback, questionId) {
 }
 
 export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, onGraded }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhmodule7knowledgecheck', UI_TEXT);
   const [selections, setSelections] = useState({});
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState(null);
@@ -41,7 +65,7 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
     const total = quiz.questions.length;
     const missing = quiz.questions.filter((q) => typeof selections[q.id] !== 'number');
     if (missing.length > 0) {
-      setValidationError(`Please answer all ${total} questions before submitting. ${missing.length} question${missing.length > 1 ? 's are' : ' is'} still unanswered.`);
+      setValidationError(fillTemplate(uiText.pleaseAnswerAllQuestionsBefore, { v0: total, v1: missing.length, v2: missing.length > 1 ? 's are' : ' is' }));
       return;
     }
     const answers = quiz.questions.map((q) => ({ questionId: q.id, selectedIndex: selections[q.id] }));
@@ -53,7 +77,7 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
       setResult(data);
       if (onGraded) onGraded(data);
     } catch (err) {
-      setServerError('We could not grade your responses right now. Please try again.');
+      setServerError(uiText.weCouldNotGradeYour);
     } finally {
       setPending(false);
     }
@@ -67,22 +91,22 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
     <div>
       {quiz.subtitle && <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.1rem', fontSize: '0.9rem' }}>{quiz.subtitle}</p>}
       <div style={privacyBoxStyle}>
-        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>Privacy notice</span>
+        <span className="font-body" style={{ ...eyebrowStyle, display: 'block', marginBottom: '0.45rem' }}>{uiText.privacyNotice}</span>
         <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, fontSize: '0.85rem' }}>{quiz.privacyNotice}</p>
       </div>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.1rem' }}>{quiz.learnerInstruction}</p>
-      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>Passing requires {quiz.passingScore} of {quiz.questions.length} correct answers.</p>
-      <form onSubmit={handleSubmit} aria-label="Module 7 knowledge check">
+      <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', color: 'rgba(232,184,91,0.78)', marginBottom: '1.5rem', fontSize: '0.88rem' }}>{fillTemplate(uiText.passingRequiresOfCorrectAnswers, { v0: quiz.passingScore, v1: quiz.questions.length })}</p>
+      <form onSubmit={handleSubmit} aria-label={uiText.module7KnowledgeCheck}>
         {quiz.questions.map((q, qIdx) => {
           const qResult = findResultForQuestion(result && result.feedback, q.id);
           return (
-            <section key={q.id} style={questionCardStyle} aria-label={`Question ${qIdx + 1}`}>
+            <section key={q.id} style={questionCardStyle} aria-label={fillTemplate(uiText.question, { v0: qIdx + 1 })}>
               <h3 className="font-heading" style={{ color: '#f8f0df', fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.45, marginBottom: '0.9rem' }}>
                 <span style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Q{qIdx + 1}.</span> {q.prompt}
               </h3>
               <fieldset style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
                 <legend className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>{q.prompt}</legend>
-                <ul role="radiogroup" aria-label={`Question ${qIdx + 1} response options`} style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <ul role="radiogroup" aria-label={fillTemplate(uiText.questionResponseOptions, { v0: qIdx + 1 })} style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                   {q.options.map((opt, i) => {
                     const isSelected = selections[q.id] === i;
                     let style = optionBase;
@@ -97,7 +121,7 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
                       <li key={i} style={{ marginBottom: '0.65rem' }}>
                         <label style={style}>
                           <input type="radio" name={q.id} value={i} checked={isSelected || false} disabled={locked}
-                            onChange={() => handleSelect(q.id, i)} style={{ marginTop: '0.2rem' }} aria-label={`Option ${optionLabel(i)}: ${opt}`} />
+                            onChange={() => handleSelect(q.id, i)} style={{ marginTop: '0.2rem' }} aria-label={fillTemplate(uiText.option, { v0: optionLabel(i), v1: opt })} />
                           <span style={{ flex: 1 }}><strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{optionLabel(i)}.</strong> {opt}</span>
                         </label>
                       </li>
@@ -107,12 +131,12 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
               </fieldset>
               {qResult && (
                 <div role="status" style={{ marginTop: '0.85rem', padding: '0.85rem 1rem', border: `1px solid ${qResult.isCorrect ? 'rgba(232,184,91,0.4)' : 'rgba(243,234,216,0.25)'}`, borderRadius: '3px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
-                  <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', color: qResult.isCorrect ? '#e8b85b' : '#e8955c', fontWeight: 500 }}>{qResult.isCorrect ? 'Correct' : 'Reconsider'}</p>
+                  <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', color: qResult.isCorrect ? '#e8b85b' : '#e8955c', fontWeight: 500 }}>{qResult.isCorrect ? uiText.correct : uiText.reconsider}</p>
                   {typeof selections[q.id] === 'number' && (
-                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: 'rgba(243,234,216,0.6)', fontWeight: 500 }}>Your answer:</span> <span style={{ color: '#f8f0df' }}>{q.options[selections[q.id]]}</span></p>
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: 'rgba(243,234,216,0.6)', fontWeight: 500 }}>{uiText.yourAnswer}</span> <span style={{ color: '#f8f0df' }}>{q.options[selections[q.id]]}</span></p>
                   )}
                   {qResult.correctAnswerText && (
-                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: '#e8b85b', fontWeight: 500 }}>Correct answer:</span> <span style={{ color: '#f8f0df' }}>{qResult.correctAnswerText}</span></p>
+                    <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.4rem', fontSize: '0.88rem' }}><span style={{ color: '#e8b85b', fontWeight: 500 }}>{uiText.correctAnswer}</span> <span style={{ color: '#f8f0df' }}>{qResult.correctAnswerText}</span></p>
                   )}
                   <p className="font-body" style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.7)', fontSize: '0.88rem' }}>{qResult.feedback}</p>
                 </div>
@@ -121,16 +145,16 @@ export default function MhModule7KnowledgeCheck({ courseSlug, moduleSlug, quiz, 
           );
         })}
         {!result && (
-          <button type="submit" disabled={pending} style={{ ...submitButtonStyle, cursor: pending ? 'wait' : 'pointer', opacity: pending ? 0.7 : 1 }}>{pending ? 'Grading…' : 'Submit answers'}</button>
+          <button type="submit" disabled={pending} style={{ ...submitButtonStyle, cursor: pending ? 'wait' : 'pointer', opacity: pending ? 0.7 : 1 }}>{pending ? uiText.grading : uiText.submitAnswers}</button>
         )}
-        {result && <button type="button" onClick={handleRetry} style={retryButtonStyle}>Try again</button>}
+        {result && <button type="button" onClick={handleRetry} style={retryButtonStyle}>{uiText.tryAgain}</button>}
         {validationError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>{validationError}</p>}
         {serverError && <p className="font-body" role="alert" style={{ color: '#e8955c', marginTop: '1rem', marginBottom: 0, fontSize: '0.88rem' }}>{serverError}</p>}
       </form>
       {result && (
         <div role="status" aria-live="polite" style={{ marginTop: '1.5rem', padding: '1.2rem 1.4rem', border: `1px solid ${result.passed ? 'rgba(232,184,91,0.5)' : 'rgba(243,234,216,0.3)'}`, borderRadius: '4px', backgroundColor: 'rgba(243,234,216,0.02)' }}>
           <p className="font-body" style={{ ...bodyText, margin: 0, marginBottom: '0.5rem', color: '#f8f0df', fontWeight: 500, fontSize: '1.1rem' }}>{result.passed ? quiz.passedMessage : quiz.notPassedMessage}</p>
-          <p className="font-body" style={{ ...bodyText, margin: 0, color: result.passed ? '#e8b85b' : '#e8955c', fontStyle: 'italic' }}>{result.passed ? 'You passed this knowledge check.' : 'You did not pass this knowledge check. Review the feedback above and try again.'}</p>
+          <p className="font-body" style={{ ...bodyText, margin: 0, color: result.passed ? '#e8b85b' : '#e8955c', fontStyle: 'italic' }}>{result.passed ? uiText.youPassedThisKnowledgeCheck : uiText.youDidNotPassThis}</p>
         </div>
       )}
     </div>

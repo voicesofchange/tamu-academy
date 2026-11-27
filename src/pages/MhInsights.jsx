@@ -8,6 +8,12 @@ import PageSection from '@/components/page/PageSection';
 import StatusBadge from '@/components/page/StatusBadge';
 import { MENTAL_HEALTH_COURSE } from '@/lib/mental-health-tracks';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  sectionCompletion: '{v0} section completion',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -20,7 +26,7 @@ const CONTENT = {
   heroSubheading: 'A clear view of where you are in the course and exactly what remains to finish in each module.',
   loadingEyebrow: 'Loading',
   loadingHeading: 'Loading your progress',
-  loadingBody: 'Gathering your module progress...',
+  loadingBody: 'Gathering your module progress…',
   errorEyebrow: 'Status',
   errorHeading: 'Progress Unavailable',
   errorBody: 'Your progress could not be loaded right now. Once the course launches, your position across all seven modules will appear here.',
@@ -74,6 +80,7 @@ function ProgressBar({ value, label }) {
 }
 
 function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c }) {
+  const { content: uiText } = useTranslatedContent('ui-pages-mhinsights', UI_TEXT);
   const modulePath = `/courses/${courseSlug}/${mod.route}`;
   const completed = !!(moduleStatus && moduleStatus.completed);
 
@@ -117,7 +124,7 @@ function ModuleProgressCard({ mod, moduleStatus, sectionDetail, courseSlug, c })
             {tpl(c.ofSections, { done: doneSections, total: totalSections })}
           </span>
         </div>
-        <ProgressBar value={sectionPct} label={`${mod.number} section completion`} />
+        <ProgressBar value={sectionPct} label={fillTemplate(uiText.sectionCompletion, { v0: mod.number })} />
       </div>
 
       {completed ? (

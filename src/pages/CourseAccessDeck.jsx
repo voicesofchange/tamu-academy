@@ -14,7 +14,7 @@ const CONTENT = {
   notesOff: 'Show Speaker Notes',
   slideLabel: 'Slide',
   of: 'of',
-  loading: 'Loading the deck...',
+  loading: 'Loading the deck…',
   adminOnlyHeading: 'Administrators Only',
   adminOnlyBody: 'The presenter’s deck is available to Tamu Academy administrators.',
   backHome: 'Back to Home',

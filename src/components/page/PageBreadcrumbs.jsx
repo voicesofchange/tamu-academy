@@ -1,5 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  pageBreadcrumbs: 'Page breadcrumbs',
+};
 
 const crumbStyle = { color: 'rgba(243,234,216,0.5)', fontSize: '0.72rem', letterSpacing: '0.06em', fontWeight: 300 };
 const activeCrumbStyle = { ...crumbStyle, color: 'rgba(243,234,216,0.78)' };
@@ -11,9 +17,10 @@ const arrowStyle = { color: 'rgba(232,184,91,0.72)', margin: '0 0.4rem' };
  * Pass an array of { label, to? } items — the last item is the current page.
  */
 export default function PageBreadcrumbs({ items }) {
+  const { content: uiText } = useTranslatedContent('ui-components-page-pagebreadcrumbs', UI_TEXT);
   if (!items || items.length === 0) return null;
   return (
-    <nav aria-label="Page breadcrumbs" className="tamu-page-crumbs">
+    <nav aria-label={uiText.pageBreadcrumbs} className="tamu-page-crumbs">
       <div style={{ maxWidth: '900px', margin: '0 auto' }}>
         {items.map((item, i) => {
           const isLast = i === items.length - 1;

@@ -1,4 +1,10 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  skipToMainContent: 'Skip to main content',
+};
 
 /**
  * Skip-to-main-content link — first focusable element on every page.
@@ -6,13 +12,14 @@ import React from 'react';
  * Target: <main id="tamu-main"> in PageLayout.
  */
 export default function SkipLink() {
+  const { content: uiText } = useTranslatedContent('ui-components-a11y-skiplink', UI_TEXT);
   return (
     <>
       <a
         href="#tamu-main"
         className="tamu-skip-link"
       >
-        Skip to main content
+        {uiText.skipToMainContent}
       </a>
       <style>{`
         .tamu-skip-link {

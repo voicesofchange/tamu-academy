@@ -10,6 +10,14 @@ import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 import { useAuth } from '@/lib/AuthContext';
 import { hasCompletedProfile } from '@/lib/learner-profile';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  yourProfile: 'Your Profile',
+  setUpYourProfile: 'Set up your profile',
+  addTheNameYouWould: 'Add the name you would like written on your certificate, plus as much or as little as you want to share about where you are learning from. You can change it any time.',
+  setUpMyProfile: 'Set up my profile →',
+};
+
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
 const primaryButtonStyle = {
@@ -68,6 +76,7 @@ const ICON_MAP = {
 };
 
 export default function Welcome() {
+  const { content: uiText } = useTranslatedContent('ui-pages-welcome', UI_TEXT);
   const { content: c } = useTranslatedContent('welcome', CONTENT);
   const { user } = useAuth();
   const needsProfile = Boolean(user) && !hasCompletedProfile(user);
@@ -86,13 +95,12 @@ export default function Welcome() {
       />
 
       {needsProfile && (
-        <PageSection eyebrow="Your Profile" heading="Set up your profile">
+        <PageSection eyebrow={uiText.yourProfile} heading={uiText.setUpYourProfile}>
           <p className="font-body" style={{ ...bodyText, marginBottom: '1.5rem' }}>
-            Add the name you would like written on your certificate, plus as much or as little as you want to
-            share about where you are learning from. You can change it any time.
+            {uiText.addTheNameYouWould}
           </p>
           <Link to="/profile" className="font-body" style={primaryButtonStyle}>
-            Set up my profile &rarr;
+            {uiText.setUpMyProfile}
           </Link>
         </PageSection>
       )}

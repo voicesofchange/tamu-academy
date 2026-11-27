@@ -1,4 +1,13 @@
 import React from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  thisPageDidNotLoad: 'This page did not load',
+  somethingInterruptedThePageAs: 'Something interrupted the page as it was opening, most often because the site was updated while you were here. Reloading usually fixes it. Your saved work is not affected.',
+  reload: 'Reload',
+  goToHomepage: 'Go to Homepage',
+};
 
 /**
  * PageLoadErrorScreen — the friendly recovery screen.
@@ -12,6 +21,7 @@ import React from 'react';
  * full load, which is the cleanest way out of a broken page.
  */
 export default function PageLoadErrorScreen() {
+  const { content: uiText } = useTranslatedContent('ui-components-errors-pageloaderrorscreen', UI_TEXT);
   return (
     <div
       style={{
@@ -50,7 +60,7 @@ export default function PageLoadErrorScreen() {
             fontFamily: "'Cormorant Garamond', Georgia, serif",
           }}
         >
-          This page did not load
+          {uiText.thisPageDidNotLoad}
         </h1>
 
         <div
@@ -72,8 +82,7 @@ export default function PageLoadErrorScreen() {
             margin: '0 0 2rem',
           }}
         >
-          Something interrupted the page as it was opening, most often because the site was updated
-          while you were here. Reloading usually fixes it. Your saved work is not affected.
+          {uiText.somethingInterruptedThePageAs}
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', justifyContent: 'center' }}>
@@ -96,7 +105,7 @@ export default function PageLoadErrorScreen() {
               fontFamily: 'inherit',
             }}
           >
-            Reload
+            {uiText.reload}
           </button>
           <a
             href="/"
@@ -115,7 +124,7 @@ export default function PageLoadErrorScreen() {
               padding: '0.65rem 1.2rem',
             }}
           >
-            Go to Homepage
+            {uiText.goToHomepage}
           </a>
         </div>
       </div>

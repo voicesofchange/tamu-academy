@@ -1,5 +1,23 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  answerAllThreeQuestionsThen: 'Answer all three questions, then submit once. Every question can be attempted again, and the explanations appear only after you submit.',
+  question: 'Question {v0}',
+  correct: 'Correct',
+  notThisOne: 'Not this one',
+  checking: 'Checking…',
+  checkMyAnswers: 'Check my answers',
+  answerAllThreeQuestionsTo: 'Answer all three questions to submit.',
+  ofCorrect: '{v0} of {v1} correct',
+  youHavePassedThisConcept: 'You have passed this concept check.',
+  tryAgain: 'Try again',
+  weCouldNotCheckYour: 'We could not check your answers just now. Please try again.',
+  aPassNeedsOfRead: 'A pass needs {v0} of {v1}. Read the explanations above and try again when you are ready.',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 
@@ -44,6 +62,7 @@ const submitStyle = {
  * explanation, and the correct answer text after a complete submission.
  */
 export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPassed }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-wealth-wealthconceptcheck', UI_TEXT);
   const questions = (quiz && quiz.questions) || [];
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -69,7 +88,7 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
       setResult(data);
       if (data.passed && onPassed) onPassed(data);
     } catch (err) {
-      setError('We could not check your answers just now. Please try again.');
+      setError(uiText.weCouldNotCheckYour);
     } finally {
       setSubmitting(false);
     }
@@ -86,8 +105,7 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
   return (
     <div>
       <p className="font-body" style={{ ...bodyText, marginBottom: '1.75rem' }}>
-        Answer all three questions, then submit once. Every question can be attempted again, and the
-        explanations appear only after you submit.
+        {uiText.answerAllThreeQuestionsThen}
       </p>
 
       {questions.map((question, index) => {
@@ -97,7 +115,7 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
             <p className="font-body" style={{ color: '#f8f0df', fontSize: '0.97rem', lineHeight: 1.7, fontWeight: 400, margin: '0 0 0.9rem' }}>
               {index + 1}. {question.prompt}
             </p>
-            <div role="radiogroup" aria-label={`Question ${index + 1}`} style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+            <div role="radiogroup" aria-label={fillTemplate(uiText.question, { v0: index + 1 })} style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
               {question.options.map((option, oi) => {
                 const selected = answers[question.id] === oi;
                 return (
@@ -128,7 +146,7 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
                 }}
               >
                 <span className="font-body" style={{ display: 'block', color: feedback.isCorrect ? '#e8b85b' : '#e8955c', fontSize: '0.62rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '0.5rem' }}>
-                  {feedback.isCorrect ? 'Correct' : 'Not this one'}
+                  {feedback.isCorrect ? uiText.correct : uiText.notThisOne}
                 </span>
                 <p className="font-body" style={{ ...bodyText, fontSize: '0.9rem', margin: 0 }}>{feedback.feedback}</p>
               </div>
@@ -145,11 +163,11 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
             disabled={!allAnswered || submitting}
             style={{ ...submitStyle, opacity: !allAnswered || submitting ? 0.6 : 1, cursor: !allAnswered || submitting ? 'not-allowed' : 'pointer' }}
           >
-            {submitting ? 'Checking...' : 'Check my answers'}
+            {submitting ? uiText.checking : uiText.checkMyAnswers}
           </button>
           {!allAnswered && !submitting && (
             <p className="font-body" style={{ ...bodyText, fontSize: '0.82rem', color: 'rgba(243,234,216,0.55)', margin: '0.75rem 0 0' }}>
-              Answer all three questions to submit.
+              {uiText.answerAllThreeQuestionsTo}
             </p>
           )}
         </div>
@@ -157,17 +175,15 @@ export default function WealthConceptCheck({ quiz, courseSlug, moduleRoute, onPa
 
       {result && (
         <div style={{ padding: '1.25rem 1.5rem', border: '1px solid rgba(232,184,91,0.25)', borderRadius: '4px', background: 'rgba(243,234,216,0.02)' }}>
-          <p className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', margin: '0 0 0.6rem', fontWeight: 500 }}>
-            {result.score} of {result.totalQuestions} correct
-          </p>
+          <p className="font-body" style={{ color: '#f8f0df', fontSize: '1rem', margin: '0 0 0.6rem', fontWeight: 500 }}>{fillTemplate(uiText.ofCorrect, { v0: result.score, v1: result.totalQuestions })}</p>
           <p className="font-body" style={{ ...bodyText, margin: result.passed ? '0 0 1.25rem' : '0 0 1.25rem' }}>
             {result.passed
-              ? 'You have passed this concept check.'
-              : `A pass needs ${result.passingScore} of ${result.totalQuestions}. Read the explanations above and try again when you are ready.`}
+              ? uiText.youHavePassedThisConcept
+              : fillTemplate(uiText.aPassNeedsOfRead, { v0: result.passingScore, v1: result.totalQuestions })}
           </p>
           {!result.passed && (
             <button type="button" onClick={handleRetry} style={submitStyle}>
-              Try again
+              {uiText.tryAgain}
             </button>
           )}
         </div>

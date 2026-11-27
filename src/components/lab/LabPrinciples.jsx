@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
 const PRINCIPLES = [
   'Human connection before technological convenience',
@@ -13,10 +14,14 @@ const PRINCIPLES = [
   'Practical action',
 ];
 
+const PRINCIPLES_TEXT = { items: PRINCIPLES };
+
 export default function LabPrinciples() {
+  const { content: principlesText } = useTranslatedContent('lab-principles', PRINCIPLES_TEXT);
+  const principles = principlesText.items || PRINCIPLES;
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
-      {PRINCIPLES.map((p, i) => (
+      {principles.map((p, i) => (
         <motion.div
           key={p}
           initial={{ opacity: 0, y: 12 }}

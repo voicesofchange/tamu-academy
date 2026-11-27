@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import PageMeta from '@/components/seo/PageMeta';
 import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
 
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  tamuAcademyReturnToHomepage: 'Tamu Academy — return to homepage',
+};
+
 const CONTENT = {
   brandAttr: 'A Waiyaki House LLC learning venture',
   h1: 'Privacy Policy',
@@ -150,6 +155,7 @@ const footerLinkStyle = {
 };
 
 export default function Privacy() {
+  const { content: uiText } = useTranslatedContent('ui-pages-privacy', UI_TEXT);
   const { content: c } = useTranslatedContent('privacy', CONTENT);
 
   return (
@@ -178,7 +184,7 @@ export default function Privacy() {
           textAlign: 'center',
         }}
       >
-        <Link to="/" aria-label="Tamu Academy — return to homepage" style={{ textDecoration: 'none' }}>
+        <Link to="/" aria-label={uiText.tamuAcademyReturnToHomepage} style={{ textDecoration: 'none' }}>
           <p className="font-heading" style={brandWordmark}>
             Tamu <span style={{ color: '#e8b85b' }}>Academy</span>
           </p>

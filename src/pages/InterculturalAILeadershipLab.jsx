@@ -117,6 +117,11 @@ const CONTENT = {
     'A continuing community of participants and facilitators',
   ],
   identityEyebrow: 'Programme Identity',
+};
+
+// The second half of the page's copy, translated as its own object so each
+// object stays within one translation request (100 strings).
+const CONTENT_MORE = {
   identityHeading: 'What Makes the Lab Different',
   identityNotHeading: 'The Lab is not',
   identityNotItems: [
@@ -164,7 +169,9 @@ const CONTENT = {
 };
 
 export default function InterculturalAILeadershipLab() {
-  const { content: c } = useTranslatedContent('lab', CONTENT);
+  const { content: first } = useTranslatedContent('lab', CONTENT);
+  const { content: more } = useTranslatedContent('lab-more', CONTENT_MORE);
+  const c = { ...first, ...more };
 
   return (
     <PageLayout>

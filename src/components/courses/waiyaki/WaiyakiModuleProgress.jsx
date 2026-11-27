@@ -1,6 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useModuleFrame } from '@/components/courses/player/ModuleFrameContext';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  markEachRequirementCompleteAs: 'Mark each requirement complete as you finish it. No personal reflections or written answers are stored on the platform; only your progress is saved.',
+  completed: 'Completed',
+  saving: 'Saving…',
+  markComplete: 'Mark complete',
+  moduleCompleteYourProgressHas: 'Module complete. Your progress has been saved.',
+  finalAssessmentAndYourWritten: 'Final assessment and your written project →',
+  completeModule: 'Complete module',
+  yourProgressForThisModule: 'Your progress for this module will appear here once you are enrolled in the course and signed in.',
+};
 
 const bodyText = {
   color: 'rgba(243,234,216,0.78)',
@@ -65,6 +78,9 @@ const statusLabelStyle = {
  * learner's progress row. The final button becomes available only when the
  * server reports all three, so it can never assert completion on its own.
  */
+// Requirement labels only; the keys and actions stay as they are.
+const REQUIREMENT_TEXT = { labels: REQUIREMENTS.map((item) => item.label) };
+
 export default function WaiyakiModuleProgress({
   completedKeys,
   moduleCompleted,
@@ -76,6 +92,8 @@ export default function WaiyakiModuleProgress({
   completionPath,
   message,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-waiyaki-waiyakimoduleprogress', UI_TEXT);
+  const { content: requirementText } = useTranslatedContent('waiyaki-module-requirements', REQUIREMENT_TEXT);
   // In the course player the footer completes the module.
   const frame = useModuleFrame();
   const inPlayer = !!(frame && frame.inPlayer);
@@ -94,14 +112,13 @@ export default function WaiyakiModuleProgress({
           marginBottom: '1.25rem',
         }}
       >
-        Mark each requirement complete as you finish it. No personal reflections or written answers
-        are stored on the platform; only your progress is saved.
+        {uiText.markEachRequirementCompleteAs}
       </p>
 
       {canSave ? (
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            {REQUIREMENTS.map((item) => {
+            {REQUIREMENTS.map((item, itemIndex) => {
               const isCompleted = keys.includes(item.key);
               const isSaving = savingKey === item.key;
               return (
@@ -126,12 +143,12 @@ export default function WaiyakiModuleProgress({
                       {isCompleted ? '\u2713' : '\u25CB'}
                     </span>
                     <span className="font-body" style={{ ...bodyText, margin: 0 }}>
-                      {item.label}
+                      {(requirementText.labels && requirementText.labels[itemIndex]) || item.label}
                     </span>
                   </div>
                   {isCompleted ? (
                     <span className="font-body" style={statusLabelStyle}>
-                      Completed
+                      {uiText.completed}
                     </span>
                   ) : (
                     <button
@@ -145,7 +162,7 @@ export default function WaiyakiModuleProgress({
                         opacity: isSaving || savingKey ? 0.6 : 1,
                       }}
                     >
-                      {isSaving ? 'Saving...' : 'Mark complete'}
+                      {isSaving ? uiText.saving : uiText.markComplete}
                     </button>
                   )}
                 </div>
@@ -157,7 +174,7 @@ export default function WaiyakiModuleProgress({
             {moduleCompleted ? (
               <>
                 <p className="font-body" style={{ color: '#e8b85b', fontSize: '0.9rem', fontStyle: 'italic', margin: 0 }}>
-                  Module complete. Your progress has been saved.
+                  {uiText.moduleCompleteYourProgressHas}
                 </p>
                 {completionPath && (
                   <p style={{ margin: '1rem 0 0' }}>
@@ -179,7 +196,7 @@ export default function WaiyakiModuleProgress({
                         padding: '0.85rem 1.75rem',
                       }}
                     >
-                      Final assessment and your written project &rarr;
+                      {uiText.finalAssessmentAndYourWritten}
                     </Link>
                   </p>
                 )}
@@ -205,7 +222,7 @@ export default function WaiyakiModuleProgress({
                     cursor: allDone && !completing ? 'pointer' : 'not-allowed',
                   }}
                 >
-                  {completing ? 'Saving...' : 'Complete module'}
+                  {completing ? uiText.saving : uiText.completeModule}
                 </button>
               )
             )}
@@ -224,8 +241,7 @@ export default function WaiyakiModuleProgress({
             className="font-body"
             style={{ ...bodyText, fontStyle: 'italic', margin: 0, color: 'rgba(243,234,216,0.6)' }}
           >
-            Your progress for this module will appear here once you are enrolled in the course and
-            signed in.
+            {uiText.yourProgressForThisModule}
           </p>
         </div>
       )}

@@ -1,4 +1,17 @@
 import React, { useState } from 'react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  course: 'Course',
+  module: 'Module',
+  suggestedTime: 'Suggested time',
+  submission: 'Submission',
+  clearActivityResetsAllTemporary: 'Clear activity (resets all temporary responses and checkboxes)',
+  clearActivity: 'Clear activity',
+  possibleValue: 'Possible value:',
+  neededRepair: 'Needed repair:',
+};
 
 const bodyText = { color: 'rgba(243,234,216,0.78)', fontSize: '0.97rem', lineHeight: 1.85, fontWeight: 300 };
 const eyebrowStyle = { color: '#e8b85b', fontSize: '0.6rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500 };
@@ -56,6 +69,7 @@ function Field({ id, label, value, onChange, rows = 3 }) {
 }
 
 export default function MhBridgeConversationLab({ lab }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-mhbridgeconversationlab', UI_TEXT);
   const [selectedScenario, setSelectedScenario] = useState('');
   const [fields, setFields] = useState({
     step1RepeatedMessage: '',
@@ -103,14 +117,14 @@ export default function MhBridgeConversationLab({ lab }) {
       </p>
 
       <dl className="font-body" style={{ ...boxStyle, marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.9rem 1.5rem' }}>
-        <div><dt style={eyebrowStyle}>Course</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
-        <div><dt style={eyebrowStyle}>Module</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
-        <div><dt style={eyebrowStyle}>Suggested time</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
-        <div><dt style={eyebrowStyle}>Submission</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.course}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.course}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.module}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.module}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.suggestedTime}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.suggestedTime}</dd></div>
+        <div><dt style={eyebrowStyle}>{uiText.submission}</dt><dd style={{ ...bodyText, margin: 0 }}>{lab.submission}</dd></div>
       </dl>
 
-      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label="Clear activity (resets all temporary responses and checkboxes)">
-        Clear activity
+      <button type="button" onClick={clearActivity} style={clearBtnStyle} aria-label={uiText.clearActivityResetsAllTemporary}>
+        {uiText.clearActivity}
       </button>
 
       <div style={{ ...privacyBoxStyle, marginTop: '1.75rem' }} role="note" aria-label={lab.privacy.heading}>
@@ -233,8 +247,8 @@ export default function MhBridgeConversationLab({ lab }) {
               {r.text}
             </p>
             <p className="font-body" style={{ ...bodyText, margin: 0, fontSize: '0.85rem', color: 'rgba(243,234,216,0.6)' }}>
-              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Possible value:</strong> {r.possibleValue}.{' '}
-              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>Needed repair:</strong> {r.neededRepair}
+              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{uiText.possibleValue}</strong> {r.possibleValue}.{' '}
+              <strong style={{ color: 'rgba(232,184,91,0.85)', fontWeight: 500 }}>{uiText.neededRepair}</strong> {r.neededRepair}
             </p>
           </div>
         ))}

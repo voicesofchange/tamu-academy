@@ -50,7 +50,7 @@ const errorTextStyleLight = {
 };
 
 const CONTENT = {
-  starting: 'Starting...',
+  starting: 'Starting…',
   startLearning: 'Start Learning',
   enrollError: 'Unable to start this course right now. Please try again.',
   infoText: 'Module 1 is free to read without an account. Create a free account to save your progress and earn the certificate.',

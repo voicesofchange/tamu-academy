@@ -15,6 +15,13 @@ import {
   Banknote,
   ArrowRight,
 } from 'lucide-react';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  progress: '{v0} progress',
+};
 
 const ICONS = { Heart, TrendingUp, Cpu, Landmark, Scroll, Store, Layers, Clock, BarChart, GraduationCap, Banknote };
 
@@ -65,6 +72,7 @@ export default function JourneyCourseTile({
   actions = [],
   index = 0,
 }) {
+  const { content: uiText } = useTranslatedContent('ui-components-courses-journey-journeycoursetile', UI_TEXT);
   const HeroIcon = ICONS[visual?.icon] || GraduationCap;
   const accent = visual?.accent || 'rgba(217,155,55,0.22)';
   const pct = progress && progress.total ? Math.round((progress.completed / progress.total) * 100) : 0;
@@ -179,7 +187,7 @@ export default function JourneyCourseTile({
               aria-valuenow={pct}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label={`${title} progress`}
+              aria-label={fillTemplate(uiText.progress, { v0: title })}
               style={{ width: '100%', height: '5px', background: '#e8d9bf', borderRadius: '3px', overflow: 'hidden' }}
             >
               <div style={{ width: `${pct}%`, height: '100%', background: '#c18a36', borderRadius: '3px', transition: 'width 0.6s ease' }} />

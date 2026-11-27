@@ -1,6 +1,13 @@
 import React from 'react';
 import GuideSectionCard from './GuideSectionCard';
 import { getGuideSection } from '@/lib/guide/sections';
+import { useTranslatedContent } from '@/lib/i18n/useTranslatedContent';
+import { fillTemplate } from '@/lib/i18n/fill-template';
+
+// Visible text on this screen, translated with the rest of the page.
+const UI_TEXT = {
+  phase: 'Phase {v0} · {v1}',
+};
 
 /**
  * GuidePhaseSection — one phase of the guide pathway: its heading, its short
@@ -8,6 +15,7 @@ import { getGuideSection } from '@/lib/guide/sections';
  * area block on the Courses page.
  */
 export default function GuidePhaseSection({ phase, progressMap = {}, isFirst = false, summaries = {} }) {
+  const { content: uiText } = useTranslatedContent('ui-components-guide-guidephasesection', UI_TEXT);
   const sections = phase.sectionIds
     .map(getGuideSection)
     .filter(Boolean)
@@ -32,9 +40,7 @@ export default function GuidePhaseSection({ phase, progressMap = {}, isFirst = f
       }}
     >
       <div style={{ marginBottom: '2rem', maxWidth: '720px' }}>
-        <span className="font-guide-body" style={{ color: '#8A650B', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>
-          Phase {phase.number} · {phase.eyebrow}
-        </span>
+        <span className="font-guide-body" style={{ color: '#8A650B', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>{fillTemplate(uiText.phase, { v0: phase.number, v1: phase.eyebrow })}</span>
         <h3 className="font-guide-heading" style={{ color: '#33241A', fontSize: 'clamp(1.6rem,3vw,2.3rem)', lineHeight: 1.15, fontWeight: 600, margin: '10px 0 0.7rem' }}>
           {phase.title}
         </h3>
